@@ -1,0 +1,15 @@
+.maindiv {
+  margin: 0;
+  padding: 0;
+  background-color: rgba(146, 74, 239, 1);
+  height: 100vh;
+  width: 100vw;
+}
+.welcomeContent {
+  color: white;
+}
+.semiMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
