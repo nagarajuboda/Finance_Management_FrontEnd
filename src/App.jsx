@@ -1,31 +1,12 @@
-// import React from "react";
-// import "./App.css";
-// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import EmployeeRoutes from "./ManageRoutes/EmployeeRoutes";
-// import AdminRoutes from "./ManageRoutes/AdminRoutes";
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/*" element={<EmployeeRoutes />} />
-//         <Route path="Archents/admin/*" element={<AdminRoutes />} />
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import EmployeeRoutes from "./ManageRoutes/EmployeeRoutes";
-import AdminRoutes from "./ManageRoutes/AdminRoutes";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminDashboard from "./Components/Admin/AdminDashboard";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/*" element={<EmployeeRoutes />} />
-        <Route path="/Archents/admin/*" element={<AdminRoutes />} />
+        <Route path="/*" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

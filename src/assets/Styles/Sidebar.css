@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none !important;
+}
+
+.containers {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+main {
+  width: 100%;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.sidebar {
+  background: #fff;
+  color: #202020;
+  width: 200px;
+  transition: all 0.5s;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 7px; /* Width of the scrollbar */
+  height: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #fff; /* Background color of the scrollbar track */
+  border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounding the corners of the thumb */
+  border: none; /* Removing the border */
+}
+
+/* For Firefox */
+.sidebar {
+  scrollbar-width: thin; /* Set the width of the scrollbar */
+
+  scrollbar-color: #ccc #fff; /* Set the thumb and track colors */
+}
+
+/* For Edge */
+.sidebar {
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide scrollbar when not in use */
+}
+
+.top_section {
+  display: flex;
+  align-items: center;
+  padding: 20px 25px;
+}
+
+.logo {
+  font-size: 30px;
+}
+
+.bars {
+  display: flex;
+  font-size: 25px;
+  margin-left: 50px;
+  transition: all 0.5s;
+}
+
+.link {
+  display: flex;
+  color: #202020;
+  /* padding: 13px 25px; */
+  padding: 9px 30px;
+  gap: 15px;
+  transition: all 0.5s;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link:hover {
+  color: #924aef;
+  transition: all 0.5s;
+  background-color: #f6eeff;
+}
+
+/* .active {
+  background: #f6eeff;
+} */
+
+.icon,
+.link_text {
+  font-size: 20px;
+}
+
+.renderdiv {
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.dropdown-link {
+  color: #8f8f8f;
+  list-style-type: none;
+}
+
+.dropdown-link:hover,
+.dropdown-link.active {
+  color: rgba(146, 74, 239, 1);
+}
+
+.dropdown-link {
+  display: block;
+  padding: 5px 10px;
+  color: #ccc;
+  text-decoration: none;
+}
+
+.icon,
+.link_text:hover {
+  color: #924aef;
+  text-decoration: none;
+  list-style-type: none;
+}
+.link_text {
+  transition: all 0.5s;
+  font-size: 15px;
+}
+
+.icon,
+.link_text {
+  font-size: 20px;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-link {
+  color: #8f8f8f;
+}
+
+.active {
+  background: #f6eeff;
+}
+
+.submenu_link {
+  margin: 0px 0px;
+}
+
+.menu_items {
+  flex-grow: 1;
+}
+
+.submenu_link,
+.link_text {
+  font-size: 13px;
+}
+.dropdown-icon {
+  transition: transform 0.3s;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+  padding: 0 25px;
+}
+
+.submenu.open {
+  max-height: 500px;
+  color: #9f9f9f;
+}
+
+.dropdown-icon {
+  transition: transform 0.5s;
+}
+
+.dropdown-icon.open {
+  transform: rotate(90deg);
+}
+/* .Mainmenup {
+  color: rgba(165, 165, 165, 1);
+} */
+.sidebarmenu p {
+  color: rgba(165, 165, 165, 1);
+}
+.submenu {
+  padding-left: 20px; /* Adjust this value as needed */
+}

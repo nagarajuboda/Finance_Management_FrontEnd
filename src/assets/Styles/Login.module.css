@@ -1,11 +1,44 @@
-.maindiv {
+* {
   margin: 0;
   padding: 0;
+}
+.maindiv {
   background-color: rgba(146, 74, 239, 1);
   height: 100vh;
   width: 100vw;
 }
-.welcomeContent {
+.imagess {
+  margin: 16px 122px;
+}
+.paragraph {
+  margin: 14px 122px;
+}
+.welcome {
+  font-weight: 500;
+}
+.jfskd {
+  margin: 24px 0px;
+}
+.formdiv {
+  padding: 0px 3px;
+}
+.Input {
+  margin: 41px;
+}
+.forgot {
+  color: black;
+}
+input[type="text"]:focus {
+  border-color: rgb(169, 112, 245);
+  transition: rgba(146, 74, 239, 1);
+  /* transition: rgb(164, 128, 211); */
+}
+input[type="text"] {
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+/* .loginAccountTag {
   color: white;
 }
 .semiMain {
@@ -13,3 +46,6 @@
   align-items: center;
   justify-content: center;
 }
+.welTag {
+  text-align: center;
+} */
