@@ -43,7 +43,7 @@ const Sidebar = ({ children }) => {
 
   const menuItem = [
     {
-      path: "/dsa",
+      // path: "/dsa",
       name: "Dashboards",
       icon: (
         <svg
@@ -70,7 +70,7 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/about",
+      // path: "/about",
       name: "Hr Management",
       icon: (
         <svg
@@ -94,7 +94,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/analytics",
       name: "Project Management",
       icon: (
         <svg
@@ -110,14 +109,14 @@ const Sidebar = ({ children }) => {
         </svg>
       ),
       submenu: [
-        { path: "/list2", name: "-Contracts" },
-        { path: "/list1", name: "-Projects" },
-        { path: "/list2", name: "-Files" },
-        { path: "/list1", name: "-Profile" },
+        { path: "/contracts", name: "-Contracts" },
+        { path: "/analytics/AllProjects", name: "-Projects" },
+        { path: "/Files", name: "-Files" },
+        { path: "/Profile", name: "-Profile" },
       ],
     },
     {
-      path: "/comment",
+      // path: "/comment",
       name: "General",
       icon: (
         <svg
@@ -142,7 +141,7 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/product",
+      // path: "/product",
       name: "Calender",
       icon: (
         <svg
@@ -164,7 +163,7 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/product",
+      // path: "/product",
       name: "Email",
       icon: (
         <svg
@@ -185,7 +184,7 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/product",
+      // path: "/product",
       name: "Chat",
       icon: (
         <svg
@@ -206,7 +205,7 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      path: "/product",
+      // path: "/product",
       name: "Invoices",
       icon: (
         <svg
@@ -229,7 +228,7 @@ const Sidebar = ({ children }) => {
     },
 
     {
-      path: "/productList",
+      // path: "/productList",
       name: "Task",
       icon: (
         <svg
@@ -311,7 +310,7 @@ const Sidebar = ({ children }) => {
                   className={`dropdown-icon ${
                     openDropdowns.includes(index) ? "open" : ""
                   }`}
-                  style={{ color: "#9f9f9f;" }}
+                  style={{ color: "#9f9f9f" }}
                 />
               )}
             </NavLink>
@@ -326,19 +325,24 @@ const Sidebar = ({ children }) => {
                 }}
               >
                 {item.submenu.map((subItem, subIndex) => (
-                  <NavLink
-                    to={subItem.path}
-                    key={subIndex}
-                    className="link submenu_link"
-                    activeClassName="active"
-                  >
-                    <div
-                      style={{ display: isOpen ? "block" : "none" }}
-                      className="link_text"
+                  <div>
+                    {/* {console.log(subItem, "subitem", subIndex, "index")} */}
+                    {console.log(subItem.path, "path of sub item")}
+                    <NavLink
+                      to={subItem.path}
+                      key={subIndex}
+                      className="link submenu_link"
+                      activeClassName="active"
                     >
-                      {subItem.name}
-                    </div>
-                  </NavLink>
+                      <div
+                        style={{ display: isOpen ? "block" : "none" }}
+                        className="link_text"
+                      >
+                        {subItem.name}
+                      </div>
+                    </NavLink>
+                    {/* {isOpen && subItem.path === "/Projects" && <p>Hello</p>} */}
+                  </div>
                 ))}
               </div>
             )}

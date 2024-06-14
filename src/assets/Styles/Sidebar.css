@@ -133,6 +133,10 @@ main {
 .link_text {
   transition: all 0.5s;
   font-size: 15px;
+  color: #202020;
+  font-weight: 600;
+
+  font-family: "Public Sans" sans-serif;
 }
 
 .icon,
@@ -148,9 +152,9 @@ main {
   color: #8f8f8f;
 }
 
-.active {
+/* .active {
   background: #f6eeff;
-}
+} */
 
 .submenu_link {
   margin: 0px 0px;

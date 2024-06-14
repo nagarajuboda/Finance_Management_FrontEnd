@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
+import { Link } from "react-router-dom";
 import {
   FaSearch,
   FaSearchDollar,
@@ -19,7 +20,12 @@ export default function Header() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (profileRef.current && !profileRef.current.contains(event.target)) {
+      // Check if the clicked element is outside the profile popup or its content
+      if (
+        profileRef.current &&
+        !profileRef.current.contains(event.target) &&
+        event.target.closest(".profile-popup") === null
+      ) {
         setIsVisibleProfile(false);
       }
     };
@@ -31,8 +37,9 @@ export default function Header() {
     };
   }, []);
 
-  function toggleProfileVisibility() {
-    setIsVisibleProfile(!isVisibleProfile);
+  function toggleProfileVisibility(e) {
+    e.preventDefault();
+    setIsVisibleProfile((prevVisibility) => !prevVisibility);
   }
 
   return (
@@ -103,7 +110,9 @@ export default function Header() {
                 </div>
                 <div className="cardInbox">
                   <FaEnvelope className="cardicons" />
-                  <p className="popup-item ms-3">Inbox</p>
+                  <p className="popup-item ms-3">
+                    <Link to="/Login">Inbox</Link>
+                  </p>
                 </div>
                 <div className="cardSettings">
                   <FaCog className="cardicons" />

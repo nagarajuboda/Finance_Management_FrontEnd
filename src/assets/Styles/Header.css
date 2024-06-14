@@ -95,7 +95,7 @@
 .profile-popup {
   position: absolute;
   top: 85px;
-  right: 65px;
+  right: 22px;
   width: 270px;
   z-index: 1000;
 }

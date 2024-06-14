@@ -4,6 +4,7 @@ export default function AdminRoutes() {
   return (
     <Routes>
       <Route path="/" element={<AdminDashboard />} />
+      <Route path="Dashboard" element={<AdminDashboard />} />
     </Routes>
   );
 }
