@@ -100,7 +100,6 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-
               <hr className="hrtag" />
               <div className="cardbody ">
                 <div className="Carduser">
