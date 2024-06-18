@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.maindiv1 {
+  margin: 0;
+  padding: 0;
+}
+.card {
+  height: 100% !important;
+}
+.addproject {
+  font-size: 1.75rem;
+  color: rgba(32, 32, 32, 1);
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
+}
+
+.addbtn {
+  background: rgba(146, 74, 239, 1);
+  color: white;
+  border-radius: 15px;
+}
+.backbtn {
+  background: rgb(95, 158, 160);
+  border-radius: 15px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-self: center;
+}
+.addbtn:hover {
+  background-color: rgb(95, 158, 160);
+  color: white;
+}
+.addbtn:focus {
+  color: white;
+}
+lable {
+  font-weight: 600;
+}
+input {
+  margin-top: 5px;
+}
+input:focus {
+  border-color: rgba(146, 74, 239, 1);
+}
+input :hover {
+  border-color: rgba(146, 74, 239, 1);
+}
+.dropdown-toggle {
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-menu {
+  width: 100%;
+}
+span {
+  color: red;
+}

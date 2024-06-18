@@ -4,12 +4,13 @@ import "datatables.net";
 import "../../../assets/Styles/AllProduct.css";
 import one from "../../../assets/Images/1.jpg";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { ProgressBar } from "react-bootstrap";
 
 export default function AllProjects() {
-  const [projects, setProjects] = useState([]);
   const [dataReady, setDataReady] = useState(false);
-  const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
+  const [getAll, setAllProjects] = useState([]);
 
   function viewClickfunction(e, index) {
     e.preventDefault();
@@ -17,416 +18,18 @@ export default function AllProjects() {
   }
 
   useEffect(() => {
-    const sampleData = [
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Raju",
-        type: "App Design",
-        client: "Profile",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-      {
-        name: "Tiger Nixon",
-        type: "System Architect",
-        client: "Edinburgh",
-        dueDate: "2011-04-25",
-        progress: "61",
-      },
-    ];
-    setProjects(sampleData);
-    setDataReady(true);
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://localhost:44377/api/Project/GetAllProjects"
+        );
+        setAllProjects(response.data);
+        setDataReady(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -440,17 +43,14 @@ export default function AllProjects() {
       <div className="card">
         <div className="AddProjects">
           <p className="contentallproject">All Projects</p>
-          <Link to="" className="addprojectlink">
+          <Link to="/analytics/AddProject" className="addprojectlink">
             Add New Project
           </Link>
         </div>
-        <table
-          id="example"
-          className="tableclasss table  table-borderless w-0 "
-        >
+        <table id="example" className="tableclasss table table-borderless w-0">
           <thead>
             <tr className="headerth">
-              <th></th> {/* This empty th is for the checkbox */}
+              <th></th>
               <th>Project Name</th>
               <th className="heradercontenth">Project Type</th>
               <th>Clients</th>
@@ -460,17 +60,16 @@ export default function AllProjects() {
             </tr>
           </thead>
           <tbody className="tboddycal">
-            {projects.map((project, index) => (
+            {getAll.map((project, index) => (
               <tr key={index} className="trclass">
-                {/* Render data for each project */}
                 <td>
                   <input type="checkbox" />
                 </td>
-                <td className="namefiend">{project.name}</td>
-                <td className="namefiend">{project.type}</td>
+                <td className="namefiend">{project.projectName}</td>
+                <td className="namefiend">{project.projectType}</td>
                 <td className="namefiend">
-                  <div className="clientimaeanem ">
-                    <div className="">
+                  <div className="clientimaeanem">
+                    <div>
                       <img
                         src={one}
                         alt=""
@@ -483,7 +82,7 @@ export default function AllProjects() {
                     </div>
                   </div>
                 </td>
-                <td className="namefiend">{project.dueDate}</td>
+                <td className="namefiend">{project.endDate}</td>
                 <td className="namefiend">{project.progress}</td>
                 <td>
                   <div style={{ cursor: "pointer" }}>

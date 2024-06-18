@@ -8,6 +8,7 @@ import Analytics from "./Pages/Analytics";
 import Product from "./Pages/Product";
 import ProductList from "./Pages/ProductList";
 import AllProjects from "./Pages/AllProjects";
+import AddProject from "./Pages/AddProject";
 export default function AdminDashboard() {
   return (
     <Sidebar>
@@ -17,6 +18,7 @@ export default function AdminDashboard() {
         <Route path="/comment" element={<Comment />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/analytics/AllProjects" element={<AllProjects />} />
+        <Route path="/analytics/AddProject" element={<AddProject />} />
         {/* <Route path="/" element={<Analytics />}>
           <Route path="/AllProjects" element={<AllProjects />} />
         </Route> */}

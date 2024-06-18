@@ -132,7 +132,7 @@ main {
 }
 .link_text {
   transition: all 0.5s;
-  font-size: 15px;
+  font-size: 1rem;
   color: #202020;
   font-weight: 600;
 
@@ -157,7 +157,7 @@ main {
 } */
 
 .submenu_link {
-  margin: 0px 0px;
+  margin: 0px 25px;
 }
 
 .menu_items {
@@ -166,7 +166,7 @@ main {
 
 .submenu_link,
 .link_text {
-  font-size: 13px;
+  font-size: 0.875rem;
 }
 .dropdown-icon {
   transition: transform 0.3s;
