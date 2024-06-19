@@ -1,16 +1,112 @@
+import { useState, useEffect } from "react";
 import "../../../assets/Styles/AddProject.css";
 import { Link } from "react-router-dom";
+import { IoAddCircle } from "react-icons/io5";
+import axios from "axios";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import { AddClientValidation } from "./AddClientValidation";
+import AdminDashboardServices from "../../../Service/AdminService/AdminDashboardServices";
+import { data } from "jquery";
+
 export default function AddProject() {
+  const [clients, setclients] = useState([]);
+  const [clinetname, setclientname] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [values, setValues] = useState({
+    ClientName: "",
+    ClientEmailId: "",
+    ClientProfile: "",
+    ClientLocation: "",
+    ReferenceName: "",
+  });
+  const [errors, setErrors] = useState({
+    ClientName: "",
+    ClientEmailId: "",
+    ClientProfile: "",
+    ClientLocation: "",
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://localhost:44377/api/Project/getall"
+        );
+        setclients(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: AddClientValidation(name, value),
+    });
+  };
+
+  async function AddClientformSubmit(e) {
+    e.preventDefault();
+    const newErrors = {
+      ClientName: AddClientValidation("ClientName", values.ClientName),
+      ClientEmailId: AddClientValidation("ClientEmailId", values.ClientEmailId),
+      ClientProfile: AddClientValidation("ClientProfile", values.ClientProfile),
+      ClientLocation: AddClientValidation(
+        "ClientLocation",
+        values.ClientLocation
+      ),
+    };
+    setErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    if (isValid) {
+      var clientData = {
+        ClientName: values.clientName,
+        ClientEmailId: values.ClientEmailId,
+        ClientProfile: values.ClientProfile,
+        ClientLocation: values.ClientLocation,
+        ReferenceName: values.ReferenceName,
+      };
+      var response = await AdminDashboardServices.fcnAddClientAsync(clientData);
+      // const response = await axios.post(
+      //   "https://localhost:44377/api/Project/AddNewClient",
+      //   clientData
+      // );
+
+      console.log(response, "in component");
+    }
+  }
+
+  const formsubmit = (e) => {
+    e.preventDefault();
+    console.log(clinetname, "name");
+    console.log("btn clicked");
+  };
+
   return (
     <div className="maindiv1">
-      <div className="maindiv card ">
+      <div className="maindiv card">
         <div className="addproject">Add New Project</div>
         <div>
-          <form>
+          <form onSubmit={formsubmit}>
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable className="lables">ProjectID</lable>
+                  <label className="labless">
+                    ProjectID
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
@@ -20,10 +116,10 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     ProjectName
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
@@ -33,10 +129,10 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     StartDate
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="date"
@@ -48,7 +144,7 @@ export default function AddProject() {
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable>EndDate</lable>
+                  <span className="labless">EndDate</span>
                 </div>
                 <input
                   type="date"
@@ -56,60 +152,36 @@ export default function AddProject() {
                   className="form-control"
                 />
               </div>
-              <div className="col-3 ">
-                <lable>Select Client</lable>
-
-                <div class="dropdown">
-                  <button
-                    className=" form-control dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+              <div className="col-4">
+                <label className="labless">
+                  Select Client
+                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                </label>
+                <div className="dropdown d-flex">
+                  <select
+                    id="myList"
+                    className="form-control w-100"
+                    value={clinetname}
+                    onChange={(e) => setclientname(e.target.value)}
                   >
-                    Select Clients
-                  </button>
-                  <ul
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </li>
-                  </ul>
+                    <option value="">select clients</option>
+                    {clients.map((client) => (
+                      <option key={client.clientName} value={client.clientName}>
+                        {client.clientName}
+                      </option>
+                    ))}
+                  </select>
+                  <span>
+                    <IoAddCircle className="addicon " onClick={handleShow} />
+                  </span>
                 </div>
               </div>
-              <div className="col-1">
-                <p>
-                  <svg
-                    style={{ cursor: "pointer" }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-plus-circle"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                  </svg>
-                </p>
-              </div>
+              {/* <div className="col-1 addiconcol1">
+                <IoAddCircle className="addicon mt-2" onClick={handleShow} />
+              </div> */}
               <div className="col-4">
                 <div>
-                  <lable>TeamSize</lable>
+                  <span className="labless">TeamSize</span>
                 </div>
                 <input
                   type="text"
@@ -121,7 +193,7 @@ export default function AddProject() {
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable>ProjectRefId</lable>
+                  <span className="labless">ProjectRefId</span>
                 </div>
                 <input
                   type="text"
@@ -131,10 +203,10 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     ProjectType
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
@@ -144,10 +216,7 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
-                    Progress
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                  <lable className="labless">Progress </lable>
                 </div>
                 <input
                   type="text"
@@ -159,9 +228,9 @@ export default function AddProject() {
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable>Assign ProjectManager</lable>
+                  <span className="labless">Assign ProjectManager</span>
                 </div>
-                <div class="dropdown">
+                <div className="dropdown">
                   <button
                     className=" form-control dropdown-toggle"
                     type="button"
@@ -172,49 +241,32 @@ export default function AddProject() {
                     Select Clients
                   </button>
                   <ul
-                    class="dropdown-menu"
+                    className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                   >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </li>
+                    {clients.map((client) => (
+                      <li key={client.clientName}>
+                        <a className="dropdown-item" href="#">
+                          {client.clientName}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     Description
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <textarea
                   className="form-control"
                   placeholder="enter Description"
                 ></textarea>
               </div>
-              <div className="col-4">
-                {/* <div>
-                  <lable>Progress</lable>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter Progress"
-                  className="form-control"
-                /> */}
-              </div>
+              <div className="col-4"></div>
             </div>
             <div className="row">
               <div className="col-8"></div>
@@ -222,7 +274,6 @@ export default function AddProject() {
                 <button className="form-control addbtn">Add</button>
               </div>
               <div className="col-2">
-                {/* <button className="form-control backbtn">Back</button> */}
                 <Link
                   to="/analytics/AllProjects"
                   className="form-control backbtn"
@@ -237,6 +288,123 @@ export default function AddProject() {
               </div>
             </div>
           </form>
+          <Modal show={show} onHide={handleClose} animation={false}>
+            <Modal.Header closeButton>
+              <Modal.Title>New Client</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <form onSubmit={AddClientformSubmit} className="formclass">
+                <div className="row">
+                  <div className="col-6">
+                    <label className="labless">
+                      ClientName
+                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                    </label>
+
+                    <input
+                      type="text"
+                      placeholder="Enter ClientName"
+                      className="form-control"
+                      name="ClientName"
+                      value={values.ClientName}
+                      onChange={handleChange}
+                    />
+
+                    {errors.ClientName && (
+                      <span className="error">{errors.ClientName}</span>
+                    )}
+                  </div>
+                  <div className="col-6">
+                    <label className="labless">
+                      Client EmailId
+                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                    </label>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Enter Email"
+                        name="ClientEmailId"
+                        className="form-control"
+                        value={values.ClientEmailId}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.ClientEmailId && (
+                      <span className="error">{errors.ClientEmailId}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <div>
+                      <label className="labless">ReferenceName</label>
+                      <input
+                        type="text"
+                        placeholder="Enter ReferenceName"
+                        className="form-control"
+                        name="ReferenceName"
+                        value={values.ReferenceName}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <label className="labless">
+                      Client Location
+                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                    </label>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Enter Location"
+                        name="ClientLocation"
+                        value={values.ClientLocation}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    </div>
+                    {errors.ClientLocation && (
+                      <span className="error">{errors.ClientLocation}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <label className="labless">
+                      ClientProfile
+                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                    </label>
+                    <div>
+                      <input
+                        type="file"
+                        //  placeholder="Enter Reference Name"
+                        name="ClientProfile"
+                        className=""
+                        value={values.ClientProfile}
+                        onChange={handleChange}
+                      />
+                      {errors.ClientProfile && (
+                        <span className="error">{errors.ClientProfile}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-4"></div>
+                  <div className="col-2"></div>
+                </div>
+                <div className="row">
+                  <div className="col-8"></div>
+                  <div className="col-2">
+                    {/* <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button> */}
+                  </div>
+                  <div className="col-2">
+                    <button className="form-control   clientAddbtn">Add</button>
+                  </div>
+                </div>
+              </form>
+            </Modal.Body>
+          </Modal>
         </div>
       </div>
     </div>

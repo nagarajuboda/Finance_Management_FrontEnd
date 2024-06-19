@@ -57,6 +57,64 @@ input :hover {
 .dropdown-menu {
   width: 100%;
 }
-span {
+/* span {
   color: red;
+} */
+.clientdropdown {
+  padding: 7px 94px;
+  border-radius: 7px;
+}
+.addclientmodel {
+  background-color: #faf9f6;
+}
+.modal-dialog {
+  top: "25%";
+}
+.modal {
+  top: 5%;
+}
+.modal-content {
+  width: 711px;
+}
+.addicon {
+  padding: 0;
+  font-size: 40px;
+  cursor: pointer;
+}
+.addiconcol1 {
+  display: flex;
+  align-items: center;
+  place-content: center;
+  justify-content: end;
+  text-align: end;
+}
+/* .addclientbtn {
+  background-color: rgb(95, 158, 160);
+  color: white;
+}
+.addclientbtn:hover {
+  color: white;
+  background-color: rgb(95, 158, 160);
+} */
+.error {
+  color: red;
+}
+.labless {
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 600;
+  margin-left: 3px;
+}
+.form-control:focus {
+  border-color: #4a90e2; /* Change this to your desired color */
+  outline: none; /* Optionally remove the default outline */
+  border-color: rgba(146, 74, 239, 1);
+}
+.clientAddbtn:focus {
+  background-color: #4a90e2;
+  color: white;
+}
+.clientaddbtn {
+  background-color: #4a90e2;
+  color: white;
 }
