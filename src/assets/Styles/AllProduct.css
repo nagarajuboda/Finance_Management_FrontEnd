@@ -1,31 +1,164 @@
-.contentpro {
-  font-size: 1.1rem;
+.heradercontenth {
+  background-color: yellow;
+}
+/* .contenttd {
+  padding: 20px 15px;
+} */
 
+.tboddycal tr td {
+  padding: 23px 15px;
+  text-align: left;
+  white-space: nowrop;
+  border-top: 0px solid #f5f5f5;
+  font-family: "Open Sans", sans-serif;
   color: #202020;
-  font-weight: 700;
 }
-.productSearch {
-  border-radius: 10px;
-  background-color: #faf9f6;
-  border: 1px solid #ced4da;
-  transition: border-color 0.3s ease;
+
+.dt-input {
+  padding: 8px;
+  border-radius: 8px;
+  border-color: #9f9f9f;
 }
-.productSearch:hover {
-  border-color: rgba(146, 74, 239, 1);
+.dataTable {
+  width: 99%;
+  border-top-style: none;
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-spacing: 0;
 }
-.threedots {
+table {
+  caption-side: bottom;
+  border-collapse: collapse;
+}
+.dt-paging-button {
+  margin: 0;
+  padding: 13px 21px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  margin: 5px;
+  border-radius: 8px;
+}
+.dt-paging-button:hover {
+  background-color: #924aef;
+  color: #ffffff !important;
+  border: 0px solid transparent;
+  box-shadow: 0px 7px 16px rgba(146, 74, 239, 0.14);
+}
+.first {
+  visibility: hidden;
+}
+.last {
+  visibility: hidden;
+}
+.disabled,
+.previous {
+  border: none;
+}
+.dt-paging {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
+/* .namefiend {
+  font-size: 1em;
+  text-align: left;
+  font-family: "Open Sans", sans-serif;
+  color: #202020;
+  font-weight: 500;
+} */
+.headerth th {
+  font-size: 1.25rem;
+}
+
+.tableclasss {
+  width: 100% !important;
+}
+.tboddycal tr {
+  transition: box-shadow 0.3s;
+
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+.tboddycal tr:hover {
+  /* box-shadow: 0 0 11px rgba(33, 33, 33, 0.2); */
+  transform: translateY(-0px);
+  box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.25);
+}
+
+.image1 {
+  border-radius: 14px;
+}
+.example_info {
   display: flex;
   align-items: end;
   justify-content: end;
 }
-.rows .rdt_TableRow {
-  /* background-color: red; */
+.clientimage {
+  border-radius: 8px;
+}
+.clientimaeanem {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+tbody tr td {
   text-align: left;
-  padding: 20px 15px;
-  white-space: nowrap;
-  font-family: "Open Sans", sans-serif;
+}
+.Project-view {
+  position: absolute;
+  /* top: 85px;
+  right: 22px;
+  width: 270px;
+  z-index: 1000; */
+}
+.viewProjectCard {
+  right: 49px;
+}
+.project-items {
+  text-align: left;
+  margin: 8px;
+}
+
+.editlink {
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: #202020;
 }
-.date {
-  font-size: 1.1em;
+
+.editlink:hover {
+  color: #202020;
+}
+.viewlink {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #202020;
+}
+.viewlink:hover {
+  color: #202020;
+}
+.deletelink {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: red;
+}
+.deletelink:hover {
+  color: red;
+}
+.AddProjects {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.addprojectlink {
+  color: rgba(146, 74, 239, 1);
+}
+.contentallproject {
+  font-size: 1.75rem;
+  color: rgba(32, 32, 32, 1);
+  font-family: "Public Sans", sans-serif;
+  font-weight: 700;
 }
