@@ -8,6 +8,12 @@ const AdminDashboardServices = {
     );
     return response.data;
   },
+  async FcnGetAllClients() {
+    var response = await axios.get(
+      "https://localhost:44377/api/Project/getall"
+    );
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;

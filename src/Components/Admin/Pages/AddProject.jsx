@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import { IoAddCircle } from "react-icons/io5";
 import axios from "axios";
 import Button from "react-bootstrap/Button";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-bootstrap/Modal";
 import { AddClientValidation } from "./AddClientValidation";
 import AdminDashboardServices from "../../../Service/AdminService/AdminDashboardServices";
-import { data } from "jquery";
 
 export default function AddProject() {
-  const [clients, setclients] = useState([]);
-  const [clinetname, setclientname] = useState("");
+  const [clients, setClients] = useState([]);
+  const [clientName, setClientName] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -35,8 +36,7 @@ export default function AddProject() {
         const response = await axios.get(
           "https://localhost:44377/api/Project/getall"
         );
-        setclients(response.data);
-        console.log(response.data);
+        setClients(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -56,7 +56,7 @@ export default function AddProject() {
     });
   };
 
-  async function AddClientformSubmit(e) {
+  async function AddClientFormSubmit(e) {
     e.preventDefault();
     const newErrors = {
       ClientName: AddClientValidation("ClientName", values.ClientName),
@@ -72,25 +72,35 @@ export default function AddProject() {
     const isValid = Object.values(newErrors).every((error) => error === "");
     if (isValid) {
       var clientData = {
-        ClientName: values.clientName,
+        ClientName: values.ClientName,
         ClientEmailId: values.ClientEmailId,
         ClientProfile: values.ClientProfile,
         ClientLocation: values.ClientLocation,
         ReferenceName: values.ReferenceName,
       };
       var response = await AdminDashboardServices.fcnAddClientAsync(clientData);
-      // const response = await axios.post(
-      //   "https://localhost:44377/api/Project/AddNewClient",
-      //   clientData
-      // );
-
+      if (response !== null) {
+        toast.success("Successfully done. ", {
+          position: "top-right",
+          autoClose: "4000",
+        });
+        handleClose();
+        setValues({
+          ClientName: "",
+          ClientEmailId: "",
+          ClientProfile: "",
+          ClientLocation: "",
+          ReferenceName: "",
+        });
+        setClientName("");
+      }
       console.log(response, "in component");
     }
   }
 
-  const formsubmit = (e) => {
+  const formSubmit = (e) => {
     e.preventDefault();
-    console.log(clinetname, "name");
+    console.log(clientName, "name");
     console.log("btn clicked");
   };
 
@@ -99,7 +109,7 @@ export default function AddProject() {
       <div className="maindiv card">
         <div className="addproject">Add New Project</div>
         <div>
-          <form onSubmit={formsubmit}>
+          <form onSubmit={formSubmit}>
             <div className="row">
               <div className="col-4">
                 <div>
@@ -136,7 +146,7 @@ export default function AddProject() {
                 </div>
                 <input
                   type="date"
-                  placeholder="Enter Description"
+                  placeholder="Enter StartDate"
                   className="form-control"
                 />
               </div>
@@ -148,7 +158,7 @@ export default function AddProject() {
                 </div>
                 <input
                   type="date"
-                  placeholder="Enter ProjectID"
+                  placeholder="Enter EndDate"
                   className="form-control"
                 />
               </div>
@@ -161,24 +171,21 @@ export default function AddProject() {
                   <select
                     id="myList"
                     className="form-control w-100"
-                    value={clinetname}
-                    onChange={(e) => setclientname(e.target.value)}
+                    value={clientName}
+                    onChange={(e) => setClientName(e.target.value)}
                   >
-                    <option value="">select clients</option>
+                    <option value="">Select client</option>
                     {clients.map((client) => (
-                      <option key={client.clientName} value={client.clientName}>
+                      <option key={client.id} value={client.clientName}>
                         {client.clientName}
                       </option>
                     ))}
                   </select>
                   <span>
-                    <IoAddCircle className="addicon " onClick={handleShow} />
+                    <IoAddCircle className="addicon" onClick={handleShow} />
                   </span>
                 </div>
               </div>
-              {/* <div className="col-1 addiconcol1">
-                <IoAddCircle className="addicon mt-2" onClick={handleShow} />
-              </div> */}
               <div className="col-4">
                 <div>
                   <span className="labless">TeamSize</span>
@@ -216,7 +223,7 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <lable className="labless">Progress </lable>
+                  <label className="labless">Progress</label>
                 </div>
                 <input
                   type="text"
@@ -232,20 +239,20 @@ export default function AddProject() {
                 </div>
                 <div className="dropdown">
                   <button
-                    className=" form-control dropdown-toggle"
+                    className="form-control dropdown-toggle"
                     type="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Select Clients
+                    Select Project Manager
                   </button>
                   <ul
                     className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                   >
                     {clients.map((client) => (
-                      <li key={client.clientName}>
+                      <li key={client.id}>
                         <a className="dropdown-item" href="#">
                           {client.clientName}
                         </a>
@@ -263,7 +270,7 @@ export default function AddProject() {
                 </div>
                 <textarea
                   className="form-control"
-                  placeholder="enter Description"
+                  placeholder="Enter Description"
                 ></textarea>
               </div>
               <div className="col-4"></div>
@@ -293,14 +300,13 @@ export default function AddProject() {
               <Modal.Title>New Client</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <form onSubmit={AddClientformSubmit} className="formclass">
+              <form onSubmit={AddClientFormSubmit} className="formclass">
                 <div className="row">
                   <div className="col-6">
                     <label className="labless">
                       ClientName
                       <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                     </label>
-
                     <input
                       type="text"
                       placeholder="Enter ClientName"
@@ -309,7 +315,6 @@ export default function AddProject() {
                       value={values.ClientName}
                       onChange={handleChange}
                     />
-
                     {errors.ClientName && (
                       <span className="error">{errors.ClientName}</span>
                     )}
@@ -377,9 +382,8 @@ export default function AddProject() {
                     <div>
                       <input
                         type="file"
-                        //  placeholder="Enter Reference Name"
                         name="ClientProfile"
-                        className=""
+                        className="form-control"
                         value={values.ClientProfile}
                         onChange={handleChange}
                       />
@@ -393,19 +397,16 @@ export default function AddProject() {
                 </div>
                 <div className="row">
                   <div className="col-8"></div>
+                  <div className="col-2"></div>
                   <div className="col-2">
-                    {/* <Button variant="secondary" onClick={handleClose}>
-                      Close
-                    </Button> */}
-                  </div>
-                  <div className="col-2">
-                    <button className="form-control   clientAddbtn">Add</button>
+                    <button className="form-control clientAddbtn">Add</button>
                   </div>
                 </div>
               </form>
             </Modal.Body>
           </Modal>
         </div>
+        <ToastContainer position="top-end" autoClose={5000} />
       </div>
     </div>
   );
