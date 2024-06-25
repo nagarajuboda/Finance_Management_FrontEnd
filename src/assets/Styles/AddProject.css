@@ -22,20 +22,28 @@
   border-radius: 15px;
 }
 .backbtn {
-  background: rgb(95, 158, 160);
+  /* background: rgb(95, 158, 160); */
   border-radius: 15px;
   color: white;
   display: flex;
   align-items: center;
   justify-self: center;
 }
-.addbtn:hover {
+.addbutton:focus {
+  color: white;
+  background-color: #924aef;
+}
+.addbutton {
+  color: white;
+  background-color: #924aef;
+}
+/* .addbtn:hover {
   background-color: rgb(95, 158, 160);
   color: white;
-}
-.addbtn:focus {
+} */
+/* .addbtn:focus {
   color: white;
-}
+} */
 lable {
   font-weight: 600;
 }
@@ -106,7 +114,6 @@ input :hover {
   margin-left: 3px;
 }
 .form-control:focus {
-  border-color: #4a90e2; /* Change this to your desired color */
   outline: none; /* Optionally remove the default outline */
   border-color: rgba(146, 74, 239, 1);
 }
@@ -117,4 +124,12 @@ input :hover {
 .clientaddbtn {
   background-color: #4a90e2;
   color: white;
+}
+.select2-container .select2-selection--single {
+  height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single {
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
 }

@@ -9,6 +9,7 @@ import { BsCalendarDay } from "react-icons/bs";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
+
 import { VscTasklist } from "react-icons/vsc";
 
 import {
@@ -56,11 +57,11 @@ const Sidebar = ({ children }) => {
       name: "Dashboards",
       icon: <RiDashboard3Line />,
       submenu: [
-        { path: "/list2", name: "-Invoice Management" },
-        { path: "/list1", name: "-HR management" },
-        { path: "/list2", name: "-Job Hiring Management" },
-        { path: "/list1", name: "-Project management1" },
-        { path: "/list1", name: "-Project management1" },
+        { path: "/list2", name: "- Invoice Management" },
+        { path: "/list1", name: "- HR management" },
+        { path: "/list2", name: "- Job Hiring Management" },
+        { path: "/list1", name: "- Project management1" },
+        { path: "/list1", name: "- Project management1" },
       ],
     },
     {
@@ -68,23 +69,23 @@ const Sidebar = ({ children }) => {
       name: "Hr Management",
       icon: <IoPeopleOutline />,
       submenu: [
-        { path: "/list2", name: "-Employees" },
-        { path: "/list1", name: "-Recruiment" },
-        { path: "/list2", name: "-Jobs" },
-        { path: "/list1", name: "-Condidates" },
-        { path: "/list1", name: "-Attendance" },
-        { path: "/list1", name: "-Leaves" },
+        { path: "/list2", name: "- Employees" },
+        { path: "/list1", name: "- Recruiment" },
+        { path: "/list2", name: "- Jobs" },
+        { path: "/list1", name: "- Condidates" },
+        { path: "/list1", name: "- Attendance" },
+        { path: "/list1", name: "- Leaves" },
       ],
     },
     {
       name: "Project Management",
       icon: <VscProject />,
       submenu: [
-        { path: "/contracts", name: "-Contracts" },
-        { path: "/analytics/AllProjects", name: "-Projects" },
+        { path: "/contracts", name: "- Contracts" },
+        { path: "/analytics/AllProjects", name: "- Projects" },
         // { path: "/analytics/AddProject", name: "-AddProject" },
-        { path: "/Files", name: "-Files" },
-        { path: "/Profile", name: "-Profile" },
+        { path: "/Files", name: "- Files" },
+        { path: "/Profile", name: "- Profile" },
       ],
     },
     {
@@ -92,9 +93,9 @@ const Sidebar = ({ children }) => {
       name: "General",
       icon: <AiOutlineDashboard />,
       submenu: [
-        { path: "/list2", name: "-Contracts" },
-        { path: "/list1", name: "-Profile" },
-        { path: "/list2", name: "-Preferences" },
+        { path: "/list2", name: "- Contracts" },
+        { path: "/list1", name: "- Profile" },
+        { path: "/list2", name: "- Preferences" },
       ],
     },
     {
@@ -102,9 +103,9 @@ const Sidebar = ({ children }) => {
       name: "Calender",
       icon: <BsCalendarDay />,
       submenu: [
-        { path: "/list2", name: "-Inbox" },
-        { path: "/list1", name: "-Chat Priview" },
-        { path: "/list2", name: "-chat Priview 1" },
+        { path: "/list2", name: "- Inbox" },
+        { path: "/list1", name: "- Chat Priview" },
+        { path: "/list2", name: "- chat Priview 1" },
       ],
     },
     {
@@ -112,9 +113,9 @@ const Sidebar = ({ children }) => {
       name: "Email",
       icon: <MdOutlineMailOutline />,
       submenu: [
-        { path: "/list2", name: "-Inbox" },
-        { path: "/list1", name: "-Email Compose" },
-        { path: "/list2", name: "-Email Priview " },
+        { path: "/list2", name: "- Inbox" },
+        { path: "/list1", name: "- Email Compose" },
+        { path: "/list2", name: "- Email Priview " },
       ],
     },
     {
@@ -122,9 +123,9 @@ const Sidebar = ({ children }) => {
       name: "Chat",
       icon: <IoChatbubbleOutline />,
       submenu: [
-        { path: "/list2", name: "-Inbox" },
-        { path: "/list1", name: "-Chat Priview" },
-        { path: "/list2", name: "-chat2 Priview " },
+        { path: "/list2", name: "- Inbox" },
+        { path: "/list1", name: "- Chat Priview" },
+        { path: "/list2", name: "- chat2 Priview " },
       ],
     },
     {
@@ -132,9 +133,9 @@ const Sidebar = ({ children }) => {
       name: "Invoices",
       icon: <LiaFileInvoiceSolid />,
       submenu: [
-        { path: "/list2", name: "-Invoice List" },
-        { path: "/list1", name: "-Invoice Details" },
-        { path: "/list2", name: "-Create Invoice" },
+        { path: "/list2", name: "- Invoice List" },
+        { path: "/list1", name: "- Invoice Details" },
+        { path: "/list2", name: "- Create Invoice" },
       ],
     },
 
@@ -143,8 +144,8 @@ const Sidebar = ({ children }) => {
       name: "Task",
       icon: <VscTasklist />,
       submenu: [
-        { path: "/list2", name: "-Task List" },
-        { path: "/list1", name: "-Task2" },
+        { path: "/list2", name: "- Task List" },
+        { path: "/list1", name: "- Task2" },
       ],
     },
   ];

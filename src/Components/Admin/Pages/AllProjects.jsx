@@ -20,8 +20,11 @@ export default function AllProjects() {
   useEffect(() => {
     async function fetchData() {
       try {
+        // const response = await axios.get(
+        //   "https://localhost:44377/api/Project/GetAllProjects"
+        // );
         const response = await axios.get(
-          "https://localhost:44377/api/Project/GetAllProjects"
+          "https://localhost:44305/api/Projects/GetAllProjects"
         );
         setAllProjects(response.data);
         setDataReady(true);
@@ -69,14 +72,14 @@ export default function AllProjects() {
                 <td className="namefiend">{project.projectType}</td>
                 <td className="namefiend">
                   <div className="clientimaeanem">
-                    <div>
+                    {/* <div>
                       <img
                         src={one}
                         alt=""
                         width="40px"
                         className="clientimage"
                       />
-                    </div>
+                    </div> */}
                     <div>
                       <p className="ms-2">Samantha William</p>
                     </div>
