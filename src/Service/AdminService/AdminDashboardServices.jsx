@@ -14,6 +14,7 @@ const AdminDashboardServices = {
     var response = await axios.get(
       "https://localhost:44305/api/Clients/GetAllClients"
     );
+    console.log(response, "service getallClinets");
     return response.data;
   },
   async fcnAddProject(obj) {

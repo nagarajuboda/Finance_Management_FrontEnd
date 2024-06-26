@@ -1,9 +1,6 @@
 .heradercontenth {
   background-color: yellow;
 }
-/* .contenttd {
-  padding: 20px 15px;
-} */
 
 .tboddycal tr td {
   padding: 23px 15px;
@@ -13,14 +10,16 @@
   font-family: "Open Sans", sans-serif;
   color: #202020;
 }
-
+.trclass {
+  cursor: pointer;
+}
 .dt-input {
   padding: 8px;
   border-radius: 8px;
   border-color: #9f9f9f;
 }
 .dataTable {
-  width: 99%;
+  width: 100%;
   border-top-style: none;
   border-bottom-style: none;
   border-left-style: none;
@@ -62,13 +61,7 @@ table {
   justify-content: end;
   align-items: end;
 }
-/* .namefiend {
-  font-size: 1em;
-  text-align: left;
-  font-family: "Open Sans", sans-serif;
-  color: #202020;
-  font-weight: 500;
-} */
+
 .headerth th {
   font-size: 1.25rem;
 }
@@ -148,13 +141,17 @@ tbody tr td {
 .deletelink:hover {
   color: red;
 }
+
 .AddProjects {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .addprojectlink {
-  color: rgba(146, 74, 239, 1);
+  color: #257a96;
+}
+.addprojectlink:hover {
+  color: #257a96;
 }
 .contentallproject {
   font-size: 1.75rem;

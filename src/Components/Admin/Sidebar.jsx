@@ -221,7 +221,7 @@ const Sidebar = ({ children }) => {
                 }`}
                 style={{
                   padding: isOpen ? "0px 0px" : "8px 0px",
-                  backgroundColor: isOpen ? "#fafafa" : "white",
+                  backgroundColor: isOpen ? "#DEEFF5" : "white",
                 }}
               >
                 {item.submenu.map((subItem, subIndex) => (
@@ -252,7 +252,10 @@ const Sidebar = ({ children }) => {
 
       <div className="renderdiv">
         <Header />
-        <main style={{ backgroundColor: "rgb(250, 249, 246)" }}>
+        <main
+          style={{ backgroundColor: "#DEEFF5" }}
+          className="childercomponents"
+        >
           {children}
         </main>
       </div>

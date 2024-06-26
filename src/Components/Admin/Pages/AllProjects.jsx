@@ -5,16 +5,19 @@ import "../../../assets/Styles/AllProduct.css";
 import one from "../../../assets/Images/1.jpg";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { ProgressBar } from "react-bootstrap";
-
+import ProgressBar from "@ramonak/react-progress-bar";
+import { useNavigate } from "react-router-dom";
 export default function AllProjects() {
+  const navigate = useNavigate();
   const [dataReady, setDataReady] = useState(false);
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
   const [getAll, setAllProjects] = useState([]);
 
-  function viewClickfunction(e, index) {
+  function viewClickfunction(e, index, id) {
     e.preventDefault();
+    console.log(id, "clicked id");
     setActiveProjectIndex(index === activeProjectIndex ? null : index);
+    navigate(`/${id}`);
   }
 
   useEffect(() => {
@@ -26,7 +29,9 @@ export default function AllProjects() {
         const response = await axios.get(
           "https://localhost:44305/api/Projects/GetAllProjects"
         );
-        setAllProjects(response.data);
+        var result = response.data;
+        setAllProjects(result.item);
+
         setDataReady(true);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -64,7 +69,11 @@ export default function AllProjects() {
           </thead>
           <tbody className="tboddycal">
             {getAll.map((project, index) => (
-              <tr key={index} className="trclass">
+              <tr
+                key={index}
+                className="trclass"
+                onClick={(e) => viewClickfunction(e, index, project.id)}
+              >
                 <td>
                   <input type="checkbox" />
                 </td>
@@ -86,10 +95,17 @@ export default function AllProjects() {
                   </div>
                 </td>
                 <td className="namefiend">{project.endDate}</td>
-                <td className="namefiend">{project.progress}</td>
+                <td className="namefiend">
+                  <ProgressBar
+                    completed={project.progress}
+                    bgColor="green"
+                    animateOnRender={true}
+                    style={{ width: "20px" }}
+                  />
+                </td>
                 <td>
                   <div style={{ cursor: "pointer" }}>
-                    <svg
+                    {/* <svg
                       onClick={(e) => viewClickfunction(e, index)}
                       xmlns="http://www.w3.org/2000/svg"
                       data-bs-toggle="modal"
@@ -101,9 +117,9 @@ export default function AllProjects() {
                       viewBox="0 0 16 16"
                     >
                       <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                    </svg>
+                    </svg> */}
                   </div>
-                  {activeProjectIndex === index && (
+                  {/* {activeProjectIndex === index && (
                     <div className="Project-view">
                       <div className="card viewProjectCard">
                         <div className="project-items">
@@ -123,7 +139,7 @@ export default function AllProjects() {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </td>
               </tr>
             ))}

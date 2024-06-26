@@ -7,8 +7,10 @@
   padding: 0;
 }
 .card {
-  height: 100% !important;
+  height: auto;
+  width: 100%;
 }
+
 .addproject {
   font-size: 1.75rem;
   color: rgba(32, 32, 32, 1);
@@ -31,19 +33,24 @@
 }
 .addbutton:focus {
   color: white;
-  background-color: #924aef;
+  background-color: #167291;
 }
 .addbutton {
   color: white;
-  background-color: #924aef;
+  background-color: #257a96;
 }
-/* .addbtn:hover {
-  background-color: rgb(95, 158, 160);
-  color: white;
+/* .backbuttom:hover {
+  color: #257a96;
+  background-color: #257a96;
 } */
-/* .addbtn:focus {
-  color: white;
-} */
+
+.addproject {
+  display: flex;
+}
+.backbuttom {
+  width: 50px;
+  font-size: 20px;
+}
 lable {
   font-weight: 600;
 }
@@ -96,14 +103,7 @@ input :hover {
   justify-content: end;
   text-align: end;
 }
-/* .addclientbtn {
-  background-color: rgb(95, 158, 160);
-  color: white;
-}
-.addclientbtn:hover {
-  color: white;
-  background-color: rgb(95, 158, 160);
-} */
+
 .error {
   color: red;
 }

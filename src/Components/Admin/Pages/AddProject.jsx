@@ -19,7 +19,6 @@ export default function AddProject() {
   const [clients, setClients] = useState([]);
   const [clientName, setClientName] = useState("");
   const [selectedProjectManager, setSelectedProjectManager] = useState("");
-
   const [show, setShow] = useState(false);
   const [close, setclose] = useState(false);
   const handleClose = () => setShow(false);
@@ -51,14 +50,17 @@ export default function AddProject() {
     // file: "",
     ClientLocation: "",
   });
-
+  function backonclick(e) {
+    navigate("/analytics/AllProjects");
+    console.log("btn clickes");
+    e.preventDefault();
+  }
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          "https://localhost:44305/api/Clients/GetAllClients"
-        );
-        setClients(response.data);
+        var response = await AdminDashboardServices.FcnGetAllClients();
+        var result = response.item;
+        setClients(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -105,9 +107,8 @@ export default function AddProject() {
       };
 
       var response = await AdminDashboardServices.fcnAddClientAsync(obj);
-
-      console.log(response, "result");
-      if (response !== null) {
+      console.log(response, "klfdslk");
+      if (response.isSuccess === true) {
         toast.success("Successfully done. ", {
           position: "top-right",
           autoClose: "4000",
@@ -121,6 +122,11 @@ export default function AddProject() {
           ReferenceName: "",
         });
         setClientName("");
+      } else {
+        toast.error(response.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
       }
       console.log(response, "in component");
     }
@@ -145,41 +151,48 @@ export default function AddProject() {
     };
 
     var response = await AdminDashboardServices.fcnAddProject(obj);
-    if (response !== null) {
+    console.log(response, "response");
+    if (response.isSuccess === true) {
       Swal.fire({
-        // /title: "Good job!",
+        title: "Good job!",
         text: " New project added successfully done",
         icon: "success",
       });
       navigate("/analytics/AllProjects");
+    } else {
+      console.log(response.error.message);
+      toast.error(response.error.message, {
+        position: "top-right",
+        autoClose: "4000",
+      });
     }
     console.log(response, "final response");
   }
 
   return (
     <div className="maindiv1">
-      <div className="maindiv card">
-        <div
-          className="addproject "
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          Add New Project
-          <Link
+      <div className="maindiv card  addproductcard">
+        <div className="addproject d-flex">
+          {/* <Link
             to="/analytics/AllProjects"
-            className="  btn btn-primary"
+            className="btn  backbuttom"
+            onClick={backonclick}
+          >
+            <FaArrowLeft />
+          </Link> */}
+          <FaArrowLeft onClick={backonclick} style={{ cursor: "pointer" }} />
+          <p style={{ fontSize: "20px" }}>Add New Project</p>
+          {/* <Link
+            to="/analytics/AllProjects"
+            className="btn btn-primary"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            {" "}
             <FaArrowLeft />
-          </Link>
+          </Link> */}
         </div>
         <div>
           <form onSubmit={formSubmit}>
@@ -227,6 +240,7 @@ export default function AddProject() {
                   type="date"
                   placeholder="Enter StartDate"
                   className="form-control"
+                  style={{ cursor: "pointer" }}
                   name="StartDate"
                   value={values.StartDate}
                   onChange={handleChange}
@@ -242,6 +256,7 @@ export default function AddProject() {
                   type="date"
                   placeholder="Enter EndDate"
                   className="form-control"
+                  style={{ cursor: "pointer" }}
                   name="EndDate"
                   value={values.EndDate}
                   onChange={handleChange}
@@ -336,6 +351,7 @@ export default function AddProject() {
               <div className="col-4">
                 <span className="labless">Assign ProjectManager</span>
                 <select
+                  style={{ width: "100%" }}
                   className="form-control select2"
                   name="ProjectManager"
                   value={selectedProjectManager}
@@ -499,7 +515,7 @@ export default function AddProject() {
                   <div className="col-2">
                     <button
                       onClick={handleClose}
-                      className="form-control  btn btn-primary"
+                      className="form-control  btn btn-danger"
                     >
                       Close
                     </button>
