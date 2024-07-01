@@ -7,8 +7,10 @@
   padding: 0;
 }
 .card {
-  height: 100% !important;
+  height: auto;
+  width: 100%;
 }
+
 .addproject {
   font-size: 1.75rem;
   color: rgba(32, 32, 32, 1);
@@ -22,20 +24,35 @@
   border-radius: 15px;
 }
 .backbtn {
-  background: rgb(95, 158, 160);
+  /* background: rgb(95, 158, 160); */
   border-radius: 15px;
   color: white;
   display: flex;
   align-items: center;
   justify-self: center;
 }
-.addbtn:hover {
-  background-color: rgb(95, 158, 160);
+.addbutton:focus {
   color: white;
+  background-color: #167291;
 }
-.addbtn:focus {
+
+.addbutton {
   color: white;
+  background-color: #257a96;
 }
+/* .backbuttom:hover {
+  color: #257a96;
+  background-color: #257a96;
+} */
+.backiconbutton {
+  color: #196e8a;
+  font-family: sans-serif;
+}
+.backbuttom {
+  width: 50px;
+  font-size: 20px;
+}
+
 lable {
   font-weight: 600;
 }
@@ -57,6 +74,67 @@ input :hover {
 .dropdown-menu {
   width: 100%;
 }
-span {
+/* span {
   color: red;
+} */
+.clientdropdown {
+  padding: 7px 94px;
+  border-radius: 7px;
+}
+.addclientmodel {
+  background-color: #faf9f6;
+}
+.modal-dialog {
+  top: "25%";
+}
+.modal {
+  top: 5%;
+}
+.modal-content {
+  width: 711px;
+}
+.addicon {
+  padding: 0;
+  font-size: 40px;
+  cursor: pointer;
+}
+.addiconcol1 {
+  display: flex;
+  align-items: center;
+  place-content: center;
+  justify-content: end;
+  text-align: end;
+}
+
+.error {
+  color: red;
+}
+.labless {
+  margin: 0;
+  font-family: sans-serif;
+  font-weight: 600;
+  margin-left: 3px;
+}
+.form-control:focus {
+  outline: none; /* Optionally remove the default outline */
+  border-color: rgba(146, 74, 239, 1);
+}
+.clientAddbtn:focus {
+  background-color: #4a90e2;
+  color: white;
+}
+.clientaddbtn {
+  background-color: #4a90e2;
+  color: white;
+}
+.select2-container .select2-selection--single {
+  height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single {
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+}
+.select2-selection__arrow {
+  margin-top: 3px;
 }

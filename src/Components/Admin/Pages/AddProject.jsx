@@ -1,231 +1,418 @@
+import { useState, useEffect } from "react";
 import "../../../assets/Styles/AddProject.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { IoAddCircle } from "react-icons/io5";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Modal from "react-bootstrap/Modal";
+import { AddClientValidation } from "./AddClientValidation";
+import AdminDashboardServices from "../../../Service/AdminService/AdminDashboardServices";
+import Swal from "sweetalert2";
+import { FaArrowLeft } from "react-icons/fa";
+import withReactContent from "sweetalert2-react-content";
+import { IoArrowBackCircle } from "react-icons/io5";
+
 export default function AddProject() {
+  var navigate = useNavigate();
+  const MySwal = withReactContent(Swal);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [clients, setClients] = useState([]);
+  const [clientName, setClientName] = useState("");
+  const [selectedProjectManager, setSelectedProjectManager] = useState("");
+  const [show, setShow] = useState(false);
+  const [close, setclose] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [values, setValues] = useState({
+    ClientName: "",
+    ClientEmailId: "",
+    // file: "",
+    ClientLocation: "",
+    ReferenceName: "",
+    ProjectID: "",
+    ProjectName: "",
+    StartDate: "",
+    ClientEmail: "",
+    Description: "",
+
+    EndDate: "",
+    ProjectRefId: "",
+    ProjectType: "",
+    Progress: "",
+    TeamSize: "",
+    ProjectManager: "",
+  });
+
+  const [errors, setErrors] = useState({
+    ClientName: "",
+    ClientEmailId: "",
+    // file: "",
+    ClientLocation: "",
+  });
+  function backonclick(e) {
+    //navigate("/analytics/AllProjects");
+    navigate("/Dashboard/AllProjects");
+    console.log("btn clickes");
+    e.preventDefault();
+  }
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        var response = await AdminDashboardServices.FcnGetAllClients();
+        var result = response.item;
+        setClients(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+    fetchData();
+    $(".select2").select2();
+    $(".select2").on("change", function (e) {
+      setSelectedProjectManager($(this).val());
+    });
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: AddClientValidation(name, value),
+    });
+  };
+
+  async function AddClientFormSubmit(e) {
+    e.preventDefault();
+    const newErrors = {
+      ClientName: AddClientValidation("ClientName", values.ClientName),
+      ClientEmailId: AddClientValidation("ClientEmailId", values.ClientEmailId),
+
+      ClientLocation: AddClientValidation(
+        "ClientLocation",
+        values.ClientLocation
+      ),
+    };
+    setErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    if (isValid) {
+      const obj = {
+        ClientName: values.ClientName,
+        ClientEmailId: values.ClientEmailId,
+        ClientLocation: values.ClientLocation,
+        ReferenceName: values.ReferenceName,
+      };
+
+      var response = await AdminDashboardServices.fcnAddClientAsync(obj);
+      console.log(response, "klfdslk");
+      if (response.isSuccess === true) {
+        toast.success("Successfully done. ", {
+          position: "top-right",
+          autoClose: "4000",
+        });
+        handleClose();
+        setValues({
+          ClientName: "",
+          ClientEmailId: "",
+          file: "",
+          ClientLocation: "",
+          ReferenceName: "",
+        });
+        setClientName("");
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
+      } else {
+        toast.error(response.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
+      }
+      console.log(response, "in component");
+    }
+  }
+
+  async function formSubmit(e) {
+    e.preventDefault();
+    console.log(selectedProjectManager, "selected Project manager");
+    var obj = {
+      ProjectID: values.ProjectID,
+      ProjectName: values.ProjectName,
+
+      ClientEmail: values.ClientEmail,
+      Description: values.Description,
+      StartDate: values.StartDate,
+      EndDate: values.EndDate,
+      ProjectRefId: values.ProjectRefId,
+      ProjectType: values.ProjectType,
+      Progress: values.Progress,
+      TeamSize: values.TeamSize,
+      ProjectManager: selectedProjectManager,
+    };
+
+    var response = await AdminDashboardServices.fcnAddProject(obj);
+    console.log(response, "response");
+    if (response.isSuccess === true) {
+      Swal.fire({
+        title: "Good job!",
+        text: " New project added successfully done",
+        icon: "success",
+      });
+      navigate("/Dashboard/AllProjects");
+    } else {
+      console.log(response.error.message);
+      toast.error(response.error.message, {
+        position: "top-right",
+        autoClose: "4000",
+      });
+    }
+    console.log(response, "final response");
+  }
+
   return (
     <div className="maindiv1">
-      <div className="maindiv card ">
-        <div className="addproject">Add New Project</div>
+      <div className="maindiv card  addproductcard">
+        <div className="addproject ">
+          <div className="d-flex">
+            <IoArrowBackCircle
+              onClick={backonclick}
+              style={{ cursor: "pointer", fontSize: "28px" }}
+            />
+            <p style={{ fontSize: "20px" }} className="ms-1 ">
+              Back
+            </p>
+          </div>
+          <p
+            style={{ fontSize: "20px", textDecoration: "underline" }}
+            className="ms-5 backiconbutton"
+          >
+            Add New Project
+          </p>
+        </div>
         <div>
-          <form>
+          <form onSubmit={formSubmit}>
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable className="lables">ProjectID</lable>
+                  <label className="labless">
+                    ProjectID
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter ProjectID"
                   className="form-control"
+                  name="ProjectID"
+                  value={values.ProjectID}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     ProjectName
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter ProjectName"
                   className="form-control"
+                  name="ProjectName"
+                  value={values.ProjectName}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     StartDate
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="date"
-                  placeholder="Enter Description"
+                  placeholder="Enter StartDate"
                   className="form-control"
+                  style={{ cursor: "pointer" }}
+                  name="StartDate"
+                  value={values.StartDate}
+                  onChange={handleChange}
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable>EndDate</lable>
+                  <span className="labless">EndDate</span>
                 </div>
                 <input
                   type="date"
-                  placeholder="Enter ProjectID"
+                  placeholder="Enter EndDate"
                   className="form-control"
+                  style={{ cursor: "pointer" }}
+                  name="EndDate"
+                  value={values.EndDate}
+                  onChange={handleChange}
                 />
               </div>
-              <div className="col-3 ">
-                <lable>Select Client</lable>
-
-                <div class="dropdown">
-                  <button
-                    className=" form-control dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+              <div className="col-4">
+                <label className="labless">
+                  Select Client
+                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                </label>
+                <div className="dropdown d-flex">
+                  <select
+                    id="myList"
+                    className="form-control w-100"
+                    name="ClientEmail"
+                    value={values.ClientEmail}
+                    onChange={handleChange}
                   >
-                    Select Clients
-                  </button>
-                  <ul
-                    class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </li>
-                  </ul>
+                    <option value="">Select client</option>
+                    {clients.map((client) => (
+                      <option key={client.id} value={client.clientName}>
+                        {client.clientName}
+                      </option>
+                    ))}
+                  </select>
+                  <span>
+                    <IoAddCircle className="addicon" onClick={handleShow} />
+                  </span>
                 </div>
-              </div>
-              <div className="col-1">
-                <p>
-                  <svg
-                    style={{ cursor: "pointer" }}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="bi bi-plus-circle"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-                  </svg>
-                </p>
               </div>
               <div className="col-4">
                 <div>
-                  <lable>TeamSize</lable>
+                  <span className="labless">TeamSize</span>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter TeamSize"
                   className="form-control"
+                  name="TeamSize"
+                  value={values.TeamSize}
+                  onChange={handleChange}
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-4">
                 <div>
-                  <lable>ProjectRefId</lable>
+                  <span className="labless">ProjectRefId</span>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter ProjectRefId"
                   className="form-control"
+                  name="ProjectRefId"
+                  value={values.ProjectRefId}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     ProjectType
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter ProjectType"
                   className="form-control"
+                  name="ProjectType"
+                  value={values.ProjectType}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
-                    Progress
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                  <label className="labless">Progress</label>
                 </div>
                 <input
                   type="text"
                   placeholder="Enter Progress"
                   className="form-control"
+                  name="Progress"
+                  value={values.Progress}
+                  onChange={handleChange}
                 />
               </div>
             </div>
             <div className="row">
               <div className="col-4">
-                <div>
-                  <lable>Assign ProjectManager</lable>
-                </div>
-                <div class="dropdown">
+                <span className="labless">Assign ProjectManager</span>
+                <select
+                  style={{ width: "100%" }}
+                  className="form-control select2"
+                  name="ProjectManager"
+                  value={selectedProjectManager}
+                  onChange={(e) => setSelectedProjectManager(e.target.value)}
+                >
+                  <option>Select</option>
+                  {clients.map((client) => (
+                    <option key={client.id} value={client.clientName}>
+                      {client.clientName}
+                    </option>
+                  ))}
+                </select>
+
+                {/* <div className="dropdown">
                   <button
-                    className=" form-control dropdown-toggle"
+                    className="form-control dropdown-toggle"
                     type="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    Select Clients
+                    Select Project Manager
                   </button>
                   <ul
-                    class="dropdown-menu"
+                    className="dropdown-menu"
                     aria-labelledby="dropdownMenuButton1"
                   >
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        Action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Another action
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#">
-                        Something else here
-                      </a>
-                    </li>
+                    {clients.map((client) => (
+                      <li key={client.id}>
+                        <a className="dropdown-item" href="#">
+                          {client.clientName}
+                        </a>
+                      </li>
+                    ))}
                   </ul>
-                </div>
+                </div> */}
               </div>
               <div className="col-4">
                 <div>
-                  <lable>
+                  <label className="labless">
                     Description
-                    <span className="ms-1 ">*</span>
-                  </lable>
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <textarea
                   className="form-control"
-                  placeholder="enter Description"
+                  placeholder="Enter Description"
+                  name="Description"
+                  value={values.Description}
+                  onChange={handleChange}
                 ></textarea>
               </div>
-              <div className="col-4">
-                {/* <div>
-                  <lable>Progress</lable>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter Progress"
-                  className="form-control"
-                /> */}
-              </div>
+              <div className="col-4"></div>
             </div>
             <div className="row">
               <div className="col-8"></div>
               <div className="col-2">
-                <button className="form-control addbtn">Add</button>
+                {/* <button className="form-control addbutton">Add</button> */}
               </div>
               <div className="col-2">
-                {/* <button className="form-control backbtn">Back</button> */}
-                <Link
+                {/* <Link
                   to="/analytics/AllProjects"
-                  className="form-control backbtn"
+                  className="form-control  btn btn-primary"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -233,11 +420,129 @@ export default function AddProject() {
                   }}
                 >
                   Back
-                </Link>
+                </Link> */}
+                <button className="form-control addbutton">Add</button>
               </div>
             </div>
           </form>
+          <div style={{ width: "1000px" }} className="modeldiv">
+            <Modal
+              show={show}
+              onHide={handleClose}
+              animation={false}
+              className="model"
+            >
+              <Modal.Header
+                closeButton
+                style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
+              >
+                <Modal.Title>New Client</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form onSubmit={AddClientFormSubmit} className="formclass">
+                  <div className="row m-0">
+                    <div className="col-6">
+                      <label className="labless">
+                        ClientName
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter ClientName"
+                        className="form-control"
+                        name="ClientName"
+                        value={values.clientName}
+                        onChange={handleChange}
+                      />
+                      {errors.ClientName && (
+                        <span className="error">{errors.ClientName}</span>
+                      )}
+                    </div>
+                    <div className="col-6">
+                      <label className="labless">
+                        Client EmailId
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Enter Email"
+                          name="ClientEmailId"
+                          className="form-control"
+                          value={values.ClientEmailId}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      {errors.ClientEmailId && (
+                        <span className="error">{errors.ClientEmailId}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row m-0 mt-2">
+                    <div className="col-6">
+                      <div>
+                        <label className="labless">ReferenceName</label>
+                        <input
+                          type="text"
+                          placeholder="Enter ReferenceName"
+                          className="form-control"
+                          name="ReferenceName"
+                          value={values.ReferenceName}
+                          onChange={handleChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <label className="labless">
+                        Client Location
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Enter Location"
+                          name="ClientLocation"
+                          value={values.ClientLocation}
+                          onChange={handleChange}
+                          className="form-control"
+                        />
+                      </div>
+                      {errors.ClientLocation && (
+                        <span className="error">{errors.ClientLocation}</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="row m-0">
+                    <div className="col-6"></div>
+                    <div className="col-4"></div>
+                    <div className="col-2"></div>
+                  </div>
+                  <div className="row">
+                    <div className="col-8"></div>
+                    <div className="col-2">
+                      <button
+                        onClick={handleClose}
+                        className="form-control  btn btn-danger"
+                      >
+                        Close
+                      </button>
+                    </div>
+                    <div className="col-2">
+                      <button className="form-control addbutton">Add</button>
+                    </div>
+                  </div>
+                </form>
+              </Modal.Body>
+            </Modal>
+          </div>
         </div>
+        <ToastContainer position="top-end" autoClose={5000} />
       </div>
     </div>
   );

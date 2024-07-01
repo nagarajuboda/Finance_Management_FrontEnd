@@ -1,0 +1,61 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.headerCards {
+  display: flex;
+}
+.ProjectProgress {
+  display: flex;
+  justify-content: space-between;
+}
+.circularProgressbar {
+  height: 70px;
+  width: 70px;
+}
+.progressbaranddates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Pimage {
+  height: 50px;
+  width: 50px;
+  border-radius: 8px;
+}
+.ProjectMangerProfile {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+.description {
+  color: rgb(25, 110, 138);
+  font-family: "Open Sans", sans-serif;
+}
+.workingemployeeclsas {
+  color: rgb(111, 211, 244);
+  font-family: "Open Sans", sans-;
+  margin-bottom: 0px;
+}
+.firstmodel .modal-content {
+  width: 900px;
+  right: 28%;
+  background-color: rgb(217, 223, 225);
+}
+
+.closebtn {
+  border-radius: 8px;
+}
+.header {
+  background-color: rgb(37, 122, 150);
+  color: white;
+}
+.closebutton {
+  border-radius: 10px;
+}
+.updatebtn {
+  border-radius: 10px;
+}
