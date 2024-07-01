@@ -17,7 +17,7 @@ export default function DashboardRoutes() {
           <Route path="/AdminDashboard" element={<AdminDashboard />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/About" element={<About />} />
-          <Route path="/Analytics" element={<Analytics />} />
+          {/* <Route path="/Analytics" element={<Analytics />} /> */}
           <Route path="/Comment" element={<Comment />} />
           <Route path="/Product" element={<Product />} />
           <Route path="/ProductList" element={<ProductList />} />

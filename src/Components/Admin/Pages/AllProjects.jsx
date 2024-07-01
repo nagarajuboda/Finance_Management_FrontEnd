@@ -7,31 +7,25 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useNavigate } from "react-router-dom";
+
 export default function AllProjects() {
   const navigate = useNavigate();
   const [dataReady, setDataReady] = useState(false);
-  const [activeProjectIndex, setActiveProjectIndex] = useState(null);
   const [getAll, setAllProjects] = useState([]);
 
   function viewClickfunction(e, index, id) {
     e.preventDefault();
-    console.log(id, "clicked id");
-    setActiveProjectIndex(index === activeProjectIndex ? null : index);
-    navigate(`/${id}`);
+    navigate("/Dashboard/ViewProject", { state: { id } });
   }
 
   useEffect(() => {
     async function fetchData() {
       try {
-        // const response = await axios.get(
-        //   "https://localhost:44377/api/Project/GetAllProjects"
-        // );
         const response = await axios.get(
           "https://localhost:44305/api/Projects/GetAllProjects"
         );
-        var result = response.data;
+        const result = response.data;
         setAllProjects(result.item);
-
         setDataReady(true);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,16 +36,21 @@ export default function AllProjects() {
 
   useEffect(() => {
     if (dataReady) {
+      // Destroy existing DataTable before re-initializing
+      if ($.fn.dataTable.isDataTable("#example")) {
+        $("#example").DataTable().destroy();
+      }
+      // Initialize DataTable
       $("#example").DataTable();
     }
-  }, [dataReady]);
+  }, [dataReady, getAll]);
 
   return (
     <div className="AllProductmaindiv">
       <div className="card">
         <div className="AddProjects">
           <p className="contentallproject">All Projects</p>
-          <Link to="/analytics/AddProject" className="addprojectlink">
+          <Link to="/Dashboard/AddProject" className="addprojectlink">
             Add New Project
           </Link>
         </div>
@@ -74,21 +73,11 @@ export default function AllProjects() {
                 className="trclass"
                 onClick={(e) => viewClickfunction(e, index, project.id)}
               >
-                <td>
-                  <input type="checkbox" />
-                </td>
+                <td></td>
                 <td className="namefiend">{project.projectName}</td>
                 <td className="namefiend">{project.projectType}</td>
                 <td className="namefiend">
                   <div className="clientimaeanem">
-                    {/* <div>
-                      <img
-                        src={one}
-                        alt=""
-                        width="40px"
-                        className="clientimage"
-                      />
-                    </div> */}
                     <div>
                       <p className="ms-2">Samantha William</p>
                     </div>
@@ -103,44 +92,7 @@ export default function AllProjects() {
                     style={{ width: "20px" }}
                   />
                 </td>
-                <td>
-                  <div style={{ cursor: "pointer" }}>
-                    {/* <svg
-                      onClick={(e) => viewClickfunction(e, index)}
-                      xmlns="http://www.w3.org/2000/svg"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-three-dots-vertical"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                    </svg> */}
-                  </div>
-                  {/* {activeProjectIndex === index && (
-                    <div className="Project-view">
-                      <div className="card viewProjectCard">
-                        <div className="project-items">
-                          <Link to="/Login" className="viewlink">
-                            View
-                          </Link>
-                        </div>
-                        <div className="project-items">
-                          <Link to="/Login" className="editlink">
-                            Edit
-                          </Link>
-                        </div>
-                        <div className="project-items">
-                          <Link to="/Login" className="deletelink">
-                            Delete
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  )} */}
-                </td>
+                <td></td>
               </tr>
             ))}
           </tbody>

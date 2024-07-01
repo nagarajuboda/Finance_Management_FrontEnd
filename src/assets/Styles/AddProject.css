@@ -35,6 +35,7 @@
   color: white;
   background-color: #167291;
 }
+
 .addbutton {
   color: white;
   background-color: #257a96;
@@ -43,14 +44,15 @@
   color: #257a96;
   background-color: #257a96;
 } */
-
-.addproject {
-  display: flex;
+.backiconbutton {
+  color: #196e8a;
+  font-family: sans-serif;
 }
 .backbuttom {
   width: 50px;
   font-size: 20px;
 }
+
 lable {
   font-weight: 600;
 }
@@ -132,4 +134,7 @@ input :hover {
 .select2-container--default .select2-selection--single {
   border: 1px solid #ccc !important;
   border-radius: 5px !important;
+}
+.select2-selection__arrow {
+  margin-top: 3px;
 }

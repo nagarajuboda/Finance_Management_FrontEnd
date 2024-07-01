@@ -82,7 +82,7 @@ const Sidebar = ({ children }) => {
       icon: <VscProject />,
       submenu: [
         { path: "/contracts", name: "- Contracts" },
-        { path: "/analytics/AllProjects", name: "- Projects" },
+        { path: "/Dashboard/AllProjects", name: "- Projects" },
         // { path: "/analytics/AddProject", name: "-AddProject" },
         { path: "/Files", name: "- Files" },
         { path: "/Profile", name: "- Profile" },

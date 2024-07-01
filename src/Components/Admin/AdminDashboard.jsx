@@ -9,6 +9,7 @@ import Product from "./Pages/Product";
 import ProductList from "./Pages/ProductList";
 import AllProjects from "./Pages/AllProjects";
 import AddProject from "./Pages/AddProject";
+import { ViewProject } from "./ViewProject";
 export default function AdminDashboard() {
   return (
     <Sidebar>
@@ -16,9 +17,11 @@ export default function AdminDashboard() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/comment" element={<Comment />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/analytics/AllProjects" element={<AllProjects />} />
-        <Route path="/analytics/AddProject" element={<AddProject />} />
+        {/* <Route path="/analytics" element={<Analytics />} /> */}
+        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
+        <Route path="/Dashboard/AddProject" element={<AddProject />} />
+        <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
         {/* <Route path="/" element={<Analytics />}>
           <Route path="/AllProjects" element={<AllProjects />} />
         </Route> */}

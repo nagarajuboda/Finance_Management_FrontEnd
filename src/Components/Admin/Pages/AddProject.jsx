@@ -11,6 +11,7 @@ import AdminDashboardServices from "../../../Service/AdminService/AdminDashboard
 import Swal from "sweetalert2";
 import { FaArrowLeft } from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 export default function AddProject() {
   var navigate = useNavigate();
@@ -51,7 +52,8 @@ export default function AddProject() {
     ClientLocation: "",
   });
   function backonclick(e) {
-    navigate("/analytics/AllProjects");
+    //navigate("/analytics/AllProjects");
+    navigate("/Dashboard/AllProjects");
     console.log("btn clickes");
     e.preventDefault();
   }
@@ -122,6 +124,9 @@ export default function AddProject() {
           ReferenceName: "",
         });
         setClientName("");
+        setTimeout(() => {
+          window.location.reload();
+        }, 4000);
       } else {
         toast.error(response.error.message, {
           position: "top-right",
@@ -158,7 +163,7 @@ export default function AddProject() {
         text: " New project added successfully done",
         icon: "success",
       });
-      navigate("/analytics/AllProjects");
+      navigate("/Dashboard/AllProjects");
     } else {
       console.log(response.error.message);
       toast.error(response.error.message, {
@@ -172,27 +177,22 @@ export default function AddProject() {
   return (
     <div className="maindiv1">
       <div className="maindiv card  addproductcard">
-        <div className="addproject d-flex">
-          {/* <Link
-            to="/analytics/AllProjects"
-            className="btn  backbuttom"
-            onClick={backonclick}
+        <div className="addproject ">
+          <div className="d-flex">
+            <IoArrowBackCircle
+              onClick={backonclick}
+              style={{ cursor: "pointer", fontSize: "28px" }}
+            />
+            <p style={{ fontSize: "20px" }} className="ms-1 ">
+              Back
+            </p>
+          </div>
+          <p
+            style={{ fontSize: "20px", textDecoration: "underline" }}
+            className="ms-5 backiconbutton"
           >
-            <FaArrowLeft />
-          </Link> */}
-          <FaArrowLeft onClick={backonclick} style={{ cursor: "pointer" }} />
-          <p style={{ fontSize: "20px" }}>Add New Project</p>
-          {/* <Link
-            to="/analytics/AllProjects"
-            className="btn btn-primary"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <FaArrowLeft />
-          </Link> */}
+            Add New Project
+          </p>
         </div>
         <div>
           <form onSubmit={formSubmit}>
@@ -271,8 +271,6 @@ export default function AddProject() {
                   <select
                     id="myList"
                     className="form-control w-100"
-                    // value={clientName}
-                    // onChange={(e) => setClientName(e.target.value)}
                     name="ClientEmail"
                     value={values.ClientEmail}
                     onChange={handleChange}
@@ -427,106 +425,122 @@ export default function AddProject() {
               </div>
             </div>
           </form>
-          <Modal show={show} onHide={handleClose} animation={false}>
-            <Modal.Header closeButton>
-              <Modal.Title>New Client</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <form onSubmit={AddClientFormSubmit} className="formclass">
-                <div className="row">
-                  <div className="col-6">
-                    <label className="labless">
-                      ClientName
-                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter ClientName"
-                      className="form-control"
-                      name="ClientName"
-                      value={values.clientName}
-                      onChange={handleChange}
-                    />
-                    {errors.ClientName && (
-                      <span className="error">{errors.ClientName}</span>
-                    )}
-                  </div>
-                  <div className="col-6">
-                    <label className="labless">
-                      Client EmailId
-                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                    </label>
-                    <div>
+          <div style={{ width: "1000px" }} className="modeldiv">
+            <Modal
+              show={show}
+              onHide={handleClose}
+              animation={false}
+              className="model"
+            >
+              <Modal.Header
+                closeButton
+                style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
+              >
+                <Modal.Title>New Client</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <form onSubmit={AddClientFormSubmit} className="formclass">
+                  <div className="row m-0">
+                    <div className="col-6">
+                      <label className="labless">
+                        ClientName
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
                       <input
                         type="text"
-                        placeholder="Enter Email"
-                        name="ClientEmailId"
+                        placeholder="Enter ClientName"
                         className="form-control"
-                        value={values.ClientEmailId}
+                        name="ClientName"
+                        value={values.clientName}
                         onChange={handleChange}
                       />
+                      {errors.ClientName && (
+                        <span className="error">{errors.ClientName}</span>
+                      )}
                     </div>
-                    {errors.ClientEmailId && (
-                      <span className="error">{errors.ClientEmailId}</span>
-                    )}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-6">
-                    <div>
-                      <label className="labless">ReferenceName</label>
-                      <input
-                        type="text"
-                        placeholder="Enter ReferenceName"
-                        className="form-control"
-                        name="ReferenceName"
-                        value={values.ReferenceName}
-                        onChange={handleChange}
-                      />
+                    <div className="col-6">
+                      <label className="labless">
+                        Client EmailId
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Enter Email"
+                          name="ClientEmailId"
+                          className="form-control"
+                          value={values.ClientEmailId}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      {errors.ClientEmailId && (
+                        <span className="error">{errors.ClientEmailId}</span>
+                      )}
                     </div>
                   </div>
-                  <div className="col-6">
-                    <label className="labless">
-                      Client Location
-                      <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                    </label>
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="Enter Location"
-                        name="ClientLocation"
-                        value={values.ClientLocation}
-                        onChange={handleChange}
-                        className="form-control"
-                      />
+                  <div className="row m-0 mt-2">
+                    <div className="col-6">
+                      <div>
+                        <label className="labless">ReferenceName</label>
+                        <input
+                          type="text"
+                          placeholder="Enter ReferenceName"
+                          className="form-control"
+                          name="ReferenceName"
+                          value={values.ReferenceName}
+                          onChange={handleChange}
+                        />
+                      </div>
                     </div>
-                    {errors.ClientLocation && (
-                      <span className="error">{errors.ClientLocation}</span>
-                    )}
+                    <div className="col-6">
+                      <label className="labless">
+                        Client Location
+                        <span style={{ color: "red", marginLeft: "5px" }}>
+                          *
+                        </span>
+                      </label>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Enter Location"
+                          name="ClientLocation"
+                          value={values.ClientLocation}
+                          onChange={handleChange}
+                          className="form-control"
+                        />
+                      </div>
+                      {errors.ClientLocation && (
+                        <span className="error">{errors.ClientLocation}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-6"></div>
-                  <div className="col-4"></div>
-                  <div className="col-2"></div>
-                </div>
-                <div className="row">
-                  <div className="col-8"></div>
-                  <div className="col-2">
-                    <button
-                      onClick={handleClose}
-                      className="form-control  btn btn-danger"
-                    >
-                      Close
-                    </button>
+                  <div className="row m-0">
+                    <div className="col-6"></div>
+                    <div className="col-4"></div>
+                    <div className="col-2"></div>
                   </div>
-                  <div className="col-2">
-                    <button className="form-control addbutton">Add</button>
+                  <div className="row">
+                    <div className="col-8"></div>
+                    <div className="col-2">
+                      <button
+                        onClick={handleClose}
+                        className="form-control  btn btn-danger"
+                      >
+                        Close
+                      </button>
+                    </div>
+                    <div className="col-2">
+                      <button className="form-control addbutton">Add</button>
+                    </div>
                   </div>
-                </div>
-              </form>
-            </Modal.Body>
-          </Modal>
+                </form>
+              </Modal.Body>
+            </Modal>
+          </div>
         </div>
         <ToastContainer position="top-end" autoClose={5000} />
       </div>
