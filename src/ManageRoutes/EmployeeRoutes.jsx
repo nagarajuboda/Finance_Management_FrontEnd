@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "../Components/Users/Login";
 import ForgotPassword from "../Components/Users/ForgotPassword";
 import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
-import AdminDashboard from "../Components/Admin/AdminDashboard";
+// import AdminDashboard from "../Components/Admin/AdminDashboard";
 
 export default function EmployeeRoutes() {
   return (

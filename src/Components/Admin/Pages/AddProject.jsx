@@ -35,6 +35,7 @@ export default function AddProject() {
     ProjectName: "",
     StartDate: "",
     ClientEmail: "",
+    id: "",
     Description: "",
 
     EndDate: "",
@@ -140,21 +141,39 @@ export default function AddProject() {
   async function formSubmit(e) {
     e.preventDefault();
     console.log(selectedProjectManager, "selected Project manager");
+    console.log(values, "clientId");
+    console.log(values.ClientEmail);
+    // var obj = {
+    //   ProjectID: values.ProjectID,
+    //   ProjectName: values.ProjectName,
+    //   ClientEmail: values.ClientEmail,
+    //   Description: values.Description,
+    //   StartDate: values.StartDate,
+    //   EndDate: values.EndDate,
+    //   ProjectRefId: values.ProjectRefId,
+    //   ProjectType: values.ProjectType,
+    //   Progress: values.Progress,
+    //   TeamSize: values.TeamSize,
+    //   ProjectManager: selectedProjectManager,
+    // };
     var obj = {
-      ProjectID: values.ProjectID,
-      ProjectName: values.ProjectName,
-
-      ClientEmail: values.ClientEmail,
-      Description: values.Description,
-      StartDate: values.StartDate,
-      EndDate: values.EndDate,
-      ProjectRefId: values.ProjectRefId,
-      ProjectType: values.ProjectType,
-      Progress: values.Progress,
-      TeamSize: values.TeamSize,
-      ProjectManager: selectedProjectManager,
+      project: {
+        ProjectID: values.ProjectID,
+        ProjectName: values.ProjectName,
+        //ClientEmail: values.ClientEmail,
+        Description: values.Description,
+        clientId: null,
+        StartDate: values.StartDate,
+        EndDate: values.EndDate,
+        ProjectRefId: values.ProjectRefId,
+        ProjectType: values.ProjectType,
+        Progress: values.Progress,
+        TeamSize: values.TeamSize,
+        ProjectManager: selectedProjectManager,
+      },
+      clientemail: values.ClientEmail,
     };
-
+    console.log(obj, "obj");
     var response = await AdminDashboardServices.fcnAddProject(obj);
     console.log(response, "response");
     if (response.isSuccess === true) {
@@ -189,14 +208,14 @@ export default function AddProject() {
           </div>
           <p
             style={{ fontSize: "20px", textDecoration: "underline" }}
-            className="ms-5 backiconbutton"
+            className="ms-3 backiconbutton"
           >
             Add New Project
           </p>
         </div>
         <div>
           <form onSubmit={formSubmit}>
-            <div className="row">
+            <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
                   <label className="labless">
@@ -247,7 +266,7 @@ export default function AddProject() {
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
                   <span className="labless">EndDate</span>
@@ -272,13 +291,20 @@ export default function AddProject() {
                     id="myList"
                     className="form-control w-100"
                     name="ClientEmail"
-                    value={values.ClientEmail}
+                    value={values.clientEmailId}
                     onChange={handleChange}
                   >
                     <option value="">Select client</option>
                     {clients.map((client) => (
-                      <option key={client.id} value={client.clientName}>
-                        {client.clientName}
+                      <option key={client.id} value={client.clientEmailId}>
+                        <div>
+                          <span className="clientname">
+                            {client.clientName}
+                          </span>
+                          <span style={{ marginLeft: "8px" }}>
+                            - {client.clientEmailId}
+                          </span>
+                        </div>
                       </option>
                     ))}
                   </select>
@@ -301,7 +327,7 @@ export default function AddProject() {
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
                   <span className="labless">ProjectRefId</span>
@@ -345,7 +371,7 @@ export default function AddProject() {
                 />
               </div>
             </div>
-            <div className="row">
+            <div className="row m-0 mt-2">
               <div className="col-4">
                 <span className="labless">Assign ProjectManager</span>
                 <select
@@ -404,7 +430,7 @@ export default function AddProject() {
               </div>
               <div className="col-4"></div>
             </div>
-            <div className="row">
+            <div className="row m-0">
               <div className="col-8"></div>
               <div className="col-2">
                 {/* <button className="form-control addbutton">Add</button> */}
@@ -426,12 +452,7 @@ export default function AddProject() {
             </div>
           </form>
           <div style={{ width: "1000px" }} className="modeldiv">
-            <Modal
-              show={show}
-              onHide={handleClose}
-              animation={false}
-              className="model"
-            >
+            <Modal show={show} onHide={handleClose} animation={false}>
               <Modal.Header
                 closeButton
                 style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
@@ -523,7 +544,7 @@ export default function AddProject() {
                     <div className="col-4"></div>
                     <div className="col-2"></div>
                   </div>
-                  <div className="row">
+                  <div className="row m-0 mt-3">
                     <div className="col-8"></div>
                     <div className="col-2">
                       <button

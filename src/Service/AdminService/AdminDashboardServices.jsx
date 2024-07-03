@@ -24,6 +24,12 @@ const AdminDashboardServices = {
     );
     return response.data;
   },
+  async fcngetEmployees() {
+    var response = await axios.get(
+      "https://localhost:44305/api/Projects/GetEmployees"
+    );
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;

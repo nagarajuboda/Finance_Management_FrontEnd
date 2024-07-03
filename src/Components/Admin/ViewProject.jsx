@@ -6,36 +6,52 @@ import "react-circular-progressbar/dist/styles.css";
 import "../../assets/Styles/ViewProject.css";
 import $ from "jquery";
 import "datatables.net";
-
 import { IoArrowBackCircle } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
-
+import { IoMdAddCircle } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
 export function ViewProject() {
-  //const { id } = useParams();
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
   const [show, setShow] = useState(false);
-  const [close, setclose] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const location = useLocation();
+  const [showw, setShoww] = useState(false);
+  const [activeRow, setActiveRow] = useState(null);
+  const [ProjectValues, setProjectValues] = useState({});
+  const [clientvalues, setClientValues] = useState({});
   const [dataReady, setDataReady] = useState(false);
-  const [projectmanager, setProjectmanager] = useState("");
-  const { id } = location.state || {};
-  var navigate = useNavigate();
-  const percentage = 66;
 
+  const [showAddState, setShowAddState] = useState([]); // State to track each row's Add icon
+  const [showCrossState, setShowCrossState] = useState([]); // State to track each row's Cross icon
+
+  const { id } = useLocation().state || {};
+  const navigate = useNavigate();
+  const percentage = 66;
+  var obj = [
+    {
+      Name: "nagaraju",
+      id: "0282",
+    },
+    {
+      Name: "raju",
+      id: "0282",
+    },
+  ];
   useEffect(() => {
-    console.log(id, "id");
     async function FetchData() {
+      sessionStorage.setItem("id", id);
+      console.log(id, "dfjsldkjlfdsk");
       var response = await axios.get(
         `https://localhost:44305/api/Projects/GetProject?id=${id}`
       );
       var result = response.data;
+      console.log(result, "result");
       if (result.isSuccess === true) {
         setProjectEmployees(result.item.employeeProject);
         setresponse(result.item.project);
-        setProjectmanager(result.item.projectManager);
+        setClientValues(result.item.client);
+        console.log(clientvalues, "clientValues");
+        setProjectValues(result.item.project);
         setDataReady(true);
       }
     }
@@ -43,16 +59,55 @@ export function ViewProject() {
     FetchData();
   }, [id]);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProjectValues({
+      ...ProjectValues,
+      [name]: value,
+    });
+  };
+  useEffect(() => {
+    async function GetEmployees() {
+      var response = await AdminDashboardServices.fcngetEmployees();
+      console.log(response, "getEmployees response");
+    }
+    GetEmployees();
+  });
   useEffect(() => {
     if (dataReady) {
       $("#example").DataTable();
     }
   }, [dataReady]);
+  useEffect(() => {
+    if (showw) {
+      const table = $("#example1").DataTable({
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+      });
+    }
+  }, [showw]);
+
   function backonclick(e) {
     e.preventDefault();
-
     navigate("/Dashboard/AllProjects");
   }
+
+  const toggleIcon = (e, index, id) => {
+    setShowAddState((prevState) => {
+      console.log(id, "id");
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
+    setShowCrossState((prevState) => {
+      console.log(id, "sjdkskj");
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
+  };
   return (
     <div>
       <div className=" d-flex" style={{ justifyContent: "space-between" }}>
@@ -67,7 +122,7 @@ export function ViewProject() {
           </p>
         </div>
         <div>
-          <Link style={{ color: "#257a96" }} onClick={handleShow}>
+          <Link style={{ color: "#257a96" }} onClick={() => setShow(true)}>
             Update
           </Link>
         </div>
@@ -113,7 +168,7 @@ export function ViewProject() {
           </div>
         </div>
         <div className="card ms-3">
-          <div className="">
+          <div>
             <p
               style={{ color: "#196e8a", fontFamily: "Open Sans, sans-serif" }}
             >
@@ -122,8 +177,7 @@ export function ViewProject() {
           </div>
           <div className="ProjectMangerProfile d-flex">
             <div className="d-flex">
-              {/* <img src={oneimage} alt="not found" className="Pimage" /> */}
-              <div className="">
+              <div>
                 <p style={{ marginBottom: "0px", fontWeight: "400" }}>
                   {Projectresponse.projectManager}
                 </p>
@@ -146,38 +200,29 @@ export function ViewProject() {
             </p>
           </div>
           <div className="d-flex">
-            {/* <img src={oneimage} alt="not found" className="Pimage" /> */}
-            <div className="">
+            <div>
               <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                {Projectresponse.projectManager}
+                {clientvalues.clientName}
               </p>
               <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                {Projectresponse.clientEmail}
+                {clientvalues.clientEmailId}
               </p>
             </div>
           </div>
         </div>
       </div>
       <div className="card Projectdescription mt-4">
-        <div className="">
+        <div>
           <p className="description">Project Details</p>
         </div>
         <div className="descriptioncontent mt-3">
           <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-            Bahubali is a grand epic set in the ancient kingdom of Mahishmati,
-            revolving around two brothers, Amarendra Bahubali and Bhallaladeva,
-            vying for the throne. Raised as orphans, both are trained as
-            warriors, but while Bahubali is noble and compassionate,
-            Bhallaladeva is power-hungry and ruthless. Bahubali wins the throne
-            but renounces it for love, leading to his betrayal and murder by
-            Bhallaladeva. Years later, Bahubali's son, Mahendra, rises to avenge
-            his father's death and reclaim the kingdom. The story showcases
-            themes of honor, sacrifice, and the triumph of good over evil.
+            {Projectresponse.description}
           </p>
         </div>
       </div>
       <div className="card mt-4 employeeDetails">
-        <div className="mb-4">
+        <div className="mb-4 workingemployee">
           <p
             style={{
               color: "#196e8a",
@@ -186,6 +231,9 @@ export function ViewProject() {
             }}
           >
             Working Employees
+          </p>
+          <p>
+            <Link onClick={() => setShoww(true)}>Assign</Link>
           </p>
         </div>
         <div>
@@ -204,45 +252,18 @@ export function ViewProject() {
               </tr>
             </thead>
             <tbody>
-              {projectEmployess.map((employees, index) => {
+              {projectEmployess.map((employees, index) => (
                 <tr key={index}>
                   <td>{employees.projectId}</td>
-                </tr>;
-              })}
-              {/* <tr>
-                <td></td>
-                <td>EmployeeId</td>
-                <td>FirstName</td>
-                <td>Client A</td>
-                <td>2024-07-01</td>
-                <td>50%</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Project Beta</td>
-                <td>Type B</td>
-                <td>Client B</td>
-                <td>2024-08-15</td>
-                <td>75%</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Project Gamma</td>
-                <td>Type C</td>
-                <td>Client C</td>
-                <td>2024-09-30</td>
-                <td>90%</td>
-                <td></td>
-              </tr> */}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={() => setShow(false)}
         animation={false}
         className="firstmodel"
       >
@@ -256,138 +277,168 @@ export function ViewProject() {
                 <span className="ms-1">ProjectID</span>
                 <input
                   type="text"
-                  value={Projectresponse.projectID}
+                  name="projectID"
+                  value={ProjectValues.projectID}
                   className="form-control"
+                  onChange={handleInputChange}
+                  readOnly
                 />
               </div>
               <div className="col-4">
-                <span className="ms-1">projectName</span>
+                <span className="ms-1">Project Name</span>
                 <input
                   type="text"
-                  value={Projectresponse.projectName}
+                  name="projectName"
+                  value={ProjectValues.projectName}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
-                <span className="ms-1">StartDate</span>
+                <span className="ms-1">Start Date</span>
                 <input
                   type="text"
-                  value={Projectresponse.startDate}
+                  name="startDate"
+                  value={ProjectValues.startDate}
                   className="form-control"
+                  onChange={handleInputChange}
+                  readOnly
                 />
               </div>
             </div>
             <div className="row" style={{ margin: "0", width: "100%" }}>
               <div className="col-4">
-                <span className="ms-1">EndDate</span>
+                <span className="ms-1">End Date</span>
                 <input
                   type="text"
-                  value={Projectresponse.endDate}
+                  name="endDate"
+                  value={ProjectValues.endDate}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
-                <span className="ms-1">ProjectRefId</span>
+                <span className="ms-1">Project Ref ID</span>
                 <input
                   type="text"
-                  value={Projectresponse.projectRefId}
+                  name="projectRefId"
+                  value={ProjectValues.projectRefId}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
-                <span className="ms-1">ClientEmail</span>
+                <span className="ms-1">Client Email</span>
                 <input
                   type="text"
-                  value={Projectresponse.clientEmail}
+                  name="clientEmail"
+                  value={clientvalues.clientEmailId}
                   className="form-control"
+                  onChange={handleInputChange}
+                  readOnly
                 />
               </div>
             </div>
-            <div className="row " style={{ margin: "0", width: "100%" }}>
+            <div className="row" style={{ margin: "0", width: "100%" }}>
               <div className="col-4">
-                <span className="ms-1">ProjectType</span>
+                <span className="ms-1">Project Type</span>
                 <input
                   type="text"
-                  value={Projectresponse.projectType}
+                  name="projectType"
+                  value={ProjectValues.projectType}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
                 <span className="ms-1">Status</span>
                 <input
                   type="text"
-                  value={Projectresponse.status}
+                  name="status"
+                  value={ProjectValues.status}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
                 <span className="ms-1">Progress</span>
                 <input
                   type="text"
-                  value={Projectresponse.progress}
+                  name="progress"
+                  value={ProjectValues.progress}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
-            <div className="row m-0">
+            <div className="row" style={{ margin: "0", width: "100%" }}>
               <div className="col-4">
-                <span>teamSize</span>
+                <span>Team Size</span>
                 <input
                   type="text"
-                  value={Projectresponse.teamSize}
+                  name="teamSize"
+                  value={ProjectValues.teamSize}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
-                <span>teamSize</span>
+                <span>Project Manager</span>
                 <input
                   type="text"
-                  value={Projectresponse.projectManager}
+                  name="projectManager"
+                  value={ProjectValues.projectManager}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="col-4">
-                <span>CreatedDate</span>
+                <span>Created Date</span>
                 <input
                   type="date"
+                  name="createdDate"
+                  value={ProjectValues.createdDate}
                   className="form-control"
-                  value={Projectresponse.createdDate}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
-            <div className="row m-0">
+            <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
               <div className="col-4">
-                <span>UpdatedDate</span>
+                <span>Updated Date</span>
                 <input
                   type="date"
-                  value={Projectresponse.updatedDate}
+                  name="updatedDate"
+                  value={ProjectValues.updatedDate}
                   className="form-control"
+                  onChange={handleInputChange}
                 />
               </div>
-              <div className="col-4">
+              <div className="col-8">
                 <span>Project Description</span>
                 <textarea
-                  className="form-control"
-                  name="Description"
-                  value={Projectresponse.description}
+                  className="form-control textareas"
+                  name="description"
+                  value={ProjectValues.description}
+                  onChange={handleInputChange}
                 ></textarea>
               </div>
-              <div className="col-4"></div>
+              {/* <div className="col-4"></div> */}
             </div>
             <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
               <div className="col-8"></div>
               <div className="col-2">
                 <button
-                  type="submit"
+                  type="button"
                   className="form-control closebutton"
-                  onClick={handleClose}
+                  onClick={() => setShow(false)}
                   style={{
                     borderRadius: "8px",
                     backgroundColor: "red",
                     color: "white",
                   }}
                 >
-                  close
+                  Close
                 </button>
               </div>
               <div className="col-2">
@@ -405,6 +456,51 @@ export function ViewProject() {
               </div>
             </div>
           </form>
+        </Modal.Body>
+      </Modal>
+      <Modal
+        show={showw}
+        onHide={() => setShoww(false)}
+        animation={false}
+        className="firstmodel1"
+      >
+        <Modal.Header closeButton className="header">
+          <Modal.Title>Employees</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className=" econdmodel1">
+          <table
+            id="example1"
+            className="tableclasss table table-borderless w-0 secondDataTable"
+          >
+            <thead>
+              <tr className="headerth">
+                <th style={{ textAlign: "center" }}>Name</th>
+                <th style={{ textAlign: "center" }}>ID</th>
+                <th style={{ textAlign: "center" }}>Assign</th>
+              </tr>
+            </thead>
+            <tbody>
+              {obj.map((obj, index) => (
+                <tr>
+                  <td style={{ textAlign: "center" }}>{obj.Name}</td>
+                  <td style={{ textAlign: "center" }}>{obj.Name}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {showAddState[index] ? (
+                      <RxCross2
+                        onClick={(e) => toggleIcon(e, index, null)}
+                        className="cancleemployee"
+                      />
+                    ) : (
+                      <IoMdAddCircle
+                        onClick={(e) => toggleIcon(e, index, obj.id)}
+                        className="addemployeecircle"
+                      />
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Modal.Body>
       </Modal>
     </div>
