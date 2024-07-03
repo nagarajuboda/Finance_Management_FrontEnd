@@ -87,3 +87,12 @@ textarea {
   font-size: 30px;
   cursor: pointer;
 }
+.modelbodyyyy {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.tableclassss {
+  width: 100%;
+  table-layout: fixed;
+}

@@ -21,8 +21,7 @@ export function ViewProject() {
   const [clientvalues, setClientValues] = useState({});
   const [dataReady, setDataReady] = useState(false);
 
-  const [showAddState, setShowAddState] = useState([]); // State to track each row's Add icon
-  const [showCrossState, setShowCrossState] = useState([]); // State to track each row's Cross icon
+  const [selectedRowIds, setSelectedRowIds] = useState([]); //
 
   const { id } = useLocation().state || {};
   const navigate = useNavigate();
@@ -34,7 +33,31 @@ export function ViewProject() {
     },
     {
       Name: "raju",
+      id: "0145",
+    },
+    {
+      Name: "nagaraju",
+      id: "22547",
+    },
+    {
+      Name: "raju",
+      id: "89799",
+    },
+    {
+      Name: "nagaraju",
       id: "0282",
+    },
+    {
+      Name: "raju",
+      id: "0145",
+    },
+    {
+      Name: "nagaraju",
+      id: "22547",
+    },
+    {
+      Name: "raju",
+      id: "89799",
     },
   ];
   useEffect(() => {
@@ -93,19 +116,36 @@ export function ViewProject() {
     e.preventDefault();
     navigate("/Dashboard/AllProjects");
   }
-
+  function AddEmployeeSubmit(e) {
+    e.preventDefault();
+    console.log("btn clicked");
+  }
   const toggleIcon = (e, index, id) => {
-    setShowAddState((prevState) => {
-      console.log(id, "id");
-      const newState = [...prevState];
-      newState[index] = !newState[index];
-      return newState;
-    });
-    setShowCrossState((prevState) => {
-      console.log(id, "sjdkskj");
-      const newState = [...prevState];
-      newState[index] = !newState[index];
-      return newState;
+    e.preventDefault();
+
+    setSelectedRowIds((prevSelectedRowIds) => {
+      if (id) {
+        if (!prevSelectedRowIds.includes(id)) {
+          console.log("Selected IDs after adding:", [
+            ...prevSelectedRowIds,
+            id,
+          ]);
+          return [...prevSelectedRowIds, id];
+        } else {
+          console.log(
+            "Selected IDs after removing:",
+            prevSelectedRowIds.filter((selectedId) => selectedId !== id)
+          );
+          return prevSelectedRowIds.filter((selectedId) => selectedId !== id);
+        }
+      } else {
+        const rowId = obj[index].id;
+        console.log(
+          "Selected IDs after removing:",
+          prevSelectedRowIds.filter((selectedId) => selectedId !== rowId)
+        );
+        return prevSelectedRowIds.filter((selectedId) => selectedId !== rowId);
+      }
     });
   };
   return (
@@ -467,41 +507,57 @@ export function ViewProject() {
         <Modal.Header closeButton className="header">
           <Modal.Title>Employees</Modal.Title>
         </Modal.Header>
-        <Modal.Body className=" econdmodel1">
-          <table
-            id="example1"
-            className="tableclasss table table-borderless w-0 secondDataTable"
-          >
-            <thead>
-              <tr className="headerth">
-                <th style={{ textAlign: "center" }}>Name</th>
-                <th style={{ textAlign: "center" }}>ID</th>
-                <th style={{ textAlign: "center" }}>Assign</th>
-              </tr>
-            </thead>
-            <tbody>
-              {obj.map((obj, index) => (
-                <tr>
-                  <td style={{ textAlign: "center" }}>{obj.Name}</td>
-                  <td style={{ textAlign: "center" }}>{obj.Name}</td>
-                  <td style={{ textAlign: "center" }}>
-                    {showAddState[index] ? (
-                      <RxCross2
-                        onClick={(e) => toggleIcon(e, index, null)}
-                        className="cancleemployee"
-                      />
-                    ) : (
-                      <IoMdAddCircle
-                        onClick={(e) => toggleIcon(e, index, obj.id)}
-                        className="addemployeecircle"
-                      />
-                    )}
-                  </td>
+        <form onSubmit={AddEmployeeSubmit}>
+          <Modal.Body className=" econdmodel1 modelbodyyyy">
+            <table
+              id="example1"
+              className="tableclassss table table-borderless w-0 secondDataTable"
+            >
+              <thead>
+                <tr className="headerth">
+                  <th>Name</th>
+                  <th>ID</th>
+                  <th>Assign</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </Modal.Body>
+              </thead>
+              <tbody>
+                {obj.map((obj, index) => (
+                  <tr
+                    key={obj.id}
+                    className={
+                      selectedRowIds.includes(obj.id) ? "selected-row" : ""
+                    }
+                  >
+                    <td>{obj.Name}</td>
+                    <td>{obj.Name}</td>
+                    <td>
+                      {selectedRowIds.includes(obj.id) ? (
+                        <RxCross2
+                          onClick={(e) => toggleIcon(e, index, obj.id)}
+                          className="cancleemployee"
+                          style={{
+                            cursor: "pointer",
+                            textAlign: "left",
+                            color: "red",
+                          }}
+                        />
+                      ) : (
+                        <IoMdAddCircle
+                          onClick={(e) => toggleIcon(e, index, obj.id)}
+                          className="addemployeecircle"
+                          style={{ cursor: "pointer", textAlign: "left" }}
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Modal.Body>
+          <Modal.Footer>
+            <button className="form-control ">Add</button>
+          </Modal.Footer>
+        </form>
       </Modal>
     </div>
   );
