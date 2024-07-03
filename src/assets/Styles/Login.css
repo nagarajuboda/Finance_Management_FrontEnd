@@ -1,120 +1,142 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box; /* Apply border-box to all elements */
-  }
-  body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background: url('src/assets/Images/Login3.jpg') no-repeat center center fixed;
-    background-size: cover;
-    display: flex;
-    justify-content: flex-end;
-    /* justify-content: center; */
-    align-items: center;
-    height: 100vh;
-    padding-right: 80px; /* Add padding to the right for spacing */
-  
-  }
-  
-  .mainContainer {
-    background-color: rgba(255, 255, 255, 0.5); /* Slightly transparent white background */
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 500px;
-    max-width: 600px; /* Set a max-width to keep the container relative to the content */
-    margin-left: 20px; /* Adjust the margin-left value as needed */
-  }
-  
-  .logo {
-    width: 150px; /* Adjust width here */
-    height: auto; /* Maintain aspect ratio */
-    margin-bottom: 20px;
-  }
-  
-  .welcomeMessage {
-    margin-bottom: 20px;
-    margin-top: 20;
-    margin-bottom: 10px;
-  }
-  #welcome{
-    /* font-family: "Public Sans", sans-serif; */
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-    font-weight: 700;
-    padding-bottom:15px;
-    font-size: 25px;
-  
-  }
-  
-  .Text {
-    color: black;
-    font-size: 16px;
-    font-weight: 400;
-    /* font-family: "Open Sans", sans-serif; */
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-    padding-bottom:15px;
-  }
-  
-  .loginForm {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .inputField {
-    margin-bottom: 10px;
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-    padding: 15px;
-    border: 1px solid #eaeaec;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 450px; /* Set a max-width to ensure it doesn't get too wide */
-  }
-  
-  .loginButton {
-    padding: 15px;
-    background-color: hwb(209 3% 5%);
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%; /* Set a percentage width relative to the container */
-    max-width: 450px; /* Set a max-width to ensure it doesn't get too wide */
-  }
-  
-  .loginButton:hover {
-    background-color: #ade1fa;
-    transition: background-color 0.5s ease, text-decoration 0.5s ease;
-  }
-  
-  .forgotResetContainer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .forgotPassword{
-    font-size: 16px;
-    /* font-family: "Open Sans", sans-serif; */
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-  }
-  
-  .resetLink {
-    font-size: 16px;
-    color: hwb(209 3% 5%);
-    cursor: pointer;
-    /* font-family: "Open Sans", sans-serif; */
-    font-family: 'Quicksand', sans-serif; /* Apply Quicksand font to the text */
-  }
-  
-  .resetLink:hover {
-    color: #ade1fa;
-    text-decoration: underline;
-    transition: color 0.5s ease, text-decoration 0.5s ease;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: url('src/assets/Images/Login3.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: flex-end; /* Align items to the right */
+  align-items: center;
+  height: 100vh;
+}
+
+.mainContainer {
+  background-color: rgba(255, 255, 255, 0.4);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 500px;
+  max-width: 600px;
+  margin-right: 100px; /* Adjust margin-right value to move container slightly left */
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.welcomeMessage {
+  margin-bottom: 10px;
+}
+
+#welcome {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  color: #2B7A78;
+  padding-bottom: 15px;
+}
+
+.Text {
+  color: #17252A;
+  font-size: 16px;
+  font-weight: 400;
+  font-family: 'Quicksand', sans-serif;
+  padding-bottom: 15px;
+}
+
+.loginForm,
+.resetPasswordForm,
+.verifyOtpForm,
+.setNewPasswordForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabel{
+  font-family: 'Quicksand', sans-serif;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.inputField {
+  margin-bottom: 10px;
+  padding: 15px;
+  border: 1px solid #CCCCCC;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 450px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.validationError {
+  color: red;
+  font-size: 14px;
+  text-align: left;
+  font-family: 'Quicksand', sans-serif;
+  margin-bottom: 10px;
+}
+
+.loginButton {
+  padding: 15px;
+  background-color: #3AAFA9;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 450px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.loginButton:hover {
+  background-color: #acebea;
+  color: #3AAFA9;
+  transition: background-color 0.3s ease;
+}
+
+.asterisk{
+  color:red;
+}
+
+.forgotResetContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.forgotPassword
+{
+  font-size: 16px;
+  color: #17252A;
+  font-family: 'Quicksand', sans-serif;
+}
+.resetLink,
+.backToLogin {
+  font-size: 16px;
+  color: #237494;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.resetLink:hover,
+.backToLogin:hover {
+  color:#9bbac0;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.backToLogin {
+  align-self: flex-end; /* Align the back to login link to the right */
+  margin-top: 20px; /* Add margin to the top for spacing */
+}
