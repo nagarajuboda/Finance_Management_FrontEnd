@@ -38,7 +38,6 @@ const Home = () => {
       } else {
         toast.error("Please check your credentials.", { position: "top-right", autoClose: 4000 });
       }
-      navigate(''); // Navigate to dashboard or another page
     } catch (error) {
       console.error("Error logging in:", error);
       toast.error("Login failed. Please try again.", { position: "top-right", autoClose: 4000 });
