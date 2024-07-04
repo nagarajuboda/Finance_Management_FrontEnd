@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EmployeeRoutes from "./ManageRoutes/EmployeeRoutes";
 import AdminRoutes from "./ManageRoutes/AdminRoutes";
+
 function App() {
   return (
     <Router>
@@ -9,6 +10,7 @@ function App() {
         <Route path="/*" element={<AdminRoutes />} />
         <Route path="/AdminDashboard" element={<AdminRoutes />} />
         <Route path="/Employee" element={<EmployeeRoutes />} />
+        {/* <Route path="/*" element={<HrRoutes/>}/> */}
       </Routes>
     </Router>
   );

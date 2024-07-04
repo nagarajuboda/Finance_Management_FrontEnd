@@ -69,7 +69,7 @@ const Sidebar = ({ children }) => {
       name: "Hr Management",
       icon: <IoPeopleOutline />,
       submenu: [
-        { path: "/list2", name: "- Employees" },
+        { path: "/EmployeeDashboard", name: "- Employees" },
         { path: "/list1", name: "- Recruiment" },
         { path: "/list2", name: "- Jobs" },
         { path: "/list1", name: "- Condidates" },
