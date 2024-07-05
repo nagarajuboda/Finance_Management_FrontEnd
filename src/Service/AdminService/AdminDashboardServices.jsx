@@ -30,6 +30,15 @@ const AdminDashboardServices = {
     );
     return response.data;
   },
+  async fcnAssignEmployee(obj) {
+    console.log("service obj", obj);
+    const response = await axios.post(
+      "https://localhost:44305/api/Projects/AssignEmployee",
+      obj
+    );
+    console.log(response, "service response");
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;

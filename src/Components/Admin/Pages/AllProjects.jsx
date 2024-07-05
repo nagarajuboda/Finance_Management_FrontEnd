@@ -15,7 +15,9 @@ export default function AllProjects() {
 
   function viewClickfunction(e, index, id) {
     e.preventDefault();
-    navigate("/Dashboard/ViewProject", { state: { id } });
+    localStorage.setItem("projectId", id);
+    //navigate("/Dashboard/ViewProject", { state: { id } });
+    navigate("/Dashboard/ViewProject");
   }
 
   useEffect(() => {
