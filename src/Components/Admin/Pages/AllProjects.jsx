@@ -86,7 +86,7 @@ export default function AllProjects() {
                     </div>
                   )}
                 </td>
-                <td>{project.project.projectManager}</td>
+                <td>{`${project.employee.firstName} ${project.employee.lastName}`}</td>
                 <td className="">{project.project.endDate}</td>
                 <td>
                   <div className="progressdiv">

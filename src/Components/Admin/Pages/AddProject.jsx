@@ -18,6 +18,7 @@ export default function AddProject() {
   const MySwal = withReactContent(Swal);
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState([]);
+  const [GetAllemployees, setEmployees] = useState([]);
   const [clientName, setClientName] = useState("");
   const [selectedProjectManager, setSelectedProjectManager] = useState("");
   const [show, setShow] = useState(false);
@@ -33,6 +34,7 @@ export default function AddProject() {
     ReferenceName: "",
     ProjectID: "",
     ProjectName: "",
+    currencyType: "",
     StartDate: "",
     ClientEmail: "",
     id: "",
@@ -41,8 +43,8 @@ export default function AddProject() {
     EndDate: "",
     ProjectRefId: "",
     ProjectType: "",
-    Progress: "",
-    TeamSize: "",
+    Progress: 0,
+    departmentTeam: "",
     ProjectManager: "",
   });
 
@@ -59,22 +61,38 @@ export default function AddProject() {
     e.preventDefault();
   }
   useEffect(() => {
-    async function fetchData() {
-      try {
-        var response = await AdminDashboardServices.FcnGetAllClients();
-        var result = response.item;
-        setClients(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
+    // async function fetchData() {
+    //   try {
+    //     var response1 = await AdminDashboardServices.fcngetEmployees();
+
+    //     setEmployees(response1.item);
+    //     console.log(GetAllemployees, "getall Employees api");
+    //     var response = await AdminDashboardServices.FcnGetAllClients();
+    //     var result = response.item;
+    //     setClients(result);
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //   }
+    // }
     fetchData();
     $(".select2").select2();
     $(".select2").on("change", function (e) {
       setSelectedProjectManager($(this).val());
     });
   }, []);
+  async function fetchData() {
+    try {
+      var response1 = await AdminDashboardServices.fcngetEmployees();
 
+      setEmployees(response1.item);
+      console.log(GetAllemployees, "getall Employees api");
+      var response = await AdminDashboardServices.FcnGetAllClients();
+      var result = response.item;
+      setClients(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -125,16 +143,13 @@ export default function AddProject() {
           ReferenceName: "",
         });
         setClientName("");
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
+        fetchData();
       } else {
         toast.error(response.error.message, {
           position: "top-right",
           autoClose: "4000",
         });
       }
-      console.log(response, "in component");
     }
   }
 
@@ -143,24 +158,14 @@ export default function AddProject() {
     console.log(selectedProjectManager, "selected Project manager");
     console.log(values, "clientId");
     console.log(values.ClientEmail);
-    // var obj = {
-    //   ProjectID: values.ProjectID,
-    //   ProjectName: values.ProjectName,
-    //   ClientEmail: values.ClientEmail,
-    //   Description: values.Description,
-    //   StartDate: values.StartDate,
-    //   EndDate: values.EndDate,
-    //   ProjectRefId: values.ProjectRefId,
-    //   ProjectType: values.ProjectType,
-    //   Progress: values.Progress,
-    //   TeamSize: values.TeamSize,
-    //   ProjectManager: selectedProjectManager,
-    // };
+    console.log(values.ProjectManager, "project manager emailid");
+
     var obj = {
       project: {
         ProjectID: values.ProjectID,
         ProjectName: values.ProjectName,
         //ClientEmail: values.ClientEmail,
+        currencyType: values.currencyType,
         Description: values.Description,
         clientId: null,
         StartDate: values.StartDate,
@@ -168,10 +173,11 @@ export default function AddProject() {
         ProjectRefId: values.ProjectRefId,
         ProjectType: values.ProjectType,
         Progress: values.Progress,
-        TeamSize: values.TeamSize,
-        ProjectManager: selectedProjectManager,
+        departmentTeam: values.departmentTeam,
+        ProjectManager: values.ProjectManager,
       },
       clientemail: values.ClientEmail,
+      ProjectManager: selectedProjectManager,
     };
     console.log(obj, "obj");
     var response = await AdminDashboardServices.fcnAddProject(obj);
@@ -315,14 +321,14 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <span className="labless">TeamSize</span>
+                  <span className="labless">Type of team</span>
                 </div>
                 <input
                   type="text"
-                  placeholder="Enter TeamSize"
+                  placeholder="Enter Type Of team"
                   className="form-control"
-                  name="TeamSize"
-                  value={values.TeamSize}
+                  name="departmentTeam"
+                  value={values.departmentTeam}
                   onChange={handleChange}
                 />
               </div>
@@ -367,6 +373,7 @@ export default function AddProject() {
                   className="form-control"
                   name="Progress"
                   value={values.Progress}
+                  readOnly
                   onChange={handleChange}
                 />
               </div>
@@ -378,42 +385,42 @@ export default function AddProject() {
                   style={{ width: "100%" }}
                   className="form-control select2"
                   name="ProjectManager"
-                  value={selectedProjectManager}
-                  onChange={(e) => setSelectedProjectManager(e.target.value)}
+                  //  value={selectedProjectManager}
+                  value={values.ProjectManager}
+                  // onChange={(e) => setSelectedProjectManager(e.target.value)}
+                  onChange={handleChange}
                 >
                   <option>Select</option>
-                  {clients.map((client) => (
-                    <option key={client.id} value={client.clientName}>
-                      {client.clientName}
+                  {GetAllemployees.map((client) => (
+                    <option
+                      key={client.employee.id}
+                      value={client.employee.email}
+                    >
+                      {`${client.employee.firstName} ${client.employee.lastName}`}
                     </option>
                   ))}
                 </select>
-
-                {/* <div className="dropdown">
-                  <button
-                    className="form-control dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Select Project Manager
-                  </button>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    {clients.map((client) => (
-                      <li key={client.id}>
-                        <a className="dropdown-item" href="#">
-                          {client.clientName}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div> */}
               </div>
               <div className="col-4">
+                <div>
+                  <label className="labless">
+                    Type Of Currency
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Enter Currency type"
+                  className="form-control"
+                  name="currencyType"
+                  value={values.currencyType}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="col-4"></div>
+            </div>
+            <div className="row m-0 mt-2">
+              <div className="col-12">
                 <div>
                   <label className="labless">
                     Description
@@ -428,26 +435,19 @@ export default function AddProject() {
                   onChange={handleChange}
                 ></textarea>
               </div>
-              <div className="col-4"></div>
             </div>
-            <div className="row m-0">
+            <div className="row m-0 mt-2">
               <div className="col-8"></div>
               <div className="col-2">
                 {/* <button className="form-control addbutton">Add</button> */}
               </div>
               <div className="col-2">
-                {/* <Link
-                  to="/analytics/AllProjects"
-                  className="form-control  btn btn-primary"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                <button
+                  className="form-control addbutton"
+                  style={{ borderRadius: "10px" }}
                 >
-                  Back
-                </Link> */}
-                <button className="form-control addbutton">Add</button>
+                  Add
+                </button>
               </div>
             </div>
           </form>
@@ -478,7 +478,7 @@ export default function AddProject() {
                         onChange={handleChange}
                       />
                       {errors.ClientName && (
-                        <span className="error">{errors.ClientName}</span>
+                        <span className="error ms-1">{errors.ClientName}</span>
                       )}
                     </div>
                     <div className="col-6">
@@ -499,7 +499,9 @@ export default function AddProject() {
                         />
                       </div>
                       {errors.ClientEmailId && (
-                        <span className="error">{errors.ClientEmailId}</span>
+                        <span className="error ms-1">
+                          {errors.ClientEmailId}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -535,7 +537,9 @@ export default function AddProject() {
                         />
                       </div>
                       {errors.ClientLocation && (
-                        <span className="error">{errors.ClientLocation}</span>
+                        <span className="error ms-1">
+                          {errors.ClientLocation}
+                        </span>
                       )}
                     </div>
                   </div>

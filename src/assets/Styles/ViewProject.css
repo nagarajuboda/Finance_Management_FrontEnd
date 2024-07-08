@@ -97,3 +97,18 @@ textarea {
   width: 100%;
   table-layout: fixed;
 }
+
+.project-employee {
+  background-color: yellow; /* Change this to your desired color */
+}
+.getallEmployee tr td {
+  padding: 5px 11px;
+}
+
+.getallEmployee tr .selected {
+  background-color: blueviolet;
+}
+
+.getallEmployee tr .selected-row {
+  background-color: aqua;
+}
