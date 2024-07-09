@@ -39,6 +39,13 @@ const AdminDashboardServices = {
     console.log(response, "service response");
     return response.data;
   },
+  async DeleteEmployeefcn(id, projectid) {
+    const response = await axios.delete(
+      `https://localhost:44305/api/Projects/DeleteProjectEmployee?id=${id}&projectID=${projectid}`
+    );
+
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;

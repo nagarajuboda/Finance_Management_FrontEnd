@@ -6,6 +6,9 @@ import "react-circular-progressbar/dist/styles.css";
 import "../../assets/Styles/ViewProject.css";
 import $ from "jquery";
 import { ToastContainer, toast } from "react-toastify";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import "datatables.net";
 import { IoArrowBackCircle } from "react-icons/io5";
@@ -13,7 +16,6 @@ import Modal from "react-bootstrap/Modal";
 import { IoMdAddCircle } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
-
 export function ViewProject() {
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
@@ -21,6 +23,7 @@ export function ViewProject() {
   const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
   const [activeRow, setActiveRow] = useState(null);
+  const [fetchstate, Setfetchstate] = useState(false);
 
   const [Employeeids, setIds] = useState([]);
 
@@ -36,7 +39,7 @@ export function ViewProject() {
   const id = localStorage.getItem("projectId");
   useEffect(() => {
     FetchData();
-  }, [id]);
+  }, [id, fetchstate]);
 
   async function FetchData() {
     var response1 = await AdminDashboardServices.fcngetEmployees();
@@ -67,24 +70,15 @@ export function ViewProject() {
 
   console.log(GetAllemployees, "Get all employess");
   console.log(projectEmployess, "project Employee");
+
   useEffect(() => {
     if (dataReady) {
-      $("#example").DataTable({
+      const table = $("#example11").DataTable({
         destroy: true,
-        data: projectEmployess,
-        columns: [
-          { data: "employee.employeeId" },
-          // { data: "employee.firstName" },
-          {
-            render: (data, type, row) =>
-              `${row.employee.firstName} ${row.employee.lastName}`,
-            title: "Employee Name",
-          },
-          { data: "employee.email" },
-          { data: "project.projectName" },
-          { data: "employee.dateOfJoining" },
-        ],
       });
+      return () => {
+        table.destroy();
+      };
     }
   }, [dataReady]);
 
@@ -175,6 +169,36 @@ export function ViewProject() {
       return newSelectedRowIds;
     });
   };
+  async function handleDelete(id, projectid) {
+    console.log("deletebtn clicked", id, projectid);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      var response = await AdminDashboardServices.DeleteEmployeefcn(
+        id,
+        projectid
+      );
+      console.log(response, "delete  api response");
+      if (response.isSuccess) {
+        if (result.isConfirmed) {
+          console.log("confirm");
+          Swal.fire({
+            title: "Deleted!",
+            text: "Employee has been successfully deleted.",
+            icon: "success",
+          }).then(async () => {
+            await FetchData();
+          });
+        }
+      }
+    });
+  }
 
   return (
     <div>
@@ -325,7 +349,7 @@ export function ViewProject() {
           </div>
           <div>
             <table
-              id="example"
+              id="example11"
               className="table table-striped"
               style={{ width: "100%" }}
             >
@@ -336,6 +360,7 @@ export function ViewProject() {
                   <th>Email</th>
                   <th>Project Name</th>
                   <th>Date Of Joining</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -348,6 +373,17 @@ export function ViewProject() {
                       <td>{obj.employee.email}</td>
                       <td>{obj.project.projectName}</td>
                       <td>{obj.employee.dateOfJoining}</td>
+                      <td>
+                        <RiDeleteBin6Line
+                          onClick={() =>
+                            handleDelete(obj.employee.id, obj.project.id)
+                          }
+                          style={{
+                            cursor: "pointer",
+                            display: "flex",
+                          }}
+                        />
+                      </td>
                     </tr>
                   );
                 })}
