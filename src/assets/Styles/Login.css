@@ -36,7 +36,7 @@ body {
   margin-bottom: 10px;
 }
 
-#welcome {
+.Welcome {
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   font-size: 25px;
@@ -60,11 +60,13 @@ body {
   flex-direction: column;
 }
 
-.inputLabel{
+.labelField{
   font-family: 'Quicksand', sans-serif;
+  color: #17252A;
   text-align: left;
   font-weight: 600;
   margin-bottom: 5px;
+  display: block;
 }
 
 .inputField {

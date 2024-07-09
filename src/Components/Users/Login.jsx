@@ -45,36 +45,103 @@ const Home = () => {
     }
   }
 
-  async function onGetOtpClick(e) {
-    e.preventDefault();
-    console.log("Get OTP Button clicked");
-    var obj = { email };
-    try {
-      var responses=await axios.post("https://localhost:44305/api/Auth/get-otp", obj);
-      var result = await responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-     if (result.isSuccess)
-      {
-        toast.success("OTP sent successfully.", { position: "top-right", autoClose: 4000 });
-        setView('verifyOtp');
-      } 
-      else
-      {
-        toast.error("Please enter a valid email.", { position: "top-right", autoClose: 4000 });
-      }
-     
-    } catch (error) {
-      console.error("Error getting OTP:", error);
-      toast.error("Failed to get OTP. Please try again.", { position: "top-right", autoClose: 4000 });
+  const [values, setValues] = useState({
+    Email: "",
+  });
+  const [errorss, setErrors] = useState({
+    Email: "",
+  });
+
+  const handleChange1 = (e) => {
+    const { name, value } = e.target;
+  
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    console.log(value);
+    setErrors({
+      ...errorss,
+      [name]: getotpValidation(name, value),
+    });
+  };
+
+async function getotpfunction(e){
+  e.preventDefault();
+  console.log(values.Email);
+  const newErrors = {
+    Email: getotpValidation("Email", values.Email),
+    
+  };
+  console.log(errorss.Email,"check error");
+  setErrors(newErrors);
+
+  const isValid = Object.values(newErrors).every((error) => error === "");
+    
+  if(!isValid){
+  var obj = {
+    Email:values.Email
+  };
+  var responses=await axios.post("https://localhost:44305/api/Auth/get-otp", obj);
+  var result = await responses.data;
+  console.log(result,"result");
+  console.log(responses, "response");
+  if (result.isSuccess)
+    {
+      toast.success("OTP sent successfully.", { position: "top-right", autoClose: 4000 });
+      setView('verifyOtp');
+    } 
+    else
+    {
+      toast.error("Please enter a valid email.", { position: "top-right", autoClose: 4000 });
     }
+}
+  console.log("button is clicked");
+}
+function getotpValidation(name, value)
+{
+console.log(value,"clicked");
+  if (name === "Email") {
+    if (!value) return "Email is required";
+    if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
   }
+
+}
+
+const [otpValues, setOtpValues] = useState({
+  Otp: "",
+});
+const [otpErrors, setOtpErrors] = useState({
+  Otp: "",
+});
+
+const handleOtpChange = (e) => {
+  const { name, value } = e.target;
+
+  setOtpValues({
+    ...otpValues,
+    [name]: value,
+  });
+  console.log(value);
+  setOtpErrors({
+    ...otpErrors,
+    [name]: validateOtp(name, value),
+  });
+};
 
   async function onVerifyOtpClick(e) {
     e.preventDefault();
-    console.log("Verify OTP Button clicked");
-    var obj = { email, otp };
-    try {
+    console.log(otpValues.Otp);
+    const newErrors = {
+      Otp: validateOtp("Otp", otpValues.Otp),
+    };
+    console.log(otpErrors.Otp, "check error");
+    setOtpErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    if (!isValid){
+      console.log("Verify OTP Button clicked");
+      var obj = { email, otp };
       var responses = await axios.post("https://localhost:44305/api/Auth/verify-otp", obj);
       var result = await responses.data;
       console.log(responses, "response");
@@ -85,9 +152,14 @@ const Home = () => {
       } else {
         toast.error("Invalid OTP. Please try again.", { position: "top-right", autoClose: 4000 });
       }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      toast.error("Failed to verify OTP. Please try again.", { position: "top-right", autoClose: 4000 });
+    }
+  }
+
+  function validateOtp(name, value) {
+    console.log(value, "clicked");
+    if (name === "Otp") {
+      if (!value) return "OTP is required";
+      if (!/^\d{6}$/.test(value)) return "OTP is invalid";
     }
   }
 
@@ -123,6 +195,7 @@ const Home = () => {
   const renderLoginForm = () => (
     <div className="loginForm">
       <form onSubmit={handleSubmit(onLoginButtonClick)}>
+      <label className="labelField">Email Address<span className="asterisk">*</span></label>
         <input
           type="text"
           placeholder="Email Address"
@@ -132,6 +205,7 @@ const Home = () => {
         />
         {errors.email && <p className="validationError">{errors.email.message}</p>}
 
+        <label className="labelField">Password<span className="asterisk">*</span></label>
         <input
           type="password"
           placeholder="Password"
@@ -152,47 +226,82 @@ const Home = () => {
 
   const renderResetPasswordForm = () => (
     <div className="resetPasswordForm">
+      <form onSubmit={getotpfunction}>
+      <div className='welcomeMessage'>
+      <h2 className='Welcome'>Reset Password</h2>
+      <p className='Text'>Enter your email address to receive an OTP for resetting your password.</p>
+      </div>
+   
+      <label className="labelField">Email Address<span className="asterisk">*</span></label>
       <input
         type="text"
         placeholder="Email Address"
         className="inputField"
-        {...register('email', { required: 'Email is required' })}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={handleChange1}
+        name="Email"
+                        value={values.Email}
+        // {...register('email', { required: 'Email is required' })}
+        // onChange={(e) => setEmail(e.target.value)}
       />
-      {errors.email && <p className="validationError">{errors.email.message}</p>}
+      {errorss.Email && (
+          <span className="validationError">{errorss.Email}</span>
+        )}
+      {/* {errors.email && <p className="validationError">{errors.email.message}</p>} */}
 
-      <button className="loginButton" onClick={onGetOtpClick}>Get OTP</button>
+      <button className="loginButton">Get OTP</button>
       <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
+      </form>
+      
     </div>
   );
 
   const renderVerifyOtpForm = () => (
     <div className="verifyOtpForm">
+      <form onSubmit={onVerifyOtpClick}>
+      <div className='welcomeMessage'>
+      <h2 className='Welcome'>Verify OTP</h2>
+      <p className='Text'>Please enter the OTP sent to your email to verify your identity.</p>
+      </div>
+      
+      <label className="labelField">Enter OTP<span className="asterisk">*</span></label>
       <input
         type="text"
         placeholder="Enter OTP"
         className="inputField"
-        {...register('otp', { required: 'OTP is required' })}
-        onChange={(e) => setOtp(e.target.value)}
+        onChange={handleOtpChange}
+        name="Otp"
+          value={otpValues.Otp}
+        // {...register('otp', { required: 'OTP is required' })}
+        // onChange={(e) => setOtp(e.target.value)}
       />
-      {errors.otp && <p className="validationError">{errors.otp.message}</p>}
+      {/* {errors.otp && <p className="validationError">{errors.otp.message}</p>} */}
+      {otpErrors.Otp && (<span className="validationError">{otpErrors.Otp}</span>)}
 
-      <button className="loginButton" onClick={onVerifyOtpClick}>Verify OTP</button>
+      <button className="loginButton">Verify OTP</button>
       <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
+      </form>    
     </div>
   );
 
   const renderSetNewPasswordForm = () => (
     <div className="setNewPasswordForm">
+      <div className='welcomeMessage'>
+      <h2 className='Welcome'>Set New Password</h2>
+      <p className='Text'>Enter and confirm your new password to complete the reset process.</p>
+      </div>
+      
+      <label className="labelField">New Password<span className="asterisk">*</span></label>
       <input
         type="password"
         placeholder="New Password"
         className="inputField"
-        {...register('newPassword', { required: 'New password is required' })}
+        {...register('newPassword', { required: 'New password is required', pattern: {
+          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+          message: 'Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character'} })}
         onChange={(e) => setNewPassword(e.target.value)}
       />
       {errors.newPassword && <p className="validationError">{errors.newPassword.message}</p>}
-
+      <label className="labelField">Confirm Password<span className="asterisk">*</span></label>
       <input
         type="password"
         placeholder="Confirm Password"
@@ -223,8 +332,8 @@ const Home = () => {
 
       {view === 'login' && (
         <div className="welcomeMessage">
-          <div id='welcome'>Welcome back!</div>
-          <div className="Text">Please login using your account.</div>
+          <div className='Welcome'>Welcome back!</div>
+          <div className="Text">Please login using your email and password.</div>
         </div>
       )}
 
@@ -241,3 +350,5 @@ const Home = () => {
 };
 
 export default Home;
+
+
