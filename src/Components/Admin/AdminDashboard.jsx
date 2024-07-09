@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "../Dashboard";
@@ -31,3 +32,8 @@ export default function AdminDashboard() {
     </Sidebar>
   );
 }
+=======
+export default function AdminDashboard() {
+  return <div>AdminDashboard</div>;
+}
+>>>>>>> Login
