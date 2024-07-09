@@ -5,408 +5,681 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "../../assets/Styles/ViewProject.css";
 import $ from "jquery";
+import { ToastContainer, toast } from "react-toastify";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 import "datatables.net";
-
 import { IoArrowBackCircle } from "react-icons/io5";
 import Modal from "react-bootstrap/Modal";
-
+import { IoMdAddCircle } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
 export function ViewProject() {
-  //const { id } = useParams();
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
   const [show, setShow] = useState(false);
-  const [close, setclose] = useState(false);
+  const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const location = useLocation();
+  const [activeRow, setActiveRow] = useState(null);
+  const [fetchstate, Setfetchstate] = useState(false);
+
+  const [Employeeids, setIds] = useState([]);
+
+  const [ProjectValues, setProjectValues] = useState({});
+  const [clientvalues, setClientValues] = useState({});
   const [dataReady, setDataReady] = useState(false);
-  const [projectmanager, setProjectmanager] = useState("");
-  const { id } = location.state || {};
-  var navigate = useNavigate();
+  const [GetAllemployees, setEmployees] = useState([]);
+  const [selectedRowIds, setSelectedRowIds] = useState([]);
+
+  const navigate = useNavigate();
   const percentage = 66;
 
+  const id = localStorage.getItem("projectId");
   useEffect(() => {
-    console.log(id, "id");
-    async function FetchData() {
-      var response = await axios.get(
-        `https://localhost:44305/api/Projects/GetProject?id=${id}`
-      );
-      var result = response.data;
-      if (result.isSuccess === true) {
-        setProjectEmployees(result.item.employeeProject);
-        setresponse(result.item.project);
-        setProjectmanager(result.item.projectManager);
-        setDataReady(true);
-      }
-    }
-
     FetchData();
-  }, [id]);
+  }, [id, fetchstate]);
+
+  async function FetchData() {
+    var response1 = await AdminDashboardServices.fcngetEmployees();
+    console.log(response1, "getall Employees api");
+    setEmployees(response1.item);
+    var response = await axios.get(
+      `https://localhost:44305/api/Projects/GetProject?id=${id}`
+    );
+    var result = response.data;
+    console.log(result, "All Project Employees");
+    if (result.isSuccess === true) {
+      setProjectEmployees(result.item.employeeProject);
+      setresponse(result.item.project);
+      setClientValues(result.item.client);
+
+      setProjectValues(result.item.project);
+      setDataReady(true);
+    }
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProjectValues({
+      ...ProjectValues,
+      [name]: value,
+    });
+  };
+
+  console.log(GetAllemployees, "Get all employess");
+  console.log(projectEmployess, "project Employee");
 
   useEffect(() => {
     if (dataReady) {
-      $("#example").DataTable();
+      const table = $("#example11").DataTable({
+        destroy: true,
+      });
+      return () => {
+        table.destroy();
+      };
     }
   }, [dataReady]);
+
+  useEffect(() => {
+    if (showw) {
+      const table = $("#example1").DataTable({
+        paging: false,
+        searching: true,
+        ordering: false,
+        info: false,
+        destroy: true,
+      });
+    }
+  }, [showw]);
+
   function backonclick(e) {
     e.preventDefault();
-
     navigate("/Dashboard/AllProjects");
   }
+
+  async function AddEmployeeSubmit(e) {
+    e.preventDefault();
+    const requestBody = [
+      {
+        employeeids: Employeeids,
+        id: id,
+      },
+    ];
+    var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
+
+    if (response.isSuccess) {
+      console.log("success");
+      toast.success("Successfully done. ", {
+        position: "top-right",
+        autoClose: "6000",
+      });
+      setShoww(false);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 4000);
+      FetchData();
+    }
+  }
+
+  const handleClick = () => {
+    setShoww(true);
+    GetAllemployees.map((el) => {
+      if (
+        projectEmployess.filter((proj) => proj.employee.id === el.employee.id)
+          .length > 0
+      ) {
+        el.employee.isAlreadyAdded = true;
+      } else {
+        el.employee.isAlreadyAdded = false;
+      }
+    });
+    console.log(GetAllemployees, "------------>");
+
+    console.log("link clicked");
+  };
+
+  const toggleIcon = (e, index, id) => {
+    setSelectedRowIds((prevSelectedRowIds) => {
+      let newSelectedRowIds;
+      if (id) {
+        if (!prevSelectedRowIds.includes(id)) {
+          newSelectedRowIds = [...prevSelectedRowIds, id];
+          console.log("Selected IDs after adding:", newSelectedRowIds);
+          console.log(Employeeids, "all ids");
+        } else {
+          newSelectedRowIds = prevSelectedRowIds.filter(
+            (selectedId) => selectedId !== id
+          );
+          console.log("Selected IDs after removing:", newSelectedRowIds);
+        }
+      } else {
+        const rowId = obj[index].id;
+        newSelectedRowIds = prevSelectedRowIds.filter(
+          (selectedId) => selectedId !== rowId
+        );
+        console.log("Selected IDs after removing:", newSelectedRowIds);
+      }
+
+      setIds(
+        newSelectedRowIds.map((selectedId) => ({ employeeid: selectedId }))
+      );
+
+      return newSelectedRowIds;
+    });
+  };
+  async function handleDelete(id, projectid) {
+    console.log("deletebtn clicked", id, projectid);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      var response = await AdminDashboardServices.DeleteEmployeefcn(
+        id,
+        projectid
+      );
+      console.log(response, "delete  api response");
+      if (response.isSuccess) {
+        if (result.isConfirmed) {
+          console.log("confirm");
+          Swal.fire({
+            title: "Deleted!",
+            text: "Employee has been successfully deleted.",
+            icon: "success",
+          }).then(async () => {
+            await FetchData();
+          });
+        }
+      }
+    });
+  }
+
   return (
     <div>
-      <div className=" d-flex" style={{ justifyContent: "space-between" }}>
-        <div className="d-flex">
-          <IoArrowBackCircle
-            style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-            onClick={backonclick}
-          />
-
-          <p style={{ fontSize: "20px" }} className="ms-1 ">
-            Back
-          </p>
-        </div>
-        <div>
-          <Link style={{ color: "#257a96" }} onClick={handleShow}>
-            Update
-          </Link>
-        </div>
-      </div>
-      <div className="headerCards">
-        <div className="card ProjectProgress">
-          <div className="ProjectProgress">
-            <p
-              style={{ color: "#196e8a", fontFamily: "Open Sans, sans-serif" }}
-            >
-              Project Progress
-            </p>
-            <p
-              style={{ color: "#196e8a", fontFamily: "Open Sans, sans-serif" }}
-            >
-              In Progress
+      <div>
+        <div className="d-flex" style={{ justifyContent: "space-between" }}>
+          <div className="d-flex">
+            <IoArrowBackCircle
+              style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+              onClick={backonclick}
+            />
+            <p style={{ fontSize: "20px" }} className="ms-1 ">
+              Back
             </p>
           </div>
-          <div className="progressbaranddates">
-            <div className="circularProgressbar">
-              <CircularProgressbar value={percentage} text={`${percentage}%`} />
-            </div>
-            <div className="startdatediv">
-              <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
-                Start Date
-              </p>
-              <p style={{ marginBottom: "0px", fontWeight: "600" }}>
-                {Projectresponse.startDate}
-              </p>
-            </div>
-            <div>
-              <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>Dealine</p>
+          <div>
+            <Link style={{ color: "#257a96" }} onClick={() => setShow(true)}>
+              Update
+            </Link>
+          </div>
+        </div>
+        <div className="headerCards">
+          <div className="card ProjectProgress">
+            <div className="ProjectProgress">
               <p
                 style={{
-                  marginBottom: "0px",
-                  fontWeight: "600",
+                  color: "#196e8a",
                   fontFamily: "Open Sans, sans-serif",
                 }}
               >
-                {Projectresponse.endDate}
+                Project Progress
+              </p>
+              <p
+                style={{
+                  color: "#196e8a",
+                  fontFamily: "Open Sans, sans-serif",
+                }}
+              >
+                In Progress
               </p>
             </div>
+            <div className="progressbaranddates">
+              <div className="circularProgressbar">
+                <CircularProgressbar
+                  value={percentage}
+                  text={`${percentage}%`}
+                />
+              </div>
+              <div className="startdatediv">
+                <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
+                  Start Date
+                </p>
+                <p style={{ marginBottom: "0px", fontWeight: "600" }}>
+                  {Projectresponse.startDate}
+                </p>
+              </div>
+              <div>
+                <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
+                  Deadline
+                </p>
+                <p
+                  style={{
+                    marginBottom: "0px",
+                    fontWeight: "600",
+                    fontFamily: "Open Sans, sans-serif",
+                  }}
+                >
+                  {Projectresponse.endDate}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="card ms-3">
-          <div className="">
-            <p
-              style={{ color: "#196e8a", fontFamily: "Open Sans, sans-serif" }}
-            >
-              Project Manager
-            </p>
+          <div className="card ms-3">
+            <div>
+              <p
+                style={{
+                  color: "#196e8a",
+                  fontFamily: "Open Sans, sans-serif",
+                }}
+              >
+                Project Manager
+              </p>
+            </div>
+            <div className="ProjectMangerProfile d-flex">
+              <div className="d-flex">
+                <div>
+                  <p style={{ marginBottom: "0px", fontWeight: "400" }}>
+                    {Projectresponse.projectManager}
+                  </p>
+                  <p style={{ marginBottom: "0px", fontWeight: "400" }}>
+                    {Projectresponse.clientEmail}
+                  </p>
+                </div>
+              </div>
+              <div className="addlead">
+                <Link>Change Manager</Link>
+              </div>
+            </div>
           </div>
-          <div className="ProjectMangerProfile d-flex">
+          <div className="card ms-3">
+            <div>
+              <p
+                style={{
+                  color: "#196e8a",
+                  fontFamily: "Open Sans, sans-serif",
+                }}
+              >
+                Client
+              </p>
+            </div>
             <div className="d-flex">
-              {/* <img src={oneimage} alt="not found" className="Pimage" /> */}
-              <div className="">
+              <div>
                 <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                  {Projectresponse.projectManager}
+                  {clientvalues.clientName}
                 </p>
                 <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                  {Projectresponse.clientEmail}
+                  {clientvalues.clientEmailId}
                 </p>
               </div>
             </div>
-            <div className="addlead">
-              <Link>Change Manager</Link>
-            </div>
           </div>
         </div>
-        <div className="card ms-3">
+        <div className="card Projectdescription mt-4">
           <div>
-            <p
-              style={{ color: "#196e8a", fontFamily: "Open Sans, sans-serif" }}
-            >
-              Client
+            <p className="description">Project Details</p>
+          </div>
+          <div className="descriptioncontent mt-3">
+            <p style={{ marginBottom: "0px", fontWeight: "400" }}>
+              {Projectresponse.description}
             </p>
           </div>
-          <div className="d-flex">
-            {/* <img src={oneimage} alt="not found" className="Pimage" /> */}
-            <div className="">
-              <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                {Projectresponse.projectManager}
-              </p>
-              <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                {Projectresponse.clientEmail}
-              </p>
-            </div>
+        </div>
+
+        <div className="card my-3 mt-4 employeeDetails d-flex justify-content-between">
+          <div className="mb-4 workingemployee">
+            <p
+              className="projectTeam"
+              style={{
+                color: "#196e8a",
+                fontFamily: "Open Sans, sans-serif",
+                marginBottom: "0px",
+              }}
+            >
+              Project Team
+            </p>
+            <Link onClick={handleClick}>
+              <p> Add Employee</p>
+            </Link>
+          </div>
+          <div>
+            <table
+              id="example11"
+              className="table table-striped"
+              style={{ width: "100%" }}
+            >
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Project Name</th>
+                  <th>Date Of Joining</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {projectEmployess.map((obj, index) => {
+                  return (
+                    <tr key={index}>
+                      {console.log(obj.project.projectName, "projectName")}
+                      <td>{obj.employee.employeeId}</td>
+                      <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                      <td>{obj.employee.email}</td>
+                      <td>{obj.project.projectName}</td>
+                      <td>{obj.employee.dateOfJoining}</td>
+                      <td>
+                        <RiDeleteBin6Line
+                          onClick={() =>
+                            handleDelete(obj.employee.id, obj.project.id)
+                          }
+                          style={{
+                            cursor: "pointer",
+                            display: "flex",
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-      <div className="card Projectdescription mt-4">
-        <div className="">
-          <p className="description">Project Details</p>
-        </div>
-        <div className="descriptioncontent mt-3">
-          <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-            Bahubali is a grand epic set in the ancient kingdom of Mahishmati,
-            revolving around two brothers, Amarendra Bahubali and Bhallaladeva,
-            vying for the throne. Raised as orphans, both are trained as
-            warriors, but while Bahubali is noble and compassionate,
-            Bhallaladeva is power-hungry and ruthless. Bahubali wins the throne
-            but renounces it for love, leading to his betrayal and murder by
-            Bhallaladeva. Years later, Bahubali's son, Mahendra, rises to avenge
-            his father's death and reclaim the kingdom. The story showcases
-            themes of honor, sacrifice, and the triumph of good over evil.
-          </p>
-        </div>
-      </div>
-      <div className="card mt-4 employeeDetails">
-        <div className="mb-4">
-          <p
-            style={{
-              color: "#196e8a",
-              fontFamily: "Open Sans, sans-serif",
-              marginBottom: "0px",
-            }}
+
+        <Modal
+          size="lg"
+          show={show}
+          onHide={() => setShow(false)}
+          animation={false}
+          aria-labelledby="example-modal-sizes-title-lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              Update Project
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="modelbody">
+            <form>
+              <div className="row" style={{ margin: "0", width: "100%" }}>
+                <div className="col-4">
+                  <span className="ms-1">ProjectID</span>
+                  <input
+                    type="text"
+                    name="projectID"
+                    value={ProjectValues.projectID}
+                    className="form-control"
+                    onChange={handleInputChange}
+                    readOnly
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Project Name</span>
+                  <input
+                    type="text"
+                    name="projectName"
+                    value={ProjectValues.projectName}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Start Date</span>
+                  <input
+                    type="text"
+                    name="startDate"
+                    value={ProjectValues.startDate}
+                    className="form-control"
+                    onChange={handleInputChange}
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div className="row" style={{ margin: "0", width: "100%" }}>
+                <div className="col-4">
+                  <span className="ms-1">End Date</span>
+                  <input
+                    type="text"
+                    name="endDate"
+                    value={ProjectValues.endDate}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Project Ref ID</span>
+                  <input
+                    type="text"
+                    name="projectRefId"
+                    value={ProjectValues.projectRefId}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Client Email</span>
+                  <input
+                    type="text"
+                    name="clientEmail"
+                    value={clientvalues.clientEmailId}
+                    className="form-control"
+                    onChange={handleInputChange}
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div className="row" style={{ margin: "0", width: "100%" }}>
+                <div className="col-4">
+                  <span className="ms-1">Project Type</span>
+                  <input
+                    type="text"
+                    name="projectType"
+                    value={ProjectValues.projectType}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Status</span>
+                  <input
+                    type="text"
+                    name="status"
+                    value={ProjectValues.status}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span className="ms-1">Progress</span>
+                  <input
+                    type="text"
+                    name="progress"
+                    value={ProjectValues.progress}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="row" style={{ margin: "0", width: "100%" }}>
+                <div className="col-4">
+                  <span>Team Size</span>
+                  <input
+                    type="text"
+                    name="teamSize"
+                    value={ProjectValues.teamSize}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span>Project Manager</span>
+                  <input
+                    type="text"
+                    name="projectManager"
+                    value={ProjectValues.projectManager}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-4">
+                  <span>Created Date</span>
+                  <input
+                    type="date"
+                    name="createdDate"
+                    value={ProjectValues.createdDate}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+              <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
+                <div className="col-4">
+                  <span>Updated Date</span>
+                  <input
+                    type="date"
+                    name="updatedDate"
+                    value={ProjectValues.updatedDate}
+                    className="form-control"
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="col-8">
+                  <span>Project Description</span>
+                  <textarea
+                    className="form-control textareas"
+                    name="description"
+                    value={ProjectValues.description}
+                    onChange={handleInputChange}
+                  ></textarea>
+                </div>
+                {/* <div className="col-4"></div> */}
+              </div>
+              <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
+                <div className="col-8"></div>
+                <div className="col-2">
+                  <button
+                    type="button"
+                    className="form-control closebutton"
+                    onClick={() => setShow(false)}
+                    style={{
+                      borderRadius: "8px",
+                      backgroundColor: "red",
+                      color: "white",
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="col-2">
+                  <button
+                    type="submit"
+                    className="form-control updatebtn"
+                    style={{
+                      borderRadius: "8px",
+                      backgroundColor: "rgb(25, 110, 138)",
+                      color: "white",
+                    }}
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            </form>
+          </Modal.Body>
+        </Modal>
+        <Modal
+          size="lg"
+          show={showw}
+          animation={false}
+          onHide={() => setShoww(false)}
+          aria-labelledby="example-modal-sizes-title-lg"
+        >
+          <Modal.Header
+            closeButton
+            style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
           >
-            Working Employees
-          </p>
-        </div>
-        <div>
-          <table
-            id="example"
-            className="tableclasss table table-borderless w-0"
-          >
-            <thead>
-              <tr className="headerth">
-                <th></th>
-                <th>EmployeeId</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>ProjectId</th>
-                <th>DateOfJoining</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projectEmployess.map((employees, index) => {
-                <tr key={index}>
-                  <td>{employees.projectId}</td>
-                </tr>;
-              })}
-              {/* <tr>
-                <td></td>
-                <td>EmployeeId</td>
-                <td>FirstName</td>
-                <td>Client A</td>
-                <td>2024-07-01</td>
-                <td>50%</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Project Beta</td>
-                <td>Type B</td>
-                <td>Client B</td>
-                <td>2024-08-15</td>
-                <td>75%</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Project Gamma</td>
-                <td>Type C</td>
-                <td>Client C</td>
-                <td>2024-09-30</td>
-                <td>90%</td>
-                <td></td>
-              </tr> */}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        animation={false}
-        className="firstmodel"
-      >
-        <Modal.Header closeButton className="header">
-          <Modal.Title>Project Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modelbody">
-          <form>
-            <div className="row" style={{ margin: "0", width: "100%" }}>
-              <div className="col-4">
-                <span className="ms-1">ProjectID</span>
-                <input
-                  type="text"
-                  value={Projectresponse.projectID}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">projectName</span>
-                <input
-                  type="text"
-                  value={Projectresponse.projectName}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">StartDate</span>
-                <input
-                  type="text"
-                  value={Projectresponse.startDate}
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="row" style={{ margin: "0", width: "100%" }}>
-              <div className="col-4">
-                <span className="ms-1">EndDate</span>
-                <input
-                  type="text"
-                  value={Projectresponse.endDate}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">ProjectRefId</span>
-                <input
-                  type="text"
-                  value={Projectresponse.projectRefId}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">ClientEmail</span>
-                <input
-                  type="text"
-                  value={Projectresponse.clientEmail}
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="row " style={{ margin: "0", width: "100%" }}>
-              <div className="col-4">
-                <span className="ms-1">ProjectType</span>
-                <input
-                  type="text"
-                  value={Projectresponse.projectType}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">Status</span>
-                <input
-                  type="text"
-                  value={Projectresponse.status}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span className="ms-1">Progress</span>
-                <input
-                  type="text"
-                  value={Projectresponse.progress}
-                  className="form-control"
-                />
-              </div>
-            </div>
-            <div className="row m-0">
-              <div className="col-4">
-                <span>teamSize</span>
-                <input
-                  type="text"
-                  value={Projectresponse.teamSize}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span>teamSize</span>
-                <input
-                  type="text"
-                  value={Projectresponse.projectManager}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span>CreatedDate</span>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={Projectresponse.createdDate}
-                />
-              </div>
-            </div>
-            <div className="row m-0">
-              <div className="col-4">
-                <span>UpdatedDate</span>
-                <input
-                  type="date"
-                  value={Projectresponse.updatedDate}
-                  className="form-control"
-                />
-              </div>
-              <div className="col-4">
-                <span>Project Description</span>
-                <textarea
-                  className="form-control"
-                  name="Description"
-                  value={Projectresponse.description}
-                ></textarea>
-              </div>
-              <div className="col-4"></div>
-            </div>
-            <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
-              <div className="col-8"></div>
-              <div className="col-2">
-                <button
-                  type="submit"
-                  className="form-control closebutton"
-                  onClick={handleClose}
-                  style={{
-                    borderRadius: "8px",
-                    backgroundColor: "red",
-                    color: "white",
-                  }}
-                >
-                  close
-                </button>
-              </div>
-              <div className="col-2">
-                <button
-                  type="submit"
-                  className="form-control updatebtn"
-                  style={{
-                    borderRadius: "8px",
-                    backgroundColor: "rgb(25, 110, 138)",
-                    color: "white",
-                  }}
-                >
-                  Update
-                </button>
-              </div>
-            </div>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              Add Employees
+            </Modal.Title>
+          </Modal.Header>
+
+          <form onSubmit={AddEmployeeSubmit}>
+            <Modal.Body
+              // onHide={handleClose}
+              //show={show}
+              className=" econdmodel1 modelbodyyyy"
+            >
+              <table
+                id="example1"
+                className="table  tableclassss table table-borderless"
+                style={{ width: "100%" }}
+              >
+                <thead>
+                  <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Add</th>
+                  </tr>
+                </thead>
+                <tbody className="getallEmployee">
+                  {GetAllemployees.map((obj, index) => (
+                    <tr
+                      key={obj.employee.id}
+                      className={
+                        selectedRowIds.includes(obj.employee.id)
+                          ? "selected-row"
+                          : ""
+                      }
+                      style={{ margin: "0px" }}
+                    >
+                      <td>{obj.employee.employeeId}</td>
+                      <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                      <td>{obj.role.name}</td>
+                      <td style={{ width: "20px" }}>
+                        {selectedRowIds.includes(obj.employee.id) ? (
+                          <RxCross2
+                            onClick={(e) =>
+                              toggleIcon(e, index, obj.employee.id)
+                            }
+                            className="cancleemployee"
+                            style={{
+                              cursor: "pointer",
+                              color: "red",
+                            }}
+                          />
+                        ) : !obj.employee.isAlreadyAdded ? (
+                          <IoMdAddCircle
+                            onClick={(e) =>
+                              toggleIcon(e, index, obj.employee.id)
+                            }
+                            className="addemployeecircle"
+                            style={{ cursor: "pointer" }}
+                          />
+                        ) : null}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Modal.Body>
+            <Modal.Footer>
+              <button
+                className="form-control  btn btn-success "
+                style={{ borderRadius: "10px", width: "80px" }}
+              >
+                Save
+              </button>{" "}
+            </Modal.Footer>
           </form>
-        </Modal.Body>
-      </Modal>
+        </Modal>
+      </div>
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 }

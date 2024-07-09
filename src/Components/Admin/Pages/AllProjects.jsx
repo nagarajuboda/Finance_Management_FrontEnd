@@ -15,7 +15,9 @@ export default function AllProjects() {
 
   function viewClickfunction(e, index, id) {
     e.preventDefault();
-    navigate("/Dashboard/ViewProject", { state: { id } });
+    localStorage.setItem("projectId", id);
+    //navigate("/Dashboard/ViewProject", { state: { id } });
+    navigate("/Dashboard/ViewProject");
   }
 
   useEffect(() => {
@@ -25,6 +27,7 @@ export default function AllProjects() {
           "https://localhost:44305/api/Projects/GetAllProjects"
         );
         const result = response.data;
+        // setAllProjects(result.item);
         setAllProjects(result.item);
         setDataReady(true);
       } catch (error) {
@@ -54,16 +57,15 @@ export default function AllProjects() {
             Add New Project
           </Link>
         </div>
-        <table id="example" className="tableclasss table table-borderless w-0">
+        <table id="example" className="tableclasss table table-borderless ">
           <thead>
             <tr className="headerth">
-              <th></th>
               <th>Project Name</th>
-              <th className="heradercontenth">Project Type</th>
+              <th>Project Type</th>
               <th>Clients</th>
+              <th>Project Manager</th>
               <th>Due Date</th>
               <th>Progress</th>
-              <th></th>
             </tr>
           </thead>
           <tbody className="tboddycal">
@@ -71,28 +73,30 @@ export default function AllProjects() {
               <tr
                 key={index}
                 className="trclass"
-                onClick={(e) => viewClickfunction(e, index, project.id)}
+                onClick={(e) => viewClickfunction(e, index, project.project.id)}
               >
-                <td></td>
-                <td className="namefiend">{project.projectName}</td>
-                <td className="namefiend">{project.projectType}</td>
-                <td className="namefiend">
-                  <div className="clientimaeanem">
-                    <div>
-                      <p className="ms-2">Samantha William</p>
+                <td className="">{project.project.projectName}</td>
+                <td className="">{project.project.projectType}</td>
+                <td className="">
+                  {project.client && (
+                    <div className="">
+                      <div>
+                        <p className="">{project.client.clientName}</p>
+                      </div>
                     </div>
+                  )}
+                </td>
+                <td>{`${project.employee.firstName} ${project.employee.lastName}`}</td>
+                <td className="">{project.project.endDate}</td>
+                <td>
+                  <div className="progressdiv">
+                    <ProgressBar
+                      completed={project.project.progress}
+                      bgColor="green"
+                      animateOnRender={true}
+                    />
                   </div>
                 </td>
-                <td className="namefiend">{project.endDate}</td>
-                <td className="namefiend">
-                  <ProgressBar
-                    completed={project.progress}
-                    bgColor="green"
-                    animateOnRender={true}
-                    style={{ width: "20px" }}
-                  />
-                </td>
-                <td></td>
               </tr>
             ))}
           </tbody>
