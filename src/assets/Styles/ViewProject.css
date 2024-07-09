@@ -45,7 +45,9 @@
   right: 28%;
   background-color: rgb(217, 223, 225);
 }
-
+.btn-close {
+  color: white;
+}
 .closebtn {
   border-radius: 8px;
 }
@@ -58,4 +60,55 @@
 }
 .updatebtn {
   border-radius: 10px;
+}
+
+textarea {
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+.workingemployee {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.firstmodel1 .modal-content {
+  width: 600px;
+}
+.addemployeecircle {
+  font-size: 30px;
+  cursor: pointer;
+}
+.cancleemployee {
+  font-size: 30px;
+  cursor: pointer;
+}
+.modelbodyyyy {
+  max-height: 400px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.tableclassss {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.project-employee {
+  background-color: yellow; /* Change this to your desired color */
+}
+.getallEmployee tr td {
+  padding: 5px 11px;
+}
+
+.getallEmployee tr .selected {
+  background-color: blueviolet;
+}
+
+.getallEmployee tr .selected-row {
+  background-color: aqua;
 }

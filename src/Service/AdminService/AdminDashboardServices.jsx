@@ -24,6 +24,28 @@ const AdminDashboardServices = {
     );
     return response.data;
   },
+  async fcngetEmployees() {
+    var response = await axios.get(
+      "https://localhost:44305/api/Projects/GetEmployees"
+    );
+    return response.data;
+  },
+  async fcnAssignEmployee(obj) {
+    console.log("service obj", obj);
+    const response = await axios.post(
+      "https://localhost:44305/api/Projects/AssignEmployee",
+      obj
+    );
+    console.log(response, "service response");
+    return response.data;
+  },
+  async DeleteEmployeefcn(id, projectid) {
+    const response = await axios.delete(
+      `https://localhost:44305/api/Projects/DeleteProjectEmployee?id=${id}&projectID=${projectid}`
+    );
+
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;
