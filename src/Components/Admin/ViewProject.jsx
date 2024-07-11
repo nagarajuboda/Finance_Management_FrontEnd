@@ -22,7 +22,7 @@ export function ViewProject() {
   const [show, setShow] = useState(false);
   const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
-  const [activeRow, setActiveRow] = useState(null);
+  //const [activeRow, setActiveRow] = useState(null);
   const [fetchstate, Setfetchstate] = useState(false);
 
   const [Employeeids, setIds] = useState([]);
@@ -116,9 +116,6 @@ export function ViewProject() {
         autoClose: "6000",
       });
       setShoww(false);
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 4000);
       FetchData();
     }
   }
@@ -350,10 +347,10 @@ export function ViewProject() {
           <div>
             <table
               id="example11"
-              className="table table-striped"
+              className="table table-striped projectemployeetable"
               style={{ width: "100%" }}
             >
-              <thead>
+              <thead className="theadbackgroundcolor">
                 <tr>
                   <th>Employee ID</th>
                   <th>Name</th>
@@ -368,21 +365,22 @@ export function ViewProject() {
                   return (
                     <tr key={index}>
                       {console.log(obj.project.projectName, "projectName")}
-                      <td>{obj.employee.employeeId}</td>
+                      <td>
+                        <Link>{obj.employee.employeeId}</Link>
+                      </td>
                       <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
                       <td>{obj.employee.email}</td>
                       <td>{obj.project.projectName}</td>
                       <td>{obj.employee.dateOfJoining}</td>
                       <td>
-                        <RiDeleteBin6Line
-                          onClick={() =>
-                            handleDelete(obj.employee.id, obj.project.id)
-                          }
-                          style={{
-                            cursor: "pointer",
-                            display: "flex",
-                          }}
-                        />
+                        <div className="deleteicontd">
+                          <RiDeleteBin6Line
+                            className="deleteicon"
+                            onClick={() =>
+                              handleDelete(obj.employee.id, obj.project.id)
+                            }
+                          />
+                        </div>
                       </td>
                     </tr>
                   );
@@ -557,7 +555,6 @@ export function ViewProject() {
                     onChange={handleInputChange}
                   ></textarea>
                 </div>
-                {/* <div className="col-4"></div> */}
               </div>
               <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
                 <div className="col-8"></div>
@@ -609,11 +606,7 @@ export function ViewProject() {
           </Modal.Header>
 
           <form onSubmit={AddEmployeeSubmit}>
-            <Modal.Body
-              // onHide={handleClose}
-              //show={show}
-              className=" econdmodel1 modelbodyyyy"
-            >
+            <Modal.Body className=" econdmodel1 modelbodyyyy">
               <table
                 id="example1"
                 className="table  tableclassss table table-borderless"
@@ -628,43 +621,45 @@ export function ViewProject() {
                   </tr>
                 </thead>
                 <tbody className="getallEmployee">
-                  {GetAllemployees.map((obj, index) => (
-                    <tr
-                      key={obj.employee.id}
-                      className={
-                        selectedRowIds.includes(obj.employee.id)
-                          ? "selected-row"
-                          : ""
-                      }
-                      style={{ margin: "0px" }}
-                    >
-                      <td>{obj.employee.employeeId}</td>
-                      <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                      <td>{obj.role.name}</td>
-                      <td style={{ width: "20px" }}>
-                        {selectedRowIds.includes(obj.employee.id) ? (
-                          <RxCross2
-                            onClick={(e) =>
-                              toggleIcon(e, index, obj.employee.id)
-                            }
-                            className="cancleemployee"
-                            style={{
-                              cursor: "pointer",
-                              color: "red",
-                            }}
-                          />
-                        ) : !obj.employee.isAlreadyAdded ? (
-                          <IoMdAddCircle
-                            onClick={(e) =>
-                              toggleIcon(e, index, obj.employee.id)
-                            }
-                            className="addemployeecircle"
-                            style={{ cursor: "pointer" }}
-                          />
-                        ) : null}
-                      </td>
-                    </tr>
-                  ))}
+                  {GetAllemployees.map((obj, index) =>
+                    !obj.employee.isAlreadyAdded ? (
+                      <tr
+                        key={obj.employee.id}
+                        className={
+                          selectedRowIds.includes(obj.employee.id)
+                            ? "selected-row"
+                            : ""
+                        }
+                        style={{ margin: "0px" }}
+                      >
+                        <td>{obj.employee.employeeId}</td>
+                        <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td>{obj.role.name}</td>
+                        <td style={{ width: "20px" }}>
+                          {selectedRowIds.includes(obj.employee.id) ? (
+                            <RxCross2
+                              onClick={(e) =>
+                                toggleIcon(e, index, obj.employee.id)
+                              }
+                              className="cancleemployee"
+                              style={{
+                                cursor: "pointer",
+                                color: "red",
+                              }}
+                            />
+                          ) : (
+                            <IoMdAddCircle
+                              onClick={(e) =>
+                                toggleIcon(e, index, obj.employee.id)
+                              }
+                              className="addemployeecircle"
+                              style={{ cursor: "pointer" }}
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    ) : null
+                  )}
                 </tbody>
               </table>
             </Modal.Body>
@@ -674,9 +669,16 @@ export function ViewProject() {
                 style={{ borderRadius: "10px", width: "80px" }}
               >
                 Save
-              </button>{" "}
+              </button>
             </Modal.Footer>
           </form>
+          {/* <button
+            onClick={() => setShow(false)}
+            className="form-control  btn btn-dengerr "
+            style={{ borderRadius: "10px", width: "80px" }}
+          >
+            Close
+          </button> */}
         </Modal>
       </div>
       <ToastContainer position="top-end" autoClose={5000} />

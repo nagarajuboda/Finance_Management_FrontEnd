@@ -46,6 +46,13 @@ const AdminDashboardServices = {
 
     return response.data;
   },
+  async GetAllCurrency() {
+    const response = await axios.get(
+      "https://localhost:44305/api/Projects/GetCurrency"
+    );
+
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;
