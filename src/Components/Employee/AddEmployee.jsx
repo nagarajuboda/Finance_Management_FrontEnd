@@ -51,7 +51,7 @@ const AddEmployee = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:44305/api/employees', employee);
+            const response = await axios.post('https://localhost:44305/api/Employees', employee);
             alert('Employee added successfully!');
             setEmployee({
                 employeeId: '',
@@ -77,8 +77,7 @@ const AddEmployee = () => {
         <div className="add-employee-container">
             <div className="EmployeesHeader">
                  <div className='AddEmpHeader'>
-                     {/* <p className="contentallEmployee">Add Employee</p> */}
-                     <h3>Add Employee</h3>
+                     <h3 style={{color: "red"}}>Add Employee</h3>
                  </div>
                  <div>
                      <Link to ="/EmployeeDashboard">Back</Link>

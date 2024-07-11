@@ -24,6 +24,9 @@ export default function EmployeeDashboard() {
         <div >
           <Link to ="/AddEmployee">Add Employee</Link>
         </div>
+        <div >
+          <Link to ="/UpdateEmployee">Update Employee</Link>
+        </div>
       </div>
       <div>
         <table className="employees-table">

@@ -1,0 +1,65 @@
+.update-employee-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.fetch-employee {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.fetch-employee button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.fetch-employee button:hover {
+    background-color: #0056b3;
+}
+
+.update-employee-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.update-employee-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.update-employee-form input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.update-employee-form button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.update-employee-form button:hover {
+    background-color: #218838;
+}
+
+.error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: -8px;
+    margin-bottom: 10px;
+}
