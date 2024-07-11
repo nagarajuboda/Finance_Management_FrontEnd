@@ -25,11 +25,11 @@ export default function AddProject() {
   const [close, setclose] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [AllCurrency, SetAllCurrency] = useState([]);
 
   const [values, setValues] = useState({
     ClientName: "",
     ClientEmailId: "",
-    // file: "",
     ClientLocation: "",
     ReferenceName: "",
     ProjectID: "",
@@ -51,41 +51,31 @@ export default function AddProject() {
   const [errors, setErrors] = useState({
     ClientName: "",
     ClientEmailId: "",
-    // file: "",
     ClientLocation: "",
   });
   function backonclick(e) {
-    //navigate("/analytics/AllProjects");
     navigate("/Dashboard/AllProjects");
     console.log("btn clickes");
     e.preventDefault();
   }
   useEffect(() => {
-    // async function fetchData() {
-    //   try {
-    //     var response1 = await AdminDashboardServices.fcngetEmployees();
-
-    //     setEmployees(response1.item);
-    //     console.log(GetAllemployees, "getall Employees api");
-    //     var response = await AdminDashboardServices.FcnGetAllClients();
-    //     var result = response.item;
-    //     setClients(result);
-    //   } catch (error) {
-    //     console.error("Error fetching data:", error);
-    //   }
-    // }
     fetchData();
+    FetchCurrency();
     $(".select2").select2();
     $(".select2").on("change", function (e) {
       setSelectedProjectManager($(this).val());
     });
   }, []);
+  async function FetchCurrency() {
+    var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
+    SetAllCurrency(CurrencyResponse.item);
+    console.log(AllCurrency, "allcurrenct");
+  }
   async function fetchData() {
     try {
       var response1 = await AdminDashboardServices.fcngetEmployees();
 
       setEmployees(response1.item);
-      console.log(GetAllemployees, "getall Employees api");
       var response = await AdminDashboardServices.FcnGetAllClients();
       var result = response.item;
       setClients(result);
@@ -225,7 +215,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectID
+                    Project ID
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -241,7 +231,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectName
+                    Project Name
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -321,22 +311,33 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <span className="labless">Type of team</span>
+                  <label className="labless">
+                    Currency
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Enter Type Of team"
-                  className="form-control"
-                  name="departmentTeam"
-                  value={values.departmentTeam}
+                <select
+                  id="myList"
+                  className="form-control w-100"
+                  name="currencyType"
+                  value={values.currencyType}
                   onChange={handleChange}
-                />
+                >
+                  <option value="">Select Currency</option>
+                  {AllCurrency.map((currency) => (
+                    <option key={currency.id} value={currency.type}>
+                      <div>
+                        <span className="clientname">{currency.type}</span>
+                      </div>
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
-                  <span className="labless">ProjectRefId</span>
+                  <span className="labless">ProjectRef ID</span>
                 </div>
                 <input
                   type="text"
@@ -350,7 +351,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectType
+                    Project Type
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -380,14 +381,12 @@ export default function AddProject() {
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
-                <span className="labless">Assign ProjectManager</span>
+                <span className="labless">Project Manager</span>
                 <select
                   style={{ width: "100%" }}
                   className="form-control select2"
                   name="ProjectManager"
-                  //  value={selectedProjectManager}
                   value={values.ProjectManager}
-                  // onChange={(e) => setSelectedProjectManager(e.target.value)}
                   onChange={handleChange}
                 >
                   <option>Select</option>
@@ -403,24 +402,33 @@ export default function AddProject() {
               </div>
               <div className="col-4">
                 <div>
-                  <label className="labless">
-                    Type Of Currency
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
+                  <span className="labless">Team</span>
                 </div>
                 <input
                   type="text"
-                  placeholder="Enter Currency type"
+                  placeholder="Enter Type Of team"
                   className="form-control"
-                  name="currencyType"
-                  value={values.currencyType}
+                  name="departmentTeam"
+                  value={values.departmentTeam}
                   onChange={handleChange}
                 />
               </div>
-              <div className="col-4"></div>
+              <div className="col-4">
+                <div>
+                  <span className="labless">Team</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder="Enter Type Of team"
+                  className="form-control"
+                  name="departmentTeam"
+                  value={values.departmentTeam}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
             <div className="row m-0 mt-2">
-              <div className="col-12">
+              <div className="col-8">
                 <div>
                   <label className="labless">
                     Description
@@ -435,12 +443,11 @@ export default function AddProject() {
                   onChange={handleChange}
                 ></textarea>
               </div>
+              <div className="col-4"></div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-8"></div>
-              <div className="col-2">
-                {/* <button className="form-control addbutton">Add</button> */}
-              </div>
+              <div className="col-2"></div>
               <div className="col-2">
                 <button
                   className="form-control addbutton"

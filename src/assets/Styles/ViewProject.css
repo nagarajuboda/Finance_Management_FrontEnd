@@ -112,3 +112,11 @@ textarea {
 .getallEmployee tr .selected-row {
   background-color: aqua;
 }
+.deleteicon {
+  cursor: pointer;
+}
+.deleteicontd {
+  display: flex;
+  font-size: 18px;
+  justify-content: center;
+}
