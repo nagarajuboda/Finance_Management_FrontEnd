@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-export default function Login() {
-  return <div>Login</div>;
-}
-=======
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate } from 'react-router-dom';
@@ -146,7 +141,7 @@ const handleOtpChange = (e) => {
     const isValid = Object.values(newErrors).every((error) => error === "");
     if (!isValid){
       console.log("Verify OTP Button clicked");
-      var obj = { email, otp };
+      var obj = { Email:values.Email,Otp:otpValues.Otp };
       var responses = await axios.post("https://localhost:44305/api/Auth/verify-otp", obj);
       var result = await responses.data;
       console.log(responses, "response");
@@ -164,36 +159,80 @@ const handleOtpChange = (e) => {
     console.log(value, "clicked");
     if (name === "Otp") {
       if (!value) return "OTP is required";
-      if (!/^\d{6}$/.test(value)) return "OTP is invalid";
+      // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
     }
   }
 
+  // New password validation and handlers
+  const [passwordValues, setPasswordValues] = useState({
+    NewPassword: "",
+    ConfirmPassword: ""
+  });
+  const [passwordErrors, setPasswordErrors] = useState({
+    NewPassword: "",
+    ConfirmPassword: ""
+  });
+
+  const handlePasswordChange = (e) => {
+    const { name, value } = e.target;
+
+    setPasswordValues({
+      ...passwordValues,
+      [name]: value,
+    });
+    console.log(value);
+    setPasswordErrors({
+      ...passwordErrors,
+      [name]: validatePassword(name, value),
+    });
+  };
+
   async function onSetNewPasswordClick(e) {
     e.preventDefault();
-    console.log("Set New Password Button clicked");
+    console.log(passwordValues.NewPassword, passwordValues.ConfirmPassword);
+    const newErrors = {
+      NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
+      ConfirmPassword: validatePassword("ConfirmPassword", passwordValues.ConfirmPassword)
+    };
+    console.log(passwordErrors, "check error");
+    setPasswordErrors(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match.", { position: "top-right", autoClose: 4000 });
       return;
     }
-    var obj = { email, otp, newPassword };
-    try {
-      var responses=await axios.post("https://localhost:44305/api/Auth/update-password", obj);
-      var result=responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-      if(result.isSuccess)
-        {
-          toast.success("Password updated successfully.", { position: "top-right", autoClose: 4000 });
-          setView('login');
-        }
-      else
-      {
-        toast.error("Failed to update password.", { position: "top-right", autoClose: 4000 });
-      }
+    if(!isValid){
+      console.log("Set New Password Button clicked");
+      var obj = { Email:values.Email, Otp:otpValues.Otp,NewPassword: passwordValues.NewPassword};
     
-    } catch (error) {
-      console.error("Error updating password:", error);
-      toast.error("Failed to update password. Please try again.", { position: "top-right", autoClose: 4000 });
+        var responses=await axios.post("https://localhost:44305/api/Auth/update-password", obj);
+        var result=responses.data;
+        console.log(responses, "response");
+        console.log(result, "result");
+        if(result.isSuccess)
+          {
+            toast.success("Password updated successfully.", { position: "top-right", autoClose: 4000 });
+            setView('login');
+          }
+        else
+        {
+          toast.error("Failed to update password.", { position: "top-right", autoClose: 4000 });
+        }
+    }
+    
+  }
+
+  function validatePassword(name, value) {
+    console.log(value, "clicked");
+    if (name === "NewPassword") {
+      if (!value) return "New password is required";
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value))
+        return "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character";
+    }
+    if (name === "ConfirmPassword") {
+      if (!value) return "Confirm password is required";
+      if (value !== passwordValues.NewPassword) return "Passwords should match";
     }
   }
 
@@ -245,13 +284,11 @@ const handleOtpChange = (e) => {
         onChange={handleChange1}
         name="Email"
                         value={values.Email}
-        // {...register('email', { required: 'Email is required' })}
-        // onChange={(e) => setEmail(e.target.value)}
+       
       />
       {errorss.Email && (
           <span className="validationError">{errorss.Email}</span>
         )}
-      {/* {errors.email && <p className="validationError">{errors.email.message}</p>} */}
 
       <button className="loginButton">Get OTP</button>
       <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
@@ -276,10 +313,8 @@ const handleOtpChange = (e) => {
         onChange={handleOtpChange}
         name="Otp"
           value={otpValues.Otp}
-        // {...register('otp', { required: 'OTP is required' })}
-        // onChange={(e) => setOtp(e.target.value)}
+       
       />
-      {/* {errors.otp && <p className="validationError">{errors.otp.message}</p>} */}
       {otpErrors.Otp && (<span className="validationError">{otpErrors.Otp}</span>)}
 
       <button className="loginButton">Verify OTP</button>
@@ -290,6 +325,9 @@ const handleOtpChange = (e) => {
 
   const renderSetNewPasswordForm = () => (
     <div className="setNewPasswordForm">
+      <form onSubmit={onSetNewPasswordClick}>
+
+      </form>
       <div className='welcomeMessage'>
       <h2 className='Welcome'>Set New Password</h2>
       <p className='Text'>Enter and confirm your new password to complete the reset process.</p>
@@ -300,21 +338,21 @@ const handleOtpChange = (e) => {
         type="password"
         placeholder="New Password"
         className="inputField"
-        {...register('newPassword', { required: 'New password is required', pattern: {
-          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-          message: 'Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character'} })}
-        onChange={(e) => setNewPassword(e.target.value)}
+        name="NewPassword"
+        value={passwordValues.NewPassword}
+        onChange={handlePasswordChange}
       />
-      {errors.newPassword && <p className="validationError">{errors.newPassword.message}</p>}
+      {passwordErrors.NewPassword && <p className="validationError">{passwordErrors.NewPassword}</p>}
       <label className="labelField">Confirm Password<span className="asterisk">*</span></label>
       <input
         type="password"
         placeholder="Confirm Password"
         className="inputField"
-        {...register('confirmPassword', { required: 'Confirm password is required' })}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        name="ConfirmPassword"
+        value={passwordValues.ConfirmPassword}
+        onChange={handlePasswordChange}
       />
-      {errors.confirmPassword && <p className="validationError">{errors.confirmPassword.message}</p>}
+      {passwordErrors.ConfirmPassword && <p className="validationError">{passwordErrors.ConfirmPassword}</p>}
 
       <button className="loginButton" onClick={onSetNewPasswordClick}>Set New Password</button>
       <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
@@ -357,4 +395,3 @@ const handleOtpChange = (e) => {
 export default Home;
 
 
->>>>>>> Login
