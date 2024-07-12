@@ -47,7 +47,7 @@ const UpdateEmployee = () => {
 
     const handleFetchEmployee = async () => {
         try {
-            const response = await axios.get("https://localhost:44305/api/employees/${employee.employeeId}");
+            const response = await axios.get("https://localhost:44305/api/Employees/${employee.employeeId}");
             setEmployee(response.data);
             setFetchError('');
             setIsFetched(true);
@@ -67,7 +67,7 @@ const UpdateEmployee = () => {
         }
 
         try {
-            await axios.put("https://localhost:44305/api/employees/${employee.employeeId}", employee);
+            await axios.put("https://localhost:44305/api/Employees/${employee.employeeId}", employee);
             alert('Employee updated successfully!');
             setEmployee({
                 employeeId: '',
@@ -93,7 +93,7 @@ const UpdateEmployee = () => {
     return (
         <div className="update-employee-container">
             <div className="EmployeesHeader">
-                 <div className='AddEmpHeader'>
+                 <div className='UpdateEmpHeader'>
                      <h3 style={{color: "red"}}>Update Employee</h3>
                  </div>
                  <div>
@@ -105,13 +105,13 @@ const UpdateEmployee = () => {
                 <input
                     type="text"
                     name="employeeId"
-                    value={employee.employeeId}
+                    value={employee.Id}
                     onChange={handleChange}
                     placeholder="Enter Employee ID"
                     required
                 />
-                <button type="button" onClick={handleFetchEmployee}>Fetch Employee</button>
-                {fetchError && <p className="error">{fetchError}</p>}
+                <button type="button" onClick={handleFetchEmployee}>Fetch Employee</button><br/>
+                <b>{fetchError && <p className="error">{fetchError}</p>}</b>
             </div>
             {isFetched && (
                 <form onSubmit={handleSubmit} className="update-employee-form">

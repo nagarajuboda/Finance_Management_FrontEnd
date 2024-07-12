@@ -11,6 +11,7 @@ import { Route, Routes } from "react-router-dom";
 import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
 import AddEmployee from "../Components/Employee/AddEmployee";
 import UpdateEmployee from "../Components/Employee/UpdateEmployee";
+import DeleteEmployee from "../Components/Employee/DeleteEmployee";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -27,6 +28,7 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard/>}/>
         <Route path="/AddEmployee" element={<AddEmployee/>}/>
         <Route path="/UpdateEmployee" element={<UpdateEmployee/>}/>
+        <Route path="/DeleteEmployee" element={<DeleteEmployee/>}/>
       </Routes>
     </Sidebar>
   );

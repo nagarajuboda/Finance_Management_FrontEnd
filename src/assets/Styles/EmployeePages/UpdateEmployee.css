@@ -7,6 +7,13 @@
     background-color: #f9f9f9;
 }
 
+.UpdateEmpHeader
+{
+    color:#4CAF50;
+    display: flex;
+    justify-content: center;
+}
+
 .fetch-employee {
     display: flex;
     flex-direction: column;
@@ -58,8 +65,10 @@
 }
 
 .error {
-    color: red;
+    color: #243a4f;
     font-size: 0.875em;
     margin-top: -8px;
     margin-bottom: 10px;
+    text-align: center;
+    background-color: #E1F8DC;
 }

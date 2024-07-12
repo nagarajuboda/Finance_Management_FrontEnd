@@ -1,0 +1,57 @@
+.delete-employee-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+.DeleteEmpHeader
+{
+    color:#4CAF50;
+    display: flex;
+    justify-content: center;
+}
+.delete-employee {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.delete-employee button {
+    padding: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.delete-employee button:hover {
+    background-color: #c82333;
+}
+
+.delete-employee label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.delete-employee input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.message {
+    color: green;
+    font-size: 0.875em;
+    margin-top: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 10px;
+}

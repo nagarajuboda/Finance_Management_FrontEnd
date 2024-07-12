@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import '../../assets/Styles/EmployeePages/AddEmpStyle.css';
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+//const response = await axios.post("https://localhost:44305/api/Employees", employee);
 const AddEmployee = () => {
+    const defaultDate = new Date();
+    defaultDate.setHours(11, 0, 0, 0); // Set default time to 11:00 AM
+
     const [employee, setEmployee] = useState({
         employeeId: '',
         firstName: '',
@@ -11,7 +14,7 @@ const AddEmployee = () => {
         email: '',
         passwordHash: '',
         mobileNo: '',
-        dateOfJoining: '',
+        dateOfJoining: defaultDate.toISOString(), // Default date format: "YYYY-MM-DDTHH:MM:SS.000Z"
         projectManagerId: '',
         employeeStatus: '',
         skillSets: '',
@@ -26,24 +29,26 @@ const AddEmployee = () => {
             ...prevEmployee,
             [name]: value
         }));
+
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: value ? '' : prevErrors[name]
+        }));
     };
 
     const validate = () => {
-        let errors = {};
-
-        if (!employee.employeeId) errors.employeeId = 'Employee ID is required';
-        if (!employee.firstName) errors.firstName = 'First Name is required';
-        if (!employee.email) errors.email = 'Email is required';
-        if (!employee.passwordHash) errors.passwordHash = 'Password is required';
-        if (!employee.dateOfJoining) errors.dateOfJoining = 'Date of Joining is required';
-        if (!employee.roleId) errors.roleId = 'Role ID is required';
-
-        return errors;
+        const newErrors = {};
+        if (!employee.employeeId) newErrors.employeeId = 'Employee ID is required';
+        if (!employee.firstName) newErrors.firstName = 'First Name is required';
+        if (!employee.email) newErrors.email = 'Email is required';
+        if (!employee.passwordHash) newErrors.passwordHash = 'Password is required';
+        if (!employee.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
+        if (!employee.roleId) newErrors.roleId = 'Role ID is required';
+        return newErrors;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
@@ -51,7 +56,7 @@ const AddEmployee = () => {
         }
 
         try {
-            const response = await axios.post('https://localhost:44305/api/Employees', employee);
+            await axios.post("https://localhost:44305/api/Employees", employee);
             alert('Employee added successfully!');
             setEmployee({
                 employeeId: '',
@@ -60,7 +65,7 @@ const AddEmployee = () => {
                 email: '',
                 passwordHash: '',
                 mobileNo: '',
-                dateOfJoining: '',
+                dateOfJoining: defaultDate.toISOString(),
                 projectManagerId: '',
                 employeeStatus: '',
                 skillSets: '',
@@ -83,7 +88,7 @@ const AddEmployee = () => {
                      <Link to ="/EmployeeDashboard">Back</Link>
                  </div>
              </div>
-            <form onSubmit={handleSubmit} className="add-employee-form">
+             <form onSubmit={handleSubmit} className="add-employee-form">
                 <label>Employee ID</label>
                 <input
                     type="text"
@@ -91,8 +96,9 @@ const AddEmployee = () => {
                     value={employee.employeeId}
                     onChange={handleChange}
                     placeholder="Enter Employee ID"
+                    required
                 />
-                {errors.employeeId && <div className="error">{errors.employeeId}</div>}
+                {errors.employeeId && <p className="error">{errors.employeeId}</p>}
 
                 <label>First Name</label>
                 <input
@@ -101,8 +107,9 @@ const AddEmployee = () => {
                     value={employee.firstName}
                     onChange={handleChange}
                     placeholder="Enter First Name"
+                    required
                 />
-                {errors.firstName && <div className="error">{errors.firstName}</div>}
+                {errors.firstName && <p className="error">{errors.firstName}</p>}
 
                 <label>Last Name</label>
                 <input
@@ -120,8 +127,9 @@ const AddEmployee = () => {
                     value={employee.email}
                     onChange={handleChange}
                     placeholder="Enter Email"
+                    required
                 />
-                {errors.email && <div className="error">{errors.email}</div>}
+                {errors.email && <p className="error">{errors.email}</p>}
 
                 <label>Password</label>
                 <input
@@ -130,8 +138,9 @@ const AddEmployee = () => {
                     value={employee.passwordHash}
                     onChange={handleChange}
                     placeholder="Enter Password"
+                    required
                 />
-                {errors.passwordHash && <div className="error">{errors.passwordHash}</div>}
+                {errors.passwordHash && <p className="error">{errors.passwordHash}</p>}
 
                 <label>Mobile No</label>
                 <input
@@ -144,12 +153,13 @@ const AddEmployee = () => {
 
                 <label>Date of Joining</label>
                 <input
-                    type="date"
+                    type="datetime-local"
                     name="dateOfJoining"
-                    value={employee.dateOfJoining}
+                    value={employee.dateOfJoining.slice(0, 16)} // Truncate milliseconds and Z
                     onChange={handleChange}
+                    required
                 />
-                {errors.dateOfJoining && <div className="error">{errors.dateOfJoining}</div>}
+                {errors.dateOfJoining && <p className="error">{errors.dateOfJoining}</p>}
 
                 <label>Project Manager ID</label>
                 <input
@@ -185,8 +195,9 @@ const AddEmployee = () => {
                     value={employee.roleId}
                     onChange={handleChange}
                     placeholder="Enter Role ID"
+                    required
                 />
-                {errors.roleId && <div className="error">{errors.roleId}</div>}
+                {errors.roleId && <p className="error">{errors.roleId}</p>}
 
                 <button type="submit">Add Employee</button>
             </form>
