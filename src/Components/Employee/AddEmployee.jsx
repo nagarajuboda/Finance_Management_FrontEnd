@@ -4,21 +4,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 //const response = await axios.post("https://localhost:44305/api/Employees", employee);
 const AddEmployee = () => {
-    const defaultDate = new Date();
-    defaultDate.setHours(11, 0, 0, 0); // Set default time to 11:00 AM
-
     const [employee, setEmployee] = useState({
         employeeId: '',
         firstName: '',
         lastName: '',
         email: '',
-        passwordHash: '',
+        password: '',
         mobileNo: '',
-        dateOfJoining: defaultDate.toISOString(), // Default date format: "YYYY-MM-DDTHH:MM:SS.000Z"
-        projectManagerId: '',
+        dateOfJoining: '',
+        projectManagerName: '',
         employeeStatus: '',
         skillSets: '',
-        roleId: ''
+        roleId: '',
+        roleName: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -41,7 +39,7 @@ const AddEmployee = () => {
         if (!employee.employeeId) newErrors.employeeId = 'Employee ID is required';
         if (!employee.firstName) newErrors.firstName = 'First Name is required';
         if (!employee.email) newErrors.email = 'Email is required';
-        if (!employee.passwordHash) newErrors.passwordHash = 'Password is required';
+        if (!employee.password) newErrors.password = 'Password is required';
         if (!employee.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
         if (!employee.roleId) newErrors.roleId = 'Role ID is required';
         return newErrors;
@@ -56,20 +54,21 @@ const AddEmployee = () => {
         }
 
         try {
-            await axios.post("https://localhost:44305/api/Employees", employee);
+            const response = await axios.post('https://localhost:44305/api/Employees', employee);
             alert('Employee added successfully!');
             setEmployee({
                 employeeId: '',
                 firstName: '',
                 lastName: '',
                 email: '',
-                passwordHash: '',
+                password: '',
                 mobileNo: '',
-                dateOfJoining: defaultDate.toISOString(),
-                projectManagerId: '',
+                dateOfJoining: '',
+                projectManagerName: '',
                 employeeStatus: '',
                 skillSets: '',
-                roleId: ''
+                roleId: '',
+                roleName: ''
             });
             setErrors({});
         } catch (error) {
@@ -134,13 +133,13 @@ const AddEmployee = () => {
                 <label>Password</label>
                 <input
                     type="password"
-                    name="passwordHash"
-                    value={employee.passwordHash}
+                    name="password"
+                    value={employee.password}
                     onChange={handleChange}
                     placeholder="Enter Password"
                     required
                 />
-                {errors.passwordHash && <p className="error">{errors.passwordHash}</p>}
+                {errors.password && <p className="error">{errors.password}</p>}
 
                 <label>Mobile No</label>
                 <input
@@ -155,19 +154,19 @@ const AddEmployee = () => {
                 <input
                     type="datetime-local"
                     name="dateOfJoining"
-                    value={employee.dateOfJoining.slice(0, 16)} // Truncate milliseconds and Z
+                    value={employee.dateOfJoining}
                     onChange={handleChange}
                     required
                 />
                 {errors.dateOfJoining && <p className="error">{errors.dateOfJoining}</p>}
 
-                <label>Project Manager ID</label>
+                <label>Project Manager Name</label>
                 <input
                     type="text"
-                    name="projectManagerId"
-                    value={employee.projectManagerId}
+                    name="projectManagerName"
+                    value={employee.projectManagerName}
                     onChange={handleChange}
-                    placeholder="Enter Project Manager ID"
+                    placeholder="Enter Project Manager Name"
                 />
 
                 <label>Status</label>
@@ -199,6 +198,14 @@ const AddEmployee = () => {
                 />
                 {errors.roleId && <p className="error">{errors.roleId}</p>}
 
+                <label>Role Name</label>
+                <input
+                    type="text"
+                    name="roleName"
+                    value={employee.roleName}
+                    onChange={handleChange}
+                    placeholder="Enter Role Name"
+                />
                 <button type="submit">Add Employee</button>
             </form>
         </div>
