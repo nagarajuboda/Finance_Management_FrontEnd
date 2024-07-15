@@ -41,7 +41,6 @@ export default function AddProject() {
     ClientEmail: "",
     id: "",
     Description: "",
-
     EndDate: "",
     ProjectRefId: "",
     ProjectType: "",
