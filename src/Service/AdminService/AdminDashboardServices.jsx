@@ -53,6 +53,23 @@ const AdminDashboardServices = {
 
     return response.data;
   },
+  async GetAllDepartments() {
+    const response = await axios.get(
+      "https://localhost:44305/api/Projects/Departments"
+    );
+
+    return response.data;
+  },
+  async GetDepartmentTeams(deptId) {
+    const baseUrl = "https://localhost:44305/api/Projects";
+    const response = await axios.get(`${baseUrl}/DepartmentTeams`, {
+      params: {
+        deptid: deptId,
+      },
+    });
+
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;

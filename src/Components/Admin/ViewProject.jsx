@@ -54,7 +54,6 @@ export function ViewProject() {
       setProjectEmployees(result.item.employeeProject);
       setresponse(result.item.project);
       setClientValues(result.item.client);
-
       setProjectValues(result.item.project);
       setDataReady(true);
     }
@@ -71,16 +70,19 @@ export function ViewProject() {
   console.log(GetAllemployees, "Get all employess");
   console.log(projectEmployess, "project Employee");
 
-  useEffect(() => {
-    if (dataReady) {
-      const table = $("#example11").DataTable({
-        destroy: true,
-      });
-      return () => {
-        table.destroy();
-      };
-    }
-  }, [dataReady]);
+  useEffect(
+    (data) => {
+      if (dataReady) {
+        const table = $("#example11").DataTable({
+          destroy: true,
+        });
+        return () => {
+          table.destroy();
+        };
+      }
+    },
+    [dataReady]
+  );
 
   useEffect(() => {
     if (showw) {

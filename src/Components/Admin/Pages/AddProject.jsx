@@ -26,6 +26,8 @@ export default function AddProject() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [AllCurrency, SetAllCurrency] = useState([]);
+  const [AllDepartments, SetAllDepartments] = useState([]);
+  const [filteredTeams, setFilteredTeams] = useState([]);
 
   const [values, setValues] = useState({
     ClientName: "",
@@ -39,7 +41,6 @@ export default function AddProject() {
     ClientEmail: "",
     id: "",
     Description: "",
-
     EndDate: "",
     ProjectRefId: "",
     ProjectType: "",
@@ -70,6 +71,9 @@ export default function AddProject() {
     var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
     SetAllCurrency(CurrencyResponse.item);
     console.log(AllCurrency, "allcurrenct");
+    var getallDepartments = await AdminDashboardServices.GetAllDepartments();
+    SetAllDepartments(getallDepartments.item);
+    console.log(AllDepartments, "all departments");
   }
   async function fetchData() {
     try {
@@ -83,8 +87,26 @@ export default function AddProject() {
       console.error("Error fetching data:", error);
     }
   }
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
+    if (name === "Department") {
+      if (value === "") {
+        setFilteredTeams([]);
+        return;
+      }
+
+      const selectedDepartment = AllDepartments.find(
+        (dept) => dept.deptName === value
+      );
+      console.log(selectedDepartment, "selecteddeptid");
+
+      const response = await axios.get(
+        `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
+      );
+
+      console.log(response, "team response");
+      setFilteredTeams(response.data.item);
+    }
     setValues({
       ...values,
       [name]: value,
@@ -158,16 +180,18 @@ export default function AddProject() {
         currencyType: values.currencyType,
         Description: values.Description,
         clientId: null,
+        departmentTeam: null,
         StartDate: values.StartDate,
         EndDate: values.EndDate,
         ProjectRefId: values.ProjectRefId,
         ProjectType: values.ProjectType,
         Progress: values.Progress,
-        departmentTeam: values.departmentTeam,
         ProjectManager: values.ProjectManager,
       },
       clientemail: values.ClientEmail,
       ProjectManager: selectedProjectManager,
+      DepartmentTeam: values.departmentTeam,
+      Department: values.Department,
     };
     console.log(obj, "obj");
     var response = await AdminDashboardServices.fcnAddProject(obj);
@@ -400,31 +424,45 @@ export default function AddProject() {
                   ))}
                 </select>
               </div>
+
               <div className="col-4">
                 <div>
-                  <span className="labless">Team</span>
+                  <span className="labless">Department</span>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Enter Type Of team"
-                  className="form-control"
-                  name="departmentTeam"
-                  value={values.departmentTeam}
+                <select
+                  id="departmentList"
+                  className="form-control w-100"
+                  name="Department"
+                  value={values.Department}
                   onChange={handleChange}
-                />
+                >
+                  <option value="">Select Department</option>
+                  {AllDepartments.map((dept) => (
+                    <option key={dept.id} value={dept.deptName}>
+                      {dept.deptName}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <div className="col-4">
                 <div>
                   <span className="labless">Team</span>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Enter Type Of team"
-                  className="form-control"
+                <select
+                  id="teamList"
+                  className="form-control w-100"
                   name="departmentTeam"
-                  value={values.departmentTeam}
+                  value={values.Team}
                   onChange={handleChange}
-                />
+                >
+                  <option value="">Select Team</option>
+                  {filteredTeams.map((team) => (
+                    <option key={team.id} value={team.teamName}>
+                      {team.teamName}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="row m-0 mt-2">
