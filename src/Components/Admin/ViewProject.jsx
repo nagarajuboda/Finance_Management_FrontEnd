@@ -22,8 +22,6 @@ export function ViewProject() {
   const [show, setShow] = useState(false);
   const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
-  //const [activeRow, setActiveRow] = useState(null);
-  const [fetchstate, Setfetchstate] = useState(false);
 
   const [Employeeids, setIds] = useState([]);
 
@@ -32,6 +30,8 @@ export function ViewProject() {
   const [dataReady, setDataReady] = useState(false);
   const [GetAllemployees, setEmployees] = useState([]);
   const [selectedRowIds, setSelectedRowIds] = useState([]);
+  const [projectManagerEmail, setProjectMangerEmail] = useState("");
+  const [projectManagerName, setProjectMangerName] = useState("");
 
   const navigate = useNavigate();
   const percentage = 66;
@@ -39,7 +39,7 @@ export function ViewProject() {
   const id = localStorage.getItem("projectId");
   useEffect(() => {
     FetchData();
-  }, [id, fetchstate]);
+  }, [id]);
 
   async function FetchData() {
     var response1 = await AdminDashboardServices.fcngetEmployees();
@@ -49,12 +49,14 @@ export function ViewProject() {
       `https://localhost:44305/api/Projects/GetProject?id=${id}`
     );
     var result = response.data;
-    console.log(result, "All Project Employees");
+    console.log(result, "All  Employees");
     if (result.isSuccess === true) {
       setProjectEmployees(result.item.employeeProject);
       setresponse(result.item.project);
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
+      setProjectMangerEmail(result.item.projectManagerEmailID);
+      setProjectMangerName(result.item.projectManagerName);
       setDataReady(true);
     }
   }
@@ -67,22 +69,16 @@ export function ViewProject() {
     });
   };
 
-  console.log(GetAllemployees, "Get all employess");
-  console.log(projectEmployess, "project Employee");
-
-  useEffect(
-    (data) => {
-      if (dataReady) {
-        const table = $("#example11").DataTable({
-          destroy: true,
-        });
-        return () => {
-          table.destroy();
-        };
-      }
-    },
-    [dataReady]
-  );
+  useEffect(() => {
+    if (dataReady && projectEmployess.length > 0) {
+      const table = $("#example11").DataTable({
+        destroy: true,
+      });
+      return () => {
+        table.destroy();
+      };
+    }
+  }, [dataReady]);
 
   useEffect(() => {
     if (showw) {
@@ -145,20 +141,16 @@ export function ViewProject() {
       if (id) {
         if (!prevSelectedRowIds.includes(id)) {
           newSelectedRowIds = [...prevSelectedRowIds, id];
-          console.log("Selected IDs after adding:", newSelectedRowIds);
-          console.log(Employeeids, "all ids");
         } else {
           newSelectedRowIds = prevSelectedRowIds.filter(
             (selectedId) => selectedId !== id
           );
-          console.log("Selected IDs after removing:", newSelectedRowIds);
         }
       } else {
         const rowId = obj[index].id;
         newSelectedRowIds = prevSelectedRowIds.filter(
           (selectedId) => selectedId !== rowId
         );
-        console.log("Selected IDs after removing:", newSelectedRowIds);
       }
 
       setIds(
@@ -284,10 +276,10 @@ export function ViewProject() {
               <div className="d-flex">
                 <div>
                   <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                    {Projectresponse.projectManager}
+                    {projectManagerName}
                   </p>
                   <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                    {Projectresponse.clientEmail}
+                    {projectManagerEmail}
                   </p>
                 </div>
               </div>
@@ -363,30 +355,38 @@ export function ViewProject() {
                 </tr>
               </thead>
               <tbody>
-                {projectEmployess.map((obj, index) => {
-                  return (
-                    <tr key={index}>
-                      {console.log(obj.project.projectName, "projectName")}
-                      <td>
-                        <Link>{obj.employee.employeeId}</Link>
-                      </td>
-                      <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                      <td>{obj.employee.email}</td>
-                      <td>{obj.project.projectName}</td>
-                      <td>{obj.employee.dateOfJoining}</td>
-                      <td>
-                        <div className="deleteicontd">
-                          <RiDeleteBin6Line
-                            className="deleteicon"
-                            onClick={() =>
-                              handleDelete(obj.employee.id, obj.project.id)
-                            }
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {projectEmployess.length === 0 ? (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: "center" }}>
+                      No records in the table
+                    </td>
+                  </tr>
+                ) : (
+                  projectEmployess.map((obj, index) => {
+                    return (
+                      <tr key={index}>
+                        {console.log(obj.project.projectName, "projectName")}
+                        <td>
+                          <Link>{obj.employee.employeeId}</Link>
+                        </td>
+                        <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td>{obj.employee.email}</td>
+                        <td>{obj.project.projectName}</td>
+                        <td>{obj.employee.dateOfJoining}</td>
+                        <td>
+                          <div className="deleteicontd">
+                            <RiDeleteBin6Line
+                              className="deleteicon"
+                              onClick={() =>
+                                handleDelete(obj.employee.id, obj.project.id)
+                              }
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
