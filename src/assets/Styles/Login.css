@@ -7,7 +7,7 @@
 body {
   margin: 0;
   padding: 0;
-  background: url('src/assets/Images/Login3.jpg') no-repeat center center fixed;
+  background: url("src/assets/Images/Login3.jpg") no-repeat center center fixed;
   background-size: cover;
   display: flex;
   justify-content: flex-end; /* Align items to the right */
@@ -16,7 +16,7 @@ body {
 }
 
 .mainContainer {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.4);
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -37,18 +37,18 @@ body {
 }
 
 .Welcome {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-weight: 700;
   font-size: 25px;
-  color: #2B7A78;
+  color: #2b7a78;
   padding-bottom: 15px;
 }
 
 .Text {
-  color: #17252A;
+  color: #17252a;
   font-size: 16px;
   font-weight: 400;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   padding-bottom: 15px;
 }
 
@@ -60,9 +60,9 @@ body {
   flex-direction: column;
 }
 
-.labelField{
-  font-family: 'Quicksand', sans-serif;
-  color: #17252A;
+.labelField {
+  font-family: "Quicksand", sans-serif;
+  color: #17252a;
   text-align: left;
   font-weight: 600;
   margin-bottom: 5px;
@@ -72,24 +72,24 @@ body {
 .inputField {
   margin-bottom: 10px;
   padding: 15px;
-  border: 1px solid #CCCCCC;
+  border: 1px solid #cccccc;
   border-radius: 5px;
   width: 100%;
   max-width: 450px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .validationError {
   color: red;
   font-size: 14px;
   text-align: left;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   margin-bottom: 10px;
 }
 
 .loginButton {
   padding: 15px;
-  background-color: #3AAFA9;
+  background-color: #3aafa9;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -98,17 +98,17 @@ body {
   cursor: pointer;
   width: 100%;
   max-width: 450px;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .loginButton:hover {
   background-color: #acebea;
-  color: #3AAFA9;
+  color: #3aafa9;
   transition: background-color 0.3s ease;
 }
 
-.asterisk{
-  color:red;
+.asterisk {
+  color: red;
 }
 
 .forgotResetContainer {
@@ -117,23 +117,22 @@ body {
   margin-top: 20px;
 }
 
-.forgotPassword
-{
+.forgotPassword {
   font-size: 16px;
-  color: #17252A;
-  font-family: 'Quicksand', sans-serif;
+  color: #17252a;
+  font-family: "Quicksand", sans-serif;
 }
 .resetLink,
 .backToLogin {
   font-size: 16px;
   color: #237494;
   cursor: pointer;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
 }
 
 .resetLink:hover,
 .backToLogin:hover {
-  color:#9bbac0;
+  color: #9bbac0;
   text-decoration: underline;
   transition: color 0.3s ease;
 }
