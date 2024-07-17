@@ -6,9 +6,9 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<EmployeeRoutes />} />
         <Route path="/*" element={<AdminRoutes />} />
-        <Route path="/AdminDashboard" element={<AdminRoutes />} />
-        <Route path="/Employee" element={<EmployeeRoutes />} />
+        {/* <Route path="/Employee" element={<EmployeeRoutes />} /> */}
       </Routes>
     </Router>
   );

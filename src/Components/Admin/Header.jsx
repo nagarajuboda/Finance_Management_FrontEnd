@@ -1,26 +1,38 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaSearch,
-  FaSearchDollar,
   FaUserCircle,
-  FaFonticonsFi,
   FaBell,
   FaCog,
-  FaInbox,
   FaEnvelope,
   FaSignOutAlt,
 } from "react-icons/fa";
 
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
+  const [sessionData, setSessionData] = useState(null);
   const profileRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const data = localStorage.getItem("sessionData");
+    if (data) {
+      setSessionData(JSON.parse(data));
+    }
+  }, []);
+
+  function logoutonclick() {
+    debugger;
+    console.log("logout clicked");
+    var res = localStorage.removeItem("sessionData");
+    navigate("");
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if the clicked element is outside the profile popup or its content
       if (
         profileRef.current &&
         !profileRef.current.contains(event.target) &&
@@ -56,10 +68,6 @@ export default function Header() {
           </div>
         </div>
 
-        {/* <div className="col-2  settingandnotificationicons">
-          <FaBell className="NotificationIcon" />
-          <FaCog className="SettingsIcon" />
-        </div> */}
         <div className="col-4 d-flex profileicons">
           <FaBell className="NotificationIcon" />
           <FaCog className="SettingsIcon" />
@@ -92,7 +100,7 @@ export default function Header() {
                   className="cardProfile"
                 />
                 <div className="mt-2">
-                  <h6 className="mb-0">Franklin Jr.</h6>
+                  <h6 className="mb-0">{`${sessionData.employee.firstName} ${sessionData.employee.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
                       Super Admin
@@ -104,13 +112,12 @@ export default function Header() {
               <div className="cardbody ">
                 <div className="Carduser">
                   <FaUserCircle className="cardicons" />
-
                   <p className="popup-item ms-3"> Profile</p>
                 </div>
                 <div className="cardInbox">
                   <FaEnvelope className="cardicons" />
                   <p className="popup-item ms-3">
-                    <Link to="/Login">Inbox</Link>
+                    <Link to="/inbox">Inbox</Link>
                   </p>
                 </div>
                 <div className="cardSettings">
@@ -120,8 +127,12 @@ export default function Header() {
               </div>
               <hr className="hrtag" />
               <div className="cardfooter position-relative">
-                <FaSignOutAlt className=" Signouticon position-absolute" />
-                <button type="submit" className="form-control">
+                <FaSignOutAlt className="Signouticon position-absolute" />
+                <button
+                  type="button"
+                  className="form-control"
+                  onClick={logoutonclick}
+                >
                   Logout
                 </button>
               </div>
