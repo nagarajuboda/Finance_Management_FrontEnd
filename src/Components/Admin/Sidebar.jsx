@@ -9,7 +9,7 @@ import { BsCalendarDay } from "react-icons/bs";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
-
+import { useEffect } from "react";
 import { VscTasklist } from "react-icons/vsc";
 
 import {
@@ -33,6 +33,7 @@ import Header from "./Header";
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
+  const [sessionData, setSessionData] = useState(null);
 
   const toggle = () => {
     setIsOpen(!isOpen);
@@ -151,7 +152,7 @@ const Sidebar = ({ children }) => {
   ];
 
   return (
-    <div className="containers">
+    <div className="containers" style={{ width: "100vw" }}>
       <div style={{ width: isOpen ? "370px" : "80px" }} className="sidebar">
         <div className="top_section">
           <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
