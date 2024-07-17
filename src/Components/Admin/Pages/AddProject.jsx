@@ -52,7 +52,7 @@ export default function AddProject() {
     departmentTeam: "",
     ProjectManager: "",
   });
-  console.log(values.ProjectManager, "stsrtdata");
+
   const [errors, setErrors] = useState({
     ClientName: "",
     ClientEmailId: "",
@@ -71,8 +71,7 @@ export default function AddProject() {
     EndDate: "",
     StartDate: "",
   });
-  // console.log(selectedProjectManager, "sele email");
-  console.log(errorss, "errrofileds");
+
   function backonclick(e) {
     navigate("/Dashboard/AllProjects");
     e.preventDefault();
@@ -80,14 +79,13 @@ export default function AddProject() {
   useEffect(() => {
     fetchData();
     FetchCurrency();
-    debugger;
     // $(".select2").select2();
 
     // $(".select2").on("change", function (e) {
     //   setSelectedProjectManager($(this).val());
     // });
   }, []);
-  console.log(selectedProjectManager, "selectedprojectmanegrr");
+
   async function FetchCurrency() {
     var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
     SetAllCurrency(CurrencyResponse.item);
@@ -109,8 +107,7 @@ export default function AddProject() {
   }
   const handleChange = async (e) => {
     const { name, value } = e.target;
-    //console.log(values.cli, "projectmanager changes");
-    console.log(values.ProjectManager, "selected project manager");
+
     if (name === "Department") {
       if (value === "") {
         setFilteredTeams([]);
@@ -218,9 +215,7 @@ export default function AddProject() {
     };
     setErrorss(newErrors);
 
-    debugger;
     const isValid = Object.values(newErrors).every((error) => error === "");
-    console.log(isValid, "isvalid");
 
     if (isValid) {
       var obj = {

@@ -43,20 +43,18 @@ export function ViewProject() {
 
   async function FetchData() {
     var response1 = await AdminDashboardServices.fcngetEmployees();
-    console.log(response1, "getall Employees api");
     setEmployees(response1.item);
     var response = await axios.get(
       `https://localhost:44305/api/Projects/GetProject?id=${id}`
     );
     var result = response.data;
-    console.log(result, "All  Employees");
     if (result.isSuccess === true) {
       setProjectEmployees(result.item.employeeProject);
       setresponse(result.item.project);
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
-      setProjectMangerEmail(result.item.projectManagerEmailID);
-      setProjectMangerName(result.item.projectManagerName);
+      setProjectMangerEmail(result.item.projectMangerEmail);
+      setProjectMangerName(result.item.projectMangerName);
       setDataReady(true);
     }
   }
@@ -108,7 +106,6 @@ export function ViewProject() {
     var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
 
     if (response.isSuccess) {
-      console.log("success");
       toast.success("Successfully done. ", {
         position: "top-right",
         autoClose: "6000",
@@ -130,9 +127,6 @@ export function ViewProject() {
         el.employee.isAlreadyAdded = false;
       }
     });
-    console.log(GetAllemployees, "------------>");
-
-    console.log("link clicked");
   };
 
   const toggleIcon = (e, index, id) => {
@@ -161,7 +155,6 @@ export function ViewProject() {
     });
   };
   async function handleDelete(id, projectid) {
-    console.log("deletebtn clicked", id, projectid);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -175,10 +168,8 @@ export function ViewProject() {
         id,
         projectid
       );
-      console.log(response, "delete  api response");
       if (response.isSuccess) {
         if (result.isConfirmed) {
-          console.log("confirm");
           Swal.fire({
             title: "Deleted!",
             text: "Employee has been successfully deleted.",
@@ -365,7 +356,6 @@ export function ViewProject() {
                   projectEmployess.map((obj, index) => {
                     return (
                       <tr key={index}>
-                        {console.log(obj.project.projectName, "projectName")}
                         <td>
                           <Link>{obj.employee.employeeId}</Link>
                         </td>
