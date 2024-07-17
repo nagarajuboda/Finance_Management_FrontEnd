@@ -12,7 +12,10 @@ import Swal from "sweetalert2";
 import { FaArrowLeft } from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
 import { IoArrowBackCircle } from "react-icons/io5";
-
+import { AddProjectFormValidation } from "./AddProjectFormValidation";
+import { Description } from "@mui/icons-material";
+import "select2/dist/css/select2.min.css";
+import "select2/dist/js/select2.full.min.js";
 export default function AddProject() {
   var navigate = useNavigate();
   const MySwal = withReactContent(Swal);
@@ -28,6 +31,7 @@ export default function AddProject() {
   const [AllCurrency, SetAllCurrency] = useState([]);
   const [AllDepartments, SetAllDepartments] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);
+  const [projectManagerEmail, setProjectManagerEmail] = useState("");
 
   const [values, setValues] = useState({
     ClientName: "",
@@ -54,26 +58,40 @@ export default function AddProject() {
     ClientEmailId: "",
     ClientLocation: "",
   });
+  const [errorss, setErrorss] = useState({
+    ProjectID: "",
+    ProjectName: "",
+    Department: "",
+    currencyType: "",
+    ProjectType: "",
+    departmentTeam: "",
+    ProjectManager: "",
+    Description: "",
+    ClientEmail: "",
+    EndDate: "",
+    StartDate: "",
+  });
+
   function backonclick(e) {
     navigate("/Dashboard/AllProjects");
-    console.log("btn clickes");
     e.preventDefault();
   }
   useEffect(() => {
     fetchData();
     FetchCurrency();
-    $(".select2").select2();
-    $(".select2").on("change", function (e) {
-      setSelectedProjectManager($(this).val());
-    });
+    // $(".select2").select2();
+
+    // $(".select2").on("change", function (e) {
+    //   setSelectedProjectManager($(this).val());
+    // });
   }, []);
+
   async function FetchCurrency() {
     var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
     SetAllCurrency(CurrencyResponse.item);
-    console.log(AllCurrency, "allcurrenct");
+
     var getallDepartments = await AdminDashboardServices.GetAllDepartments();
     SetAllDepartments(getallDepartments.item);
-    console.log(AllDepartments, "all departments");
   }
   async function fetchData() {
     try {
@@ -89,31 +107,36 @@ export default function AddProject() {
   }
   const handleChange = async (e) => {
     const { name, value } = e.target;
+
     if (name === "Department") {
       if (value === "") {
         setFilteredTeams([]);
-        return;
+      } else {
+        const selectedDepartment = AllDepartments.find(
+          (dept) => dept.deptName === value
+        );
+
+        const response = await axios.get(
+          `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
+        );
+
+        setFilteredTeams(response.data.item);
       }
-
-      const selectedDepartment = AllDepartments.find(
-        (dept) => dept.deptName === value
-      );
-      console.log(selectedDepartment, "selecteddeptid");
-
-      const response = await axios.get(
-        `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
-      );
-
-      console.log(response, "team response");
-      setFilteredTeams(response.data.item);
     }
+
     setValues({
       ...values,
       [name]: value,
     });
+
     setErrors({
       ...errors,
       [name]: AddClientValidation(name, value),
+    });
+
+    setErrorss({
+      ...errorss,
+      [name]: AddProjectFormValidation(name, value),
     });
   };
 
@@ -140,7 +163,7 @@ export default function AddProject() {
       };
 
       var response = await AdminDashboardServices.fcnAddClientAsync(obj);
-      console.log(response, "klfdslk");
+
       if (response.isSuccess === true) {
         toast.success("Successfully done. ", {
           position: "top-right",
@@ -166,51 +189,72 @@ export default function AddProject() {
   }
 
   async function formSubmit(e) {
+    setProjectManagerEmail(selectedProjectManager);
     e.preventDefault();
-    console.log(selectedProjectManager, "selected Project manager");
-    console.log(values, "clientId");
-    console.log(values.ClientEmail);
-    console.log(values.ProjectManager, "project manager emailid");
-
-    var obj = {
-      project: {
-        ProjectID: values.ProjectID,
-        ProjectName: values.ProjectName,
-        //ClientEmail: values.ClientEmail,
-        currencyType: values.currencyType,
-        Description: values.Description,
-        clientId: null,
-        departmentTeam: null,
-        StartDate: values.StartDate,
-        EndDate: values.EndDate,
-        ProjectRefId: values.ProjectRefId,
-        ProjectType: values.ProjectType,
-        Progress: values.Progress,
-        ProjectManager: values.ProjectManager,
-      },
-      clientemail: values.ClientEmail,
-      ProjectManager: selectedProjectManager,
-      DepartmentTeam: values.departmentTeam,
-      Department: values.Department,
+    const newErrors = {
+      ProjectID: AddProjectFormValidation("ProjectID", values.ProjectID),
+      ProjectName: AddProjectFormValidation("ProjectName", values.ProjectName),
+      currencyType: AddProjectFormValidation(
+        "currencyType",
+        values.currencyType
+      ),
+      ProjectType: AddProjectFormValidation("ProjectType", values.ProjectType),
+      Description: AddProjectFormValidation("Description", values.Description),
+      Department: AddProjectFormValidation("Department", values.Department),
+      departmentTeam: AddProjectFormValidation(
+        "departmentTeam",
+        values.departmentTeam
+      ),
+      ClientEmail: AddProjectFormValidation("ClientEmail", values.ClientEmail),
+      ProjectManager: AddProjectFormValidation(
+        "ProjectManager",
+        values.ProjectManager
+      ),
+      StartDate: AddProjectFormValidation("StartDate", values.StartDate),
+      EndDate: AddProjectFormValidation("EndDate", values.EndDate),
     };
-    console.log(obj, "obj");
-    var response = await AdminDashboardServices.fcnAddProject(obj);
-    console.log(response, "response");
-    if (response.isSuccess === true) {
-      Swal.fire({
-        title: "Good job!",
-        text: " New project added successfully done",
-        icon: "success",
-      });
-      navigate("/Dashboard/AllProjects");
-    } else {
-      console.log(response.error.message);
-      toast.error(response.error.message, {
-        position: "top-right",
-        autoClose: "4000",
-      });
+    setErrorss(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+
+    if (isValid) {
+      var obj = {
+        project: {
+          ProjectID: values.ProjectID,
+          ProjectName: values.ProjectName,
+          currencyType: values.currencyType,
+          Description: values.Description,
+          clientId: null,
+          departmentTeam: null,
+          StartDate: values.StartDate,
+          EndDate: values.EndDate,
+          ProjectRefId: values.ProjectRefId,
+          ProjectType: values.ProjectType,
+          Progress: values.Progress,
+        },
+        clientemail: values.ClientEmail,
+        // ProjectManager: selectedProjectManager,
+        ProjectManager: values.ProjectManager,
+        DepartmentTeam: values.departmentTeam,
+        Department: values.Department,
+      };
+
+      var response = await AdminDashboardServices.fcnAddProject(obj);
+
+      if (response.isSuccess === true) {
+        Swal.fire({
+          title: "Good job!",
+          text: " New project added successfully done",
+          icon: "success",
+        });
+        navigate("/Dashboard/AllProjects");
+      } else {
+        toast.error(response.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
+      }
     }
-    console.log(response, "final response");
   }
 
   return (
@@ -251,6 +295,9 @@ export default function AddProject() {
                   value={values.ProjectID}
                   onChange={handleChange}
                 />
+                {errorss.ProjectID && (
+                  <span className="error ms-1">{errorss.ProjectID}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -267,6 +314,9 @@ export default function AddProject() {
                   value={values.ProjectName}
                   onChange={handleChange}
                 />
+                {errorss.ProjectName && (
+                  <span className="error ms-1">{errorss.ProjectName}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -284,12 +334,18 @@ export default function AddProject() {
                   value={values.StartDate}
                   onChange={handleChange}
                 />
+                {errorss.StartDate && (
+                  <span className="error ms-1">{errorss.StartDate}</span>
+                )}
               </div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
-                  <span className="labless">EndDate</span>
+                  <label className="labless d-flex">
+                    Deadline
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="date"
@@ -300,9 +356,12 @@ export default function AddProject() {
                   value={values.EndDate}
                   onChange={handleChange}
                 />
+                {errorss.EndDate && (
+                  <span className="error ms-1">{errorss.EndDate}</span>
+                )}
               </div>
               <div className="col-4">
-                <label className="labless">
+                <label className="labless d-flex">
                   Select Client
                   <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                 </label>
@@ -328,10 +387,14 @@ export default function AddProject() {
                       </option>
                     ))}
                   </select>
+
                   <span>
                     <IoAddCircle className="addicon" onClick={handleShow} />
                   </span>
                 </div>
+                {errorss.ClientEmail && (
+                  <span className="error ms-1">{errorss.ClientEmail}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -356,6 +419,9 @@ export default function AddProject() {
                     </option>
                   ))}
                 </select>
+                {errorss.currencyType && (
+                  <span className="error ms-1">{errorss.currencyType}</span>
+                )}
               </div>
             </div>
             <div className="row m-0 mt-2">
@@ -387,6 +453,9 @@ export default function AddProject() {
                   value={values.ProjectType}
                   onChange={handleChange}
                 />
+                {errorss.ProjectType && (
+                  <span className="error ms-1">{errorss.ProjectType}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -405,7 +474,10 @@ export default function AddProject() {
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
-                <span className="labless">Project Manager</span>
+                <label className="labless">
+                  Project Manager
+                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                </label>
                 <select
                   style={{ width: "100%" }}
                   className="form-control select2"
@@ -423,11 +495,40 @@ export default function AddProject() {
                     </option>
                   ))}
                 </select>
+                {errorss.ProjectManager && (
+                  <span className="error ms-1">{errorss.ProjectManager}</span>
+                )}
               </div>
 
-              <div className="col-4">
+              {/* <div className="col-4">
                 <div>
                   <span className="labless">Department</span>
+                </div>
+
+                <select
+                  id="departmentList"
+                  className="form-control w-100"
+                  name="Department"
+                  value={values.Department}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Department</option>
+                  {AllDepartments.map((dept) => (
+                    <option key={dept.id} value={dept.deptName}>
+                      {dept.deptName}
+                    </option>
+                  ))}
+                </select>
+                {errorss.Department && (
+                  <span className="error ms-1">{errorss.Department}</span>
+                )}
+              </div> */}
+              <div className="col-4">
+                <div>
+                  <label className="labless">
+                    Department
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <select
                   id="departmentList"
@@ -443,11 +544,17 @@ export default function AddProject() {
                     </option>
                   ))}
                 </select>
+                {errorss.Department && (
+                  <span className="error ms-1">{errorss.Department}</span>
+                )}
               </div>
 
               <div className="col-4">
                 <div>
-                  <span className="labless">Team</span>
+                  <label className="labless">
+                    Team
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <select
                   id="teamList"
@@ -463,6 +570,9 @@ export default function AddProject() {
                     </option>
                   ))}
                 </select>
+                {errorss.departmentTeam && (
+                  <span className="error ms-1">{errorss.departmentTeam}</span>
+                )}
               </div>
             </div>
             <div className="row m-0 mt-2">
@@ -480,6 +590,9 @@ export default function AddProject() {
                   value={values.Description}
                   onChange={handleChange}
                 ></textarea>
+                {errorss.Description && (
+                  <span className="error ms-1">{errorss.Description}</span>
+                )}
               </div>
               <div className="col-4"></div>
             </div>
