@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../assets/Styles/EmployeePages/AddEmpStyle.css';
 import axios from "axios";
 import { Link } from "react-router-dom";
-//const response = await axios.post("https://localhost:44305/api/Employees", employee);
+
 const AddEmployee = () => {
     const [employee, setEmployee] = useState({
         employeeId: '',
@@ -20,6 +20,35 @@ const AddEmployee = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const [employees, setEmployees] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [projectManagers, setProjectManagers] = useState([]);
+
+    useEffect(() => {
+        const fetchEmployees = async () => {
+            try {
+                const response = await axios.get("https://localhost:44305/api/Employees");
+                setEmployees(response.data);
+                const managers = response.data.filter(emp => emp.roleName === 'Project Manager');
+                setProjectManagers(managers);
+            } catch (error) {
+                console.error('Error fetching employees', error);
+            }
+        };
+
+        const fetchRoles = async () => {
+            try {
+                const response = await axios.get("https://localhost:44305/api/Roles");
+                const sortedRoles = response.data.sort((a, b) => a.name.localeCompare(b.name));
+                setRoles(sortedRoles);
+            } catch (error) {
+                console.error('Error fetching roles', error);
+            }
+        };
+
+        fetchEmployees();
+        fetchRoles();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,7 +59,7 @@ const AddEmployee = () => {
 
         setErrors((prevErrors) => ({
             ...prevErrors,
-            [name]: value ? '' : prevErrors[name]
+            [name]: ''
         }));
     };
 
@@ -41,7 +70,7 @@ const AddEmployee = () => {
         if (!employee.email) newErrors.email = 'Email is required';
         if (!employee.password) newErrors.password = 'Password is required';
         if (!employee.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
-        if (!employee.roleId) newErrors.roleId = 'Role ID is required';
+        if (!employee.roleName) newErrors.roleName = 'Role Name is required';
         return newErrors;
     };
 
@@ -53,8 +82,29 @@ const AddEmployee = () => {
             return;
         }
 
+        const idExists = employees.some(emp => emp.employeeId === employee.employeeId);
+        if (idExists) {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                employeeId: 'Employee ID already exists'
+            }));
+            return; 
+        }
+
+        const formattedDate = new Date(employee.dateOfJoining).toISOString();
+        employee.dateOfJoining = formattedDate;
+
+        const selectedRole = roles.find(role => role.name === employee.roleName);
+        if (selectedRole) {
+            employee.roleId = selectedRole.id;
+        }
+
+        if (!employee.projectManagerName) {
+            employee.projectManagerName = null;
+        }
+
         try {
-            const response = await axios.post('https://localhost:44305/api/Employees', employee);
+            await axios.post("https://localhost:44305/api/Employees", employee);
             alert('Employee added successfully!');
             setEmployee({
                 employeeId: '',
@@ -80,14 +130,14 @@ const AddEmployee = () => {
     return (
         <div className="add-employee-container">
             <div className="EmployeesHeader">
-                 <div className='AddEmpHeader'>
-                     <h3 style={{color: "red"}}>Add Employee</h3>
-                 </div>
-                 <div>
-                     <Link to ="/EmployeeDashboard">Back</Link>
-                 </div>
-             </div>
-             <form onSubmit={handleSubmit} className="add-employee-form">
+                <div className='AddEmpHeader'>
+                    <h3 style={{color: "red"}}>Add Employee</h3>
+                </div>
+                <div>
+                    <Link to ="/EmployeeDashboard">Back</Link>
+                </div>
+            </div>
+            <form onSubmit={handleSubmit} className="add-employee-form">
                 <label>Employee ID</label>
                 <input
                     type="text"
@@ -95,7 +145,6 @@ const AddEmployee = () => {
                     value={employee.employeeId}
                     onChange={handleChange}
                     placeholder="Enter Employee ID"
-                    required
                 />
                 {errors.employeeId && <p className="error">{errors.employeeId}</p>}
 
@@ -106,7 +155,6 @@ const AddEmployee = () => {
                     value={employee.firstName}
                     onChange={handleChange}
                     placeholder="Enter First Name"
-                    required
                 />
                 {errors.firstName && <p className="error">{errors.firstName}</p>}
 
@@ -126,7 +174,6 @@ const AddEmployee = () => {
                     value={employee.email}
                     onChange={handleChange}
                     placeholder="Enter Email"
-                    required
                 />
                 {errors.email && <p className="error">{errors.email}</p>}
 
@@ -137,7 +184,6 @@ const AddEmployee = () => {
                     value={employee.password}
                     onChange={handleChange}
                     placeholder="Enter Password"
-                    required
                 />
                 {errors.password && <p className="error">{errors.password}</p>}
 
@@ -156,18 +202,22 @@ const AddEmployee = () => {
                     name="dateOfJoining"
                     value={employee.dateOfJoining}
                     onChange={handleChange}
-                    required
                 />
                 {errors.dateOfJoining && <p className="error">{errors.dateOfJoining}</p>}
 
-                <label>Project Manager Name</label>
-                <input
-                    type="text"
+                <label>Project Manager</label>
+                <select
                     name="projectManagerName"
                     value={employee.projectManagerName}
                     onChange={handleChange}
-                    placeholder="Enter Project Manager Name"
-                />
+                >
+                    <option value="" disabled>Select Project Manager</option>
+                    {projectManagers.map((emp) => (
+                        <option key={emp.id} value={`${emp.firstName} ${emp.lastName}`}>
+                            {`${emp.firstName} ${emp.lastName}`}
+                        </option>
+                    ))}
+                </select>
 
                 <label>Status</label>
                 <input
@@ -187,25 +237,19 @@ const AddEmployee = () => {
                     placeholder="Enter Skill Sets"
                 />
 
-                <label>Role ID</label>
-                <input
-                    type="text"
-                    name="roleId"
-                    value={employee.roleId}
-                    onChange={handleChange}
-                    placeholder="Enter Role ID"
-                    required
-                />
-                {errors.roleId && <p className="error">{errors.roleId}</p>}
-
-                <label>Role Name</label>
-                <input
-                    type="text"
+                <label>Role</label>
+                <select
                     name="roleName"
                     value={employee.roleName}
                     onChange={handleChange}
-                    placeholder="Enter Role Name"
-                />
+                >
+                    <option value="" disabled>Select Role</option>
+                    {roles.map((role) => (
+                        <option key={role.id} value={role.name}>{role.name}</option>
+                    ))}
+                </select>
+                {errors.roleName && <p className="error">{errors.roleName}</p>}
+
                 <button type="submit">Add Employee</button>
             </form>
         </div>

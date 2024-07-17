@@ -1,30 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../assets/Styles/EmployeePages/UpdateEmployee.css'
 import { Link } from "react-router-dom";
+import '../../assets/Styles/EmployeePages/UpdateEmployee.css'
 
 const UpdateEmployee = () => {
-    const [employee, setEmployee] = useState({
-        employeeId: '',
+    const [employeeId, setEmployeeId] = useState('');
+    const [employee, setEmployee] = useState(null);
+    const [updatedEmployee, setUpdatedEmployee] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        passwordHash: '',
         mobileNo: '',
-        dateOfJoining: '',
-        projectManagerId: '',
+        dateOfJoining: '',        
+        employeeId:'',
+        password:'',
+        projectManagerName: '',
         employeeStatus: '',
         skillSets: '',
-        roleId: ''
+        roleName: ''
     });
-
     const [errors, setErrors] = useState({});
-    const [fetchError, setFetchError] = useState('');
-    const [isFetched, setIsFetched] = useState(false);
+    const [message, setMessage] = useState('');
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?employeeId=${employeeId}`);
+            setEmployee(response.data);
+            setUpdatedEmployee({
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                id:response.data.id,
+                email: response.data.email,
+                employeeId:response.data.employeeId,
+                password:response.data.password,
+                mobileNo: response.data.mobileNo,
+                dateOfJoining: new Date(response.data.dateOfJoining).toISOString().slice(0, 16),
+                projectManagerName: response.data.projectManagerName ?? '',
+                employeeStatus: response.data.employeeStatus ?? '',
+                skillSets: response.data.skillSets ?? '',
+                roleId:response.data.roleId,
+                role:response.data.role,
+                roleName: response.data.roleName
+            });
+            setErrors({});
+            setMessage('');
+        } catch (error) {
+            console.error('Error searching employee:', error);
+            setEmployee(null);
+            setUpdatedEmployee({
+                firstName: '',
+                lastName: '',
+                email: '',
+                mobileNo: '',
+                dateOfJoining: '',
+                projectManagerName: '',
+                employeeStatus: '',
+                skillSets: '',
+                roleName: ''
+            });
+            setErrors({ employeeId: 'Employee not found' });
+            setMessage('');
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setEmployee((prevEmployee) => ({
+        setUpdatedEmployee((prevEmployee) => ({
             ...prevEmployee,
             [name]: value
         }));
@@ -37,28 +78,14 @@ const UpdateEmployee = () => {
 
     const validate = () => {
         const newErrors = {};
-        if (!employee.firstName) newErrors.firstName = 'First Name is required';
-        if (!employee.email) newErrors.email = 'Email is required';
-        if (!employee.passwordHash) newErrors.passwordHash = 'Password is required';
-        if (!employee.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
-        if (!employee.roleId) newErrors.roleId = 'Role ID is required';
+        if (!updatedEmployee.firstName) newErrors.firstName = 'First Name is required';
+        if (!updatedEmployee.email) newErrors.email = 'Email is required';
+        if (!updatedEmployee.dateOfJoining) newErrors.dateOfJoining = 'Date of Joining is required';
+        if (!updatedEmployee.roleName) newErrors.roleName = 'Role Name is required';
         return newErrors;
-    };
+    };    
 
-    const handleFetchEmployee = async () => {
-        try {
-            const response = await axios.get("https://localhost:44305/api/Employees/${employee.employeeId}");
-            setEmployee(response.data);
-            setFetchError('');
-            setIsFetched(true);
-        } catch (error) {
-            console.error('Error fetching employee', error);
-            setFetchError('Employee not found');
-            setIsFetched(false);
-        }
-    };
-
-    const handleSubmit = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
@@ -66,60 +93,45 @@ const UpdateEmployee = () => {
             return;
         }
 
+        const formattedDate = new Date(updatedEmployee.dateOfJoining).toISOString();
+        updatedEmployee.dateOfJoining = formattedDate;
         try {
-            await axios.put("https://localhost:44305/api/Employees/${employee.employeeId}", employee);
-            alert('Employee updated successfully!');
-            setEmployee({
-                employeeId: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                passwordHash: '',
-                mobileNo: '',
-                dateOfJoining: '',
-                projectManagerId: '',
-                employeeStatus: '',
-                skillSets: '',
-                roleId: ''
-            });
-            setErrors({});
-            setIsFetched(false);
+            await axios.put("https://localhost:44305/api/Employees/UpdateEmployee",updatedEmployee);
+            setMessage('Employee updated successfully!');
         } catch (error) {
-            console.error('Error updating employee', error);
-            alert('Error updating employee');
+            console.error('Error updating employee:', error);
+            setMessage('Error updating employee');
         }
     };
 
     return (
         <div className="update-employee-container">
             <div className="EmployeesHeader">
-                 <div className='UpdateEmpHeader'>
-                     <h3 style={{color: "red"}}>Update Employee</h3>
-                 </div>
-                 <div>
-                     <Link to ="/EmployeeDashboard">Back</Link>
-                 </div>
-             </div>
-             <div className="fetch-employee">
-                <label>Employee ID</label>
+                <div className='UpdateEmpHeader'>
+                    <h3 style={{color: "red"}}>Update Employee</h3>
+                </div>
+                <div>
+                    <Link to ="/EmployeeDashboard">Back</Link>
+                </div>
+            </div>
+            <div className="search-form">
+                <label>Enter Employee ID:</label>
                 <input
                     type="text"
-                    name="employeeId"
-                    value={employee.Id}
-                    onChange={handleChange}
-                    placeholder="Enter Employee ID"
-                    required
+                    value={employeeId}
+                    onChange={(e) => setEmployeeId(e.target.value)}
                 />
-                <button type="button" onClick={handleFetchEmployee}>Fetch Employee</button><br/>
-                <b>{fetchError && <p className="error">{fetchError}</p>}</b>
+                <button onClick={handleSearch}>Search</button>
+                <b>{errors.employeeId && <p className="error">{errors.employeeId}</p>}</b>
             </div>
-            {isFetched && (
-                <form onSubmit={handleSubmit} className="update-employee-form">
+
+            {employee && (
+                <form onSubmit={handleUpdate} className="update-employee-form">
                     <label>First Name</label>
                     <input
                         type="text"
                         name="firstName"
-                        value={employee.firstName}
+                        value={updatedEmployee.firstName}
                         onChange={handleChange}
                         placeholder="Enter First Name"
                         required
@@ -130,7 +142,7 @@ const UpdateEmployee = () => {
                     <input
                         type="text"
                         name="lastName"
-                        value={employee.lastName}
+                        value={updatedEmployee.lastName}
                         onChange={handleChange}
                         placeholder="Enter Last Name"
                     />
@@ -139,57 +151,51 @@ const UpdateEmployee = () => {
                     <input
                         type="email"
                         name="email"
-                        value={employee.email}
+                        value={updatedEmployee.email}
                         onChange={handleChange}
                         placeholder="Enter Email"
                         required
                     />
                     {errors.email && <p className="error">{errors.email}</p>}
 
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="passwordHash"
-                        value={employee.passwordHash}
-                        onChange={handleChange}
-                        placeholder="Enter Password"
-                        required
-                    />
-                    {errors.passwordHash && <p className="error">{errors.passwordHash}</p>}
-
                     <label>Mobile No</label>
                     <input
                         type="text"
                         name="mobileNo"
-                        value={employee.mobileNo}
+                        value={updatedEmployee.mobileNo}
                         onChange={handleChange}
                         placeholder="Enter Mobile No"
                     />
 
                     <label>Date of Joining</label>
                     <input
-                        type="date"
+                        type="datetime-local"
                         name="dateOfJoining"
-                        value={employee.dateOfJoining}
+                        value={updatedEmployee.dateOfJoining}
                         onChange={handleChange}
+                        placeholder="Enter Date and Time of Joining"
                         required
                     />
                     {errors.dateOfJoining && <p className="error">{errors.dateOfJoining}</p>}
 
-                    <label>Project Manager ID</label>
+                    <label>Project Manager</label>
                     <input
                         type="text"
-                        name="projectManagerId"
-                        value={employee.projectManagerId}
+                        name="projectManagerName"
+                        value={updatedEmployee.projectManagerName}
                         onChange={handleChange}
-                        placeholder="Enter Project Manager ID"
+                        placeholder="Enter Project Manager Name"
+                        list="employee-list"
                     />
+                    <datalist id="employee-list">
+                        {/* List of employees for autocomplete */}
+                    </datalist>
 
                     <label>Status</label>
                     <input
                         type="text"
                         name="employeeStatus"
-                        value={employee.employeeStatus}
+                        value={updatedEmployee.employeeStatus}
                         onChange={handleChange}
                         placeholder="Enter Status"
                     />
@@ -198,25 +204,27 @@ const UpdateEmployee = () => {
                     <input
                         type="text"
                         name="skillSets"
-                        value={employee.skillSets}
+                        value={updatedEmployee.skillSets}
                         onChange={handleChange}
                         placeholder="Enter Skill Sets"
                     />
 
-                    <label>Role ID</label>
+                    <label>Role</label>
                     <input
                         type="text"
-                        name="roleId"
-                        value={employee.roleId}
+                        name="roleName"
+                        value={updatedEmployee.roleName}
                         onChange={handleChange}
-                        placeholder="Enter Role ID"
+                        placeholder="Enter Role Name"
                         required
                     />
-                    {errors.roleId && <p className="error">{errors.roleId}</p>}
+                    {errors.roleName && <p className="error">{errors.roleName}</p>}
 
                     <button type="submit">Update Employee</button>
                 </form>
             )}
+
+            {message && <p className="message">{message}</p>}
         </div>
     );
 };
