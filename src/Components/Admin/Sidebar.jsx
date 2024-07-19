@@ -9,7 +9,7 @@ import { BsCalendarDay } from "react-icons/bs";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
-
+import { useEffect } from "react";
 import { VscTasklist } from "react-icons/vsc";
 
 import {
@@ -33,14 +33,22 @@ import Header from "./Header";
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
-
+  const [sessionData, setSessionData] = useState(null);
   const toggle = () => {
     setIsOpen(!isOpen);
     if (isOpen) {
       setOpenDropdowns([]); // Close all dropdowns when sidebar is minimized
     }
   };
-
+  useEffect(() => {
+    const data = localStorage.getItem("sessionData");
+    //console.log(data, "sesson data in sidebar");
+    if (data) {
+      setSessionData(JSON.parse(data));
+      //   setSessionData(data);
+    }
+  }, []);
+  // console.log(sessionData, "sidebar session data");
   const toggleDropdown = (index) => {
     setOpenDropdowns((prevOpenDropdowns) => {
       if (prevOpenDropdowns.includes(index)) {
@@ -51,7 +59,7 @@ const Sidebar = ({ children }) => {
     });
   };
 
-  const menuItem = [
+  const adminMenuItems = [
     {
       // path: "/dsa",
       name: "Dashboards",
@@ -149,7 +157,52 @@ const Sidebar = ({ children }) => {
       ],
     },
   ];
+  const employeeMenuItems = [
+    {
+      name: "Dashboards",
+      icon: <RiDashboard3Line />,
+      submenu: [{ path: "/list2", name: "- Projects" }],
+    },
+  ];
+  const ProjectManagerMenuItems = [
+    {
+      // path: "/dsa",
+      name: "Dashboards",
+      icon: <RiDashboard3Line />,
+      submenu: [
+        { path: "/list2", name: "- Invoice Management" },
+        { path: "/list1", name: "- HR management" },
+        { path: "/list2", name: "- Job Hiring Management" },
+        { path: "/list1", name: "- Project management1" },
+        { path: "/list1", name: "- Project management1" },
+      ],
+    },
+    {
+      // path: "/about",
+      name: "Hr Management",
+      icon: <IoPeopleOutline />,
+      submenu: [{ path: "/list2", name: "- Employees" }],
+    },
+    {
+      name: "Project Management",
+      icon: <VscProject />,
+      submenu: [
+        { path: "/Employee/Projects", name: "- All projects" },
+        { path: "/Employee/TimeSheet", name: "- Timesheet" },
+      ],
+    },
+  ];
+  // const menuItems =
+  //   sessionData?.employee?.role?.name === "Admin"
+  //     ? adminMenuItems
+  //     : employeeMenuItems;
 
+  const menuItems =
+    sessionData?.employee?.role?.name === "Admin"
+      ? adminMenuItems
+      : sessionData?.employee?.role?.name === "Project Manger"
+      ? ProjectManagerMenuItems
+      : employeeMenuItems;
   return (
     <div className="containers" style={{ width: "100vw" }}>
       <div style={{ width: isOpen ? "370px" : "80px" }} className="sidebar">
@@ -158,11 +211,6 @@ const Sidebar = ({ children }) => {
             <img src={logo} alt="" width="140px" />
           </h1>
           <div style={{ marginLeft: isOpen ? "80px" : "0px" }} className="bars">
-            {/* <FaBars
-              onClick={toggle}
-              className="openandcloseicon"
-              style={{ cursor: "pointer" }}
-            /> */}
             <i
               className="bi bi-list openandcloseicon"
               onClick={toggle}
@@ -170,7 +218,7 @@ const Sidebar = ({ children }) => {
             ></i>
           </div>
         </div>
-        {menuItem.map((item, index) => (
+        {menuItems.map((item, index) => (
           <div key={index} className="sidebarmenu">
             {isOpen &&
               (index === 0 ? (
@@ -188,7 +236,6 @@ const Sidebar = ({ children }) => {
             <NavLink
               to={item.path}
               className="link"
-              //  activeClassName="active"
               onClick={() => item.submenu && toggleDropdown(index)}
             >
               <div className="icon">
@@ -226,13 +273,11 @@ const Sidebar = ({ children }) => {
               >
                 {item.submenu.map((subItem, subIndex) => (
                   <div key={subIndex}>
-                    {/* {console.log(subItem, "subitem", subIndex, "index")} */}
                     {console.log(subItem.path, "path of sub item")}
                     <NavLink
                       to={subItem.path}
                       key={subIndex}
                       className="link submenu_link"
-                      // activeClassName="active"
                     >
                       <div
                         style={{ display: isOpen ? "block" : "none" }}
@@ -241,7 +286,6 @@ const Sidebar = ({ children }) => {
                         {subItem.name}
                       </div>
                     </NavLink>
-                    {/* {isOpen && subItem.path === "/Projects" && <p>Hello</p>} */}
                   </div>
                 ))}
               </div>

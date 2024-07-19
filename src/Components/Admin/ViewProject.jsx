@@ -32,7 +32,7 @@ export function ViewProject() {
   const [selectedRowIds, setSelectedRowIds] = useState([]);
   const [projectManagerEmail, setProjectMangerEmail] = useState("");
   const [projectManagerName, setProjectMangerName] = useState("");
-
+  const [sessiondata, setSessiondata] = useState(null);
   const navigate = useNavigate();
   const percentage = 66;
 
@@ -42,6 +42,8 @@ export function ViewProject() {
   }, [id]);
 
   async function FetchData() {
+    const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+    setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
     var response = await axios.get(
@@ -95,6 +97,10 @@ export function ViewProject() {
     navigate("/Dashboard/AllProjects");
   }
 
+  function backtoprojects(e) {
+    e.preventDefault();
+    navigate("/Employee/Projects");
+  }
   async function AddEmployeeSubmit(e) {
     e.preventDefault();
     const requestBody = [
@@ -187,10 +193,18 @@ export function ViewProject() {
       <div>
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div className="d-flex">
-            <IoArrowBackCircle
-              style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-              onClick={backonclick}
-            />
+            {sessiondata != "Admin" ? (
+              <IoArrowBackCircle
+                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+                onClick={backtoprojects}
+              />
+            ) : (
+              <IoArrowBackCircle
+                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+                onClick={backonclick}
+              />
+            )}
+
             <p style={{ fontSize: "20px" }} className="ms-1 ">
               Back
             </p>
@@ -274,9 +288,9 @@ export function ViewProject() {
                   </p>
                 </div>
               </div>
-              <div className="addlead">
+              {/* <div className="addlead">
                 <Link>Change Manager</Link>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="card ms-3">
