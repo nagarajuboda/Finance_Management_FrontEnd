@@ -85,7 +85,7 @@ export default function Header() {
               className="nameandrole ms-2 "
               onClick={toggleProfileVisibility}
             >
-              <p className="namep">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</p>
+              <p className="namep"></p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
               <p className="superadminp">{userDetails.employee.role.name}</p>
             </div>
@@ -105,7 +105,7 @@ export default function Header() {
                   <h6 className="mb-0">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
-                      {userDetails.employee.role.name}
+                      Super Admin
                     </p>
                   </div>
                 </div>
