@@ -9,9 +9,10 @@ import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
 import { Route, Routes } from "react-router-dom";
 import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
-import AddEmployee from "../Components/Employee/AddEmployee";
-import UpdateEmployee from "../Components/Employee/UpdateEmployee";
-import DeleteEmployee from "../Components/Employee/DeleteEmployee";
+import InactiveEmployee from "../Components/Employee/InactiveEmployeesModal";
+import Roles from "../Components/Employee/Roles";
+import Testing from "../Components/Employee/Testing";
+
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -26,9 +27,11 @@ export default function AdminRoutes() {
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard/>}/>
-        <Route path="/AddEmployee" element={<AddEmployee/>}/>
-        <Route path="/UpdateEmployee" element={<UpdateEmployee/>}/>
-        <Route path="/DeleteEmployee" element={<DeleteEmployee/>}/>
+        <Route path="/InactiveEmployee" element={<InactiveEmployee/>}/>
+        <Route path="/Roles" element={<Roles/>}/>
+
+        <Route path="/Testing" element={<Testing/>}/>
+
       </Routes>
     </Sidebar>
   );

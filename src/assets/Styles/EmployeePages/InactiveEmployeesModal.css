@@ -1,0 +1,48 @@
+.inactive-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .inactive-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 600px;
+  }
+  
+  h2 {
+    margin-top: 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    background-color: #007bff;
+  }
+  
