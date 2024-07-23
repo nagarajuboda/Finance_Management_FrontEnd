@@ -15,7 +15,6 @@ import {
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  console.log(userDetails);
   // const [sessionData, setSessionData] = useState(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
@@ -85,7 +84,7 @@ export default function Header() {
               className="nameandrole ms-2 "
               onClick={toggleProfileVisibility}
             >
-              <p className="namep"></p>
+              <p className="namep">Franklin Jr.</p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
               <p className="superadminp">{userDetails.employee.role.name}</p>
             </div>

@@ -43,6 +43,7 @@ export function ViewProject() {
 
   async function FetchData() {
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+    console.log(userDetails, "session data");
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
