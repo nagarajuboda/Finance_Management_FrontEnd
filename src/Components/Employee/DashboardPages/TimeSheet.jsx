@@ -17,15 +17,18 @@
 //   const [projectDetails, setProjectDetails] = useState([]);
 //   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 //   const [selectedDate, setSelectedDate] = useState(new Date());
-//   const [showsave, setShowSave] = useState(true);
-//   const [showReset, setShowReset] = useState(true);
+//   const [disabledTabs, setDisabledTabs] = useState([]); // Track disabled tabs
 //   const [hours, setHours] = useState({}); // Stores hours input by employee ID
 //   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+//   const [selectedProjectId, setSelectedProjectID] = useState("");
+//   const [employees, setEmployees] = useState([]);
 
 //   useEffect(() => {
 //     FetchData();
 //   }, []);
-
+//   useEffect(() => {
+//     GetProjectDeatis();
+//   }, []);
 //   async function FetchData() {
 //     const response = await EmployeeService.GetProjectInfo(
 //       userDetails.employee.id
@@ -38,8 +41,10 @@
 //     setSelectedTabIndex(index);
 //   };
 
-//   const handleDateChange = (date) => {
-//     setSelectedDate(date);
+//   const handleDateChange = (projectid, event) => {
+//     const value = event;
+//     setSelectedDate(value);
+//     GetProjectDeatis(projectid, value);
 //   };
 
 //   const handleHoursChange = (employeeId, value) => {
@@ -66,10 +71,11 @@
 //   const FormSubmitfunction = async () => {
 //     const data = submitFunction();
 //     console.log("Form Data:", data);
-//     // Handle form submission logic (e.g., API call)
+//     var isSubmited = false;
 //     var response = await TimeSheetService.AddNewTimeSheet(
 //       data,
-//       userDetails.employee.id
+//       userDetails.employee.id,
+//       isSubmited
 //     );
 //     if (response.isSuccess === true) {
 //       toast.success("Successfully done. ", {
@@ -78,28 +84,46 @@
 //       });
 //     }
 //   };
+//   const SubmitFormFunction = async () => {
+//     const data = submitFunction();
+//     console.log("Form Data:", data);
+//     var isSubmited = true;
+//     var response = await TimeSheetService.AddNewTimeSheet(
+//       data,
+//       userDetails.employee.id,
+//       isSubmited
+//     );
+//     if (response.isSuccess === true) {
+//       toast.success("Successfully done. ", {
+//         position: "top-right",
+//         autoClose: "4000",
+//       });
+//     }
+//     setDisabledTabs((prev) => [...prev, selectedTabIndex]);
+//   };
 //   const handleClick = (e) => {
 //     e.preventDefault();
 //     FormSubmitfunction();
-
-//     setShowSave(false);
 //   };
+
 //   const ResetClick = (e) => {
 //     e.preventDefault();
 //     Resetfunction();
-
-//     setShowReset(false);
 //   };
 
-//   const SubmitFormFunction = async () => {
-//     console.log("submit button");
-//     setShowSave(false);
-//     setShowReset(false);
-//   };
 //   const Resetfunction = () => {
 //     setHours({});
 //   };
-
+//   const GetProjectDeatis = async (id, date) => {
+//     setSelectedProjectID(id);
+//     var month = format(selectedDate, "MMMM yyyy");
+//     console.log(month, "changes date");
+//     console.log("tab clicked Id", id);
+//     var response = await TimeSheetService.GetTimeSheetDeatils(month, id);
+//     console.log("getTimeSheet", response.item);
+//     setEmployees(response.item);
+//   };
+//   console.log(employees, "nagaraju");
 //   return (
 //     <div className="Maindiv">
 //       <div className="card">
@@ -110,7 +134,11 @@
 //         <Tabs selectedIndex={selectedTabIndex} onSelect={handleTabSelect}>
 //           <TabList>
 //             {projectDetails.map((obj, index) => (
-//               <Tab key={index} style={{ color: "blue" }}>
+//               <Tab
+//                 key={index}
+//                 style={{ color: "blue" }}
+//                 onClick={() => GetProjectDeatis(obj.project.id, selectedDate)}
+//               >
 //                 {obj.project.projectName}
 //               </Tab>
 //             ))}
@@ -127,10 +155,14 @@
 //                     margin: "0px 23px",
 //                   }}
 //                 >
-//                   <span style={{ color: "black" }}>Month</span>
+//                   <span style={{ color: "black" }} className="me-2">
+//                     Month
+//                   </span>
 //                   <DatePicker
 //                     selected={selectedDate}
-//                     onChange={handleDateChange}
+//                     onChange={(e) => {
+//                       handleDateChange(project.project.id, e);
+//                     }}
 //                     showMonthYearPicker
 //                     dateFormat="MMMM yyyy"
 //                     customInput={<CustomInput />}
@@ -138,62 +170,101 @@
 //                   />
 //                 </div>
 //               </div>
-//               <form>
-//                 <div className="row">
-//                   <div className="col-3 header">
-//                     <span style={{ marginLeft: "7px" }}>Employee Name</span>
-//                   </div>
-//                   <div className="col-3 header">
-//                     <span style={{ marginLeft: "7px" }}>Hours</span>
-//                   </div>
-//                   <div className="col-6"></div>
+
+//               <div className="row">
+//                 <div className="col-3 header">
+//                   <span style={{ marginLeft: "7px" }}>Employee Name</span>
 //                 </div>
-//                 {project.employees.map((employee) => (
-//                   <div key={employee.id}>
-//                     <div className="row m-2">
-//                       <div className="col-3">
-//                         <p
-//                           style={{ marginLeft: "5px" }}
-//                         >{`${employee.firstName} ${employee.lastName}`}</p>
-//                       </div>
-//                       <div className="col-3">
-//                         <input
-//                           type="text"
-//                           className="form-control"
-//                           placeholder="Enter hours"
-//                           value={hours[employee.id] || ""}
-//                           onChange={(e) =>
-//                             handleHoursChange(employee.id, e.target.value)
-//                           }
-//                         />
-//                       </div>
-//                       <div className="col-6"></div>
+//                 <div className="col-3 header">
+//                   <span style={{ marginLeft: "7px" }}>Hours</span>
+//                 </div>
+//                 <div className="col-6"></div>
+//               </div>
+
+//               {employees.length>0 ?( {project.employees.map((employee) => (
+//                 <div key={employee.id}>
+//                   <div className="row m-2">
+//                     <div className="col-3">
+//                       <p
+//                         style={{ marginLeft: "5px" }}
+//                       >{`${employee.firstName} ${employee.lastName}`}</p>
 //                     </div>
+//                     <div className="col-3">
+//                       <input
+//                         type="text"
+//                         className="form-control"
+//                         placeholder="Enter hours"
+//                         value={hours[employee.id] || ""}
+//                         onChange={(e) =>
+//                           handleHoursChange(employee.id, e.target.value)
+//                         }
+//                       />
+//                     </div>
+//                     <div className="col-6"></div>
 //                   </div>
-//                 ))}
-//                 <div className="btnss">
-//                   <Link
-//                     onClick={ResetClick}
-//                     disabled={!showReset}
-//                     className="ms-3 btn btn-success"
-//                   >
-//                     Reset
-//                   </Link>
-//                   <Link
-//                     className="ms-3 btn btn-success"
-//                     disabled={!showsave}
-//                     onClick={handleClick}
-//                   >
-//                     Save
-//                   </Link>
-//                   <Link
+//                 </div>
+//               ))}):(
+//                 <p>Hello</p>
+//               )}
+//               <div className="btnss">
+//                 <Link
+//                   onClick={ResetClick}
+//                   className={`ms-3 btn btn-success ${
+//                     disabledTabs.includes(selectedTabIndex) ? "disabled" : ""
+//                   }`}
+//                   style={{
+//                     pointerEvents: disabledTabs.includes(selectedTabIndex)
+//                       ? "none"
+//                       : "auto",
+//                     opacity: disabledTabs.includes(selectedTabIndex) ? 0.5 : 1,
+//                     cursor: disabledTabs.includes(selectedTabIndex)
+//                       ? "not-allowed"
+//                       : "pointer",
+//                   }}
+//                 >
+//                   Reset
+//                 </Link>
+//                 <Link
+//                   className={`ms-3 btn btn-success ${
+//                     disabledTabs.includes(selectedTabIndex) ? "disabled" : ""
+//                   }`}
+//                   onClick={handleClick}
+//                   style={{
+//                     pointerEvents: disabledTabs.includes(selectedTabIndex)
+//                       ? "none"
+//                       : "auto",
+//                     opacity: disabledTabs.includes(selectedTabIndex) ? 0.5 : 1,
+//                     cursor: disabledTabs.includes(selectedTabIndex)
+//                       ? "not-allowed"
+//                       : "pointer",
+//                   }}
+//                 >
+//                   Save
+//                 </Link>
+//                 <Link
+//                   className={`ms-3 btn btn-success ${
+//                     disabledTabs.includes(selectedTabIndex) ? "disabled" : ""
+//                   }`}
+//                   onClick={SubmitFormFunction}
+//                   style={{
+//                     pointerEvents: disabledTabs.includes(selectedTabIndex)
+//                       ? "none"
+//                       : "auto",
+//                     opacity: disabledTabs.includes(selectedTabIndex) ? 0.5 : 1,
+//                     cursor: disabledTabs.includes(selectedTabIndex)
+//                       ? "not-allowed"
+//                       : "pointer",
+//                   }}
+//                 >
+//                   Submit
+//                 </Link>
+//                 {/* <Link
 //                     className="ms-3 btn btn-primary"
 //                     onClick={SubmitFormFunction}
 //                   >
 //                     Submit
-//                   </Link>
-//                 </div>
-//               </form>
+//                   </Link> */}
+//               </div>
 //             </TabPanel>
 //           ))}
 //         </Tabs>
@@ -243,11 +314,16 @@ export default function TimeSheet() {
   const [disabledTabs, setDisabledTabs] = useState([]); // Track disabled tabs
   const [hours, setHours] = useState({}); // Stores hours input by employee ID
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  const [selectedProjectId, setSelectedProjectID] = useState("");
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     FetchData();
+    GetProjectDeatis();
   }, []);
-
+  // useEffect(() => {
+  //   GetProjectDeatis();
+  // }, []);
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(
       userDetails.employee.id
@@ -260,8 +336,10 @@ export default function TimeSheet() {
     setSelectedTabIndex(index);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChange = (projectid, event) => {
+    const value = event;
+    setSelectedDate(value);
+    GetProjectDeatis(projectid, value);
   };
 
   const handleHoursChange = (employeeId, value) => {
@@ -288,9 +366,11 @@ export default function TimeSheet() {
   const FormSubmitfunction = async () => {
     const data = submitFunction();
     console.log("Form Data:", data);
+    var isSubmited = false;
     var response = await TimeSheetService.AddNewTimeSheet(
       data,
-      userDetails.employee.id
+      userDetails.employee.id,
+      isSubmited
     );
     if (response.isSuccess === true) {
       toast.success("Successfully done. ", {
@@ -299,21 +379,26 @@ export default function TimeSheet() {
       });
     }
   };
-  const SubmitFormFunction = async () => {
+  async function SubmitFormFunction() {
+    debugger;
     const data = submitFunction();
     console.log("Form Data:", data);
+    var isSubmited = true;
     var response = await TimeSheetService.AddNewTimeSheet(
       data,
-      userDetails.employee.id
+      userDetails.employee.id,
+      isSubmited
     );
     if (response.isSuccess === true) {
+      debugger;
       toast.success("Successfully done. ", {
         position: "top-right",
         autoClose: "4000",
       });
+      GetProjectDeatis();
     }
     setDisabledTabs((prev) => [...prev, selectedTabIndex]);
-  };
+  }
   const handleClick = (e) => {
     e.preventDefault();
     FormSubmitfunction();
@@ -327,6 +412,14 @@ export default function TimeSheet() {
   const Resetfunction = () => {
     setHours({});
   };
+  const GetProjectDeatis = async (id, date) => {
+    setSelectedProjectID(id);
+    var month = format(selectedDate, "MMMM yyyy");
+    // console.log(month, "changes date");
+    // console.log("tab clicked Id", id);
+    var response = await TimeSheetService.GetTimeSheetDeatils(month, id);
+    setEmployees(response.item);
+  };
 
   return (
     <div className="Maindiv">
@@ -338,7 +431,11 @@ export default function TimeSheet() {
         <Tabs selectedIndex={selectedTabIndex} onSelect={handleTabSelect}>
           <TabList>
             {projectDetails.map((obj, index) => (
-              <Tab key={index} style={{ color: "blue" }}>
+              <Tab
+                key={index}
+                style={{ color: "blue" }}
+                onClick={() => GetProjectDeatis(obj.project.id, selectedDate)}
+              >
                 {obj.project.projectName}
               </Tab>
             ))}
@@ -360,7 +457,9 @@ export default function TimeSheet() {
                   </span>
                   <DatePicker
                     selected={selectedDate}
-                    onChange={handleDateChange}
+                    onChange={(e) => {
+                      handleDateChange(project.project.id, e);
+                    }}
                     showMonthYearPicker
                     dateFormat="MMMM yyyy"
                     customInput={<CustomInput />}
@@ -368,23 +467,39 @@ export default function TimeSheet() {
                   />
                 </div>
               </div>
-              <form>
-                <div className="row">
-                  <div className="col-3 header">
-                    <span style={{ marginLeft: "7px" }}>Employee Name</span>
-                  </div>
-                  <div className="col-3 header">
-                    <span style={{ marginLeft: "7px" }}>Hours</span>
-                  </div>
-                  <div className="col-6"></div>
+
+              <div className="row">
+                <div className="col-3 header">
+                  <span style={{ marginLeft: "7px" }}>Employee Name</span>
                 </div>
-                {project.employees.map((employee) => (
+                <div className="col-3 header">
+                  <span style={{ marginLeft: "7px" }}>Hours</span>
+                </div>
+                <div className="col-6"></div>
+              </div>
+
+              {employees.length > 0 ? (
+                <div>
+                  {employees.map((emp, index) => (
+                    <div className="row m-2" key={index}>
+                      <div className="col-3">
+                        <p style={{ marginLeft: "5px" }}>{emp.employeeName}</p>
+                      </div>
+                      <div className="col-3">
+                        <p>{emp.workingHourse}</p>
+                      </div>
+                      <div className="col-6"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                project.employees.map((employee) => (
                   <div key={employee.id}>
                     <div className="row m-2">
                       <div className="col-3">
-                        <p
-                          style={{ marginLeft: "5px" }}
-                        >{`${employee.firstName} ${employee.lastName}`}</p>
+                        <p style={{ marginLeft: "5px" }}>
+                          {`${employee.firstName} ${employee.lastName}`}
+                        </p>
                       </div>
                       <div className="col-3">
                         <input
@@ -400,7 +515,9 @@ export default function TimeSheet() {
                       <div className="col-6"></div>
                     </div>
                   </div>
-                ))}
+                ))
+              )}
+              {employees.length === 0 && (
                 <div className="btnss">
                   <Link
                     onClick={ResetClick}
@@ -441,13 +558,26 @@ export default function TimeSheet() {
                     Save
                   </Link>
                   <Link
-                    className="ms-3 btn btn-primary"
+                    className={`ms-3 btn btn-success ${
+                      disabledTabs.includes(selectedTabIndex) ? "disabled" : ""
+                    }`}
                     onClick={SubmitFormFunction}
+                    style={{
+                      pointerEvents: disabledTabs.includes(selectedTabIndex)
+                        ? "none"
+                        : "auto",
+                      opacity: disabledTabs.includes(selectedTabIndex)
+                        ? 0.5
+                        : 1,
+                      cursor: disabledTabs.includes(selectedTabIndex)
+                        ? "not-allowed"
+                        : "pointer",
+                    }}
                   >
                     Submit
                   </Link>
                 </div>
-              </form>
+              )}
             </TabPanel>
           ))}
         </Tabs>
@@ -471,7 +601,7 @@ const CustomInput = forwardRef(({ value, onClick }, ref) => (
       cursor: "pointer",
     }}
   >
-    <FontAwesomeIcon icon={faCalendar} style={{ marginRight: "10px" }} />
+    <FontAwesomeIcon icon={faCalendar} style={{ marginRight: "5px" }} />
     <span>{value}</span>
   </div>
 ));
