@@ -1,0 +1,50 @@
+.employee-details {
+  padding: 20px;
+}
+
+.myheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.myheader h1 {
+  margin: 0;
+  color: #043468;
+}
+
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.details-container {
+  margin-top: 20px;
+}
+
+.details-container p {
+  margin: 10px 0;
+}
+
+.actions {
+  margin-top: 20px;
+}
+
+.edit-btn,
+.deactivate-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.deactivate-btn {
+  background-color: #dc3545;
+}

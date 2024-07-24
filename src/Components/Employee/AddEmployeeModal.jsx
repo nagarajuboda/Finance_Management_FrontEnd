@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import '../../assets/Styles/EmployeePages/EmployeeModal.css';
+import '../../assets/Styles/EmployeePages/AddEmployeeModal.css';
 
-const EmployeeModal = ({ employee, onClose, onRefresh }) => {
+const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [formData, setFormData] = useState({
-    employeeId: 'IARC',
+    employeeId: '',
     firstName: '',
     lastName: '',
     email: '',
-    password: '',
+    passwordHash: '',
     mobileNo: '',
     dateOfJoining: '',
     projectManagerId: null,
@@ -19,6 +19,8 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [roles, setRoles] = useState([]);
   const [projectManagers, setProjectManagers] = useState([]);
   const [errors, setErrors] = useState({});
+  const [existingEmployeeIds, setExistingEmployeeIds] = useState([]);
+  const isEditing = !!employee;
 
   useEffect(() => {
     if (employee) {
@@ -34,14 +36,36 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
       now.setHours(11, 0, 0, 0);
       const defaultDate = now.toISOString().split('T')[0];
       setFormData(prevData => ({ ...prevData, dateOfJoining: defaultDate }));
+      fetchEmployeeIds(); // Fetch existing employee IDs if adding new employee
     }
     fetchRoles();
     fetchProjectManagers();
   }, [employee]);
 
+  const fetchEmployeeIds = async () => {
+    try {
+      const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
+      const ids = response.data.map(emp => emp.employeeId);
+      setExistingEmployeeIds(ids);
+      if (!employee) {
+        const nextEmployeeId = getNextEmployeeId(ids);
+        setFormData(prevData => ({ ...prevData, employeeId: nextEmployeeId }));
+      }
+    } catch (error) {
+      console.error('Error fetching employee IDs', error);
+    }
+  };
+
+  const getNextEmployeeId = (existingIds) => {
+    const prefix = 'IARC';
+    const currentIds = existingIds.filter(id => id.startsWith(prefix)).map(id => id.slice(prefix.length));
+    const maxId = currentIds.reduce((max, id) => Math.max(max, parseInt(id.replace(/^0+/, ''))), 0);
+    return `${prefix}${String(maxId + 1).padStart(4, '0')}`;
+  };
+
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Roles');
+      const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
       setRoles(response.data);
     } catch (error) {
       console.error('Error fetching roles', error);
@@ -50,8 +74,8 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
 
   const fetchProjectManagers = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Employees');
-      const rolesResponse = await axios.get('https://localhost:44305/api/Roles');
+      const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
+      const rolesResponse = await axios.get('https://localhost:44305/api/Roles/AllRoles');
       const projectManagerRole = rolesResponse.data.find(role => role.name === 'Project Manager');
       if (projectManagerRole) {
         const projectManagers = response.data.filter(emp => emp.roleId === projectManagerRole.id);
@@ -69,8 +93,9 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
         break;
       case 'email':
         if (!value) return 'Email is required';
+        if (!/\S+@\S+\.\S+/.test(value)) return 'Email address is invalid';
         break;
-      case 'password':
+      case 'passwordHash':
         if (!value) return 'Password is required';
         break;
       case 'dateOfJoining':
@@ -109,7 +134,7 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
 
     try {
-      const { dateOfJoining } = formData;
+      const { dateOfJoining, employeeStatus } = formData;
       const date = new Date(dateOfJoining);
       date.setHours(11, 0, 0, 0);
       const formattedDateOfJoining = date.toISOString();
@@ -117,12 +142,11 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
       const dataToSubmit = {
         ...formData,
         dateOfJoining: formattedDateOfJoining,
-        employeeId: employee ? formData.employeeId : 'IARC',
-        projectManagerId: formData.projectManagerId || null
+        employeeStatus: Number(employeeStatus) // Ensure employeeStatus is sent as a number
       };
 
       if (!employee) {
-        await axios.post('https://localhost:44305/api/Employees', dataToSubmit);
+        await axios.post('https://localhost:44305/api/Employees/CreateEmployee', dataToSubmit);
       } else {
         await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, dataToSubmit);
       }
@@ -137,13 +161,27 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
     <div className="modal-overlay">
       <div className="modal-content-AddEmp">
         <div className='MainDiv'>
-          <div className='LeftDiv'><h2>{employee ? 'Edit Employee' : 'Add Employee'}</h2></div>
-          <div className='RightDivClose'><button className="close-btn" onClick={onClose}>Close</button></div>
+          <div className='LeftDiv'>
+            <h2>{isEditing ? 'Edit Employee' : 'Add Employee'}</h2>
+          </div>
+          <div className='RightDivClose'>
+            <button className="close-btn" onClick={onClose}>Close</button>
+          </div>
         </div>
         <form onSubmit={handleSubmit}>
-          {employee && (
+          {isEditing && (
             <input type="hidden" name="employeeId" value={formData.employeeId} />
           )}
+          <label>
+            Employee ID:
+            <input
+              type="text"
+              name="employeeId"
+              value={formData.employeeId}
+              onChange={handleChange}
+              disabled={isEditing} // Disable editing if it's an existing employee
+            />
+          </label>
           <label>
             First Name:
             <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
@@ -160,8 +198,8 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
           </label>
           <label>
             Password:
-            <input type="password" name="password" value={formData.password} onChange={handleChange} />
-            {errors.password && <span className="error">{errors.password}</span>}
+            <input type="password" name="passwordHash" value={formData.passwordHash} onChange={handleChange} />
+            {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
           </label>
           <label>
             Mobile No:
@@ -190,20 +228,16 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
             <select name="projectManagerId" value={formData.projectManagerId || ''} onChange={handleChange}>
               <option value="">Select Project Manager</option>
               {projectManagers.map(pm => (
-                <option key={pm.id} value={pm.id}>{`${pm.firstName} ${pm.lastName}`}</option>
+                <option key={pm.employeeId} value={pm.employeeId}>{`${pm.firstName} ${pm.lastName}`}</option>
               ))}
             </select>
           </label>
           <label>
-            Status:
+            Employee Status:
             <select name="employeeStatus" value={formData.employeeStatus} onChange={handleChange}>
               <option value={1}>Active</option>
               <option value={0}>Inactive</option>
             </select>
-          </label>
-          <label>
-            Skill Sets:
-            <input type="text" name="skillSets" value={formData.skillSets} onChange={handleChange} />
           </label>
           <label>
             Role:
@@ -215,11 +249,17 @@ const EmployeeModal = ({ employee, onClose, onRefresh }) => {
             </select>
             {errors.roleId && <span className="error">{errors.roleId}</span>}
           </label>
-          <button type="submit" className="save-btn">Save</button>
+          <label>
+            Skill Sets:
+            <textarea name="skillSets" value={formData.skillSets} onChange={handleChange}></textarea>
+          </label>
+          <button type="submit" className="submit-btn">
+            {isEditing ? 'Save' : 'Add'}
+          </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default EmployeeModal;
+export default AddEmployeeModal;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import RoleModal from './RoleModal';
+import RoleModal from './AddRoleModal';
 import { Link } from "react-router-dom";
 import '../../assets/Styles/EmployeePages/Roles.css';
 import ConfirmationModal from './DeleteConfirmationModal';
@@ -18,7 +18,7 @@ const Roles = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Roles');
+      const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
       const sortedRoles = response.data.sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
         if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;

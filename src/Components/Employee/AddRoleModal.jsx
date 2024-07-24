@@ -28,7 +28,7 @@ const RoleModal = ({ role, onClose, onRefresh }) => {
     e.preventDefault();
     try {
       if (role==null) {
-        await axios.post("https://localhost:44305/api/Roles", formData);
+        await axios.post('https://localhost:44305/api/Roles/CreateRole', formData);
       } else {
         await axios.put("https://localhost:44305/api/Roles/UpdateRole", formData);
       }

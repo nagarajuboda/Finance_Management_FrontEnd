@@ -1,251 +1,109 @@
-.MainDiv{
-  display: flex;
-  justify-content: space-between;
-}
-
-.LeftDiv{
-  float:left;
-  padding-left:10px;
-}
-.RightDiv{
-  float:right;
-  padding:10px 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  background-color: #007bff;
-  border-radius: 5px;
-}
-
-.RightDiv a{
-  color: white;
-  padding: 10px 10px;
-}
-.RightDiv:hover a{
-  color:green;
-} 
-
-.RightDivClose{
-  float:right;
-  padding-right:10px;
-  margin-top: -10px;
-}
+/* Employee Dashboard Styling */
 .employee-list {
   padding: 20px;
 }
 
-.search-input {
-  margin-bottom: 10px;
-  padding: 5px;
-  
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+.employee-list h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
 }
-input[type="textt"]{
+
+.MainDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.LeftDiv {
+  display: flex;
+  align-items: center;
+}
+.RightDiv {
+background-color: #007bff;
+text-decoration: none;
+padding: 8px 12px;
+border-radius: 4px;
+margin-top: 15px;
+}
+.RightDiv a {
+
+  /* text-decoration: none; */
+  color: white;
+  font-size: 16px;
+}
+
+.RightDiv a:hover {
+  text-decoration: underline;
+}
+
+.search-input {
   padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
 }
 
 .add-btn, .inactive-btn {
-  margin: 5px;
-  padding: 10px 15px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
   background-color: #007bff;
   color: white;
-  border: none;
-  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.inactive-btn {
+  background-color: #28a745;
 }
 
 .add-btn:hover, .inactive-btn:hover {
-  background-color: #0056b3;
+  opacity: 0.8;
 }
 
-th {
-  cursor: pointer;
-  border-radius:10px 10px 0 0;
-}
-
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd;
-}
-
-.edit-btn, .deactivate-btn, .activate-btn, .delete-btn {
-  padding: 5px 10px;
-  margin: 2px;
-  cursor: pointer;
-  color: white;
-  border: none;
-}
-
-.edit-btn {
-  background-color: #28a745;
-}
-
-.deactivate-btn {
-  background-color: #dc3545;
-}
-
-.activate-btn {
-  background-color: #28a745;
-}
-
-.delete-btn {
-  background-color: #dc3545;
-}
-
-.edit-btn:hover {
-  background-color: #218838;
-}
-
-.deactivate-btn:hover, .delete-btn:hover {
-  background-color: #c82333;
-}
-
-.activate-btn:hover {
-  background-color: #218838;
-}
-.DOJ{
-  width: 100%;
-  border-radius: 3px;
-  border-color: aliceblue;
-  height: 40px;
-}
-/* Modal styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: #fff; 
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80%;
-  overflow-y: auto; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-content-AddEmp {
-  background: #fff; 
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 90%;
-  overflow-y: auto; 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-content-Inactive {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  width: 90%;
-  max-width: 1300px;
-  max-height: 80%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.close-btn {
-  padding: 5px 10px;
-  /* margin-top: 10px; */
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.close-btn:hover {
-  background-color: #0056b3;
-}
-
-/*Styling for InactiveEmployeesModal */
-
-.table-container {
-  overflow-y: auto;
-  height: 500px; 
-}
-.inactive-employees-table {
+.EmpTable {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
-.inactive-employees-table th, .inactive-employees-table td {
-  padding: 10px;
+.EmpTable th, .EmpTable td {
   border: 1px solid #ddd;
+  padding: 12px;
   text-align: left;
 }
 
-.inactive-employees-table th {
-  background-color: #007bff;
-  color: white;
-}
-
-.inactive-employees-table td {
-  background-color: #fff;
-}
-
-/* Styling for the form inside the modal */
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Label styling for form elements */
-label {
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-/* Input field styling */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-/* Button styling for Save and Close buttons */
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
+.EmpTable th {
+  /* background-color: #f4f4f4; */
   cursor: pointer;
-  color: #fff;
-  font-size: 16px;
-  margin-top: 10px;
 }
 
-/* Save button with green background */
-.save-btn {
-  background-color: #28a745;
+.EmpTable tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-.save-btn:hover {
-  background-color: #218838;
+.EmpTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.sorted-asc::after {
+  content: "▲";
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.sorted-desc::after {
+  content: "▼";
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+.no-employees {
+  text-align: center;
+  font-style: italic;
+  color: #777;
 }

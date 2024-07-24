@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ConfirmationModal from './DeleteConfirmationModal';
+import '../../assets/Styles/EmployeePages/InactiveEmployeesModal.css';
 
 const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
   const [roles, setRoles] = useState([]);
@@ -15,7 +16,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Roles');
+      const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
       setRoles(response.data);
     } catch (error) {
       console.error('Error fetching roles', error);
@@ -24,7 +25,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
 
   const fetchAllEmployees = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Employees');
+      const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
       setAllEmployees(response.data);
     } catch (error) {
       console.error('Error fetching all employees', error);
@@ -78,17 +79,23 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
     setEmployeeToDelete(null);
   };
 
+  // Sort employees by employeeId in ascending order
+  const sortedEmployees = [...employees].sort((a, b) => {
+    return a.employeeId.localeCompare(b.employeeId, 'en', { numeric: true });
+  });
+
   return (
     <div className="modal-overlay">
       <div className="modal-content-Inactive">
-        <div className='MainDiv'>
-          <div className='LeftDiv'><h2>Inactive Employees</h2></div>
-          <div className='RightDivClose'><button className="close-btn" onClick={onClose}>Close</button></div>
-        </div>  
+        <div className='Inactiveheader'>
+          <h2>Inactive Employees</h2>
+          <button className="close-btn" onClick={onClose}>Close</button>
+        </div>
         <div className="table-container">
           <table className="inactive-employees-table">
             <thead>
               <tr>
+                <th>Employee ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -101,9 +108,10 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
               </tr>
             </thead>
             <tbody>
-              {employees.length > 0 ? (
-                employees.map(employee => (
+              {sortedEmployees.length > 0 ? (
+                sortedEmployees.map(employee => (
                   <tr key={employee.id}>
+                    <td>{employee.employeeId}</td>
                     <td>{employee.firstName}</td>
                     <td>{employee.lastName}</td>
                     <td>{employee.email}</td>
@@ -120,7 +128,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="9">No inactive employees found.</td>
+                  <td colSpan="10">No inactive employees found.</td>
                 </tr>
               )}
             </tbody>

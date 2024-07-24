@@ -7,11 +7,11 @@ import ProductList from "../Components/Admin/Pages/ProductList";
 import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
 import InactiveEmployee from "../Components/Employee/InactiveEmployeesModal";
 import Roles from "../Components/Employee/Roles";
-import Testing from "../Components/Employee/Testing";
+import EmployeeDetails from "../Components/Employee/EmployeeDetails";
 
 export default function AdminRoutes() {
   return (
@@ -29,9 +29,7 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard/>}/>
         <Route path="/InactiveEmployee" element={<InactiveEmployee/>}/>
         <Route path="/Roles" element={<Roles/>}/>
-
-        <Route path="/Testing" element={<Testing/>}/>
-
+        <Route path="/employees/:employeeId" element={<EmployeeDetails />} />
       </Routes>
     </Sidebar>
   );
