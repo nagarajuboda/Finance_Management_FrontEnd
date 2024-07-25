@@ -49,38 +49,31 @@ export default function TimeSheet() {
   const handleTabSelect = (index) => {
     setSelectedTabIndex(index);
   };
-
   const handleDateChange = (projectId, date) => {
-    debugger;
     const formattedDate = format(date, "MMMM yyyy");
-
     setSelectedDate(date);
-    var datechnaged = true;
-    GetProjectDeatis(projectId, formattedDate, datechnaged);
+    GetProjectDeatis(projectId, formattedDate);
   };
   const handleHoursChange = (employeeId, value) => {
+    console.log(employeeId, value);
     setHours((prev) => ({
       ...prev,
       [employeeId]: value,
     }));
   };
-
   const submitFunction = () => {
     const currentProject = projectDetails[selectedTabIndex];
     const employeeData = currentProject.employees.map((employee) => ({
       employeeId: employee.id,
       hoursWorked: hours[employee.id] || "",
     }));
-
     return {
       projectId: currentProject.project.id,
       selectedDate: format(selectedDate, "MMMM yyyy"),
       employeeData,
     };
   };
-
-  const SaveForm = async (e) => {
-    e.preventDefault();
+  const SaveForm = async () => {
     const data = submitFunction();
     console.log("Form Data:", data);
     var isSubmited = false;
@@ -94,14 +87,13 @@ export default function TimeSheet() {
         position: "top-right",
         autoClose: "4000",
       });
-      const date = submitFunction();
-
-      const projectId = projectDetails[selectedTabIndex].project.id;
-
-      GetProjectDeatis(projectId, date.selectedDate);
+    } else {
+      toast.error(response.error.message, {
+        position: "top-right",
+        autoClose: "4000",
+      });
     }
   };
-
   async function SubmitFormFunction() {
     const data = submitFunction();
     var isSubmited = true;
@@ -111,7 +103,6 @@ export default function TimeSheet() {
       isSubmited
     );
     if (response.isSuccess === true) {
-      debugger;
       toast.success("Successfully done. ", {
         position: "top-right",
         autoClose: "4000",
@@ -122,28 +113,31 @@ export default function TimeSheet() {
     setDisabledTabs((prev) => [...prev, selectedTabIndex]);
   }
 
-  const ResetClick = (e) => {
+  const Resetfunction = (e) => {
     e.preventDefault();
-    Resetfunction();
+    employees.map((each) => {
+      setHours((prev) => ({
+        ...prev,
+        [each.employeeId]: "",
+      }));
+    });
   };
 
-  const Resetfunction = () => {
+  const GetProjectDeatis = async (id, date) => {
     setHours({});
-  };
-
-  const GetProjectDeatis = async (id, date, chenged) => {
-    if (chenged == true) {
-      setHours({});
-    }
-
     setSelectedProjectID(id);
     var month = format(date, "MMMM yyyy");
 
     var response = await TimeSheetService.GetTimeSheetDeatils(month, id);
     setEmployees(response.item);
+    response.item.map((each) => {
+      setHours((prev) => ({
+        ...prev,
+        [each.employeeId]: each.workingHourse,
+      }));
+    });
   };
-  console.log(employees.isSubmited, "get Timesheet Employee");
-
+  console.log(employees, "getTimesheet employees");
   return (
     <div className="Maindiv">
       <div className="card">
@@ -202,12 +196,13 @@ export default function TimeSheet() {
                 </div>
                 <div className="col-6"></div>
               </div>
+
               {employees.length > 0 ? (
                 <div>
                   {employees.map((emp, index) => (
                     <div key={index}>
                       {emp.isSubmited === true ? (
-                        <div className="row m-2">
+                        <div className="row m-2" key={index}>
                           <div className="col-3">
                             <p style={{ marginLeft: "5px" }}>
                               {emp.employeeName}
@@ -230,16 +225,16 @@ export default function TimeSheet() {
                               type="text"
                               className="form-control"
                               placeholder="Enter hours"
-                              // value={emp.workingHourse}
-                              value={emp.workingHourse}
+                              value={hours[emp.employeeId]}
                               onChange={(e) =>
                                 handleHoursChange(
-                                  emp.workingHourse,
+                                  emp.employeeId,
                                   e.target.value
                                 )
                               }
                             />
                           </div>
+
                           <div className="col-6"></div>
                         </div>
                       )}
@@ -248,7 +243,7 @@ export default function TimeSheet() {
                   {employees.some((emp) => !emp.isSubmited) && (
                     <div className="btnss">
                       <Link
-                        onClick={ResetClick}
+                        onClick={Resetfunction}
                         className="ms-3 btn btn-success"
                       >
                         Reset
@@ -285,7 +280,6 @@ export default function TimeSheet() {
                           }
                         />
                       </div>
-
                       <div className="col-6"></div>
                     </div>
                   </div>
@@ -293,10 +287,13 @@ export default function TimeSheet() {
               )}
               {employees.length === 0 && (
                 <div className="btnss">
-                  <Link onClick={ResetClick} className="ms-3 btn btn-success ">
+                  <Link
+                    onClick={Resetfunction}
+                    className="ms-3 btn btn-success"
+                  >
                     Reset
                   </Link>
-                  <Link className="ms-3 btn btn-success " onClick={SaveForm}>
+                  <Link className="ms-3 btn btn-success" onClick={SaveForm}>
                     Save
                   </Link>
                   <Link
