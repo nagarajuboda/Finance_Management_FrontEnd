@@ -8,6 +8,9 @@ import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
 import { Route, Routes } from "react-router-dom";
+import Projects from "../Components/Employee/DashboardPages/Projects";
+import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
+import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -21,6 +24,9 @@ export default function AdminRoutes() {
         <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
+        <Route path="/Employee/Projects" element={<Projects />} />
+        <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
+        <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
       </Routes>
     </Sidebar>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import {
   FaSearch,
   FaUserCircle,
@@ -10,22 +10,22 @@ import {
   FaEnvelope,
   FaSignOutAlt,
 } from "react-icons/fa";
+// import { data } from "jquery";
 
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
-  const [sessionData, setSessionData] = useState(null);
+  const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  // const [sessionData, setSessionData] = useState(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const data = localStorage.getItem("sessionData");
-    if (data) {
-      setSessionData(JSON.parse(data));
-    }
+    // console.log(result);
+    // if (data) {
+    //   setSessionData(result);
+    // }
   }, []);
-
   function logoutonclick() {
-    debugger;
     console.log("logout clicked");
     var res = localStorage.removeItem("sessionData");
     navigate("");
@@ -85,7 +85,8 @@ export default function Header() {
               onClick={toggleProfileVisibility}
             >
               <p className="namep">Franklin Jr.</p>
-              <p className="superadminp">Super Admin</p>
+              {/* {console.log("------------>", userDetails.employee.role)} */}
+              <p className="superadminp">{userDetails.employee.role.name}</p>
             </div>
           </div>
         </div>
@@ -100,7 +101,7 @@ export default function Header() {
                   className="cardProfile"
                 />
                 <div className="mt-2">
-                  <h6 className="mb-0">{`${sessionData.employee.firstName} ${sessionData.employee.lastName}`}</h6>
+                  <h6 className="mb-0">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
                       Super Admin
