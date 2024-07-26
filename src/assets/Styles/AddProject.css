@@ -34,6 +34,7 @@
 .addbutton:focus {
   color: white;
   background-color: #167291;
+  border-radius: 10px;
 }
 
 .addbutton {
@@ -85,7 +86,12 @@ input :hover {
   background-color: #faf9f6;
 }
 .modal-dialog {
-  top: "25%";
+  top: 10%;
+  right: 7%;
+}
+.modal-lg {
+  top: 1%;
+  left: 5%;
 }
 .modal {
   top: 5%;

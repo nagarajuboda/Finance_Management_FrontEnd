@@ -15,7 +15,9 @@ export default function AllProjects() {
 
   function viewClickfunction(e, index, id) {
     e.preventDefault();
-    navigate("/Dashboard/ViewProject", { state: { id } });
+    localStorage.setItem("projectId", id);
+    //navigate("/Dashboard/ViewProject", { state: { id } });
+    navigate("/Dashboard/ViewProject");
   }
 
   useEffect(() => {
@@ -84,7 +86,7 @@ export default function AllProjects() {
                     </div>
                   )}
                 </td>
-                <td>{project.project.projectManager}</td>
+                <td>{`${project.employee.firstName} ${project.employee.lastName}`}</td>
                 <td className="">{project.project.endDate}</td>
                 <td>
                   <div className="progressdiv">

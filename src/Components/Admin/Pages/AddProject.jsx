@@ -12,78 +12,131 @@ import Swal from "sweetalert2";
 import { FaArrowLeft } from "react-icons/fa";
 import withReactContent from "sweetalert2-react-content";
 import { IoArrowBackCircle } from "react-icons/io5";
-
+import { AddProjectFormValidation } from "./AddProjectFormValidation";
+import { Description } from "@mui/icons-material";
+import "select2/dist/css/select2.min.css";
+import "select2/dist/js/select2.full.min.js";
 export default function AddProject() {
   var navigate = useNavigate();
   const MySwal = withReactContent(Swal);
   const [searchQuery, setSearchQuery] = useState("");
   const [clients, setClients] = useState([]);
+  const [GetAllemployees, setEmployees] = useState([]);
   const [clientName, setClientName] = useState("");
   const [selectedProjectManager, setSelectedProjectManager] = useState("");
   const [show, setShow] = useState(false);
   const [close, setclose] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [AllCurrency, SetAllCurrency] = useState([]);
+  const [AllDepartments, SetAllDepartments] = useState([]);
+  const [filteredTeams, setFilteredTeams] = useState([]);
+  const [projectManagerEmail, setProjectManagerEmail] = useState("");
 
   const [values, setValues] = useState({
     ClientName: "",
     ClientEmailId: "",
-    // file: "",
     ClientLocation: "",
     ReferenceName: "",
     ProjectID: "",
     ProjectName: "",
+    currencyType: "",
     StartDate: "",
     ClientEmail: "",
     id: "",
     Description: "",
-
     EndDate: "",
     ProjectRefId: "",
     ProjectType: "",
-    Progress: "",
-    TeamSize: "",
+    Progress: 0,
+    departmentTeam: "",
     ProjectManager: "",
   });
 
   const [errors, setErrors] = useState({
     ClientName: "",
     ClientEmailId: "",
-    // file: "",
     ClientLocation: "",
   });
+  const [errorss, setErrorss] = useState({
+    ProjectID: "",
+    ProjectName: "",
+    Department: "",
+    currencyType: "",
+    ProjectType: "",
+    departmentTeam: "",
+    ProjectManager: "",
+    Description: "",
+    ClientEmail: "",
+    EndDate: "",
+    StartDate: "",
+  });
+
   function backonclick(e) {
-    //navigate("/analytics/AllProjects");
     navigate("/Dashboard/AllProjects");
-    console.log("btn clickes");
     e.preventDefault();
   }
   useEffect(() => {
-    async function fetchData() {
-      try {
-        var response = await AdminDashboardServices.FcnGetAllClients();
-        var result = response.item;
-        setClients(result);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
     fetchData();
-    $(".select2").select2();
-    $(".select2").on("change", function (e) {
-      setSelectedProjectManager($(this).val());
-    });
+    FetchCurrency();
+    // $(".select2").select2();
+
+    // $(".select2").on("change", function (e) {
+    //   setSelectedProjectManager($(this).val());
+    // });
   }, []);
 
-  const handleChange = (e) => {
+  async function FetchCurrency() {
+    var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
+    SetAllCurrency(CurrencyResponse.item);
+
+    var getallDepartments = await AdminDashboardServices.GetAllDepartments();
+    SetAllDepartments(getallDepartments.item);
+  }
+  async function fetchData() {
+    try {
+      var response1 = await AdminDashboardServices.fcngetEmployees();
+
+      setEmployees(response1.item);
+      var response = await AdminDashboardServices.FcnGetAllClients();
+      var result = response.item;
+      setClients(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+  const handleChange = async (e) => {
     const { name, value } = e.target;
+
+    if (name === "Department") {
+      if (value === "") {
+        setFilteredTeams([]);
+      } else {
+        const selectedDepartment = AllDepartments.find(
+          (dept) => dept.deptName === value
+        );
+
+        const response = await axios.get(
+          `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
+        );
+
+        setFilteredTeams(response.data.item);
+      }
+    }
+
     setValues({
       ...values,
       [name]: value,
     });
+
     setErrors({
       ...errors,
       [name]: AddClientValidation(name, value),
+    });
+
+    setErrorss({
+      ...errorss,
+      [name]: AddProjectFormValidation(name, value),
     });
   };
 
@@ -110,7 +163,7 @@ export default function AddProject() {
       };
 
       var response = await AdminDashboardServices.fcnAddClientAsync(obj);
-      console.log(response, "klfdslk");
+
       if (response.isSuccess === true) {
         toast.success("Successfully done. ", {
           position: "top-right",
@@ -125,72 +178,83 @@ export default function AddProject() {
           ReferenceName: "",
         });
         setClientName("");
-        setTimeout(() => {
-          window.location.reload();
-        }, 4000);
+        fetchData();
       } else {
         toast.error(response.error.message, {
           position: "top-right",
           autoClose: "4000",
         });
       }
-      console.log(response, "in component");
     }
   }
 
   async function formSubmit(e) {
+    setProjectManagerEmail(selectedProjectManager);
     e.preventDefault();
-    console.log(selectedProjectManager, "selected Project manager");
-    console.log(values, "clientId");
-    console.log(values.ClientEmail);
-    // var obj = {
-    //   ProjectID: values.ProjectID,
-    //   ProjectName: values.ProjectName,
-    //   ClientEmail: values.ClientEmail,
-    //   Description: values.Description,
-    //   StartDate: values.StartDate,
-    //   EndDate: values.EndDate,
-    //   ProjectRefId: values.ProjectRefId,
-    //   ProjectType: values.ProjectType,
-    //   Progress: values.Progress,
-    //   TeamSize: values.TeamSize,
-    //   ProjectManager: selectedProjectManager,
-    // };
-    var obj = {
-      project: {
-        ProjectID: values.ProjectID,
-        ProjectName: values.ProjectName,
-        //ClientEmail: values.ClientEmail,
-        Description: values.Description,
-        clientId: null,
-        StartDate: values.StartDate,
-        EndDate: values.EndDate,
-        ProjectRefId: values.ProjectRefId,
-        ProjectType: values.ProjectType,
-        Progress: values.Progress,
-        TeamSize: values.TeamSize,
-        ProjectManager: selectedProjectManager,
-      },
-      clientemail: values.ClientEmail,
+    const newErrors = {
+      ProjectID: AddProjectFormValidation("ProjectID", values.ProjectID),
+      ProjectName: AddProjectFormValidation("ProjectName", values.ProjectName),
+      currencyType: AddProjectFormValidation(
+        "currencyType",
+        values.currencyType
+      ),
+      ProjectType: AddProjectFormValidation("ProjectType", values.ProjectType),
+      Description: AddProjectFormValidation("Description", values.Description),
+      Department: AddProjectFormValidation("Department", values.Department),
+      departmentTeam: AddProjectFormValidation(
+        "departmentTeam",
+        values.departmentTeam
+      ),
+      ClientEmail: AddProjectFormValidation("ClientEmail", values.ClientEmail),
+      ProjectManager: AddProjectFormValidation(
+        "ProjectManager",
+        values.ProjectManager
+      ),
+      StartDate: AddProjectFormValidation("StartDate", values.StartDate),
+      EndDate: AddProjectFormValidation("EndDate", values.EndDate),
     };
-    console.log(obj, "obj");
-    var response = await AdminDashboardServices.fcnAddProject(obj);
-    console.log(response, "response");
-    if (response.isSuccess === true) {
-      Swal.fire({
-        title: "Good job!",
-        text: " New project added successfully done",
-        icon: "success",
-      });
-      navigate("/Dashboard/AllProjects");
-    } else {
-      console.log(response.error.message);
-      toast.error(response.error.message, {
-        position: "top-right",
-        autoClose: "4000",
-      });
+    setErrorss(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+
+    if (isValid) {
+      var obj = {
+        project: {
+          ProjectID: values.ProjectID,
+          ProjectName: values.ProjectName,
+          currencyType: values.currencyType,
+          Description: values.Description,
+          clientId: null,
+          departmentTeam: null,
+          StartDate: values.StartDate,
+          EndDate: values.EndDate,
+          ProjectRefId: values.ProjectRefId,
+          ProjectType: values.ProjectType,
+          Progress: values.Progress,
+        },
+        clientemail: values.ClientEmail,
+        // ProjectManager: selectedProjectManager,
+        ProjectManager: values.ProjectManager,
+        DepartmentTeam: values.departmentTeam,
+        Department: values.Department,
+      };
+
+      var response = await AdminDashboardServices.fcnAddProject(obj);
+
+      if (response.isSuccess === true) {
+        Swal.fire({
+          title: "Good job!",
+          text: " New project added successfully done",
+          icon: "success",
+        });
+        navigate("/Dashboard/AllProjects");
+      } else {
+        toast.error(response.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
+      }
     }
-    console.log(response, "final response");
   }
 
   return (
@@ -219,7 +283,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectID
+                    Project ID
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -231,11 +295,14 @@ export default function AddProject() {
                   value={values.ProjectID}
                   onChange={handleChange}
                 />
+                {errorss.ProjectID && (
+                  <span className="error ms-1">{errorss.ProjectID}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectName
+                    Project Name
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -247,6 +314,9 @@ export default function AddProject() {
                   value={values.ProjectName}
                   onChange={handleChange}
                 />
+                {errorss.ProjectName && (
+                  <span className="error ms-1">{errorss.ProjectName}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -264,12 +334,18 @@ export default function AddProject() {
                   value={values.StartDate}
                   onChange={handleChange}
                 />
+                {errorss.StartDate && (
+                  <span className="error ms-1">{errorss.StartDate}</span>
+                )}
               </div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
-                  <span className="labless">EndDate</span>
+                  <label className="labless d-flex">
+                    Deadline
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
                 <input
                   type="date"
@@ -280,9 +356,12 @@ export default function AddProject() {
                   value={values.EndDate}
                   onChange={handleChange}
                 />
+                {errorss.EndDate && (
+                  <span className="error ms-1">{errorss.EndDate}</span>
+                )}
               </div>
               <div className="col-4">
-                <label className="labless">
+                <label className="labless d-flex">
                   Select Client
                   <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                 </label>
@@ -308,29 +387,47 @@ export default function AddProject() {
                       </option>
                     ))}
                   </select>
+
                   <span>
                     <IoAddCircle className="addicon" onClick={handleShow} />
                   </span>
                 </div>
+                {errorss.ClientEmail && (
+                  <span className="error ms-1">{errorss.ClientEmail}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
-                  <span className="labless">TeamSize</span>
+                  <label className="labless">
+                    Currency
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Enter TeamSize"
-                  className="form-control"
-                  name="TeamSize"
-                  value={values.TeamSize}
+                <select
+                  id="myList"
+                  className="form-control w-100"
+                  name="currencyType"
+                  value={values.currencyType}
                   onChange={handleChange}
-                />
+                >
+                  <option value="">Select Currency</option>
+                  {AllCurrency.map((currency) => (
+                    <option key={currency.id} value={currency.type}>
+                      <div>
+                        <span className="clientname">{currency.type}</span>
+                      </div>
+                    </option>
+                  ))}
+                </select>
+                {errorss.currencyType && (
+                  <span className="error ms-1">{errorss.currencyType}</span>
+                )}
               </div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
                 <div>
-                  <span className="labless">ProjectRefId</span>
+                  <span className="labless">ProjectRef ID</span>
                 </div>
                 <input
                   type="text"
@@ -344,7 +441,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    ProjectType
+                    Project Type
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -356,6 +453,9 @@ export default function AddProject() {
                   value={values.ProjectType}
                   onChange={handleChange}
                 />
+                {errorss.ProjectType && (
+                  <span className="error ms-1">{errorss.ProjectType}</span>
+                )}
               </div>
               <div className="col-4">
                 <div>
@@ -367,53 +467,116 @@ export default function AddProject() {
                   className="form-control"
                   name="Progress"
                   value={values.Progress}
+                  readOnly
                   onChange={handleChange}
                 />
               </div>
             </div>
             <div className="row m-0 mt-2">
               <div className="col-4">
-                <span className="labless">Assign ProjectManager</span>
+                <label className="labless">
+                  Project Manager
+                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                </label>
                 <select
                   style={{ width: "100%" }}
                   className="form-control select2"
                   name="ProjectManager"
-                  value={selectedProjectManager}
-                  onChange={(e) => setSelectedProjectManager(e.target.value)}
+                  value={values.ProjectManager}
+                  onChange={handleChange}
                 >
                   <option>Select</option>
-                  {clients.map((client) => (
-                    <option key={client.id} value={client.clientName}>
-                      {client.clientName}
+                  {GetAllemployees.map((client) => (
+                    <option
+                      key={client.employee.id}
+                      value={client.employee.email}
+                    >
+                      {`${client.employee.firstName} ${client.employee.lastName}`}
                     </option>
                   ))}
                 </select>
-
-                {/* <div className="dropdown">
-                  <button
-                    className="form-control dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Select Project Manager
-                  </button>
-                  <ul
-                    className="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton1"
-                  >
-                    {clients.map((client) => (
-                      <li key={client.id}>
-                        <a className="dropdown-item" href="#">
-                          {client.clientName}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div> */}
+                {errorss.ProjectManager && (
+                  <span className="error ms-1">{errorss.ProjectManager}</span>
+                )}
               </div>
+
+              {/* <div className="col-4">
+                <div>
+                  <span className="labless">Department</span>
+                </div>
+
+                <select
+                  id="departmentList"
+                  className="form-control w-100"
+                  name="Department"
+                  value={values.Department}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Department</option>
+                  {AllDepartments.map((dept) => (
+                    <option key={dept.id} value={dept.deptName}>
+                      {dept.deptName}
+                    </option>
+                  ))}
+                </select>
+                {errorss.Department && (
+                  <span className="error ms-1">{errorss.Department}</span>
+                )}
+              </div> */}
               <div className="col-4">
+                <div>
+                  <label className="labless">
+                    Department
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
+                </div>
+                <select
+                  id="departmentList"
+                  className="form-control w-100"
+                  name="Department"
+                  value={values.Department}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Department</option>
+                  {AllDepartments.map((dept) => (
+                    <option key={dept.id} value={dept.deptName}>
+                      {dept.deptName}
+                    </option>
+                  ))}
+                </select>
+                {errorss.Department && (
+                  <span className="error ms-1">{errorss.Department}</span>
+                )}
+              </div>
+
+              <div className="col-4">
+                <div>
+                  <label className="labless">
+                    Team
+                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
+                  </label>
+                </div>
+                <select
+                  id="teamList"
+                  className="form-control w-100"
+                  name="departmentTeam"
+                  value={values.Team}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Team</option>
+                  {filteredTeams.map((team) => (
+                    <option key={team.id} value={team.teamName}>
+                      {team.teamName}
+                    </option>
+                  ))}
+                </select>
+                {errorss.departmentTeam && (
+                  <span className="error ms-1">{errorss.departmentTeam}</span>
+                )}
+              </div>
+            </div>
+            <div className="row m-0 mt-2">
+              <div className="col-8">
                 <div>
                   <label className="labless">
                     Description
@@ -427,27 +590,22 @@ export default function AddProject() {
                   value={values.Description}
                   onChange={handleChange}
                 ></textarea>
+                {errorss.Description && (
+                  <span className="error ms-1">{errorss.Description}</span>
+                )}
               </div>
               <div className="col-4"></div>
             </div>
-            <div className="row m-0">
+            <div className="row m-0 mt-2">
               <div className="col-8"></div>
+              <div className="col-2"></div>
               <div className="col-2">
-                {/* <button className="form-control addbutton">Add</button> */}
-              </div>
-              <div className="col-2">
-                {/* <Link
-                  to="/analytics/AllProjects"
-                  className="form-control  btn btn-primary"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                <button
+                  className="form-control addbutton"
+                  style={{ borderRadius: "10px" }}
                 >
-                  Back
-                </Link> */}
-                <button className="form-control addbutton">Add</button>
+                  Add
+                </button>
               </div>
             </div>
           </form>
@@ -478,7 +636,7 @@ export default function AddProject() {
                         onChange={handleChange}
                       />
                       {errors.ClientName && (
-                        <span className="error">{errors.ClientName}</span>
+                        <span className="error ms-1">{errors.ClientName}</span>
                       )}
                     </div>
                     <div className="col-6">
@@ -499,7 +657,9 @@ export default function AddProject() {
                         />
                       </div>
                       {errors.ClientEmailId && (
-                        <span className="error">{errors.ClientEmailId}</span>
+                        <span className="error ms-1">
+                          {errors.ClientEmailId}
+                        </span>
                       )}
                     </div>
                   </div>
@@ -535,7 +695,9 @@ export default function AddProject() {
                         />
                       </div>
                       {errors.ClientLocation && (
-                        <span className="error">{errors.ClientLocation}</span>
+                        <span className="error ms-1">
+                          {errors.ClientLocation}
+                        </span>
                       )}
                     </div>
                   </div>

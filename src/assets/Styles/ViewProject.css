@@ -87,3 +87,36 @@ textarea {
   font-size: 30px;
   cursor: pointer;
 }
+.modelbodyyyy {
+  max-height: 400px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.tableclassss {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.project-employee {
+  background-color: yellow; /* Change this to your desired color */
+}
+.getallEmployee tr td {
+  padding: 5px 11px;
+}
+
+.getallEmployee tr .selected {
+  background-color: blueviolet;
+}
+
+.getallEmployee tr .selected-row {
+  background-color: aqua;
+}
+.deleteicon {
+  cursor: pointer;
+}
+.deleteicontd {
+  display: flex;
+  font-size: 18px;
+  justify-content: center;
+}
