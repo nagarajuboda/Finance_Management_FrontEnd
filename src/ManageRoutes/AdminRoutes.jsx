@@ -29,7 +29,7 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard/>}/>
         <Route path="/InactiveEmployee" element={<InactiveEmployee/>}/>
         <Route path="/Roles" element={<Roles/>}/>
-        <Route path="/employees/:employeeId" element={<EmployeeDetails />} />
+        <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
       </Routes>
     </Sidebar>
   );

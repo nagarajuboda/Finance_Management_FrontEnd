@@ -1,30 +1,40 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import EmployeeModal from './AddEmployeeModal';
 import ConfirmationModal from './DeleteConfirmationModal';
 import '../../assets/Styles/EmployeePages/EmployeeDetails.css';
 
-const EmployeeDetails = () => {
-  const { employeeId } = useParams();
+const EmployeeDetails = () => { 
   const [employee, setEmployee] = useState(null);
   const [roles, setRoles] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [employeeToDeactivate, setEmployeeToDeactivate] = useState(null);
+  const [projectManagerName, setProjectManagerName] = useState('NA');
   const navigate = useNavigate();
+  const empId = localStorage.getItem("id");
 
   useEffect(() => {
-    fetchEmployeeDetails();
+    fetchEmployeeDetails(empId);
     fetchRoles();
-  }, [employeeId]);
+  }, [empId]);
 
-  const fetchEmployeeDetails = async () => {
+  const fetchEmployeeDetails = async (empId) => {
     try {
-      const response = await axios.get(`https://localhost:44305/api/Employees/${employeeId}`);
-      setEmployee(response.data);
+      const response = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${empId}`);
+      const employeeData = response.data;
+      setEmployee(employeeData);
+
+      // Fetch Project Manager details if `projectManagerId` is available
+      if (employeeData.projectManagerId) {
+        const pmResponse = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`);
+        setProjectManagerName(`${pmResponse.data.firstName} ${pmResponse.data.lastName}`);
+      } else {
+        setProjectManagerName('NA');
+      }
     } catch (error) {
-      console.error('Error fetching employee details', error);
+      console.error('Error fetching employee details', error.response ? error.response.data : error.message);
     }
   };
 
@@ -33,7 +43,7 @@ const EmployeeDetails = () => {
       const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
       setRoles(response.data);
     } catch (error) {
-      console.error('Error fetching roles', error);
+      console.error('Error fetching roles', error.response ? error.response.data : error.message);
     }
   };
 
@@ -55,12 +65,12 @@ const EmployeeDetails = () => {
     try {
       if (employeeToDeactivate) {
         await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employeeToDeactivate, employeeStatus: 0 });
-        navigate('/EmployeeDashboard');  // Navigate back to EmployeeDashboard after deactivation
+        navigate('/EmployeeDashboard');  
       }
       setShowConfirmModal(false);
       setEmployeeToDeactivate(null);
     } catch (error) {
-      console.error('Error deactivating employee', error);
+      console.error('Error deactivating employee', error.response ? error.response.data : error.message);
     }
   };
 
@@ -88,7 +98,8 @@ const EmployeeDetails = () => {
         <p><strong>Date of Joining:</strong> {new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</p>
         <p><strong>Status:</strong> {employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</p>
         <p><strong>Role:</strong> {getRoleName(employee.roleId)}</p>
-        <p><strong>Project Manager:</strong> {employee.projectManagerId}</p>
+        <p><strong>Project Manager:</strong> {projectManagerName}</p>        
+        <p><strong>Skills:</strong> {employee.skillSets || 'NA'}</p>
       </div>
       <div className="actions">
         <button className="edit-btn" onClick={handleEdit}>Edit</button>

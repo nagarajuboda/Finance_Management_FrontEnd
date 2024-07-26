@@ -11,7 +11,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     passwordHash: '',
     mobileNo: '',
     dateOfJoining: '',
-    projectManagerId: null,
+    projectManagerId: '', // Store Project Manager ID here
     employeeStatus: 1,
     skillSets: '',
     roleId: ''
@@ -29,7 +29,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         ...employee,
         dateOfJoining: formattedDate,
         employeeStatus: employee.employeeStatus === 1 ? 1 : 0,
-        projectManagerId: employee.projectManagerId || null
+        projectManagerId: employee.projectManagerId || ''
       });
     } else {
       const now = new Date();
@@ -86,6 +86,11 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
   };
 
+  const getProjectManagerName = (employeeId) => {
+    const pm = projectManagers.find(pm => pm.employeeId === employeeId);
+    return pm ? `${pm.firstName} ${pm.lastName}` : '';
+  };
+
   const validate = (fieldName, value) => {
     switch (fieldName) {
       case 'firstName':
@@ -134,7 +139,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
 
     try {
-      const { dateOfJoining, employeeStatus } = formData;
+      const { dateOfJoining, employeeStatus, projectManagerId } = formData;
       const date = new Date(dateOfJoining);
       date.setHours(11, 0, 0, 0);
       const formattedDateOfJoining = date.toISOString();
@@ -142,7 +147,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       const dataToSubmit = {
         ...formData,
         dateOfJoining: formattedDateOfJoining,
-        employeeStatus: Number(employeeStatus) // Ensure employeeStatus is sent as a number
+        employeeStatus: Number(employeeStatus), // Ensure employeeStatus is sent as a number
+        projectManagerId // Use Project Manager ID for submission
       };
 
       if (!employee) {
@@ -155,6 +161,16 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     } catch (error) {
       console.error('Error saving employee', error);
     }
+  };
+
+  const handleProjectManagerChange = (e) => {
+    const selectedName = e.target.value;
+    const selectedPm = projectManagers.find(pm => `${pm.firstName} ${pm.lastName}` === selectedName);
+    setFormData(prevData => ({
+      ...prevData,
+      projectManagerId: selectedPm ? selectedPm.employeeId : '',
+      projectManager: selectedName
+    }));
   };
 
   return (
@@ -225,10 +241,12 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           </label>
           <label>
             Project Manager:
-            <select name="projectManagerId" value={formData.projectManagerId || ''} onChange={handleChange}>
+            <select name="projectManager" value={formData.projectManager} onChange={handleProjectManagerChange}>
               <option value="">Select Project Manager</option>
               {projectManagers.map(pm => (
-                <option key={pm.employeeId} value={pm.employeeId}>{`${pm.firstName} ${pm.lastName}`}</option>
+                <option key={pm.employeeId} value={`${pm.firstName} ${pm.lastName}`}>
+                  {`${pm.firstName} ${pm.lastName}`}
+                </option>
               ))}
             </select>
           </label>

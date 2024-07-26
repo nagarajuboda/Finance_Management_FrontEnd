@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import '../../assets/Styles/EmployeePages/Modal.css';
+import '../../assets/Styles/EmployeePages/RolesModel.css';
 
 const RoleModal = ({ role, onClose, onRefresh }) => {
   const [formData, setFormData] = useState({

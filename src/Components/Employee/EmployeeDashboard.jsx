@@ -9,6 +9,8 @@ import '../../assets/Styles/EmployeePages/EmployeeDashboard.css';
 const EmployeeDashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [inactiveEmployees, setInactiveEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: 'employeeId', direction: 'asc' });
   const [showModal, setShowModal] = useState(false);
@@ -26,7 +28,18 @@ const EmployeeDashboard = () => {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
-      setEmployees(response.data);
+      const employeesData = response.data;
+      setEmployees(employeesData);
+      setInactiveEmployees(employeesData.filter(emp => emp.employeeStatus === 0));
+
+      const rolesResponse = await axios.get('https://localhost:44305/api/Roles/AllRoles');
+      setRoles(rolesResponse.data);
+
+      const projectManagerRole = rolesResponse.data.find(role => role.name === 'Project Manager');
+      if (projectManagerRole) {
+        const managers = employeesData.filter(emp => emp.roleId === projectManagerRole.id);
+        setProjectManagers(managers);
+      }
     } catch (error) {
       console.error('Error fetching employees', error);
     }
@@ -47,7 +60,7 @@ const EmployeeDashboard = () => {
   };
 
   const getProjectManagerName = (projectManagerId) => {
-    const projectManager = employees.find(emp => emp.id === projectManagerId);
+    const projectManager = projectManagers.find(emp => emp.employeeId === projectManagerId);
     return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : 'N/A';
   };
 
@@ -116,7 +129,13 @@ const EmployeeDashboard = () => {
   };
 
   const handleRowClick = (employeeId) => {
-    navigate(`/employees/${employeeId}`);
+    localStorage.setItem("id", employeeId);
+    navigate("/EmployeeDetails");
+  };
+
+  const handleActivateEmployee = () => {
+    fetchEmployees();
+    setShowInactiveModal(false);
   };
 
   return (
@@ -124,16 +143,15 @@ const EmployeeDashboard = () => {
       <h1>Employee Dashboard</h1>
       <div className='MainDiv'>
         <div className='LeftDiv'>
-          <input type="text" placeholder="Search by name..." value={searchTerm}
-            onChange={handleSearch} className="search-input"/>
+          <input type="textt" placeholder="Search by name..." value={searchTerm} onChange={handleSearch} className="search-input" />
           <button className="add-btn" onClick={() => { setCurrentEmployee(null); setShowModal(true); }}>Add Employee</button>
           <button className="inactive-btn" onClick={() => setShowInactiveModal(true)}>View Inactive Employees</button>
         </div>
         <div className='RightDiv'>
           <Link to="/roles"><a>Roles List</a></Link>
         </div>
-      </div>  
-      <table className='EmpTable'> 
+      </div>
+      <table className='MyEmpTable'>
         <thead>
           <tr>
             <th className={getHeaderClass('employeeId')} onClick={() => handleSort('employeeId')}>Employee Id</th>
@@ -150,7 +168,7 @@ const EmployeeDashboard = () => {
         <tbody>
           {filteredEmployees.length > 0 ? (
             filteredEmployees.map(employee => (
-              <tr key={employee.id} onClick={() => handleRowClick(employee.id)} className="clickable-row">
+              <tr key={employee.employeeId} onClick={() => handleRowClick(employee.id)} className="clickable-row">
                 <td>{employee.employeeId}</td>
                 <td>{employee.firstName}</td>
                 <td>{employee.lastName}</td>
@@ -164,7 +182,7 @@ const EmployeeDashboard = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="9" className="no-employees">No active employees.</td>
+              <td colSpan="9" className="no-employees">No employees found</td>
             </tr>
           )}
         </tbody>
@@ -177,13 +195,7 @@ const EmployeeDashboard = () => {
           onCancel={cancelDeactivate}
         />
       )}
-      {showInactiveModal && (
-        <InactiveEmployeesModal
-          employees={employees.filter(emp => emp.employeeStatus === 0)}
-          onClose={() => setShowInactiveModal(false)}
-          onActivate={fetchEmployees}
-        />
-      )}
+      {showInactiveModal && <InactiveEmployeesModal employees={inactiveEmployees} onClose={() => setShowInactiveModal(false)} onActivate={handleActivateEmployee} />}
     </div>
   );
 };

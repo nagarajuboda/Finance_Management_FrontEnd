@@ -38,17 +38,13 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
   };
 
   const getProjectManagerName = (projectManagerId) => {
-    const projectManager = allEmployees.find(emp => emp.id === projectManagerId);
+    const projectManager = allEmployees.find(emp => emp.employeeId === projectManagerId);
     return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : 'N/A';
   };
 
   const handleActivate = async (employee) => {
     try {
-      const updatedEmployee = {
-        ...employee,
-        employeeStatus: 1 
-      };
-
+      const updatedEmployee = { ...employee, employeeStatus: 1 };
       await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, updatedEmployee);
       onActivate(); 
     } catch (error) {
@@ -79,10 +75,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
     setEmployeeToDelete(null);
   };
 
-  // Sort employees by employeeId in ascending order
-  const sortedEmployees = [...employees].sort((a, b) => {
-    return a.employeeId.localeCompare(b.employeeId, 'en', { numeric: true });
-  });
+  const sortedEmployees = [...employees].sort((a, b) => a.employeeId.localeCompare(b.employeeId, 'en', { numeric: true }));
 
   return (
     <div className="modal-overlay">
