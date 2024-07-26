@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
 import { json, Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/Images/ArchentsLogo.png";
 import {
   FaSearch,
   FaUserCircle,
@@ -57,7 +58,12 @@ export default function Header() {
   return (
     <div className="maindiv">
       <div className="row">
-        <div className="col-8 position-relative searchinputdiv">
+        <div className="col-2">
+          <h1 className="logo">
+            <img src={logo} alt="" width="140px" />
+          </h1>
+        </div>
+        <div className="col-6 position-relative searchinputdiv">
           <input
             type="text"
             className="search form-control w-75 "
@@ -84,9 +90,13 @@ export default function Header() {
               className="nameandrole ms-2 "
               onClick={toggleProfileVisibility}
             >
-              <p className="namep">Franklin Jr.</p>
+              <p className="namep" style={{ fontSize: "1rem" }}>
+                Franklin Jr.
+              </p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
-              <p className="superadminp">{userDetails.employee.role.name}</p>
+              <p className="superadminp" style={{ fontSize: "1rem" }}>
+                {userDetails.employee.role.name}
+              </p>
             </div>
           </div>
         </div>

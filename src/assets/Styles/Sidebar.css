@@ -11,6 +11,7 @@
 }
 
 main {
+  height: 100vh;
   width: 100%;
   padding: 20px;
   overflow-y: auto;
@@ -18,8 +19,11 @@ main {
 }
 
 .sidebar {
-  background: #fff;
+  /* background: #fff; */
   color: #202020;
+  /* background-color: rgb(67, 97, 107); */
+  background-color: rgb(81, 110, 120);
+
   width: 200px;
   transition: all 0.5s;
   display: flex;
@@ -133,7 +137,8 @@ main {
 
 .icon,
 .link_text:hover {
-  color: black;
+  /* color: black; */
+  color: white;
   text-decoration: none;
   list-style-type: none;
 }
@@ -149,7 +154,8 @@ main {
 .icon,
 .link_text {
   font-size: 20px;
-  color: black;
+  /* color: black; */
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -193,7 +199,7 @@ main {
 
 .submenu.open {
   max-height: 500px;
-  color: #9f9f9f;
+  /* color: #9f9f9f; */
 }
 
 .dropdown-icon {
@@ -211,4 +217,10 @@ main {
 }
 .submenu {
   padding-left: 20px; /* Adjust this value as needed */
+}
+.openandcloseicon {
+  color: white;
+}
+.childercomponents {
+  background-color: rgb(186, 211, 219);
 }

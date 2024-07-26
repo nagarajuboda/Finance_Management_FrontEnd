@@ -37,6 +37,7 @@ export function ViewProject() {
   const percentage = 66;
 
   const id = localStorage.getItem("projectId");
+  console.log(id, "clicked projectid");
   useEffect(() => {
     FetchData();
   }, [id]);
@@ -253,7 +254,7 @@ export function ViewProject() {
               </div>
               <div>
                 <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
-                  Deadline
+                  Deadl+ine
                 </p>
                 <p
                   style={{
@@ -605,7 +606,7 @@ export function ViewProject() {
         >
           <Modal.Header
             closeButton
-            style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
+            style={{ backgroundColor: "rgb(81, 110, 120)", color: "white" }}
           >
             <Modal.Title id="example-modal-sizes-title-lg">
               Add Employees
