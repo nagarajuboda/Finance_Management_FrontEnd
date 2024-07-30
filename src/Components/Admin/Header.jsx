@@ -84,8 +84,13 @@ export default function Header() {
               className="nameandrole ms-2 "
               onClick={toggleProfileVisibility}
             >
-              <p className="namep">Franklin Jr.</p>
-              <p className="superadminp">Super Admin</p>
+              <p className="namep">{sessionData
+    ? `${sessionData.employee.firstName} ${sessionData.employee.lastName}`
+    : ""}</p>
+              {/* <p className="superadminp">{sessionData ? sessionData.employee.role.name : "Super Admin"}</p> */}
+              <p className="superadminp">
+  {sessionData?.employee?.role?.name || "Super Admin"}
+</p>
             </div>
           </div>
         </div>
@@ -100,11 +105,11 @@ export default function Header() {
                   className="cardProfile"
                 />
                 <div className="mt-2">
-                  <h6 className="mb-0">{`${sessionData.employee.firstName} ${sessionData.employee.lastName}`}</h6>
+                  {/* <h6 className="mb-0">{`${sessionData.employee.firstName} ${sessionData.employee.lastName}`}</h6> */}
+                  <h6 className="mb-0">{sessionData? `${sessionData.employee.firstName} ${sessionData.employee.lastName}`: ""}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
-                      Super Admin
-                    </p>
+                    {sessionData ? sessionData.employee.role.name : "Super Admin"}                    </p>
                   </div>
                 </div>
               </div>
