@@ -20,7 +20,8 @@ export default function AdminRoutes() {
   return (
     <Sidebar>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        {/* <Route path="/" element={<Dashboard />} /> */}
+        <Route path="/" element={<EmployeeDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/comment" element={<Comment />} />
         <Route path="/AdminDashboard" element={<Dashboard />} />
