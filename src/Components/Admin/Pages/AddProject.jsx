@@ -321,7 +321,7 @@ export default function AddProject() {
               <div className="col-4">
                 <div>
                   <label className="labless">
-                    StartDate
+                    Start Date
                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
                   </label>
                 </div>
@@ -622,7 +622,7 @@ export default function AddProject() {
                   <div className="row m-0">
                     <div className="col-6">
                       <label className="labless">
-                        ClientName
+                        Client Name
                         <span style={{ color: "red", marginLeft: "5px" }}>
                           *
                         </span>
@@ -666,7 +666,7 @@ export default function AddProject() {
                   <div className="row m-0 mt-2">
                     <div className="col-6">
                       <div>
-                        <label className="labless">ReferenceName</label>
+                        <label className="labless">Reference Name</label>
                         <input
                           type="text"
                           placeholder="Enter ReferenceName"

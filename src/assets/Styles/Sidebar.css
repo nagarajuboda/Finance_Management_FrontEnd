@@ -22,7 +22,8 @@ main {
   /* background: #fff; */
   color: #202020;
   /* background-color: rgb(67, 97, 107); */
-  background-color: rgb(81, 110, 120);
+  /* background-color: rgb(81, 110, 120); */
+  background-color: #222a33;
 
   width: 200px;
   transition: all 0.5s;
@@ -92,7 +93,8 @@ main {
 .link:hover {
   transition: all 0.5s;
   /* background-color: #deeff5; */
-  background-color: #b0d0e8;
+  /* background-color: #b0d0e8; */
+  background-color: #394454;
 }
 
 /* .active {

@@ -143,17 +143,17 @@ const Sidebar = ({ children }) => {
   ];
 
   const ProjectManagerMenuItems = [
-    {
-      name: "Dashboards",
-      icon: <RiDashboard3Line />,
-      submenu: [
-        { path: "/list2", name: "- Invoice Management" },
-        { path: "/list1", name: "- HR management" },
-        { path: "/list2", name: "- Job Hiring Management" },
-        { path: "/list1", name: "- Project management1" },
-        { path: "/list1", name: "- Project management1" },
-      ],
-    },
+    // {
+    //   name: "Dashboards",
+    //   icon: <RiDashboard3Line />,
+    //   submenu: [
+    //     { path: "/list2", name: "- Invoice Management" },
+    //     { path: "/list1", name: "- HR management" },
+    //     { path: "/list2", name: "- Job Hiring Management" },
+    //     { path: "/list1", name: "- Project management1" },
+    //     { path: "/list1", name: "- Project management1" },
+    //   ],
+    // },
     {
       name: "Hr Management",
       icon: <IoPeopleOutline />,
@@ -267,7 +267,7 @@ const Sidebar = ({ children }) => {
       <div className="renderdiv">
         <Header />
         <main
-          style={{ backgroundColor: "rgb(67, 97, 107);" }}
+          style={{ backgroundColor: "#DBDCDD" }}
           className="childercomponents"
         >
           {children}

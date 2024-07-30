@@ -3,15 +3,9 @@
   padding: 0;
 }
 .maindiv {
-  background-color: white;
+  background-color: #f6f8fa;
 }
-.search {
-  /* padding: 23px; */
-  border: none;
-  border-radius: 39px;
-  background-color: #faf9f6;
-  /* background-color: rgb(186, 211, 219); */
-}
+
 /* .search {
   padding: 14px;
   border: none;
@@ -27,6 +21,9 @@
   border: 1px solid #ced4da;
   transition: border-color 0.3s ease;
   padding: 20px 46px;
+  background-color: #dbdcdd;
+  border: none;
+  border-radius: 39px;
 }
 
 .search:focus {
@@ -48,7 +45,8 @@
 
 .NotificationIcon {
   font-size: 20px;
-  color: #9f9f9f;
+  /* color: #9f9f9f; */
+  color: black;
   cursor: pointer;
   margin: 22px 10px;
 }
@@ -57,7 +55,8 @@
   justify-content: space-between;
 }
 .SettingsIcon {
-  color: #9f9f9f;
+  /* color: #9f9f9f; */
+  color: black;
   margin: 22px 20px;
   cursor: pointer;
   font-size: 20px;

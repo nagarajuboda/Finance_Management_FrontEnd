@@ -206,15 +206,12 @@ export function ViewProject() {
                 onClick={backonclick}
               />
             )}
-
             <p style={{ fontSize: "20px" }} className="ms-1 ">
               Back
             </p>
           </div>
           <div>
-            <Link style={{ color: "#257a96" }} onClick={() => setShow(true)}>
-              Update
-            </Link>
+            <Link onClick={() => setShow(true)}>Update</Link>
           </div>
         </div>
         <div className="headerCards">
@@ -254,7 +251,7 @@ export function ViewProject() {
               </div>
               <div>
                 <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
-                  Deadl+ine
+                  Deadline
                 </p>
                 <p
                   style={{
@@ -606,7 +603,7 @@ export function ViewProject() {
         >
           <Modal.Header
             closeButton
-            style={{ backgroundColor: "rgb(81, 110, 120)", color: "white" }}
+            style={{ backgroundColor: "#196e8a", color: "white" }}
           >
             <Modal.Title id="example-modal-sizes-title-lg">
               Add Employees
@@ -673,8 +670,13 @@ export function ViewProject() {
             </Modal.Body>
             <Modal.Footer>
               <button
-                className="form-control  btn btn-success "
-                style={{ borderRadius: "10px", width: "80px" }}
+                className="form-control "
+                style={{
+                  borderRadius: "10px",
+                  width: "80px",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
               >
                 Save
               </button>

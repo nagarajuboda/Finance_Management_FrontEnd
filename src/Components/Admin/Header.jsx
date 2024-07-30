@@ -91,7 +91,8 @@ export default function Header() {
               onClick={toggleProfileVisibility}
             >
               <p className="namep" style={{ fontSize: "1rem" }}>
-                Franklin Jr.
+                {/* Franklin Jr. */}
+                {`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}
               </p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
               <p className="superadminp" style={{ fontSize: "1rem" }}>
@@ -114,7 +115,7 @@ export default function Header() {
                   <h6 className="mb-0">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
-                      Super Admin
+                      {userDetails.employee.role.name}
                     </p>
                   </div>
                 </div>
@@ -127,9 +128,7 @@ export default function Header() {
                 </div>
                 <div className="cardInbox">
                   <FaEnvelope className="cardicons" />
-                  <p className="popup-item ms-3">
-                    <Link to="/inbox">Inbox</Link>
-                  </p>
+                  <p className="popup-item ms-3">Inbox</p>
                 </div>
                 <div className="cardSettings">
                   <FaCog className="cardicons" />

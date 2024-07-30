@@ -152,7 +152,7 @@ table {
   justify-content: space-between;
 }
 .addprojectlink {
-  color: #196e8a;
+  /* color: #196e8a; */
   font-family: sans-serif;
 }
 .addprojectlink:hover {
