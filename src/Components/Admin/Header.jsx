@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
 import { json, Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/Images/ArchentsLogo.png";
 import {
   FaSearch,
   FaUserCircle,
@@ -57,15 +58,23 @@ export default function Header() {
   return (
     <div className="maindiv">
       <div className="row">
-        <div className="col-8 position-relative searchinputdiv">
+        <div className="col-2">
+          <h1 className="logo">
+            <img src={logo} alt="" width="140px" />
+          </h1>
+        </div>
+
+        <div className="col-6 position-relative searchinputdiv">
           <input
             type="text"
-            className="search form-control w-75 "
+            className="search form-control w-75"
             placeholder="Search"
+            style={{ borderRadius: "36px", padding: "8px 5px 8px 35px" }}
           />
-          <div>
-            <FaSearch className="search-icon position-absolute" />
-          </div>
+          <FaSearch
+            className="search-icon position-absolute"
+            style={{ top: "40%", left: "26px", transform: "translateY(-50%)" }}
+          />
         </div>
 
         <div className="col-4 d-flex profileicons">
@@ -84,9 +93,14 @@ export default function Header() {
               className="nameandrole ms-2 "
               onClick={toggleProfileVisibility}
             >
-              <p className="namep">Franklin Jr.</p>
+              <p className="namep" style={{ fontSize: "1rem" }}>
+                {/* Franklin Jr. */}
+                {`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}
+              </p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
-              <p className="superadminp">{userDetails.employee.role.name}</p>
+              <p className="superadminp" style={{ fontSize: "1rem" }}>
+                {userDetails.employee.role.name}
+              </p>
             </div>
           </div>
         </div>
@@ -104,7 +118,7 @@ export default function Header() {
                   <h6 className="mb-0">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
-                      Super Admin
+                      {userDetails.employee.role.name}
                     </p>
                   </div>
                 </div>
@@ -117,9 +131,7 @@ export default function Header() {
                 </div>
                 <div className="cardInbox">
                   <FaEnvelope className="cardicons" />
-                  <p className="popup-item ms-3">
-                    <Link to="/inbox">Inbox</Link>
-                  </p>
+                  <p className="popup-item ms-3">Inbox</p>
                 </div>
                 <div className="cardSettings">
                   <FaCog className="cardicons" />

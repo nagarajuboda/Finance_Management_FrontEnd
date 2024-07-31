@@ -37,6 +37,7 @@ export function ViewProject() {
   const percentage = 66;
 
   const id = localStorage.getItem("projectId");
+  console.log(id, "clicked projectid");
   useEffect(() => {
     FetchData();
   }, [id]);
@@ -205,15 +206,12 @@ export function ViewProject() {
                 onClick={backonclick}
               />
             )}
-
             <p style={{ fontSize: "20px" }} className="ms-1 ">
               Back
             </p>
           </div>
           <div>
-            <Link style={{ color: "#257a96" }} onClick={() => setShow(true)}>
-              Update
-            </Link>
+            <Link onClick={() => setShow(true)}>Update</Link>
           </div>
         </div>
         <div className="headerCards">
@@ -363,22 +361,20 @@ export function ViewProject() {
               <tbody>
                 {projectEmployess.length === 0 ? (
                   <tr>
-                    <td colSpan="6" style={{ textAlign: "center" }}>
-                      No records in the table
-                    </td>
+                    <td colSpan="6">No records in the table</td>
                   </tr>
                 ) : (
                   projectEmployess.map((obj, index) => {
                     return (
                       <tr key={index}>
-                        <td>
+                        <td className="data">
                           <Link>{obj.employee.employeeId}</Link>
                         </td>
-                        <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                        <td>{obj.employee.email}</td>
-                        <td>{obj.project.projectName}</td>
-                        <td>{obj.employee.dateOfJoining}</td>
-                        <td>
+                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td className="data">{obj.employee.email}</td>
+                        <td className="data">{obj.project.projectName}</td>
+                        <td className="data">{obj.employee.dateOfJoining}</td>
+                        <td className="data">
                           <div className="deleteicontd">
                             <RiDeleteBin6Line
                               className="deleteicon"
@@ -404,7 +400,10 @@ export function ViewProject() {
           animation={false}
           aria-labelledby="example-modal-sizes-title-lg"
         >
-          <Modal.Header closeButton>
+          <Modal.Header
+            closeButton
+            style={{ backgroundColor: "#196e8a", color: "white" }}
+          >
             <Modal.Title id="example-modal-sizes-title-lg">
               Update Project
             </Modal.Title>
@@ -605,7 +604,7 @@ export function ViewProject() {
         >
           <Modal.Header
             closeButton
-            style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
+            style={{ backgroundColor: "#196e8a", color: "white" }}
           >
             <Modal.Title id="example-modal-sizes-title-lg">
               Add Employees
@@ -639,10 +638,10 @@ export function ViewProject() {
                         }
                         style={{ margin: "0px" }}
                       >
-                        <td>{obj.employee.employeeId}</td>
-                        <td>{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                        <td>{obj.role.name}</td>
-                        <td style={{ width: "20px" }}>
+                        <td className="data">{obj.employee.employeeId}</td>
+                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td className="data">{obj.role.name}</td>
+                        <td style={{ width: "20px" }} className="data">
                           {selectedRowIds.includes(obj.employee.id) ? (
                             <RxCross2
                               onClick={(e) =>
@@ -659,8 +658,8 @@ export function ViewProject() {
                               onClick={(e) =>
                                 toggleIcon(e, index, obj.employee.id)
                               }
-                              className="addemployeecircle"
-                              style={{ cursor: "pointer" }}
+                              className="addemployeecircle "
+                              style={{ cursor: "pointer", margin: "0px 15px" }}
                             />
                           )}
                         </td>
@@ -672,8 +671,13 @@ export function ViewProject() {
             </Modal.Body>
             <Modal.Footer>
               <button
-                className="form-control  btn btn-success "
-                style={{ borderRadius: "10px", width: "80px" }}
+                className="form-control "
+                style={{
+                  borderRadius: "10px",
+                  width: "80px",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
               >
                 Save
               </button>
