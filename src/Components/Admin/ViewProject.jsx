@@ -400,7 +400,10 @@ export function ViewProject() {
           animation={false}
           aria-labelledby="example-modal-sizes-title-lg"
         >
-          <Modal.Header closeButton>
+          <Modal.Header
+            closeButton
+            style={{ backgroundColor: "#196e8a", color: "white" }}
+          >
             <Modal.Title id="example-modal-sizes-title-lg">
               Update Project
             </Modal.Title>
