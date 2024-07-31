@@ -30,7 +30,9 @@
   align-items: center;
   justify-content: space-between;
 }
-
+.data {
+  text-align: left;
+}
 .description {
   color: rgb(25, 110, 138);
   font-family: "Open Sans", sans-serif;
