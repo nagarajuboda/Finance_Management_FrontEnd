@@ -7,7 +7,12 @@ import ProductList from "../Components/Admin/Pages/ProductList";
 import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
+import InactiveEmployee from "../Components/Employee/InactiveEmployeesModal";
+import Roles from "../Components/Employee/Roles";
+import EmployeeDetails from "../Components/Employee/EmployeeDetails";
+
 import Projects from "../Components/Employee/DashboardPages/Projects";
 import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
 import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
@@ -16,6 +21,7 @@ export default function AdminRoutes() {
     <Sidebar>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<EmployeeDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/comment" element={<Comment />} />
         <Route path="/AdminDashboard" element={<Dashboard />} />
@@ -24,6 +30,10 @@ export default function AdminRoutes() {
         <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
+        <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
+        <Route path="/InactiveEmployee" element={<InactiveEmployee />} />
+        <Route path="/Roles" element={<Roles />} />
+        <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />

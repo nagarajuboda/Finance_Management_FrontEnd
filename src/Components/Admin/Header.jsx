@@ -63,15 +63,28 @@ export default function Header() {
             <img src={logo} alt="" width="140px" />
           </h1>
         </div>
-        <div className="col-6 position-relative searchinputdiv">
+        {/* <div className="col-6 position-relative searchinputdiv">
           <input
             type="text"
             className="search form-control w-75 "
             placeholder="Search"
+            style={{ borderRadius: "36px", padding: "8px 5px" }}
           />
           <div>
             <FaSearch className="search-icon position-absolute" />
           </div>
+        </div> */}
+        <div className="col-6 position-relative searchinputdiv">
+          <input
+            type="text"
+            className="search form-control w-75"
+            placeholder="Search"
+            style={{ borderRadius: "36px", padding: "8px 5px 8px 35px" }}
+          />
+          <FaSearch
+            className="search-icon position-absolute"
+            style={{ top: "40%", left: "26px", transform: "translateY(-50%)" }}
+          />
         </div>
 
         <div className="col-4 d-flex profileicons">

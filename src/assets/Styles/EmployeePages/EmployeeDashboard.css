@@ -1,0 +1,150 @@
+/* .employee-list {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.employee-list h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.MainDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.LeftDiv {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.add-btn,
+.inactive-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.inactive-btn {
+  background-color: #ffc107;
+  color: black;
+}
+
+.add-btn:hover,
+.inactive-btn:hover {
+  opacity: 0.9;
+}
+
+.RightDiv {
+  display: flex;
+  align-items: center;
+}
+
+.RightDiv a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.RightDiv a:hover {
+  text-decoration: underline;
+}
+input[type="textt"],
+input[type="number"] {
+  width: calc(33% - 22px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.MyEmpTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.MyEmpTable th,
+.MyEmpTable td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.MyEmpTable th {
+  background-color: #007bff;
+  cursor: pointer;
+}
+
+.MyEmpTable th.sorted-asc::after {
+  content: "▲";
+  color: white;
+  margin-left: 5px;
+}
+
+.MyEmpTable th.sorted-desc::after {
+  content: "▼";
+  color: white;
+  margin-left: 5px;
+}
+
+.MyEmpTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.MyEmpTable tr:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
+}
+
+.no-employees {
+  text-align: center;
+  font-style: italic;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal button.confirm {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal button.cancel {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal button:hover {
+  opacity: 0.9;
+} */

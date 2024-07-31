@@ -6,37 +6,17 @@
   background-color: #f6f8fa;
 }
 
-/* .search {
+.search {
   padding: 14px;
   border: none;
-  border-radius: 22px;
   background-color: #faf9f6;
   width: 330px;
-} */
+  padding: 0px 30px;
+}
 .row {
   margin: 2px;
 }
 
-.search {
-  border: 1px solid #ced4da;
-  transition: border-color 0.3s ease;
-  padding: 20px 46px;
-  background-color: #dbdcdd;
-  border: none;
-  border-radius: 39px;
-}
-
-.search:focus {
-  /* border-color: rgba(146, 74, 239, 1); */
-}
-.search-icon {
-  top: 42%;
-  transform: translateY(-50%);
-  left: 28px;
-
-  font-size: 1em;
-  /* color: rgb(186, 211, 219); */
-}
 .settingandnotificationicons {
   display: flex;
   align-items: center;
