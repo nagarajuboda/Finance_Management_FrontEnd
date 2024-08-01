@@ -158,7 +158,7 @@ input[type="EmpSearchtxt"] {
   background-color: greenyellow;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 14px;  
 }
 
 .EmpPaginationArrow:hover {
