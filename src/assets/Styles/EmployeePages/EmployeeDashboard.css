@@ -143,6 +143,7 @@ input[type="EmpSearchtxt"] {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .EmpPaginationInfo {
@@ -154,7 +155,7 @@ input[type="EmpSearchtxt"] {
   margin: 0 5px;
   padding: 5px 10px;
   border: none;
-  background-color: #f0f0f0;
+  background-color: greenyellow;
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
@@ -343,7 +344,7 @@ input[type="EmpSearchtxt"] {
 .IEmpDeleteBtn {
   color: #fff;
   border: none;
-  padding: 8px 16px;
+  padding: 8px 8px;
   cursor: pointer;
   border-radius: 4px;
   margin-right: 8px;
@@ -369,4 +370,3 @@ background-color: #3498db;
   font-style: italic;
   color: #054d43;
 }
-
