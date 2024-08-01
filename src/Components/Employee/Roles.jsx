@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoleModal from './AddRoleModal';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import '../../assets/Styles/EmployeePages/Roles.css';
-import ConfirmationModal from './DeleteConfirmationModal';
+import ConfirmationModal from './DeleteConfirmationEmpModal';
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -59,17 +59,19 @@ const Roles = () => {
   };
 
   return (
-    <div className="role-list">
-      <h1>Role List</h1>
-      <div className='SubHeader'>
-        <div className='SubHeaderLeft'>
-          <button className="add-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>
+    <div className="Rolelist">
+      {/* <h1>Role List</h1> */}
+      <div className='RolesSubHeader'>
+        <div className='RolesSubHeaderLeft'>
+        <h3><b>Role List</b></h3>
+          {/* <button className="addRole-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button> */}
         </div>
-        <div className='SubHeaderRight'>
-          <Link to="/EmployeeDashboard"><a>Employees Dashboard</a></Link>
+        <div className='RolesSubHeaderRight'>
+        <button className="addRole-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>
+          {/* <Link to="/EmployeeDashboard">Employees Dashboard</Link> */}
         </div>
       </div>
-      <table>
+      <table className='RolesTbl'>
         <thead>
           <tr>
             <th>Role Name</th>
@@ -83,8 +85,8 @@ const Roles = () => {
               <td>{role.name}</td>
               <td>{role.priority}</td>
               <td>
-                <button className="edit-btn" onClick={() => handleEdit(role)}>Edit</button>
-                <button className="delete-btn" onClick={() => handleDelete(role)}>Delete</button>
+                <button className="Rolesedit-btn" onClick={() => handleEdit(role)}>Edit</button>
+                <button className="Rolesdelete-btn" onClick={() => handleDelete(role)}>Delete</button>
               </td>
             </tr>
           ))}

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EmployeeModal from './AddEmployeeModal';
-import ConfirmationModal from './DeleteConfirmationModal';
+import ConfirmationModal from './DeleteConfirmationEmpModal';
 import '../../assets/Styles/EmployeePages/EmployeeDetails.css';
 
 const EmployeeDetails = () => { 
@@ -84,28 +84,58 @@ const EmployeeDetails = () => {
   }
 
   return (
-    <div className="employee-details">
-      <div className="myheader">
-        <h1>Employee Details</h1>
-        <button className="back-btn" onClick={() => navigate('/EmployeeDashboard')}>Back</button>
+    <div className="EmployeeDetails">
+      <div className="EmpHeader">
+        <h3>Employee Details</h3>
+        <button className="EmpBackBtn" onClick={() => navigate('/EmployeeDashboard')}>Back</button>
       </div>
-      <div className="details-container">
-        <p><strong>Employee ID:</strong> {employee.employeeId}</p>
-        <p><strong>First Name:</strong> {employee.firstName}</p>
-        <p><strong>Last Name:</strong> {employee.lastName}</p>
-        <p><strong>Email:</strong> {employee.email}</p>
-        <p><strong>Mobile No:</strong> {employee.mobileNo}</p>
-        <p><strong>Date of Joining:</strong> {new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</p>
-        <p><strong>Status:</strong> {employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</p>
-        <p><strong>Role:</strong> {getRoleName(employee.roleId)}</p>
-        <p><strong>Project Manager:</strong> {projectManagerName}</p>        
-        <p><strong>Skills:</strong> {employee.skillSets || 'NA'}</p>
+      <div className="EmpDetailsContainer">
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Employee ID:</div>
+          <div className="EmpDetailsValue">{employee.employeeId}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">First Name:</div>
+          <div className="EmpDetailsValue">{employee.firstName}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Last Name:</div>
+          <div className="EmpDetailsValue">{employee.lastName}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Email:</div>
+          <div className="EmpDetailsValue">{employee.email}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Mobile No:</div>
+          <div className="EmpDetailsValue">{employee.mobileNo}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Date of Joining:</div>
+          <div className="EmpDetailsValue">{new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Status:</div>
+          <div className="EmpDetailsValue">{employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Role:</div>
+          <div className="EmpDetailsValue">{getRoleName(employee.roleId)}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Project Manager:</div>
+          <div className="EmpDetailsValue">{projectManagerName}</div>
+        </div>
+        <div className="EmpDetailsRow">
+          <div className="EmpDetailsLabel">Skills:</div>
+          <div className="EmpDetailsValue">{employee.skillSets || 'NA'}</div>
+        </div>
       </div>
-      <div className="actions">
-        <button className="edit-btn" onClick={handleEdit}>Edit</button>
-        <button className="deactivate-btn" onClick={handleDeactivate}>Deactivate</button>
+      <div className="EmpActions">
+        <button className="EmpEditBtn" onClick={handleEdit}>Edit</button>
+        <button className="EmpDeactivateBtn" onClick={handleDeactivate}>Deactivate</button>
       </div>
-      {showEditModal && <EmployeeModal employee={employee} onClose={() => setShowEditModal(false)} onRefresh={fetchEmployeeDetails} />}
+      {showEditModal && <EmployeeModal employee={employee} onClose={() => setShowEditModal(false)} onRefresh={() => fetchEmployeeDetails(empId)} />}
       {showConfirmModal && (
         <ConfirmationModal
           message={`Are you sure you want to deactivate "${employee.firstName} ${employee.lastName}"?`}
