@@ -30,7 +30,9 @@
   align-items: center;
   justify-content: space-between;
 }
-
+.data {
+  text-align: left;
+}
 .description {
   color: rgb(25, 110, 138);
   font-family: "Open Sans", sans-serif;
@@ -46,7 +48,7 @@
   background-color: rgb(217, 223, 225);
 }
 .btn-close {
-  color: white;
+  color: red;
 }
 .closebtn {
   border-radius: 8px;

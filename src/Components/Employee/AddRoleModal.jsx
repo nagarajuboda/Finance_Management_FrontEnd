@@ -39,14 +39,14 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
   };
 
   return (
-    <div className="Rolesmodal-overlay">
-      <div className="Rolesmodal-content">
+    <div className="RolesModelContainer">
+      <div className="RolesModelContent">
         <div className='RolesModelSubHeader'>
           <div className='RolesModelSubHeaderLeft'>
             <h2>{role ? 'Edit Role' : 'Add Role'}</h2>
           </div>
-          <div className='RolesModelSubHeaderRightDivClose'>
-            <button className="RolesModelclose-btn" onClick={onClose}>Close</button>
+          <div className='RolesModelSubHeaderRight'>
+            <button className="RolesModelSubHeaderRightCloseBtn" onClick={onClose}>Close</button>
           </div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -70,7 +70,7 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
               </div>
             </div>
           </div>
-          <button type="submit" className="RolesModelsave-btn">Save</button>
+          <button type="submit" className="RolesModelSaveBtn">Save</button>
         </form>
       </div>
     </div>

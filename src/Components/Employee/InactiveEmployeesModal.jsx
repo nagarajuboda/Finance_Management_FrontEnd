@@ -121,8 +121,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
               ) : (
                 <tr>
                   <td colSpan="10" className="IEmpNoEmployees">No inactive employees found.</td>            
-                </tr>
-                
+                </tr>                
               )}
             </tbody>
           </table>

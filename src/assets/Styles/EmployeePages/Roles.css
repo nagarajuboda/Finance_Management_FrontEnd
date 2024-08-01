@@ -27,7 +27,7 @@
   padding:13px;
 }
 
-.addRole-btn {
+.AddRoleBtn {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -38,7 +38,7 @@
   transition: background-color 0.3s ease;
 }
 
-.addRole-btn:hover {
+.AddRoleBtn:hover {
   background-color: #0056b3;
 }
 
@@ -124,7 +124,7 @@
 
 /* RolesModel */
 
-.Rolesmodal-overlay {
+.RolesModelContainer {
   position: fixed;
   top: 0;
   left: 0;
@@ -136,7 +136,7 @@
   justify-content: center;
 }
 
-.Rolesmodal-content {
+.RolesModelContent {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -160,12 +160,12 @@
   color: #196e8a;
 }
 
-.RolesModelSubHeaderRightDivClose{
+.RolesModelSubHeaderRight{
   float:right;
   padding:13px;
 }
 
-.RolesModelclose-btn{
+.RolesModelSubHeaderRightCloseBtn{
   padding: 10px 13px;
   border: none;
   border-radius: 4px;
@@ -174,22 +174,8 @@
   color: white;
 }
 
-.RolesModelclose-btn:hover{
+.RolesModelSubHeaderRightCloseBtn:hover{
   background-color: #c82333;
-}
-
-.RolesModelsave-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.RolesModelsave-btn:hover {
-  background-color: #0056b3;
 }
 
 .RolesContainer{
@@ -223,3 +209,17 @@ input[type="Rolestext"],input[type="number"] {
 input[type="Rolesnumber"].Priority {
   width: 100%;
 } 
+
+.RolesModelSaveBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.RolesModelSaveBtn:hover {
+  background-color: #0056b3;
+}

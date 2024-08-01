@@ -114,13 +114,17 @@ export default function TimeSheet() {
   }
 
   const Resetfunction = (e) => {
-    e.preventDefault();
-    employees.map((each) => {
-      setHours((prev) => ({
-        ...prev,
-        [each.employeeId]: "",
-      }));
-    });
+    setHours({});
+    // e.preventDefault();
+    // if (employees == null) {
+    //   setHours({});
+    // }
+    // employees.map((each) => {
+    //   setHours((prev) => ({
+    //     ...prev,
+    //     [each.employeeId]: "",
+    //   }));
+    // });
   };
 
   const GetProjectDeatis = async (id, date) => {

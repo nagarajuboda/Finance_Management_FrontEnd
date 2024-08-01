@@ -140,16 +140,13 @@ const EmployeeDashboard = () => {
     setShowInactiveModal(false);
   };
 
-  // Calculate the total number of pages
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
-  // Get the employees to display for the current page
   const displayedEmployees = filteredEmployees.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Handle page change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -231,14 +228,12 @@ const EmployeeDashboard = () => {
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
-  // Handle previous page
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
     }
   };
 
-  // Handle next page
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);

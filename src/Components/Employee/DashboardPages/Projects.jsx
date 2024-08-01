@@ -5,7 +5,7 @@ import { data } from "jquery";
 import { useNavigate } from "react-router-dom";
 export default function Projects() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  // console.log(r)
+
   const navigate = useNavigate();
   const [projectDetails, setProjectDetails] = useState([]);
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Projects() {
   function ProjectNameclick(e, index, id) {
     e.preventDefault();
     console.log(id, "id");
-    localStorage.setItem("ProjectID", id);
+    localStorage.setItem("projectId", id);
     // navigate("/Employee/ViewProject");
     navigate("/Dashboard/ViewProject");
   }
@@ -28,14 +28,24 @@ export default function Projects() {
   return (
     <div className="maindivv">
       <div className="card">
-        <p>All Projects</p>
+        <p
+          className="allprojectcontent"
+          style={{
+            fontSize: "1.25rem",
+            color: "#196e8a",
+            fontFamily: " sans-serif;",
+            fontWeight: "700",
+          }}
+        >
+          All Projects
+        </p>
         <table className="table table-striped">
           <thead>
             <tr>
               <th>Project Name</th>
               <th>Project Type</th>
-              <th>startDate</th>
-              <th>DeadLine</th>
+              <th>Start Date</th>
+              <th>Deadline</th>
               <th>Progress </th>
             </tr>
           </thead>

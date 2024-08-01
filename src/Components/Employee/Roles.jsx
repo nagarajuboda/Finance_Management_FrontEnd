@@ -67,7 +67,7 @@ const Roles = () => {
           {/* <button className="addRole-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button> */}
         </div>
         <div className='RolesSubHeaderRight'>
-        <button className="addRole-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>
+        <button className="AddRoleBtn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>
           {/* <Link to="/EmployeeDashboard">Employees Dashboard</Link> */}
         </div>
       </div>

@@ -26,7 +26,6 @@ const EmployeeDetails = () => {
       const employeeData = response.data;
       setEmployee(employeeData);
 
-      // Fetch Project Manager details if `projectManagerId` is available
       if (employeeData.projectManagerId) {
         const pmResponse = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`);
         setProjectManagerName(`${pmResponse.data.firstName} ${pmResponse.data.lastName}`);
