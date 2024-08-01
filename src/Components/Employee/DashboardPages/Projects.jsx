@@ -27,7 +27,7 @@ export default function Projects() {
   console.log(projectDetails, "details");
   return (
     <div className="maindivv">
-      <div className="card">
+      <div className="card" style={{ borderRadius: "0px" }}>
         <p
           className="allprojectcontent"
           style={{

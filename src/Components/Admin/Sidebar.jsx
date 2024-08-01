@@ -157,7 +157,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Hr Management",
       icon: <IoPeopleOutline />,
-      submenu: [{ path: "/list2", name: "- Employees" }],
+      submenu: [{ path: "/EmployeeDashboard", name: "- Employees" }],
     },
     {
       name: "Project Management",
@@ -172,7 +172,7 @@ const Sidebar = ({ children }) => {
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
-      : sessionData?.employee?.role?.name === "Project Manger"
+      : sessionData?.employee?.role?.name === "ProjectManager"
       ? ProjectManagerMenuItems
       : employeeMenuItems;
 

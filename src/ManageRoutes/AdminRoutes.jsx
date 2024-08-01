@@ -16,6 +16,7 @@ import EmployeeDetails from "../Components/Employee/EmployeeDetails";
 import Projects from "../Components/Employee/DashboardPages/Projects";
 import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
 import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
+import Profile from "../Components/Admin/Pages/Profile";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -37,6 +38,7 @@ export default function AdminRoutes() {
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </Sidebar>
   );
