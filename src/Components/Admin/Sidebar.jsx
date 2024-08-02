@@ -178,7 +178,10 @@ const Sidebar = ({ children }) => {
 
   return (
     <div className="containers" style={{ width: "100vw" }}>
-      <div style={{ width: isOpen ? "370px" : "80px" }} className="sidebar">
+      <div
+        style={{ width: isOpen ? "370px" : "80px", backgroundColor: "white" }}
+        className="sidebar"
+      >
         <div className="top_section">
           <div
             style={{ marginLeft: isOpen ? "222px" : "0px" }}
