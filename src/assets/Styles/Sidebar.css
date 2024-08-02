@@ -24,7 +24,7 @@ main {
   /* background-color: white; */
   /* background-color: rgb(67, 97, 107); */
   /* background-color: rgb(81, 110, 120); */
-  background-color: #222a33;
+  background-color: "#fff";
 
   width: 200px;
   transition: all 0.5s;
@@ -93,18 +93,13 @@ main {
 
 .link:hover {
   transition: all 0.5s;
-  /* background-color: #deeff5; */
-  /* background-color: #b0d0e8; */
-  background-color: #394454;
+  background-color: #deeff5;
 }
-
-/* .active {
-  background: #f6eeff;
-} */
 
 .icon,
 .link_text {
   font-size: 20px;
+  color: black;
 }
 
 .renderdiv {
@@ -120,7 +115,22 @@ main {
   overflow-y: auto;
   overflow-x: hidden;
 }
+.link {
+  display: flex;
+  color: #202020;
+  /* padding: 13px 25px; */
+  padding: 9px 30px;
+  gap: 15px;
+  transition: all 0.5s;
+  justify-content: space-between;
+  align-items: center;
+}
 
+.link:hover {
+  transition: all 0.5s;
+  /* background-color: #deeff5; */
+  background-color: #b0d0e8;
+}
 .dropdown-link {
   color: #8f8f8f;
   list-style-type: none;
@@ -134,31 +144,32 @@ main {
 .dropdown-link {
   display: block;
   padding: 5px 10px;
-  color: #ccc;
+  color: black;
   text-decoration: none;
 }
 
 .icon,
 .link_text:hover {
   /* color: black; */
-  color: white;
+  /* color: white; */
   text-decoration: none;
   list-style-type: none;
 }
 .link_text {
   transition: all 0.5s;
   font-size: 1rem;
-  color: #202020;
+  color: black;
   font-weight: 600;
-
   font-family: "Public Sans" sans-serif;
 }
-
+.icon {
+  color: black;
+}
 .icon,
 .link_text {
   font-size: 20px;
-  /* color: black; */
-  color: white;
+  color: black;
+  /* color: white; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -222,7 +233,7 @@ main {
   padding-left: 20px; /* Adjust this value as needed */
 }
 .openandcloseicon {
-  color: white;
+  color: black;
 }
 .childercomponents {
   background-color: rgb(186, 211, 219);

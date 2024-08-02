@@ -62,7 +62,7 @@ const Sidebar = ({ children }) => {
       icon: <IoPeopleOutline />,
       submenu: [
         { path: "/EmployeeDashboard", name: "- Employees" },
-        { path: "/list1", name: "- Recruiment" },
+        { path: "/Roles", name: "- Roles" },
         { path: "/list2", name: "- Jobs" },
         { path: "/list1", name: "- Condidates" },
         { path: "/list1", name: "- Attendance" },
@@ -211,13 +211,14 @@ const Sidebar = ({ children }) => {
               className="link"
               onClick={() => item.submenu && toggleDropdown(index)}
             >
-              <div className="icon">
+              <div className="icon" style={{ color: "black" }}>
                 {item.icon}
                 <div
                   style={{
                     display: isOpen ? "block" : "none",
                     fontSize: "16px",
                     margin: "0px 5px",
+                    color: "black",
                   }}
                   className="link_text"
                 >
@@ -230,7 +231,7 @@ const Sidebar = ({ children }) => {
                   className={`dropdown-icon ${
                     openDropdowns.includes(index) ? "open" : ""
                   }`}
-                  style={{ color: "white" }}
+                  style={{ color: "#9f9f9f" }}
                 />
               )}
             </NavLink>
@@ -241,7 +242,7 @@ const Sidebar = ({ children }) => {
                 }`}
                 style={{
                   padding: isOpen ? "0px 0px" : "8px 0px",
-                  backgroundColor: isOpen ? "" : "",
+                  backgroundColor: isOpen ? "#DEEFF5" : "white",
                 }}
               >
                 {item.submenu.map((subItem, subIndex) => (
@@ -267,7 +268,7 @@ const Sidebar = ({ children }) => {
       <div className="renderdiv">
         <Header />
         <main
-          style={{ backgroundColor: "#DBDCDD" }}
+          style={{ backgroundColor: "rgb(222, 239, 245)" }}
           className="childercomponents"
         >
           {children}

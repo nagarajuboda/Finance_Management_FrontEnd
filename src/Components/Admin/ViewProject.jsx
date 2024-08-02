@@ -34,7 +34,6 @@ export function ViewProject() {
   const [projectManagerName, setProjectMangerName] = useState("");
   const [sessiondata, setSessiondata] = useState(null);
   const navigate = useNavigate();
-  const percentage = 66;
 
   const id = localStorage.getItem("projectId");
   console.log(id, "clicked projectid");
@@ -237,8 +236,8 @@ export function ViewProject() {
             <div className="progressbaranddates">
               <div className="circularProgressbar">
                 <CircularProgressbar
-                  value={percentage}
-                  text={`${percentage}%`}
+                  value={Projectresponse.progress}
+                  text={`${Projectresponse.progress}%`}
                 />
               </div>
               <div className="startdatediv">
