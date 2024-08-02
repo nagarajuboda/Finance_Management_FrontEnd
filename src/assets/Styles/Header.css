@@ -2,14 +2,12 @@
   margin: 0;
   padding: 0;
 }
-.maindiv {
-  background-color: #f6f8fa;
-}
 
 .search {
   padding: 14px;
   border: none;
-  background-color: rgb(219, 220, 221);
+
+  background-color: #faf9f6;
   width: 330px;
   padding: 0px 30px;
 }

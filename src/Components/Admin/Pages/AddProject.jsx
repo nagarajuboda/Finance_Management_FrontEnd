@@ -259,7 +259,10 @@ export default function AddProject() {
 
   return (
     <div className="maindiv1">
-      <div className="maindiv card  addproductcard">
+      <div
+        className="maindiv card  addproductcard"
+        style={{ borderRadius: "0px" }}
+      >
         <div className="addproject ">
           <div className="d-flex">
             <IoArrowBackCircle

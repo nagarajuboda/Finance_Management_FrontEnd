@@ -1,0 +1,27 @@
+.image-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.change-image-button {
+  width: 98px;
+  text-align: start;
+  position: absolute;
+  top: 82%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.changeimage {
+  font-size: 10px;
+}
+
+.change-image-button a {
+  color: white;
+  text-decoration: none;
+}

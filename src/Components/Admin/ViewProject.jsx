@@ -34,7 +34,6 @@ export function ViewProject() {
   const [projectManagerName, setProjectMangerName] = useState("");
   const [sessiondata, setSessiondata] = useState(null);
   const navigate = useNavigate();
-  const percentage = 66;
 
   const id = localStorage.getItem("projectId");
   console.log(id, "clicked projectid");
@@ -215,7 +214,7 @@ export function ViewProject() {
           </div>
         </div>
         <div className="headerCards">
-          <div className="card ProjectProgress">
+          <div className="card ProjectProgress" style={{ borderRadius: "0px" }}>
             <div className="ProjectProgress">
               <p
                 style={{
@@ -237,8 +236,8 @@ export function ViewProject() {
             <div className="progressbaranddates">
               <div className="circularProgressbar">
                 <CircularProgressbar
-                  value={percentage}
-                  text={`${percentage}%`}
+                  value={Projectresponse.progress}
+                  text={`${Projectresponse.progress}%`}
                 />
               </div>
               <div className="startdatediv">
@@ -265,7 +264,7 @@ export function ViewProject() {
               </div>
             </div>
           </div>
-          <div className="card ms-3">
+          <div className="card ms-3" style={{ borderRadius: "0px" }}>
             <div>
               <p
                 style={{
@@ -292,7 +291,7 @@ export function ViewProject() {
               </div> */}
             </div>
           </div>
-          <div className="card ms-3">
+          <div className="card ms-3" style={{ borderRadius: "0px" }}>
             <div>
               <p
                 style={{
@@ -315,7 +314,10 @@ export function ViewProject() {
             </div>
           </div>
         </div>
-        <div className="card Projectdescription mt-4">
+        <div
+          className="card Projectdescription mt-4"
+          style={{ borderRadius: "0px" }}
+        >
           <div>
             <p className="description">Project Details</p>
           </div>
@@ -326,7 +328,10 @@ export function ViewProject() {
           </div>
         </div>
 
-        <div className="card my-3 mt-4 employeeDetails d-flex justify-content-between">
+        <div
+          className="card my-3 mt-4 employeeDetails d-flex justify-content-between"
+          style={{ borderRadius: "0px" }}
+        >
           <div className="mb-4 workingemployee">
             <p
               className="projectTeam"

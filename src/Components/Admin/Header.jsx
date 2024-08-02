@@ -69,7 +69,7 @@ export default function Header() {
             type="text"
             className="search form-control w-75"
             placeholder="Search"
-            style={{ borderRadius: "36px", padding: "8px 5px 8px 35px" }}
+            style={{ padding: "8px 5px 8px 35px" }}
           />
           <FaSearch
             className="search-icon position-absolute"
@@ -127,7 +127,9 @@ export default function Header() {
               <div className="cardbody ">
                 <div className="Carduser">
                   <FaUserCircle className="cardicons" />
-                  <p className="popup-item ms-3"> Profile</p>
+                  <p className="popup-item ms-3">
+                    <Link to="Profile">Profile</Link>
+                  </p>
                 </div>
                 <div className="cardInbox">
                   <FaEnvelope className="cardicons" />
