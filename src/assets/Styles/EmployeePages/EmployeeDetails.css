@@ -1,50 +1,65 @@
-/* .employee-details {
+.EmployeeDetails {
   padding: 20px;
 }
 
-.myheader {
+.EmpHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
+  color: #196e8a;
 }
 
-.myheader h1 {
-  margin: 0;
-  color: #043468;
+.EmpDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.back-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
+.EmpDetailsRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.EmpDetailsLabel {
+  font-weight: bold;
+  width: 20%; 
+}
+
+.EmpDetailsValue {
+  flex: 1;
+}
+
+.EmpBackBtn {
   padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.details-container {
-  margin-top: 20px;
-}
-
-.details-container p {
-  margin: 10px 0;
-}
-
-.actions {
-  margin-top: 20px;
-}
-
-.edit-btn,
-.deactivate-btn {
-  background-color: #28a745;
-  color: white;
   border: none;
-  padding: 10px 20px;
-  cursor: pointer;
   border-radius: 4px;
-  margin-right: 10px;
+  background-color: #2196F3;
+  color: white;
+  cursor: pointer;
 }
 
-.deactivate-btn {
-  background-color: #dc3545;
-} */
+.EmpActions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10%;
+  
+}
+
+.EmpEditBtn,
+.EmpDeactivateBtn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.EmpEditBtn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.EmpDeactivateBtn {
+  background-color: #f44336;
+  color: white;
+}
