@@ -172,7 +172,7 @@ const Sidebar = ({ children }) => {
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
-      : sessionData?.employee?.role?.name === "ProjectManager"
+      : sessionData?.employee?.role?.name === "Project Manager"
       ? ProjectManagerMenuItems
       : employeeMenuItems;
 
