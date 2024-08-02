@@ -204,7 +204,9 @@ export default function TimeSheet() {
                         STATUS
                       </th>
                       <th className="">ROLE</th>
-                      <th className="">HOURS</th>
+                      <th className="" style={{ textAlign: "center" }}>
+                        HOURS
+                      </th>
                       {/* <th className="tableheader">ACTIONS</th> */}
                     </tr>
                   </thead>
