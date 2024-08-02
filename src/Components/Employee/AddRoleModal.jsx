@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../assets/Styles/EmployeePages/RolesModel.css';
 
-const RoleModal = ({ role, onClose, onRefresh }) => {
+const AddRoleModal = ({ role, onClose, onRefresh }) => {
   const [formData, setFormData] = useState({
     name: '',
     priority: '1' 
@@ -40,34 +39,42 @@ const RoleModal = ({ role, onClose, onRefresh }) => {
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className='SubHeader'>
-          <div className='SubHeaderLeft'><h2>{role ? 'Edit Role' : 'Add Role'}</h2></div>
-          <div className='SubHeaderRightDivClose'><button className="close-btn" onClick={onClose}>Close</button></div>
+    <div className="RolesModelContainer">
+      <div className="RolesModelContent">
+        <div className='RolesModelSubHeader'>
+          <div className='RolesModelSubHeaderLeft'>
+            <h2>{role ? 'Edit Role' : 'Add Role'}</h2>
+          </div>
+          <div className='RolesModelSubHeaderRight'>
+            <button className="RolesModelSubHeaderRightCloseBtn" onClick={onClose}>Close</button>
+          </div>
         </div>
         <form onSubmit={handleSubmit}>
-          <label>
-            Role Name:
-            <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-          </label>
-          <label>
-            Priority:
-            <input
-              type="number"
-              className='Priority'
-              name="priority"
-              value={formData.priority}
-              onChange={handleChange}
-              min="1"
-              required
-            />
-          </label>
-          <button type="submit" className="save-btn">Save</button>
+        <div className='RolesContainer'>
+            <div className='RolesRow'>
+              <div className='Roleslabel'>
+                Role Name:
+              </div>
+              <div className='Rolesvalue'>
+                <input type="Rolestext" name="name" value={formData.name} onChange={handleChange} required />
+              </div>
+            </div>
+            <div className='RolesRow'>
+              <div className='Roleslabel'>
+                Priority:
+              </div>
+              <div className='Rolesvalue'>
+                <input type="number" className='RolesModelPriority' name="priority"
+                  value={formData.priority} onChange={handleChange} min="1"required
+                />
+              </div>
+            </div>
+          </div>
+          <button type="submit" className="RolesModelSaveBtn">Save</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default RoleModal;
+export default AddRoleModal;

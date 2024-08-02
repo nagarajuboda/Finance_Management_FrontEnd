@@ -1,0 +1,51 @@
+.DelModalOverlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.DelModalContent{
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 30%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.DelModalbtn{
+  border: none;
+  text-align: center;
+}
+
+.DenConfirmBtn, .DelCancelBtn  {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;  
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.DenConfirmBtn{
+  color: #fff;
+  background-color: #007bff;
+}
+.DenConfirmBtn:hover{
+  background-color: #0656ac;
+}
+
+.DelCancelBtn{
+  color: #fff;
+  background-color: #f90d05;
+}
+
+.DelCancelBtn:hover{
+  background-color: #b1312c;
+}
