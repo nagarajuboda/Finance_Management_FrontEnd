@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
 
 const Home = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,7 +17,8 @@ const Home = () => {
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  
   const navigate = useNavigate();
 
   const onLoginButtonClick = async (data) => {
@@ -30,6 +32,8 @@ const Home = () => {
       var result = await responses.data;
       console.log(responses, "response");
       console.log(result, "result");
+      debugger;
+      localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {
         toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
@@ -206,13 +210,21 @@ const handleOtpChange = (e) => {
         {errors.email && <p className="validationError">{errors.email.message}</p>}
 
         <label className="labelField">Password<span className="asterisk">*</span></label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="inputField"
-          {...register('password', { required: 'Password is required' })}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="passwordContainer">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    className="inputField"
+    {...register("password", { required: "Password is required" })}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  <div
+    className="eyeIcon"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </div>
+</div>
         {errors.password && <p className="validationError">{errors.password.message}</p>}
 
         <button className="loginButton">Login</button>

@@ -163,3 +163,16 @@ body {
   align-self: flex-end; /* Align the back to login link to the right */
   margin-top: 20px; /* Add margin to the top for spacing */
 }
+
+.passwordContainer {
+  position: relative;
+  width: 100%;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
