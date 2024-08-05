@@ -39,9 +39,17 @@ const Home = () => {
         toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
         setLoggedIn(true); // Update logged-in state
         navigate(''); // Navigate to dashboard or another page
-      } else {
-        toast.error("Please check your credentials.", { position: "top-right", autoClose: 4000 });
-      }
+      }  else {
+        // Handle specific error codes
+        if (result.error.code === "AUTH001") {
+            toast.error("Email not found. Please check your email address.", { position: "top-right", autoClose: 4000 });
+        } else if (result.error.code === "AUTH002") {
+            toast.error("Incorrect password. Please check your password and try again.", { position: "top-right", autoClose: 4000 });
+        } else {
+            // Generic error message for other cases
+            toast.error("Check your email and password.", { position: "top-right", autoClose: 4000 });
+        }
+    }
     } catch (error) {
       console.error("Error logging in:", error);
       toast.error("Login failed. Please try again.", { position: "top-right", autoClose: 4000 });
@@ -92,7 +100,7 @@ async function getotpfunction(e){
   console.log(responses, "response");
   if (result.isSuccess)
     {
-      toast.success("OTP sent successfully.", { position: "top-right", autoClose: 4000 });
+      toast.success("OTP sent successfully to Your Email.", { position: "top-right", autoClose: 4000 });
       setView('verifyOtp');
     } 
     else
@@ -133,68 +141,150 @@ const handleOtpChange = (e) => {
   });
 };
 
-  async function onVerifyOtpClick(e) {
-    e.preventDefault();
-    console.log(otpValues.Otp);
-    const newErrors = {
-      Otp: validateOtp("Otp", otpValues.Otp),
-    };
-    console.log(otpErrors.Otp, "check error");
-    setOtpErrors(newErrors);
+async function onVerifyOtpClick(e) {
+  e.preventDefault();
+  console.log(otpValues.Otp);
+  const newErrors = {
+    Otp: validateOtp("Otp", otpValues.Otp),
+  };
+  console.log(otpErrors.Otp, "check error");
+  setOtpErrors(newErrors);
 
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (!isValid){
-      console.log("Verify OTP Button clicked");
-      var obj = { email, otp };
-      var responses = await axios.post("https://localhost:44305/api/Auth/verify-otp", obj);
-      var result = await responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-      if (result.isSuccess) {
-        toast.success("OTP verified successfully.", { position: "top-right", autoClose: 4000 });
-        setView('setNewPassword');
-      } else {
-        toast.error("Invalid OTP. Please try again.", { position: "top-right", autoClose: 4000 });
-      }
+  const isValid = Object.values(newErrors).every((error) => error === "");
+  if (!isValid) {
+    console.log("Verify OTP Button clicked");
+    var obj = { Email: values.Email, Otp: otpValues.Otp };
+    var responses = await axios.post(
+      "https://localhost:44305/api/Auth/verify-otp",
+      obj
+    );
+    var result = await responses.data;
+    console.log(responses, "response");
+    console.log(result, "result");
+    if (result.isSuccess) {
+      toast.success("OTP verified successfully.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+      setView("setNewPassword");
+    } else {
+      toast.error("Invalid OTP. Please try again.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
   }
+}
 
-  function validateOtp(name, value) {
-    console.log(value, "clicked");
-    if (name === "Otp") {
-      if (!value) return "OTP is required";
-      if (!/^\d{6}$/.test(value)) return "OTP is invalid";
-    }
+function validateOtp(name, value) {
+  console.log(value, "clicked");
+  if (name === "Otp") {
+    if (!value) return "OTP is required";
+    // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
+  }
+}
+
+// New password validation and handlers
+const [passwordValues, setPasswordValues] = useState({
+  NewPassword: "",
+  ConfirmPassword: "",
+});
+const [passwordErrors, setPasswordErrors] = useState({
+  NewPassword: "",
+  ConfirmPassword: "",
+});
+
+const handlePasswordChange = (e) => {
+  const { name, value } = e.target;
+
+  setPasswordValues({
+    ...passwordValues,
+    [name]: value,
+  });
+  console.log(value);
+  setPasswordErrors({
+    ...passwordErrors,
+    [name]: validatePassword(name, value),
+  });
+};
+
+async function onSetNewPasswordClick(e) {
+  e.preventDefault();
+
+  console.log(passwordValues.NewPassword, passwordValues.ConfirmPassword);
+  const newErrors = {
+    NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
+    ConfirmPassword: validatePassword(
+      "ConfirmPassword",
+      passwordValues.ConfirmPassword
+    ),
+  };
+  console.log(passwordErrors, "check error");
+  setPasswordErrors(newErrors);
+
+  const isValid = Object.values(newErrors).every((error) => error === "");
+  if (newPassword !== confirmPassword) {
+    toast.error("Passwords do not match.", {
+      position: "top-right",
+      autoClose: 4000,
+    });
+    return;
   }
 
-  async function onSetNewPasswordClick(e) {
-    e.preventDefault();
+  if (!isValid) {
     console.log("Set New Password Button clicked");
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.", { position: "top-right", autoClose: 4000 });
-      return;
-    }
-    var obj = { email, otp, newPassword };
-    try {
-      var responses=await axios.post("https://localhost:44305/api/Auth/update-password", obj);
-      var result=responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-      if(result.isSuccess)
-        {
-          toast.success("Password updated successfully.", { position: "top-right", autoClose: 4000 });
-          setView('login');
-        }
-      else
-      {
-        toast.error("Failed to update password.", { position: "top-right", autoClose: 4000 });
+    var obj = {
+      Email: values.Email,
+      Otp: otpValues.Otp,
+      NewPassword: passwordValues.NewPassword,
+    };
+
+    var responses = await axios.post(
+      "https://localhost:44305/api/Auth/update-password",
+      obj
+    );
+    var result = responses.data;
+    console.log(responses, "response");
+    console.log(result, "result");
+    if (result.isSuccess) {
+      toast.success("Password updated successfully.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+      setView("login");
+    } else {
+      // Handle specific error codes
+      if (result.error.code === "AUTH003") {
+        toast.error("New password cannot be the same as the existing password.", {
+          position: "top-right",
+          autoClose: 4000,
+        });
+      } else {
+        toast.error("Failed to update password. Please try again.", {
+          position: "top-right",
+          autoClose: 4000,
+        });
       }
-    
-    } catch (error) {
-      console.error("Error updating password:", error);
-      toast.error("Failed to update password. Please try again.", { position: "top-right", autoClose: 4000 });
     }
   }
+}
+
+function validatePassword(name, value) {
+  console.log(value, "clicked");
+  if (name === "NewPassword") {
+    if (!value) return "New password is required";
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        value
+      )
+    )
+      return "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character";
+  }
+  if (name === "ConfirmPassword") {
+    if (!value) return "Confirm password is required";
+    if (value !== passwordValues.NewPassword) return "Passwords should match";
+  }
+}
 
   const renderLoginForm = () => (
     <div className="loginForm">
@@ -301,34 +391,49 @@ const handleOtpChange = (e) => {
 
   const renderSetNewPasswordForm = () => (
     <div className="setNewPasswordForm">
-      <div className='welcomeMessage'>
-      <h2 className='Welcome'>Set New Password</h2>
-      <p className='Text'>Enter and confirm your new password to complete the reset process.</p>
+      <form onSubmit={onSetNewPasswordClick}></form>
+      <div className="welcomeMessage">
+        <h2 className="Welcome">Set New Password</h2>
+        <p className="Text">
+          Enter and confirm your new password to complete the reset process.
+        </p>
       </div>
-      
-      <label className="labelField">New Password<span className="asterisk">*</span></label>
+
+      <label className="labelField">
+        New Password<span className="asterisk">*</span>
+      </label>
       <input
         type="password"
         placeholder="New Password"
         className="inputField"
-        {...register('newPassword', { required: 'New password is required', pattern: {
-          value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-          message: 'Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character'} })}
-        onChange={(e) => setNewPassword(e.target.value)}
+        name="NewPassword"
+        value={passwordValues.NewPassword}
+        onChange={handlePasswordChange}
       />
-      {errors.newPassword && <p className="validationError">{errors.newPassword.message}</p>}
-      <label className="labelField">Confirm Password<span className="asterisk">*</span></label>
+      {passwordErrors.NewPassword && (
+        <p className="validationError">{passwordErrors.NewPassword}</p>
+      )}
+      <label className="labelField">
+        Confirm Password<span className="asterisk">*</span>
+      </label>
       <input
         type="password"
         placeholder="Confirm Password"
         className="inputField"
-        {...register('confirmPassword', { required: 'Confirm password is required' })}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        name="ConfirmPassword"
+        value={passwordValues.ConfirmPassword}
+        onChange={handlePasswordChange}
       />
-      {errors.confirmPassword && <p className="validationError">{errors.confirmPassword.message}</p>}
+      {passwordErrors.ConfirmPassword && (
+        <p className="validationError">{passwordErrors.ConfirmPassword}</p>
+      )}
 
-      <button className="loginButton" onClick={onSetNewPasswordClick}>Set New Password</button>
-      <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
+      <button className="loginButton" onClick={onSetNewPasswordClick}>
+        Set New Password
+      </button>
+      <div className="backToLogin" onClick={() => setView("login")}>
+        Back to Login
+      </div>
     </div>
   );
 
@@ -366,4 +471,3 @@ const handleOtpChange = (e) => {
 };
 
 export default Home;
-
