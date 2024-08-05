@@ -23,8 +23,10 @@ export default function TimeSheet() {
   const [hours, setHours] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   const [selectedProjectId, setSelectedProjectID] = useState("");
+  const [showButtons, setShowButtons] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
+
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
@@ -144,6 +146,7 @@ export default function TimeSheet() {
     } else {
       setDisiblebuttons(false);
     }
+
     const newHours = {};
     response.item.forEach((each) => {
       newHours[each.employeeId] = each.workingHourse;
@@ -174,193 +177,206 @@ export default function TimeSheet() {
               </Tab>
             ))}
           </TabList>
-
-          {projectDetails.map((project, projectIndex) => (
-            <TabPanel key={projectIndex}>
-              <div>
-                <div className="datepicker">
-                  <DatePicker
-                    style={{ alignItems: "end" }}
-                    selected={selectedDate}
-                    onChange={(date) =>
-                      handleDateChange(project.project.id, date)
-                    }
-                    showMonthYearPicker
-                    dateFormat="MMMM yyyy"
-                    customInput={<CustomInput />}
-                    className="w-100"
-                    maxDate={maxDate}
-                  />
+          {projectDetails.length == 0 ? (
+            <div
+              style={{ textAlign: "center", color: "black", fontWeight: "600" }}
+            >
+              <p>No projects assigned</p>
+            </div>
+          ) : (
+            projectDetails.map((project, projectIndex) => (
+              <TabPanel key={projectIndex}>
+                <div>
+                  <div className="datepicker">
+                    <DatePicker
+                      style={{ alignItems: "end" }}
+                      selected={selectedDate}
+                      onChange={(date) =>
+                        handleDateChange(project.project.id, date)
+                      }
+                      showMonthYearPicker
+                      dateFormat="MMMM yyyy"
+                      customInput={<CustomInput />}
+                      className="w-100"
+                      maxDate={maxDate}
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="row">
-                <table className="table table-striped mt-2">
-                  <thead>
-                    <tr>
-                      <th className="tableheader">NAME</th>
-                      <th className="tableheader">DESIGNATION</th>
-                      <th className="" style={{ textAlign: "center" }}>
-                        STATUS
-                      </th>
-                      <th className="">ROLE</th>
-                      <th className="" style={{ textAlign: "center" }}>
-                        HOURS
-                      </th>
-                      {/* <th className="tableheader">ACTIONS</th> */}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {project.employees.map((emp, index) => (
-                      <tr key={index}>
-                        <td>
-                          <div
-                            className="d-flex"
-                            style={{ alignItems: "center" }}
-                          >
-                            <div>
-                              <div className="empName ">
-                                {`${emp.firstName} ${emp.lastName}`}
-                              </div>
-                              <div className="">{emp.email}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div style={{ textAlign: "start" }}>Designation</div>
-                          <div
-                            className="role"
-                            style={{ textAlign: "start" }}
-                          ></div>
-                        </td>
-                        <td>
-                          <div
-                            style={{
-                              backgroundColor:
-                                emp.employeeStatus === "Active"
-                                  ? "#196e8a"
-                                  : "#ADD8E6",
-                              borderRadius: "40px",
-                              color:
-                                emp.employeeStatus === "Active"
-                                  ? "white"
-                                  : "black",
-                              textAlign: "center",
-                            }}
-                          >
-                            <span>{emp.employeeStatus}</span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="role">{emp.role?.name || ""}</div>
-                        </td>
-                        <td>
-                          {employees.length > 0 &&
-                          employees.some((obj) => obj.employeeId === emp.id) ? (
-                            employees
-                              .filter((obj) => obj.employeeId === emp.id)
-                              .map((filteredEmployee) => (
-                                <div key={filteredEmployee.employeeId}>
-                                  {filteredEmployee.isSubmited === true ? (
-                                    <div style={{ textAlign: "center" }}>
-                                      {filteredEmployee.workingHourse}
-                                    </div>
-                                  ) : (
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <input
-                                        type="number"
-                                        className="form-control w-50"
-                                        value={hours[emp.id] || ""}
-                                        onChange={(e) =>
-                                          handleHoursChange(
-                                            emp.id,
-                                            e.target.value
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  )}
-                                </div>
-                              ))
-                          ) : (
-                            <div
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <input
-                                type="number"
-                                className="form-control w-50"
-                                value={hours[emp.id] || ""}
-                                onChange={(e) =>
-                                  handleHoursChange(emp.id, e.target.value)
-                                }
-                              />
-                            </div>
-                          )}
-                        </td>
-                        <td>
-                          {/* <div>
-                            <GrPowerReset
-                              size={22}
-                              data-bs-toggle="tooltip"
-                              data-bs-placement="top"
-                              title="reset"
-                              style={{
-                                cursor: "pointer",
-                                textAlign: "start",
-                                display: "flex",
-                              }}
-                              onClick={() => Resetfunction(emp.id)}
-                            />
-                          </div> */}
-                        </td>
+                <div className="row">
+                  <table className="table table-striped mt-2">
+                    <thead>
+                      <tr>
+                        <th className="tableheader">NAME</th>
+                        <th className="tableheader">DESIGNATION</th>
+                        <th className="" style={{ textAlign: "center" }}>
+                          STATUS
+                        </th>
+                        <th className="" style={{ textAlign: "center" }}>
+                          ROLE
+                        </th>
+                        <th className="" style={{ textAlign: "center" }}>
+                          HOURS
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="d-flex" style={{ justifyContent: "end" }}>
-                  <div className="me-4">
-                    <button
-                      className="btn btn-primary"
-                      onClick={Resetfunction}
-                      disabled={disiblebuttons}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                  <div className="me-4">
-                    <button
-                      className="btn btn-success"
-                      onClick={SaveForm}
-                      disabled={disiblebuttons}
-                    >
-                      Save
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      className="form-control"
-                      style={{
-                        backgroundColor: "rgb(25, 110, 138)",
-                        color: "white",
-                      }}
-                      onClick={SubmitFormFunction}
-                      disabled={disiblebuttons}
-                    >
-                      Submit
-                    </button>
-                  </div>
+                    </thead>
+                    <tbody>
+                      {project.employees.length === 0 ? (
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td>No employees in this project</td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      ) : (
+                        project.employees.map((emp, index) => (
+                          <tr key={index}>
+                            <td>
+                              <div
+                                className="d-flex"
+                                style={{ alignItems: "center" }}
+                              >
+                                <div>
+                                  <div className="empName ">
+                                    {`${emp.firstName} ${emp.lastName}`}
+                                  </div>
+                                  <div className="">{emp.email}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td>
+                              <div style={{ textAlign: "start" }}>
+                                Designation
+                              </div>
+                              <div
+                                className="role"
+                                style={{ textAlign: "start" }}
+                              ></div>
+                            </td>
+                            <td>
+                              <div
+                                style={{
+                                  backgroundColor:
+                                    emp.employeeStatus === "Active"
+                                      ? "#196e8a"
+                                      : "#ADD8E6",
+                                  borderRadius: "40px",
+                                  color:
+                                    emp.employeeStatus === "Active"
+                                      ? "white"
+                                      : "black",
+                                  textAlign: "center",
+                                }}
+                              >
+                                <span>{emp.employeeStatus}</span>
+                              </div>
+                            </td>
+                            <td>
+                              <div
+                                className="role"
+                                style={{ textAlign: "center" }}
+                              >
+                                {emp.role?.name || ""}
+                              </div>
+                            </td>
+                            <td>
+                              {employees.length > 0 &&
+                              employees.some(
+                                (obj) => obj.employeeId === emp.id
+                              ) ? (
+                                employees
+                                  .filter((obj) => obj.employeeId === emp.id)
+                                  .map((filteredEmployee) => (
+                                    <div key={filteredEmployee.employeeId}>
+                                      {filteredEmployee.isSubmited === true ? (
+                                        <div style={{ textAlign: "center" }}>
+                                          {filteredEmployee.workingHourse}
+                                        </div>
+                                      ) : (
+                                        <div
+                                          style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                          }}
+                                        >
+                                          <input
+                                            type="number"
+                                            className="form-control w-50"
+                                            value={hours[emp.id] || ""}
+                                            onChange={(e) =>
+                                              handleHoursChange(
+                                                emp.id,
+                                                e.target.value
+                                              )
+                                            }
+                                          />
+                                        </div>
+                                      )}
+                                    </div>
+                                  ))
+                              ) : (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                  }}
+                                >
+                                  <input
+                                    type="number"
+                                    className="form-control w-50"
+                                    value={hours[emp.id] || ""}
+                                    onChange={(e) =>
+                                      handleHoursChange(emp.id, e.target.value)
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                  {project.employees.length > 0 && (
+                    <div className="d-flex" style={{ justifyContent: "end" }}>
+                      <div className="me-4">
+                        <button
+                          className="btn btn-primary"
+                          onClick={Resetfunction}
+                          disabled={disiblebuttons}
+                        >
+                          Reset
+                        </button>
+                      </div>
+                      <div className="me-4">
+                        <button
+                          className="btn btn-success"
+                          onClick={SaveForm}
+                          disabled={disiblebuttons}
+                        >
+                          Save
+                        </button>
+                      </div>
+                      <div>
+                        <button
+                          className="form-control"
+                          style={{
+                            backgroundColor: "rgb(25, 110, 138)",
+                            color: "white",
+                          }}
+                          onClick={SubmitFormFunction}
+                          disabled={disiblebuttons}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            </TabPanel>
-          ))}
+              </TabPanel>
+            ))
+          )}
         </Tabs>
       </div>
       <ToastContainer position="top-end" autoClose={5000} />

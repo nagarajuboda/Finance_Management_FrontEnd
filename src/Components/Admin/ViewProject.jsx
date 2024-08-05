@@ -366,7 +366,9 @@ export function ViewProject() {
               <tbody>
                 {projectEmployess.length === 0 ? (
                   <tr>
-                    <td colSpan="6">No records in the table</td>
+                    <td colSpan="6" style={{ textAlign: "center" }}>
+                      No records in the table
+                    </td>
                   </tr>
                 ) : (
                   projectEmployess.map((obj, index) => {
