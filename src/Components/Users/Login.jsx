@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
-import { useNavigate } from 'react-router-dom';
-import '../../assets/Styles/Login.css';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
+import "../../assets/Styles/Login.css";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
 
 const Home = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [view, setView] = useState('login'); // 'login', 'resetPassword', 'verifyOtp', 'setNewPassword'
-  const [otp, setOtp] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [view, setView] = useState("login"); // 'login', 'resetPassword', 'verifyOtp', 'setNewPassword'
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-  
+
   const navigate = useNavigate();
 
   const onLoginButtonClick = async (data) => {
@@ -209,7 +209,9 @@ const handleOtpChange = (e) => {
         />
         {errors.email && <p className="validationError">{errors.email.message}</p>}
 
-        <label className="labelField">Password<span className="asterisk">*</span></label>
+        <label className="labelField">
+          Password<span className="asterisk">*</span>
+        </label>
         <div className="passwordContainer">
   <input
     type={showPassword ? "text" : "password"}
@@ -225,7 +227,9 @@ const handleOtpChange = (e) => {
     {showPassword ? <FaEyeSlash /> : <FaEye />}
   </div>
 </div>
-        {errors.password && <p className="validationError">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="validationError">{errors.password.message}</p>
+        )}
 
         <button className="loginButton">Login</button>
       </form>
