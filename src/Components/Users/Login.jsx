@@ -6,13 +6,10 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
 
 const Home = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,46 +17,41 @@ const Home = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const navigate = useNavigate();
 
   const onLoginButtonClick = async (data) => {
-    console.log("Login Button clicked");
     try {
       var obj = {
         Email: data.email,
-        Password: data.password,
+        Password: data.password
       };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Login/login",
-        obj
-      );
+      var responses = await axios.post("https://localhost:44305/api/Login/login", obj);
       var result = await responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
       debugger;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {
-        // toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
-        // setLoggedIn(true); // Update logged-in state
-        // navigate(''); // Navigate to dashboard or another page
-        navigate("/AdminDashboard");
-      } else {
-        toast.error("Please check your credentials.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      }
+        toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
+        setLoggedIn(true); // Update logged-in state
+        navigate(''); // Navigate to dashboard or another page
+      }  else {
+        // Handle specific error codes
+        if (result.error.code === "AUTH001") {
+            toast.error("Email not found. Please check your email address.", { position: "top-right", autoClose: 4000 });
+        } else if (result.error.code === "AUTH002") {
+            toast.error("Incorrect password. Please check your password and try again.", { position: "top-right", autoClose: 4000 });
+        } else {
+            // Generic error message for other cases
+            toast.error("Check your email and password.", { position: "top-right", autoClose: 4000 });
+        }
+    }
     } catch (error) {
-      console.error("Error logging in:", error);
-      toast.error("Login failed. Please try again.", {
-        position: "top-right",
-        autoClose: 4000,
-      });
+      toast.error("Login failed. Please try again.", { position: "top-right", autoClose: 4000 });
       // Handle error state or display error message to the user
     }
-  };
+  }
 
   const [values, setValues] = useState({
     Email: "",
@@ -70,246 +62,236 @@ const Home = () => {
 
   const handleChange1 = (e) => {
     const { name, value } = e.target;
-
+  
     setValues({
       ...values,
       [name]: value,
     });
-    console.log(value);
     setErrors({
       ...errorss,
       [name]: getotpValidation(name, value),
     });
   };
 
-  async function getotpfunction(e) {
-    e.preventDefault();
-    console.log(values.Email);
-    const newErrors = {
-      Email: getotpValidation("Email", values.Email),
-    };
-    console.log(errorss.Email, "check error");
-    setErrors(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-
-    if (!isValid) {
-      var obj = {
-        Email: values.Email,
-      };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/get-otp",
-        obj
-      );
-      var result = await responses.data;
-      console.log(result, "result");
-      console.log(responses, "response");
-      if (result.isSuccess) {
-        toast.success("OTP sent successfully.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-        setView("verifyOtp");
-      } else {
-        toast.error("Please enter a valid email.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      }
-    }
-    console.log("button is clicked");
-  }
-  function getotpValidation(name, value) {
-    console.log(value, "clicked");
-    if (name === "Email") {
-      if (!value) return "Email is required";
-      if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
-    }
-  }
-
-  const [otpValues, setOtpValues] = useState({
-    Otp: "",
-  });
-  const [otpErrors, setOtpErrors] = useState({
-    Otp: "",
-  });
-
-  const handleOtpChange = (e) => {
-    const { name, value } = e.target;
-
-    setOtpValues({
-      ...otpValues,
-      [name]: value,
-    });
-    console.log(value);
-    setOtpErrors({
-      ...otpErrors,
-      [name]: validateOtp(name, value),
-    });
+async function getotpfunction(e){
+  e.preventDefault();
+  const newErrors = {
+    Email: getotpValidation("Email", values.Email),
+    
   };
+  setErrors(newErrors);
 
-  async function onVerifyOtpClick(e) {
-    e.preventDefault();
-    console.log(otpValues.Otp);
-    const newErrors = {
-      Otp: validateOtp("Otp", otpValues.Otp),
-    };
-    console.log(otpErrors.Otp, "check error");
-    setOtpErrors(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (!isValid) {
-      console.log("Verify OTP Button clicked");
-      var obj = { Email: values.Email, Otp: otpValues.Otp };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/verify-otp",
-        obj
-      );
-      var result = await responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-      if (result.isSuccess) {
-        toast.success("OTP verified successfully.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-        setView("setNewPassword");
-      } else {
-        toast.error("Invalid OTP. Please try again.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      }
-    }
-  }
-
-  function validateOtp(name, value) {
-    console.log(value, "clicked");
-    if (name === "Otp") {
-      if (!value) return "OTP is required";
-      // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
-    }
-  }
-
-  // New password validation and handlers
-  const [passwordValues, setPasswordValues] = useState({
-    NewPassword: "",
-    ConfirmPassword: "",
-  });
-  const [passwordErrors, setPasswordErrors] = useState({
-    NewPassword: "",
-    ConfirmPassword: "",
-  });
-
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-
-    setPasswordValues({
-      ...passwordValues,
-      [name]: value,
-    });
-    console.log(value);
-    setPasswordErrors({
-      ...passwordErrors,
-      [name]: validatePassword(name, value),
-    });
+  const isValid = Object.values(newErrors).every((error) => error === "");
+    
+  if(!isValid){
+  var obj = {
+    Email:values.Email
   };
+  var responses=await axios.post("https://localhost:44305/api/Auth/get-otp", obj);
+  var result = await responses.data;
+  if (result.isSuccess)
+    {
+      toast.success("OTP sent successfully to Your Email.", { position: "top-right", autoClose: 4000 });
+      setView('verifyOtp');
+    } 
+    else
+    {
+      toast.error("Please enter a valid email.", { position: "top-right", autoClose: 4000 });
+    }
+}
+}
+function getotpValidation(name, value)
+{
+  if (name === "Email") {
+    if (!value) return "Email is required";
+    if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
+  }
 
-  async function onSetNewPasswordClick(e) {
-    e.preventDefault();
-    console.log(passwordValues.NewPassword, passwordValues.ConfirmPassword);
-    const newErrors = {
-      NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
-      ConfirmPassword: validatePassword(
-        "ConfirmPassword",
-        passwordValues.ConfirmPassword
-      ),
-    };
-    console.log(passwordErrors, "check error");
-    setPasswordErrors(newErrors);
+}
 
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.", {
+const [otpValues, setOtpValues] = useState({
+  Otp: "",
+});
+const [otpErrors, setOtpErrors] = useState({
+  Otp: "",
+});
+
+const handleOtpChange = (e) => {
+  const { name, value } = e.target;
+
+  setOtpValues({
+    ...otpValues,
+    [name]: value,
+  });
+  setOtpErrors({
+    ...otpErrors,
+    [name]: validateOtp(name, value),
+  });
+};
+
+async function onVerifyOtpClick(e) {
+  e.preventDefault();
+  const newErrors = {
+    Otp: validateOtp("Otp", otpValues.Otp),
+  };
+  setOtpErrors(newErrors);
+
+  const isValid = Object.values(newErrors).every((error) => error === "");
+  if (!isValid) {
+    var obj = { Email: values.Email, Otp: otpValues.Otp };
+    var responses = await axios.post(
+      "https://localhost:44305/api/Auth/verify-otp",
+      obj
+    );
+    var result = await responses.data;
+    if (result.isSuccess) {
+      toast.success("OTP verified successfully.", {
         position: "top-right",
         autoClose: 4000,
       });
-      return;
+      setView("setNewPassword");
+    } else {
+      toast.error("Invalid OTP. Please try again.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
-    if (!isValid) {
-      console.log("Set New Password Button clicked");
-      var obj = {
-        Email: values.Email,
-        Otp: otpValues.Otp,
-        NewPassword: passwordValues.NewPassword,
-      };
+  }
+}
 
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/update-password",
-        obj
-      );
-      var result = responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
-      if (result.isSuccess) {
-        toast.success("Password updated successfully.", {
+function validateOtp(name, value) {
+  if (name === "Otp") {
+    if (!value) return "OTP is required";
+    // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
+  }
+}
+
+// New password validation and handlers
+const [passwordValues, setPasswordValues] = useState({
+  NewPassword: "",
+  ConfirmPassword: "",
+});
+const [passwordErrors, setPasswordErrors] = useState({
+  NewPassword: "",
+  ConfirmPassword: "",
+});
+
+const handlePasswordChange = (e) => {
+  const { name, value } = e.target;
+
+  setPasswordValues({
+    ...passwordValues,
+    [name]: value,
+  });
+  setPasswordErrors({
+    ...passwordErrors,
+    [name]: validatePassword(name, value),
+  });
+};
+
+async function onSetNewPasswordClick(e) {
+  e.preventDefault();
+
+  const newErrors = {
+    NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
+    ConfirmPassword: validatePassword(
+      "ConfirmPassword",
+      passwordValues.ConfirmPassword
+    ),
+  };
+  setPasswordErrors(newErrors);
+
+  const isValid = Object.values(newErrors).every((error) => error === "");
+  if (newPassword !== confirmPassword) {
+    toast.error("Passwords do not match.", {
+      position: "top-right",
+      autoClose: 4000,
+    });
+    return;
+  }
+
+  if (!isValid) {
+    var obj = {
+      Email: values.Email,
+      Otp: otpValues.Otp,
+      NewPassword: passwordValues.NewPassword,
+    };
+
+    var responses = await axios.post(
+      "https://localhost:44305/api/Auth/update-password",
+      obj
+    );
+    var result = responses.data;
+    if (result.isSuccess) {
+      toast.success("Password updated successfully.", {
+        position: "top-right",
+        autoClose: 4000,
+      });
+      setView("login");
+    } else {
+      // Handle specific error codes
+      if (result.error.code === "AUTH003") {
+        toast.error("New password cannot be the same as the existing password.", {
           position: "top-right",
           autoClose: 4000,
         });
-        setView("login");
       } else {
-        toast.error("Failed to update password.", {
+        toast.error("Failed to update password. Please try again.", {
           position: "top-right",
           autoClose: 4000,
         });
       }
     }
   }
+}
 
-  function validatePassword(name, value) {
-    console.log(value, "clicked");
-    if (name === "NewPassword") {
-      if (!value) return "New password is required";
-      if (
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          value
-        )
+function validatePassword(name, value) {
+  if (name === "NewPassword") {
+    if (!value) return "New password is required";
+    if (
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        value
       )
-        return "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character";
-    }
-    if (name === "ConfirmPassword") {
-      if (!value) return "Confirm password is required";
-      if (value !== passwordValues.NewPassword) return "Passwords should match";
-    }
+    )
+      return "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character";
   }
+  if (name === "ConfirmPassword") {
+    if (!value) return "Confirm password is required";
+    if (value !== passwordValues.NewPassword) return "Passwords should match";
+  }
+}
 
   const renderLoginForm = () => (
     <div className="loginForm">
       <form onSubmit={handleSubmit(onLoginButtonClick)}>
-        <label className="labelField">
-          Email Address<span className="asterisk">*</span>
-        </label>
+      <label className="labelField">Email Address<span className="asterisk">*</span></label>
         <input
           type="text"
           placeholder="Email Address"
           className="inputField"
-          {...register("email", { required: "Email is required" })}
+          {...register('email', { required: 'Email is required' })}
           onChange={(e) => setEmail(e.target.value)}
         />
-        {errors.email && (
-          <p className="validationError">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="validationError">{errors.email.message}</p>}
 
         <label className="labelField">
           Password<span className="asterisk">*</span>
         </label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="inputField"
-          {...register("password", { required: "Password is required" })}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="passwordContainer">
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    className="inputField"
+    {...register("password", { required: "Password is required" })}
+    onChange={(e) => setPassword(e.target.value)}
+  />
+  <div
+    className="eyeIcon"
+    onClick={() => setShowPassword(!showPassword)}
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </div>
+</div>
         {errors.password && (
           <p className="validationError">{errors.password.message}</p>
         )}
@@ -318,9 +300,7 @@ const Home = () => {
       </form>
       <div className="forgotResetContainer">
         <div className="forgotPassword">Forgot your password?</div>
-        <div className="resetLink" onClick={() => setView("resetPassword")}>
-          Reset Here
-        </div>
+        <div className="resetLink" onClick={() => setView('resetPassword')}>Reset Here</div>
       </div>
     </div>
   );
@@ -328,67 +308,59 @@ const Home = () => {
   const renderResetPasswordForm = () => (
     <div className="resetPasswordForm">
       <form onSubmit={getotpfunction}>
-        <div className="welcomeMessage">
-          <h2 className="Welcome">Reset Password</h2>
-          <p className="Text">
-            Enter your email address to receive an OTP for resetting your
-            password.
-          </p>
-        </div>
-
-        <label className="labelField">
-          Email Address<span className="asterisk">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Email Address"
-          className="inputField"
-          onChange={handleChange1}
-          name="Email"
-          value={values.Email}
-        />
-        {errorss.Email && (
+      <div className='welcomeMessage'>
+      <h2 className='Welcome'>Reset Password</h2>
+      <p className='Text'>Enter your email address to receive an OTP for resetting your password.</p>
+      </div>
+   
+      <label className="labelField">Email Address<span className="asterisk">*</span></label>
+      <input
+        type="text"
+        placeholder="Email Address"
+        className="inputField"
+        onChange={handleChange1}
+        name="Email"
+                        value={values.Email}
+        // {...register('email', { required: 'Email is required' })}
+        // onChange={(e) => setEmail(e.target.value)}
+      />
+      {errorss.Email && (
           <span className="validationError">{errorss.Email}</span>
         )}
+      {/* {errors.email && <p className="validationError">{errors.email.message}</p>} */}
 
-        <button className="loginButton">Get OTP</button>
-        <div className="backToLogin" onClick={() => setView("login")}>
-          Back to Login
-        </div>
+      <button className="loginButton">Get OTP</button>
+      <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
       </form>
+      
     </div>
   );
 
   const renderVerifyOtpForm = () => (
     <div className="verifyOtpForm">
       <form onSubmit={onVerifyOtpClick}>
-        <div className="welcomeMessage">
-          <h2 className="Welcome">Verify OTP</h2>
-          <p className="Text">
-            Please enter the OTP sent to your email to verify your identity.
-          </p>
-        </div>
-
-        <label className="labelField">
-          Enter OTP<span className="asterisk">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          className="inputField"
-          onChange={handleOtpChange}
-          name="Otp"
+      <div className='welcomeMessage'>
+      <h2 className='Welcome'>Verify OTP</h2>
+      <p className='Text'>Please enter the OTP sent to your email to verify your identity.</p>
+      </div>
+      
+      <label className="labelField">Enter OTP<span className="asterisk">*</span></label>
+      <input
+        type="text"
+        placeholder="Enter OTP"
+        className="inputField"
+        onChange={handleOtpChange}
+        name="Otp"
           value={otpValues.Otp}
-        />
-        {otpErrors.Otp && (
-          <span className="validationError">{otpErrors.Otp}</span>
-        )}
+        // {...register('otp', { required: 'OTP is required' })}
+        // onChange={(e) => setOtp(e.target.value)}
+      />
+      {/* {errors.otp && <p className="validationError">{errors.otp.message}</p>} */}
+      {otpErrors.Otp && (<span className="validationError">{otpErrors.Otp}</span>)}
 
-        <button className="loginButton">Verify OTP</button>
-        <div className="backToLogin" onClick={() => setView("login")}>
-          Back to Login
-        </div>
-      </form>
+      <button className="loginButton">Verify OTP</button>
+      <div className="backToLogin" onClick={() => setView('login')}>Back to Login</div>
+      </form>    
     </div>
   );
 
@@ -452,26 +424,20 @@ const Home = () => {
       <ToastContainer />
 
       {/* Logo */}
-      <img
-        src="src/assets/Images/ArchentsLogo.png"
-        alt="Logo"
-        className="logo"
-      />
+      <img src="src/assets/Images/ArchentsLogo.png" alt="Logo" className="logo" />
 
-      {view === "login" && (
+      {view === 'login' && (
         <div className="welcomeMessage">
-          <div className="Welcome">Welcome back!</div>
-          <div className="Text">
-            Please login using your email and password.
-          </div>
+          <div className='Welcome'>Welcome back!</div>
+          <div className="Text">Please login using your email and password.</div>
         </div>
       )}
 
       {/* Conditional rendering based on view state */}
-      {view === "login" && renderLoginForm()}
-      {view === "resetPassword" && renderResetPasswordForm()}
-      {view === "verifyOtp" && renderVerifyOtpForm()}
-      {view === "setNewPassword" && renderSetNewPasswordForm()}
+      {view === 'login' && renderLoginForm()}
+      {view === 'resetPassword' && renderResetPasswordForm()}
+      {view === 'verifyOtp' && renderVerifyOtpForm()}
+      {view === 'setNewPassword' && renderSetNewPasswordForm()}
 
       {/* Conditional rendering based on login status */}
       {loggedIn ? <div></div> : <div />}
