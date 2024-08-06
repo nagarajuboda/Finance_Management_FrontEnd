@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../assets/Styles/Sidebar.css";
 import logo from "../../assets/Images/ArchentsLogo.png";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -9,23 +9,8 @@ import { BsCalendarDay } from "react-icons/bs";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
-import { useEffect } from "react";
 import { VscTasklist } from "react-icons/vsc";
-
-import {
-  FaTh,
-  FaBars,
-  FaUserAlt,
-  FaRegChartBar,
-  FaCommentAlt,
-  FaShoppingBag,
-  FaThList,
-  FaChevronDown,
-  FaChevronCircleRight,
-  FaChevronRight,
-  FaUser,
-  FaTasks,
-} from "react-icons/fa";
+import { FaChevronRight } from "react-icons/fa";
 import { RiDashboard3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import Header from "./Header";
@@ -34,22 +19,23 @@ const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
   const [sessionData, setSessionData] = useState(null);
+
   const toggle = () => {
     setIsOpen(!isOpen);
     if (isOpen) {
       setOpenDropdowns([]); // Close all dropdowns when sidebar is minimized
     }
   };
+
   useEffect(() => {
     const data = localStorage.getItem("sessionData");
-    //console.log(data, "sesson data in sidebar");
     if (data) {
       setSessionData(JSON.parse(data));
-      //   setSessionData(data);
     }
   }, []);
-  // console.log(sessionData, "sidebar session data");
+
   const toggleDropdown = (index) => {
+    if (!isOpen) return; // Prevent dropdowns from opening when sidebar is minimized
     setOpenDropdowns((prevOpenDropdowns) => {
       if (prevOpenDropdowns.includes(index)) {
         return prevOpenDropdowns.filter((i) => i !== index);
@@ -61,7 +47,6 @@ const Sidebar = ({ children }) => {
 
   const adminMenuItems = [
     {
-      // path: "/dsa",
       name: "Dashboards",
       icon: <RiDashboard3Line />,
       submenu: [
@@ -73,12 +58,11 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      // path: "/about",
       name: "Hr Management",
       icon: <IoPeopleOutline />,
       submenu: [
         { path: "/EmployeeDashboard", name: "- Employees" },
-        { path: "/list1", name: "- Recruiment" },
+        { path: "/Roles", name: "- Roles" },
         { path: "/list2", name: "- Jobs" },
         { path: "/list1", name: "- Condidates" },
         { path: "/list1", name: "- Attendance" },
@@ -91,13 +75,11 @@ const Sidebar = ({ children }) => {
       submenu: [
         { path: "/contracts", name: "- Contracts" },
         { path: "/Dashboard/AllProjects", name: "- Projects" },
-        // { path: "/analytics/AddProject", name: "-AddProject" },
         { path: "/Files", name: "- Files" },
         { path: "/Profile", name: "- Profile" },
       ],
     },
     {
-      // path: "/comment",
       name: "General",
       icon: <AiOutlineDashboard />,
       submenu: [
@@ -107,7 +89,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      // path: "/product",
       name: "Calender",
       icon: <BsCalendarDay />,
       submenu: [
@@ -117,7 +98,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      // path: "/product",
       name: "Email",
       icon: <MdOutlineMailOutline />,
       submenu: [
@@ -127,7 +107,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      // path: "/product",
       name: "Chat",
       icon: <IoChatbubbleOutline />,
       submenu: [
@@ -137,7 +116,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      // path: "/product",
       name: "Invoices",
       icon: <LiaFileInvoiceSolid />,
       submenu: [
@@ -146,9 +124,7 @@ const Sidebar = ({ children }) => {
         { path: "/list2", name: "- Create Invoice" },
       ],
     },
-
     {
-      // path: "/productList",
       name: "Task",
       icon: <VscTasklist />,
       submenu: [
@@ -157,6 +133,7 @@ const Sidebar = ({ children }) => {
       ],
     },
   ];
+
   const employeeMenuItems = [
     {
       name: "Dashboards",
@@ -164,24 +141,23 @@ const Sidebar = ({ children }) => {
       submenu: [{ path: "/list2", name: "- Projects" }],
     },
   ];
+
   const ProjectManagerMenuItems = [
+    // {
+    //   name: "Dashboards",
+    //   icon: <RiDashboard3Line />,
+    //   submenu: [
+    //     { path: "/list2", name: "- Invoice Management" },
+    //     { path: "/list1", name: "- HR management" },
+    //     { path: "/list2", name: "- Job Hiring Management" },
+    //     { path: "/list1", name: "- Project management1" },
+    //     { path: "/list1", name: "- Project management1" },
+    //   ],
+    // },
     {
-      // path: "/dsa",
-      name: "Dashboards",
-      icon: <RiDashboard3Line />,
-      submenu: [
-        { path: "/list2", name: "- Invoice Management" },
-        { path: "/list1", name: "- HR management" },
-        { path: "/list2", name: "- Job Hiring Management" },
-        { path: "/list1", name: "- Project management1" },
-        { path: "/list1", name: "- Project management1" },
-      ],
-    },
-    {
-      // path: "/about",
       name: "Hr Management",
       icon: <IoPeopleOutline />,
-      submenu: [{ path: "/list2", name: "- Employees" }],
+      submenu: [{ path: "/EmployeeDashboard", name: "- Employees" }],
     },
     {
       name: "Project Management",
@@ -192,25 +168,25 @@ const Sidebar = ({ children }) => {
       ],
     },
   ];
-  // const menuItems =
-  //   sessionData?.employee?.role?.name === "Admin"
-  //     ? adminMenuItems
-  //     : employeeMenuItems;
 
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
-      : sessionData?.employee?.role?.name === "Project Manger"
+      : sessionData?.employee?.role?.name === "Project Manager"
       ? ProjectManagerMenuItems
       : employeeMenuItems;
+
   return (
     <div className="containers" style={{ width: "100vw" }}>
-      <div style={{ width: isOpen ? "370px" : "80px" }} className="sidebar">
+      <div
+        style={{ width: isOpen ? "370px" : "80px", backgroundColor: "white" }}
+        className="sidebar"
+      >
         <div className="top_section">
-          <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-            <img src={logo} alt="" width="140px" />
-          </h1>
-          <div style={{ marginLeft: isOpen ? "80px" : "0px" }} className="bars">
+          <div
+            style={{ marginLeft: isOpen ? "222px" : "0px" }}
+            className="bars"
+          >
             <i
               className="bi bi-list openandcloseicon"
               onClick={toggle}
@@ -238,13 +214,14 @@ const Sidebar = ({ children }) => {
               className="link"
               onClick={() => item.submenu && toggleDropdown(index)}
             >
-              <div className="icon">
+              <div className="icon" style={{ color: "black" }}>
                 {item.icon}
                 <div
                   style={{
                     display: isOpen ? "block" : "none",
                     fontSize: "16px",
                     margin: "0px 5px",
+                    color: "black",
                   }}
                   className="link_text"
                 >
@@ -272,21 +249,18 @@ const Sidebar = ({ children }) => {
                 }}
               >
                 {item.submenu.map((subItem, subIndex) => (
-                  <div key={subIndex}>
-                    {console.log(subItem.path, "path of sub item")}
-                    <NavLink
-                      to={subItem.path}
-                      key={subIndex}
-                      className="link submenu_link"
+                  <NavLink
+                    to={subItem.path}
+                    key={subIndex}
+                    className="link submenu_link"
+                  >
+                    <div
+                      style={{ display: isOpen ? "block" : "none" }}
+                      className="link_text"
                     >
-                      <div
-                        style={{ display: isOpen ? "block" : "none" }}
-                        className="link_text"
-                      >
-                        {subItem.name}
-                      </div>
-                    </NavLink>
-                  </div>
+                      {subItem.name}
+                    </div>
+                  </NavLink>
                 ))}
               </div>
             )}
@@ -297,7 +271,7 @@ const Sidebar = ({ children }) => {
       <div className="renderdiv">
         <Header />
         <main
-          style={{ backgroundColor: "#DEEFF5" }}
+          style={{ backgroundColor: "rgb(222, 239, 245)" }}
           className="childercomponents"
         >
           {children}

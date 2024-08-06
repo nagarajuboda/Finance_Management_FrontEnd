@@ -2,44 +2,19 @@
   margin: 0;
   padding: 0;
 }
-.maindiv {
-  height: 86px;
-  background-color: white;
-}
+
 .search {
-  padding: 23px;
-  border: none;
-  border-radius: 39px;
-  background-color: #faf9f6;
-}
-/* .search {
   padding: 14px;
   border: none;
-  border-radius: 22px;
+
   background-color: #faf9f6;
   width: 330px;
-} */
+  padding: 0px 30px;
+}
 .row {
-  margin: 25px;
+  margin: 2px;
 }
 
-.search {
-  border: 1px solid #ced4da;
-  transition: border-color 0.3s ease;
-  padding: 24px 46px;
-}
-
-.search:focus {
-  border-color: rgba(146, 74, 239, 1);
-}
-.search-icon {
-  top: 49%;
-  transform: translateY(-50%);
-  left: 28px;
-  color: gray;
-  font-size: 1.5em;
-  color: #b0d0e8;
-}
 .settingandnotificationicons {
   display: flex;
   align-items: center;
@@ -47,20 +22,22 @@
 }
 
 .NotificationIcon {
-  font-size: 21px;
-  color: #9f9f9f;
+  font-size: 20px;
+  /* color: #9f9f9f; */
+  color: black;
   cursor: pointer;
-  margin: 11px 10px;
+  margin: 22px 10px;
 }
 .headericons {
   display: flex;
   justify-content: space-between;
 }
 .SettingsIcon {
-  color: #9f9f9f;
-  margin: 11px 20px;
+  /* color: #9f9f9f; */
+  color: black;
+  margin: 22px 20px;
   cursor: pointer;
-  font-size: 21px;
+  font-size: 20px;
 }
 
 /* .settingandnotificationicons {
@@ -71,18 +48,19 @@
 .vertical-line {
   border-left-color: #9f9f9f;
   border-left: 2px solid;
-  height: 50px;
+  height: 43px;
+  margin: 7px -5px;
 }
 .profileImage {
-  width: 50px;
+  width: 39px;
   border-radius: 6px;
 }
 .superadminp {
-  margin: 0;
   color: #9f9f9f;
+  margin: 8px 0px;
 }
 .namep {
-  margin: 0;
+  margin: -7px 0px;
   font-weight: 500;
 }
 .profileandrole {
@@ -94,8 +72,8 @@
 }
 .profile-popup {
   position: absolute;
-  top: 85px;
-  right: 22px;
+  top: 69px;
+  right: 5px;
   width: 270px;
   z-index: 1000;
 }

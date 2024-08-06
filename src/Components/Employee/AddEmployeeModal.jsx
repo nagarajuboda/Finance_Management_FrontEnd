@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import '../../assets/Styles/EmployeePages/AddEmployeeModal.css';
 
 const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [formData, setFormData] = useState({
@@ -11,8 +10,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     passwordHash: '',
     mobileNo: '',
     dateOfJoining: '',
-    projectManagerId: '', // Store Project Manager ID here
-    employeeStatus: 1,
+    projectManagerId: '', 
+    employeeStatus: 'Active', 
     skillSets: '',
     roleId: ''
   });
@@ -20,6 +19,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [projectManagers, setProjectManagers] = useState([]);
   const [errors, setErrors] = useState({});
   const [existingEmployeeIds, setExistingEmployeeIds] = useState([]);
+  const [employeeExistsError, setEmployeeExistsError] = useState('');
   const isEditing = !!employee;
 
   useEffect(() => {
@@ -28,15 +28,15 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       setFormData({
         ...employee,
         dateOfJoining: formattedDate,
-        employeeStatus: employee.employeeStatus === 1 ? 1 : 0,
-        projectManagerId: employee.projectManagerId || ''
+        employeeStatus: employee.employeeStatus === 1 ? 'Active' : 'Inactive',
+        projectManagerId: employee.projectManagerId ? employee.projectManagerId : ''
       });
     } else {
       const now = new Date();
       now.setHours(11, 0, 0, 0);
       const defaultDate = now.toISOString().split('T')[0];
       setFormData(prevData => ({ ...prevData, dateOfJoining: defaultDate }));
-      fetchEmployeeIds(); // Fetch existing employee IDs if adding new employee
+      fetchEmployeeIds();
     }
     fetchRoles();
     fetchProjectManagers();
@@ -58,8 +58,12 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
 
   const getNextEmployeeId = (existingIds) => {
     const prefix = 'IARC';
-    const currentIds = existingIds.filter(id => id.startsWith(prefix)).map(id => id.slice(prefix.length));
-    const maxId = currentIds.reduce((max, id) => Math.max(max, parseInt(id.replace(/^0+/, ''))), 0);
+    const currentIds = existingIds
+      .filter(id => id.startsWith(prefix))
+      .map(id => parseInt(id.slice(prefix.length), 10))
+      .filter(id => !isNaN(id));
+
+    const maxId = currentIds.length ? Math.max(...currentIds) : 0;
     return `${prefix}${String(maxId + 1).padStart(4, '0')}`;
   };
 
@@ -86,9 +90,20 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
   };
 
-  const getProjectManagerName = (employeeId) => {
-    const pm = projectManagers.find(pm => pm.employeeId === employeeId);
-    return pm ? `${pm.firstName} ${pm.lastName}` : '';
+  const handleProjectManagerChange = (e) => {
+    const selectedName = e.target.value;
+    const selectedPm = projectManagers.find(pm => `${pm.firstName} ${pm.lastName}` === selectedName);
+    if (selectedPm) {
+      setFormData(prevData => ({
+        ...prevData,
+        projectManagerId: selectedPm.id 
+      }));
+    } else {
+      setFormData(prevData => ({
+        ...prevData,
+        projectManagerId: '' 
+      }));
+    }
   };
 
   const validate = (fieldName, value) => {
@@ -113,6 +128,10 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         if (!value) return 'Mobile number is required';
         if (!/^\d+$/.test(value)) return 'Mobile number must contain only numbers';
         break;
+      case 'employeeId':
+        if (!value) return 'Employee ID is required';
+        if (existingEmployeeIds.includes(value)) return 'Employee ID already exists';
+        break;
       default:
         return '';
     }
@@ -124,6 +143,12 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     const error = validate(name, value);
     setFormData(prevData => ({ ...prevData, [name]: value }));
     setErrors(prevErrors => ({ ...prevErrors, [name]: error }));
+
+    if (name === 'employeeId' && existingEmployeeIds.includes(value)) {
+      setEmployeeExistsError('Employee ID already exists');
+    } else {
+      setEmployeeExistsError('');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -147,8 +172,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       const dataToSubmit = {
         ...formData,
         dateOfJoining: formattedDateOfJoining,
-        employeeStatus: Number(employeeStatus), // Ensure employeeStatus is sent as a number
-        projectManagerId // Use Project Manager ID for submission
+        employeeStatus: employeeStatus === 'Active' ? 1 : 0, 
+        projectManagerId: projectManagerId ? projectManagerId : null 
       };
 
       if (!employee) {
@@ -163,25 +188,20 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
   };
 
-  const handleProjectManagerChange = (e) => {
-    const selectedName = e.target.value;
-    const selectedPm = projectManagers.find(pm => `${pm.firstName} ${pm.lastName}` === selectedName);
-    setFormData(prevData => ({
-      ...prevData,
-      projectManagerId: selectedPm ? selectedPm.employeeId : '',
-      projectManager: selectedName
-    }));
+  const getProjectManagerName = (projectManagerId) => {
+    const projectManager = projectManagers.find(pm => pm.id === projectManagerId);
+    return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : '';
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content-AddEmp">
-        <div className='MainDiv'>
-          <div className='LeftDiv'>
+    <div className="AddEmpMdlOverlay">
+      <div className="AddEmpMdlContent">
+        <div className='AddEmpMdlHeader'>
+          <div className='AddEmpMdlHeaderLeft'>
             <h2>{isEditing ? 'Edit Employee' : 'Add Employee'}</h2>
           </div>
-          <div className='RightDivClose'>
-            <button className="close-btn" onClick={onClose}>Close</button>
+          <div className='AddEmpMdlRightDiv'>
+            <button className="AddEmpMdlRightCloseBtn" onClick={onClose}>Close</button>
           </div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -191,21 +211,23 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           <label>
             Employee ID:
             <input
-              type="text"
+              type="AddEmpMdltext"
               name="employeeId"
               value={formData.employeeId}
               onChange={handleChange}
-              disabled={isEditing} // Disable editing if it's an existing employee
+              disabled={isEditing}
             />
+            {errors.employeeId && <span className="error">{errors.employeeId}</span>}
+            {/* {employeeExistsError && <span className="error">{employeeExistsError}</span>}              Need to check */}
           </label>
           <label>
             First Name:
-            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} />
+            <input type="AddEmpMdltext" name="firstName" value={formData.firstName} onChange={handleChange} />
             {errors.firstName && <span className="error">{errors.firstName}</span>}
           </label>
           <label>
             Last Name:
-            <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
+            <input type="AddEmpMdltext" name="lastName" value={formData.lastName} onChange={handleChange} />
           </label>
           <label>
             Email:
@@ -214,13 +236,18 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           </label>
           <label>
             Password:
-            <input type="password" name="passwordHash" value={formData.passwordHash} onChange={handleChange} />
+            <input
+              type="password"
+              name="passwordHash"
+              value={formData.passwordHash}
+              onChange={handleChange}
+            />
             {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
           </label>
           <label>
             Mobile No:
             <input
-              type="text"
+              type="AddEmpMdltext"
               name="mobileNo"
               value={formData.mobileNo}
               onChange={handleChange}
@@ -232,7 +259,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             Date of Joining:
             <input
               type="date"
-              className="DOJ"
+              className="AddEmpMdlDoj"
               name="dateOfJoining"
               value={formData.dateOfJoining}
               onChange={handleChange}
@@ -241,10 +268,14 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           </label>
           <label>
             Project Manager:
-            <select name="projectManager" value={formData.projectManager} onChange={handleProjectManagerChange}>
+            <select
+              name="projectManager"
+              value={getProjectManagerName(formData.projectManagerId)}
+              onChange={handleProjectManagerChange}
+            >
               <option value="">Select Project Manager</option>
               {projectManagers.map(pm => (
-                <option key={pm.employeeId} value={`${pm.firstName} ${pm.lastName}`}>
+                <option key={pm.id} value={`${pm.firstName} ${pm.lastName}`}>
                   {`${pm.firstName} ${pm.lastName}`}
                 </option>
               ))}
@@ -253,8 +284,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           <label>
             Employee Status:
             <select name="employeeStatus" value={formData.employeeStatus} onChange={handleChange}>
-              <option value={1}>Active</option>
-              <option value={0}>Inactive</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
             </select>
           </label>
           <label>
@@ -271,8 +302,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             Skill Sets:
             <textarea name="skillSets" value={formData.skillSets} onChange={handleChange}></textarea>
           </label>
-          <button type="submit" className="submit-btn">
-            {isEditing ? 'Save' : 'Add'}
+          <button type="submit" className="AddEmpMdlSubmitBtn">
+            {isEditing ? 'Save Modifications' : 'Add Employee'}
           </button>
         </form>
       </div>

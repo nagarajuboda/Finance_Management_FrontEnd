@@ -50,7 +50,7 @@ export default function AllProjects() {
 
   return (
     <div className="AllProductmaindiv">
-      <div className="card">
+      <div className="card" style={{ borderRadius: "0px" }}>
         <div className="AddProjects">
           <p className="contentallproject">All Projects</p>
           <Link to="/Dashboard/AddProject" className="addprojectlink">

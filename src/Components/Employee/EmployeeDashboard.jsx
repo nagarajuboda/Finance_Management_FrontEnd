@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import EmployeeModal from './AddEmployeeModal';
-import ConfirmationModal from './DeleteConfirmationModal';
+import ConfirmationModal from './DeleteConfirmationEmpModal';
 import InactiveEmployeesModal from './InactiveEmployeesModal';
 import '../../assets/Styles/EmployeePages/EmployeeDashboard.css';
 
@@ -18,6 +18,8 @@ const EmployeeDashboard = () => {
   const [showInactiveModal, setShowInactiveModal] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDeactivate, setEmployeeToDeactivate] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,7 +62,7 @@ const EmployeeDashboard = () => {
   };
 
   const getProjectManagerName = (projectManagerId) => {
-    const projectManager = projectManagers.find(emp => emp.employeeId === projectManagerId);
+    const projectManager = projectManagers.find(emp => emp.id === projectManagerId);
     return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : 'N/A';
   };
 
@@ -138,64 +140,125 @@ const EmployeeDashboard = () => {
     setShowInactiveModal(false);
   };
 
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+
+  const displayedEmployees = filteredEmployees.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   return (
-    <div className="employee-list">
+    <div className="EmployeeDashboard">
       <h1>Employee Dashboard</h1>
-      <div className='MainDiv'>
-        <div className='LeftDiv'>
-          <input type="textt" placeholder="Search by name..." value={searchTerm} onChange={handleSearch} className="search-input" />
-          <button className="add-btn" onClick={() => { setCurrentEmployee(null); setShowModal(true); }}>Add Employee</button>
-          <button className="inactive-btn" onClick={() => setShowInactiveModal(true)}>View Inactive Employees</button>
+      <div className='EmpHeader'>
+        <div className='EmpHeaderLeft'>
+          <input type="EmpSearchtxt" placeholder="Search by name..." value={searchTerm} onChange={handleSearch} className="EmpSearchTxt" />
+          <button className="EmpAddBtn" onClick={() => { setCurrentEmployee(null); setShowModal(true); }}>Add Employee</button>
+          <button className="EmpInactiveBtn" onClick={() => setShowInactiveModal(true)}>Inactive Employees</button>
         </div>
-        <div className='RightDiv'>
-          <Link to="/roles"><a>Roles List</a></Link>
+        <div className='EmpHeaderRight'>
+          <Link to="/Roles"><a>Roles List</a></Link>
         </div>
       </div>
-      <table className='MyEmpTable'>
-        <thead>
-          <tr>
-            <th className={getHeaderClass('employeeId')} onClick={() => handleSort('employeeId')}>Employee Id</th>
-            <th className={getHeaderClass('firstName')} onClick={() => handleSort('firstName')}>First Name</th>
-            <th className={getHeaderClass('lastName')} onClick={() => handleSort('lastName')}>Last Name</th>
-            <th className={getHeaderClass('email')} onClick={() => handleSort('email')}>Email</th>
-            <th className={getHeaderClass('mobileNo')} onClick={() => handleSort('mobileNo')}>Mobile No</th>
-            <th className={getHeaderClass('dateOfJoining')} onClick={() => handleSort('dateOfJoining')}>Date of Joining</th>
-            <th>Status</th>
-            <th className={getHeaderClass('roleId')} onClick={() => handleSort('roleId')}>Role</th>
-            <th>Project Manager</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredEmployees.length > 0 ? (
-            filteredEmployees.map(employee => (
-              <tr key={employee.employeeId} onClick={() => handleRowClick(employee.id)} className="clickable-row">
-                <td>{employee.employeeId}</td>
-                <td>{employee.firstName}</td>
-                <td>{employee.lastName}</td>
-                <td>{employee.email}</td>
-                <td>{employee.mobileNo}</td>
-                <td>{new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</td>
-                <td>{employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</td>
-                <td>{getRoleName(employee.roleId)}</td>
-                <td>{getProjectManagerName(employee.projectManagerId)}</td>
-              </tr>
-            ))
-          ) : (
+      <div className='EmpDashboardContainer'>
+        <table className='EmpDashboardTbl'>
+          <thead>
             <tr>
-              <td colSpan="9" className="no-employees">No employees found</td>
+              <th className={getHeaderClass('employeeId')} onClick={() => handleSort('employeeId')}>Employee Id</th>
+              <th className={getHeaderClass('firstName')} onClick={() => handleSort('firstName')}>First Name</th>
+              <th className={getHeaderClass('lastName')} onClick={() => handleSort('lastName')}>Last Name</th>
+              <th className={getHeaderClass('email')} onClick={() => handleSort('email')}>Email</th>
+              <th className={getHeaderClass('mobileNo')} onClick={() => handleSort('mobileNo')}>Mobile No</th>
+              <th className={getHeaderClass('dateOfJoining')} onClick={() => handleSort('dateOfJoining')}>Date of Joining</th>
+              <th>Status</th>
+              <th className={getHeaderClass('roleId')} onClick={() => handleSort('roleId')}>Role</th>
+              <th>Project Manager</th>
             </tr>
-          )}
-        </tbody>
-      </table>
-      {showModal && <EmployeeModal employee={currentEmployee} onClose={() => setShowModal(false)} onRefresh={fetchEmployees} />}
-      {showConfirmModal && (
-        <ConfirmationModal
-          message={`Are you sure you want to deactivate the employee "${employeeToDeactivate?.firstName} ${employeeToDeactivate?.lastName}"?`}
-          onConfirm={confirmDeactivate}
-          onCancel={cancelDeactivate}
+          </thead>
+          <tbody>
+            {displayedEmployees.length > 0 ? (
+              displayedEmployees.map(employee => (
+                <tr key={employee.employeeId} onClick={() => handleRowClick(employee.id)} className="clickable-row">
+                  <td>{employee.employeeId}</td>
+                  <td>{employee.firstName}</td>
+                  <td>{employee.lastName}</td>
+                  <td>{employee.email}</td>
+                  <td>{employee.mobileNo}</td>
+                  <td>{new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</td>
+                  <td>{employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</td>
+                  <td>{getRoleName(employee.roleId)}</td>
+                  <td>{getProjectManagerName(employee.projectManagerId)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="9" className="EmpDashboardNoEmp">No employees found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
         />
-      )}
-      {showInactiveModal && <InactiveEmployeesModal employees={inactiveEmployees} onClose={() => setShowInactiveModal(false)} onActivate={handleActivateEmployee} />}
+        {showModal && <EmployeeModal employee={currentEmployee} onClose={() => setShowModal(false)} onRefresh={fetchEmployees} />}
+        {showConfirmModal && (
+          <ConfirmationModal
+            onConfirm={confirmDeactivate}
+            onCancel={cancelDeactivate}
+            employeeName={employeeToDeactivate ? `${employeeToDeactivate.firstName} ${employeeToDeactivate.lastName}` : ''}
+          />
+        )}
+        {showInactiveModal && (
+          <InactiveEmployeesModal
+            employees={inactiveEmployees}
+            onClose={() => setShowInactiveModal(false)}
+            onActivate={handleActivateEmployee}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
+  return (
+    <div className="EmpDashPagination">
+      <button
+        className={`EmpPaginationArrow ${currentPage === 1 ? 'disabled' : ''}`}
+        onClick={handlePreviousPage}
+        disabled={currentPage === 1}
+      >
+        &larr; 
+      </button>
+      <span className="EmpPaginationInfo">
+         {currentPage} of {totalPages}
+      </span>
+      <button
+        className={`EmpPaginationArrow ${currentPage === totalPages ? 'disabled' : ''}`}
+        onClick={handleNextPage}
+        disabled={currentPage === totalPages}
+      >
+         &rarr;
+      </button>
     </div>
   );
 };

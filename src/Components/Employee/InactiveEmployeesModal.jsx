@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ConfirmationModal from './DeleteConfirmationModal';
-import '../../assets/Styles/EmployeePages/InactiveEmployeesModal.css';
+import ConfirmationModal from './DeleteConfirmationEmpModal';
 
 const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
   const [roles, setRoles] = useState([]);
@@ -38,7 +37,7 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
   };
 
   const getProjectManagerName = (projectManagerId) => {
-    const projectManager = allEmployees.find(emp => emp.employeeId === projectManagerId);
+    const projectManager = allEmployees.find(emp => emp.id === projectManagerId);
     return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : 'N/A';
   };
 
@@ -78,14 +77,14 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
   const sortedEmployees = [...employees].sort((a, b) => a.employeeId.localeCompare(b.employeeId, 'en', { numeric: true }));
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content-Inactive">
-        <div className='Inactiveheader'>
-          <h2>Inactive Employees</h2>
-          <button className="close-btn" onClick={onClose}>Close</button>
+    <div className="IEmpModal">
+      <div className="IEmpModelContent">
+        <div className='IEmpModelHeader'>
+          <h3>Inactive Employees</h3>
+          <button className="IEmpModelHeaderClose" onClick={onClose}>Close</button>
         </div>
-        <div className="table-container">
-          <table className="inactive-employees-table">
+        <div className="IEmpTblContainer">
+          <table className="IEmpTbl">
             <thead>
               <tr>
                 <th>Employee ID</th>
@@ -114,15 +113,15 @@ const InactiveEmployeesModal = ({ employees, onClose, onActivate }) => {
                     <td>{getProjectManagerName(employee.projectManagerId)}</td>
                     <td>{employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</td>
                     <td>
-                      <button className="activate-btn" onClick={() => handleActivate(employee)}>Activate</button>
-                      <button className="delete-btn" onClick={() => handleDelete(employee)}>Delete</button>
+                      <button className="IEmpActiveBtn" onClick={() => handleActivate(employee)}>Activate</button>
+                      <button className="IEmpDeleteBtn" onClick={() => handleDelete(employee)}>Delete</button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="10">No inactive employees found.</td>
-                </tr>
+                  <td colSpan="10" className="IEmpNoEmployees">No inactive employees found.</td>            
+                </tr>                
               )}
             </tbody>
           </table>

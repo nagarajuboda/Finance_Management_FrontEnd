@@ -16,11 +16,12 @@ import EmployeeDetails from "../Components/Employee/EmployeeDetails";
 import Projects from "../Components/Employee/DashboardPages/Projects";
 import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
 import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
+import Profile from "../Components/Admin/Pages/Profile";
 export default function AdminRoutes() {
   return (
     <Sidebar>
       <Routes>
-        {/* <Route path="/" element={<Dashboard />} /> */}
+        <Route path="/" element={<Dashboard />} />
         <Route path="/" element={<EmployeeDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/comment" element={<Comment />} />
@@ -30,13 +31,14 @@ export default function AdminRoutes() {
         <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
-        <Route path="/EmployeeDashboard" element={<EmployeeDashboard/>}/>
-        <Route path="/InactiveEmployee" element={<InactiveEmployee/>}/>
-        <Route path="/Roles" element={<Roles/>}/>
+        <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
+        <Route path="/InactiveEmployee" element={<InactiveEmployee />} />
+        <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
+        <Route path="/Profile" element={<Profile />} />
       </Routes>
     </Sidebar>
   );

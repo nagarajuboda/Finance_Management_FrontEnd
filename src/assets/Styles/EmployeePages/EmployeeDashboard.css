@@ -1,38 +1,46 @@
 /* EmployeeDashboard.css */
 
-/* Overall Container */
-.employee-list {
+.EmployeeDashboard {
   font-family: Arial, sans-serif;
   margin: 20px;
+  border-radius: 10px;
+  opacity: 0.9;
+  height: 100%;
 }
 
-/* Heading */
-.employee-list h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+.EmployeeDashboard:hover{
+  opacity: 1;
 }
 
-/* Main Div */
-.MainDiv {
+.EmployeeDashboard h1 {
+  font-size: 24px !important;
+  margin-bottom: 20px !important;
+  color: #196e8a;
+}
+
+.EmpHeader {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-/* Left Div */
-.LeftDiv {
+.EmpHeaderLeft {
   display: flex;
   align-items: center;
 }
 
-.search-input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+input[type="EmpSearchtxt"] {
+  width: calc(33% - 22px);
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
   margin-right: 10px;
+  margin-top: 0px;
 }
 
-.add-btn, .inactive-btn {
+.EmpAddBtn, .EmpInactiveBtn {
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
@@ -40,115 +48,325 @@
   cursor: pointer;
 }
 
-.add-btn {
-  background-color: #28a745;
+.EmpAddBtn {
+  background-color: #007bff;
   color: white;
 }
 
-.inactive-btn {
-  background-color: #ffc107;
+.EmpInactiveBtn {
+  background-color: #f79b91;
   color: black;
 }
 
-.add-btn:hover, .inactive-btn:hover {
+.EmpAddBtn:hover, .EmpInactiveBtn:hover {
   opacity: 0.9;
 }
 
-/* Right Div */
-.RightDiv {
+.EmpHeaderRight {
   display: flex;
   align-items: center;
 }
 
-.RightDiv a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
+.EmpHeaderRight a {
+  text-decoration: none !important;
+  color: #007bff !important;
+  font-weight: bold !important;
 }
 
-.RightDiv a:hover {
-  text-decoration: underline;
+.EmpHeaderRight a:hover {
+  text-decoration: underline !important;
 }
-input[type="textt"], input[type="number"] {
-  width: calc(33% - 22px);
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-  font-size: 1em;
+
+.EmpDashboardContainer {
+  flex: 1;
+  overflow: auto;
 }
-/* Table */
-.MyEmpTable {
+
+.EmpDashboardTbl {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 15px;
 }
 
-.MyEmpTable th, .MyEmpTable td {
+
+.EmpDashboardTbl th, .EmpDashboardTbl td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
 
-.MyEmpTable th {
+.EmpDashboardTbl th {
   background-color: #007bff;
   cursor: pointer;
+  color: white ;
+  position: relative;
+  padding-right: 20px;
 }
 
-.MyEmpTable th.sorted-asc::after {
+.EmpDashboardTbl th.sorted-asc::after {
   content: '▲';
-  color: white;
-  margin-left: 5px;
+  font-size: 13px;
+  color: yellowgreen;
+  position: absolute;
+  right: 5px; 
+  top: 50%;
+  transform: translateY(-50%); 
 }
 
-.MyEmpTable th.sorted-desc::after {
+.EmpDashboardTbl th.sorted-desc::after {
   content: '▼';
-  color: white;
-  margin-left: 5px;
+  color: yellowgreen;
+  font-size: 13px;
+  position: absolute;
+  right: 5px; 
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.MyEmpTable tr:nth-child(even) {
+.EmpDashboardTbl tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.MyEmpTable tr:hover {
+.EmpDashboardTbl tr:hover {
   background-color: #eaeaea;
   cursor: pointer;
 }
 
-.no-employees {
+.EmpDashboardNoEmp {
   text-align: center;
   font-style: italic;
+  color: #054d43;
 }
 
-/* Modals */
-.modal {
+.EmpDashPagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.EmpPaginationInfo {
+  margin: 0 10px;
+  font-size: 14px;
+}
+
+.EmpPaginationArrow {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: greenyellow;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;  
+}
+
+.EmpPaginationArrow:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.EmpPaginationArrow.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Model Styles */
+.AddEmpMdlOverlay {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.AddEmpMdlContent {
+  background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 100vh;
+  overflow-y: auto;
+  width: 40vw;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.modal button {
-  padding: 10px 20px;
+.AddEmpMdlHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.AddEmpMdlHeaderLeft h2 {
+  margin: 0 !important;
+  color: #196e8a !important;
+}
+
+.AddEmpMdlRightDiv {
+  text-align: right;
+}
+
+.AddEmpMdlRightCloseBtn {
+  background: #f44336;
+  color: #fff;
   border: none;
+  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.modal button.confirm {
-  background-color: #28a745;
-  color: white;
+.AddEmpMdlContent form {
+  display: flex;
+  flex-direction: column;
 }
 
-.modal button.cancel {
-  background-color: #dc3545;
-  color: white;
+.AddEmpMdlContent label {
+  margin-bottom: 15px;
 }
 
-.modal button:hover {
-  opacity: 0.9;
+.AddEmpMdlContent label input,
+.AddEmpMdlContent label select,
+.AddEmpMdlContent label textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #939191;
+  box-sizing: border-box;
 }
+
+.AddEmpMdlSubmitBtn {
+  width: 100%;
+  padding: 12px;
+  background: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.AddEmpMdlContent .error {
+  color: #f44336;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
+
+.AddEmpMdlDoj {
+  padding: 10px;
+  width: 100%;
+} 
+
+/* InactiveEmployeesModal.css */
+.IEmpModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.IEmpModelContent{
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 1400px; 
+  max-height: 80vh; 
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.IEmpModelHeader {
+  padding: 16px;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.IEmpModelHeader h3 {
+  margin: 0 !important;
+  color: #196e8a !important;
+}
+
+.IEmpModelHeaderClose {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.IEmpModelHeaderClose:hover {
+  background: #c0392b;
+}
+
+.IEmpTblContainer {
+  flex: 1;
+  overflow: auto;
+  padding: 0px 16px;
+}
+
+.IEmpTbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.IEmpTbl th,
+.IEmpTbl td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.IEmpTbl th {
+  z-index: 1;
+  color: white ;
+  position: relative;
+  padding-right: 20px;
+  background-color: #007bff;  
+}
+
+.IEmpActiveBtn,
+.IEmpDeleteBtn {
+  color: #fff;
+  border: none;
+  padding: 8px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.IEmpActiveBtn {
+background-color: #3498db;
+}
+.IEmpActiveBtn:hover {
+  background-color: #2980b9;
+}
+
+.IEmpDeleteBtn {
+  background-color: #e74c3c;
+}
+
+.IEmpDeleteBtn:hover {
+  background-color: #c0392b;
+}
+
+.IEmpNoEmployees {
+  text-align: center;
+  font-style: italic;
+  color: #054d43;
+}
+
