@@ -1,8 +1,9 @@
 /* EmployeeDashboard.css */
 
+/* AddEmpMdlPwdInput */
+
 .EmployeeDashboard {
   font-family: Arial, sans-serif;
-  margin: 20px;
   border-radius: 10px;
   opacity: 0.9;
   height: 100%;
@@ -14,14 +15,14 @@
 
 .EmployeeDashboard h1 {
   font-size: 24px !important;
-  margin-bottom: 20px !important;
   color: #196e8a;
 }
 
 .EmpHeader {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
+  margin-top: 5px;
 }
 
 .EmpHeaderLeft {
@@ -30,18 +31,23 @@
 }
 
 input[type="EmpSearchtxt"] {
-  width: calc(33% - 22px);
+  width: calc(33% 32px);
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   box-sizing: border-box;
   font-size: 1em;
   margin-right: 10px;
   margin-top: 0px;
 }
 
-.EmpAddBtn, .EmpInactiveBtn {
-  padding: 8px 16px;
+.EmpCheckbox{
+  margin-right: 5px !important;
+  margin-top: 5px;
+}
+
+.EmpAddBtn {
+  padding: 10px 16px;
   border: none;
   border-radius: 4px;
   margin-right: 10px;
@@ -54,11 +60,15 @@ input[type="EmpSearchtxt"] {
 }
 
 .EmpInactiveBtn {
-  background-color: #f79b91;
-  color: black;
+  background-color: #f4d1ce;
+  color: #f91a0a;
+  margin-top:10px;
+  margin-right: 10px;
+  padding: 5px 15px;
+  border-radius: 7px;
 }
 
-.EmpAddBtn:hover, .EmpInactiveBtn:hover {
+.EmpAddBtn:hover:hover {
   opacity: 0.9;
 }
 
@@ -87,7 +97,6 @@ input[type="EmpSearchtxt"] {
   border-collapse: collapse;
   margin-bottom: 15px;
 }
-
 
 .EmpDashboardTbl th, .EmpDashboardTbl td {
   padding: 10px;
@@ -225,11 +234,8 @@ input[type="EmpSearchtxt"] {
   flex-direction: column;
 }
 
-.AddEmpMdlContent label {
-  margin-bottom: 15px;
-}
-
-.AddEmpMdlContent label input,
+.AddEmpMdlContent label input[type="EmpInputtxt"],
+/* .AddEmpMdlContent label input[type="date"], */
 .AddEmpMdlContent label select,
 .AddEmpMdlContent label textarea {
   width: 100%;
@@ -262,111 +268,28 @@ input[type="EmpSearchtxt"] {
   width: 100%;
 } 
 
-/* InactiveEmployeesModal.css */
-.IEmpModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.IEmpModelContent{
-  background: #fff;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 1400px; 
-  max-height: 80vh; 
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.IEmpModelHeader {
-  padding: 16px;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.IEmpModelHeader h3 {
-  margin: 0 !important;
-  color: #196e8a !important;
-}
-
-.IEmpModelHeaderClose {
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.IEmpModelHeaderClose:hover {
-  background: #c0392b;
-}
-
-.IEmpTblContainer {
-  flex: 1;
-  overflow: auto;
-  padding: 0px 16px;
-}
-
-.IEmpTbl {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 10px;
-}
-
-.IEmpTbl th,
-.IEmpTbl td {
-  padding: 10px;
-  text-align: left;
-  border: 1px solid #ddd;
-}
-
-.IEmpTbl th {
-  z-index: 1;
-  color: white ;
+.AddEmpMdlPwdInput {
   position: relative;
-  padding-right: 20px;
-  background-color: #007bff;  
-}
-
-.IEmpActiveBtn,
-.IEmpDeleteBtn {
-  color: #fff;
-  border: none;
-  padding: 8px 8px;
-  cursor: pointer;
+  width: 100%;
+  padding: 8px;
   border-radius: 4px;
-  margin-right: 8px;
+  border: 1px solid #939191;
+  box-sizing: border-box;
 }
-
-.IEmpActiveBtn {
-background-color: #3498db;
+.AddEmpMdlPwdInput 
+input[type="passwordd"],
+input[type="textd"] {
+  all: unset;
 }
-.IEmpActiveBtn:hover {
-  background-color: #2980b9;
+.AddEmpMdlEyeIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
-
-.IEmpDeleteBtn {
-  background-color: #e74c3c;
+.AddEmpMdlPwdError {
+  margin-top: 5px;
+  font-size: 12px;
+  color: red;
 }
-
-.IEmpDeleteBtn:hover {
-  background-color: #c0392b;
-}
-
-.IEmpNoEmployees {
-  text-align: center;
-  font-style: italic;
-  color: #054d43;
-}
-

@@ -163,6 +163,7 @@
 .RolesModelSubHeaderRight{
   float:right;
   padding:13px;
+  margin-top: -4px;
 }
 
 .RolesModelSubHeaderRightCloseBtn{
@@ -198,12 +199,22 @@
   margin-right: 8%;
 }
 
-input[type="Rolestext"],input[type="number"] {
+input[type="Rolestext"] {
   padding: 10px;
   border: 1px solid #939191;
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 1em;
+}
+
+.RolesModelPriority {
+  padding: 10px;
+  border: 1px solid #939191;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  width:235%;
+  margin-left: -9px;
 }
   
 input[type="Rolesnumber"].Priority {
@@ -222,4 +233,9 @@ input[type="Rolesnumber"].Priority {
 
 .RolesModelSaveBtn:hover {
   background-color: #0056b3;
+}
+.RolesError {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
 }

@@ -36,7 +36,7 @@ const Home = () => {
         toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
         setLoggedIn(true); // Update logged-in state
         navigate(''); // Navigate to dashboard or another page
-        navigate("/AdminDashboard");
+        navigate("/EmployeeDashboard");
       }  else {
         // Handle specific error codes
         if (result.error.code === "AUTH001") {

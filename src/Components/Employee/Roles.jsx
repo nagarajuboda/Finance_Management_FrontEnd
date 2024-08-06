@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RoleModal from './AddRoleModal';
-// import { Link } from "react-router-dom";
 import '../../assets/Styles/EmployeePages/Roles.css';
 import ConfirmationModal from './DeleteConfirmationEmpModal';
+
+const priorityMap = {
+  1: 'High',
+  2: 'Medium',
+  3: 'Low',
+};
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
@@ -60,15 +65,12 @@ const Roles = () => {
 
   return (
     <div className="Rolelist">
-      {/* <h1>Role List</h1> */}
       <div className='RolesSubHeader'>
         <div className='RolesSubHeaderLeft'>
-        <h3><b>Role List</b></h3>
-          {/* <button className="addRole-btn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button> */}
+          <h3><b>Role List</b></h3>          
         </div>
         <div className='RolesSubHeaderRight'>
-        <button className="AddRoleBtn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>
-          {/* <Link to="/EmployeeDashboard">Employees Dashboard</Link> */}
+          <button className="AddRoleBtn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>          
         </div>
       </div>
       <table className='RolesTbl'>
@@ -83,7 +85,7 @@ const Roles = () => {
           {roles.map(role => (
             <tr key={role.id}>
               <td>{role.name}</td>
-              <td>{role.priority}</td>
+              <td>{priorityMap[role.priority]}</td>
               <td>
                 <button className="Rolesedit-btn" onClick={() => handleEdit(role)}>Edit</button>
                 <button className="Rolesdelete-btn" onClick={() => handleDelete(role)}>Delete</button>
