@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import EmployeeModal from './AddEmployeeModal';
 import ConfirmationModal from './DeleteConfirmationEmpModal';
-import InactiveEmployeesModal from './InactiveEmployeesModal';
 import '../../assets/Styles/EmployeePages/EmployeeDashboard.css';
 
 const EmployeeDashboard = () => {
@@ -15,11 +14,11 @@ const EmployeeDashboard = () => {
   const [sortConfig, setSortConfig] = useState({ key: 'employeeId', direction: 'asc' });
   const [showModal, setShowModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showInactiveModal, setShowInactiveModal] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [employeeToDeactivate, setEmployeeToDeactivate] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [showInactive, setShowInactive] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,11 +26,15 @@ const EmployeeDashboard = () => {
     fetchRoles();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [showInactive]);
+
   const fetchEmployees = async () => {
     try {
       const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
       const employeesData = response.data;
-      setEmployees(employeesData);
+      setEmployees(employeesData.filter(emp => emp.employeeStatus === 1));
       setInactiveEmployees(employeesData.filter(emp => emp.employeeStatus === 0));
 
       const rolesResponse = await axios.get('https://localhost:44305/api/Roles/AllRoles');
@@ -106,8 +109,7 @@ const EmployeeDashboard = () => {
     setSortConfig({ key, direction });
   };
 
-  const sortedEmployees = [...employees]
-    .filter(emp => emp.employeeStatus === 1)
+  const sortedEmployees = [...(showInactive ? inactiveEmployees : employees)]
     .sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === 'asc' ? -1 : 1;
@@ -135,11 +137,6 @@ const EmployeeDashboard = () => {
     navigate("/EmployeeDetails");
   };
 
-  const handleActivateEmployee = () => {
-    fetchEmployees();
-    setShowInactiveModal(false);
-  };
-
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
   const displayedEmployees = filteredEmployees.slice(
@@ -152,16 +149,18 @@ const EmployeeDashboard = () => {
   };
 
   return (
-    <div className="EmployeeDashboard">
-      <h1>Employee Dashboard</h1>
+    <div className="EmployeeDashboard">      
       <div className='EmpHeader'>
         <div className='EmpHeaderLeft'>
-          <input type="EmpSearchtxt" placeholder="Search by name..." value={searchTerm} onChange={handleSearch} className="EmpSearchTxt" />
-          <button className="EmpAddBtn" onClick={() => { setCurrentEmployee(null); setShowModal(true); }}>Add Employee</button>
-          <button className="EmpInactiveBtn" onClick={() => setShowInactiveModal(true)}>Inactive Employees</button>
+          <h1>Employee Dashboard</h1>          
         </div>
         <div className='EmpHeaderRight'>
-          <Link to="/Roles"><a>Roles List</a></Link>
+          <input type="EmpSearchtxt" placeholder="Search by name..." value={searchTerm} onChange={handleSearch} className="EmpSearchTxt" />
+          <label className="EmpInactiveBtn">
+            <input type="checkbox" className = "EmpCheckbox"checked={showInactive} onChange={() => setShowInactive(!showInactive)}/>
+            Inactive Employees
+          </label> 
+          <button className="EmpAddBtn" onClick={() => { setCurrentEmployee(null); setShowModal(true); }}>Add Employee</button>
         </div>
       </div>
       <div className='EmpDashboardContainer'>
@@ -212,13 +211,6 @@ const EmployeeDashboard = () => {
             onConfirm={confirmDeactivate}
             onCancel={cancelDeactivate}
             employeeName={employeeToDeactivate ? `${employeeToDeactivate.firstName} ${employeeToDeactivate.lastName}` : ''}
-          />
-        )}
-        {showInactiveModal && (
-          <InactiveEmployeesModal
-            employees={inactiveEmployees}
-            onClose={() => setShowInactiveModal(false)}
-            onActivate={handleActivateEmployee}
           />
         )}
       </div>
