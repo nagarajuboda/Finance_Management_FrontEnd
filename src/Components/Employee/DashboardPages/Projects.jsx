@@ -49,19 +49,15 @@ export default function Projects() {
               <th>Progress </th>
             </tr>
           </thead>
-          {projectDetails.length == 0 ? (
-            <p
-              style={{
-                textAlign: "center",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              No Projects{" "}
-            </p>
-          ) : (
-            <tbody>
-              {projectDetails.map((user, index) => (
+          <tbody>
+            {projectDetails.length === 0 ? (
+              <tr>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                  No projects available.
+                </td>
+              </tr>
+            ) : (
+              projectDetails.map((user, index) => (
                 <tr key={index}>
                   <td>
                     <Link
@@ -71,15 +67,14 @@ export default function Projects() {
                       {user.projectName}
                     </Link>
                   </td>
-
                   <td>{user.projectType}</td>
                   <td>{user.startDate}</td>
                   <td>{user.endDate}</td>
                   <td>{user.progress}</td>
                 </tr>
-              ))}
-            </tbody>
-          )}
+              ))
+            )}
+          </tbody>
         </table>
       </div>
     </div>
