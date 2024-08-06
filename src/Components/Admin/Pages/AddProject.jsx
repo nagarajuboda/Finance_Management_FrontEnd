@@ -238,9 +238,7 @@ export default function AddProject() {
         DepartmentTeam: values.departmentTeam,
         Department: values.Department,
       };
-      console.log(values.Progress, "progress");
-      console.log(obj, "resuest");
-      debugger;
+
       var response = await AdminDashboardServices.fcnAddProject(obj);
 
       if (response.isSuccess === true) {
