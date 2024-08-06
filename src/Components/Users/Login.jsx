@@ -22,7 +22,6 @@ const Home = () => {
   const navigate = useNavigate();
 
   const onLoginButtonClick = async (data) => {
-    console.log("Login Button clicked");
     try {
       var obj = {
         Email: data.email,
@@ -30,8 +29,6 @@ const Home = () => {
       };
       var responses = await axios.post("https://localhost:44305/api/Login/login", obj);
       var result = await responses.data;
-      console.log(responses, "response");
-      console.log(result, "result");
       debugger;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
@@ -51,7 +48,6 @@ const Home = () => {
         }
     }
     } catch (error) {
-      console.error("Error logging in:", error);
       toast.error("Login failed. Please try again.", { position: "top-right", autoClose: 4000 });
       // Handle error state or display error message to the user
     }
@@ -71,7 +67,6 @@ const Home = () => {
       ...values,
       [name]: value,
     });
-    console.log(value);
     setErrors({
       ...errorss,
       [name]: getotpValidation(name, value),
@@ -80,12 +75,10 @@ const Home = () => {
 
 async function getotpfunction(e){
   e.preventDefault();
-  console.log(values.Email);
   const newErrors = {
     Email: getotpValidation("Email", values.Email),
     
   };
-  console.log(errorss.Email,"check error");
   setErrors(newErrors);
 
   const isValid = Object.values(newErrors).every((error) => error === "");
@@ -96,8 +89,6 @@ async function getotpfunction(e){
   };
   var responses=await axios.post("https://localhost:44305/api/Auth/get-otp", obj);
   var result = await responses.data;
-  console.log(result,"result");
-  console.log(responses, "response");
   if (result.isSuccess)
     {
       toast.success("OTP sent successfully to Your Email.", { position: "top-right", autoClose: 4000 });
@@ -108,11 +99,9 @@ async function getotpfunction(e){
       toast.error("Please enter a valid email.", { position: "top-right", autoClose: 4000 });
     }
 }
-  console.log("button is clicked");
 }
 function getotpValidation(name, value)
 {
-console.log(value,"clicked");
   if (name === "Email") {
     if (!value) return "Email is required";
     if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
@@ -134,7 +123,6 @@ const handleOtpChange = (e) => {
     ...otpValues,
     [name]: value,
   });
-  console.log(value);
   setOtpErrors({
     ...otpErrors,
     [name]: validateOtp(name, value),
@@ -143,24 +131,19 @@ const handleOtpChange = (e) => {
 
 async function onVerifyOtpClick(e) {
   e.preventDefault();
-  console.log(otpValues.Otp);
   const newErrors = {
     Otp: validateOtp("Otp", otpValues.Otp),
   };
-  console.log(otpErrors.Otp, "check error");
   setOtpErrors(newErrors);
 
   const isValid = Object.values(newErrors).every((error) => error === "");
   if (!isValid) {
-    console.log("Verify OTP Button clicked");
     var obj = { Email: values.Email, Otp: otpValues.Otp };
     var responses = await axios.post(
       "https://localhost:44305/api/Auth/verify-otp",
       obj
     );
     var result = await responses.data;
-    console.log(responses, "response");
-    console.log(result, "result");
     if (result.isSuccess) {
       toast.success("OTP verified successfully.", {
         position: "top-right",
@@ -177,7 +160,6 @@ async function onVerifyOtpClick(e) {
 }
 
 function validateOtp(name, value) {
-  console.log(value, "clicked");
   if (name === "Otp") {
     if (!value) return "OTP is required";
     // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
@@ -201,7 +183,6 @@ const handlePasswordChange = (e) => {
     ...passwordValues,
     [name]: value,
   });
-  console.log(value);
   setPasswordErrors({
     ...passwordErrors,
     [name]: validatePassword(name, value),
@@ -211,7 +192,6 @@ const handlePasswordChange = (e) => {
 async function onSetNewPasswordClick(e) {
   e.preventDefault();
 
-  console.log(passwordValues.NewPassword, passwordValues.ConfirmPassword);
   const newErrors = {
     NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
     ConfirmPassword: validatePassword(
@@ -219,7 +199,6 @@ async function onSetNewPasswordClick(e) {
       passwordValues.ConfirmPassword
     ),
   };
-  console.log(passwordErrors, "check error");
   setPasswordErrors(newErrors);
 
   const isValid = Object.values(newErrors).every((error) => error === "");
@@ -232,7 +211,6 @@ async function onSetNewPasswordClick(e) {
   }
 
   if (!isValid) {
-    console.log("Set New Password Button clicked");
     var obj = {
       Email: values.Email,
       Otp: otpValues.Otp,
@@ -244,8 +222,6 @@ async function onSetNewPasswordClick(e) {
       obj
     );
     var result = responses.data;
-    console.log(responses, "response");
-    console.log(result, "result");
     if (result.isSuccess) {
       toast.success("Password updated successfully.", {
         position: "top-right",
@@ -270,7 +246,6 @@ async function onSetNewPasswordClick(e) {
 }
 
 function validatePassword(name, value) {
-  console.log(value, "clicked");
   if (name === "NewPassword") {
     if (!value) return "New password is required";
     if (
