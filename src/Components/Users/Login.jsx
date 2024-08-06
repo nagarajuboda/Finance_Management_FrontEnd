@@ -40,9 +40,8 @@ const Home = () => {
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {
-        //toast.success("Successfully Logged in.", { position: "top-right", autoClose: 4000 });
         setLoggedIn(true); // Update logged-in state
-        navigate("/AdminDashboard");
+        navigate("/AdminDashboard"); // Navigate to dashboard or another page
       } else {
         // Handle specific error codes
         if (result.error.code === "AUTH001") {

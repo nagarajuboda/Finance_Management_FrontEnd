@@ -20,6 +20,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [errors, setErrors] = useState({});
   const [existingEmployeeIds, setExistingEmployeeIds] = useState([]);
   const [employeeExistsError, setEmployeeExistsError] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [emailMobileErrors, setEmailMobileErrors] = useState({});
   const isEditing = !!employee;
 
   useEffect(() => {
@@ -62,7 +64,6 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       .filter(id => id.startsWith(prefix))
       .map(id => parseInt(id.slice(prefix.length), 10))
       .filter(id => !isNaN(id));
-
     const maxId = currentIds.length ? Math.max(...currentIds) : 0;
     return `${prefix}${String(maxId + 1).padStart(4, '0')}`;
   };
@@ -116,7 +117,14 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         if (!/\S+@\S+\.\S+/.test(value)) return 'Email address is invalid';
         break;
       case 'passwordHash':
-        if (!value) return 'Password is required';
+        if (!value) return "Password field is missing";
+        const errors = [];
+        if (value.length < 8) errors.push('at least 8 characters');
+        if (!/[A-Z]/.test(value)) errors.push('at least one uppercase letter');
+        if (!/[a-z]/.test(value)) errors.push('at least one lowercase letter');
+        if (!/\d/.test(value)) errors.push('at least one number');
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) errors.push('at least one special character');
+        if (errors.length) return `Password must contain ${errors.join(', ')}`;
         break;
       case 'dateOfJoining':
         if (!value) return 'Date of Joining is required';
@@ -138,6 +146,10 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     return '';
   };
 
+  const handlePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     const error = validate(name, value);
@@ -149,6 +161,37 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     } else {
       setEmployeeExistsError('');
     }
+    
+    if (name === 'email' || name === 'mobileNo') {
+      const debounceTimeout = setTimeout(async () => {
+        const duplicateErrors = await checkEmailAndMobileExistence();
+        setEmailMobileErrors(duplicateErrors);
+      }, 500);
+      return () => clearTimeout(debounceTimeout);
+    }
+  };
+
+  const checkEmailAndMobileExistence = async () => {
+    try {
+      const response = await axios.get('https://localhost:44305/api/Employees/AllEmployees');
+      const { email, mobileNo } = formData;
+      const existingEmployee = response.data.find(
+        emp => (emp.email === email || emp.mobileNo === mobileNo) && emp.id !== employee?.id
+      );
+      const newErrors = {};
+      if (existingEmployee) {
+        if (existingEmployee.email === email) {
+          newErrors.email = 'Email already exists';
+        }
+        if (existingEmployee.mobileNo === mobileNo) {
+          newErrors.mobileNo = 'Mobile number already exists';
+        }
+      }
+      return newErrors;
+    } catch (error) {
+      console.error('Error checking email and mobile existence', error);
+      return {};
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -158,7 +201,11 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       const error = validate(field, formData[field]);
       if (error) newErrors[field] = error;
     });
-    if (Object.keys(newErrors).length > 0) {
+
+    const duplicateErrors = await checkEmailAndMobileExistence();
+    setEmailMobileErrors(duplicateErrors);
+
+    if (Object.keys(newErrors).length > 0 || Object.keys(duplicateErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
@@ -188,11 +235,6 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     }
   };
 
-  const getProjectManagerName = (projectManagerId) => {
-    const projectManager = projectManagers.find(pm => pm.id === projectManagerId);
-    return projectManager ? `${projectManager.firstName} ${projectManager.lastName}` : '';
-  };
-
   return (
     <div className="AddEmpMdlOverlay">
       <div className="AddEmpMdlContent">
@@ -201,106 +243,98 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             <h2>{isEditing ? 'Edit Employee' : 'Add Employee'}</h2>
           </div>
           <div className='AddEmpMdlRightDiv'>
-            <button className="AddEmpMdlRightCloseBtn" onClick={onClose}>Close</button>
+            <button className="AddEmpMdlRightCloseBtn" onClick={onClose}>X</button>
           </div>
         </div>
-        <form onSubmit={handleSubmit}>
-          {isEditing && (
+        
+        <form className="AddEmpMdl" onSubmit={handleSubmit}>
+          {/* {isEditing && (
             <input type="hidden" name="employeeId" value={formData.employeeId} />
-          )}
-          <label>
-            Employee ID:
-            <input
-              type="AddEmpMdltext"
-              name="employeeId"
-              value={formData.employeeId}
-              onChange={handleChange}
-              disabled={isEditing}
-            />
+          )} */}
+          <label htmlFor="firstName">Employee ID:
+            <input type="EmpInputtxt" id="employeeId" name="employeeId" value={formData.employeeId}
+              onChange={handleChange} disabled={isEditing} />
             {errors.employeeId && <span className="error">{errors.employeeId}</span>}
-            {/* {employeeExistsError && <span className="error">{employeeExistsError}</span>}              Need to check */}
+            {/* {employeeExistsError && <span className="error">{employeeExistsError}</span>} */}
           </label>
-          <label>
-            First Name:
-            <input type="AddEmpMdltext" name="firstName" value={formData.firstName} onChange={handleChange} />
+
+          <label htmlFor="firstName">First Name:
+            <input type="EmpInputtxt" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange}/>
             {errors.firstName && <span className="error">{errors.firstName}</span>}
           </label>
-          <label>
-            Last Name:
-            <input type="AddEmpMdltext" name="lastName" value={formData.lastName} onChange={handleChange} />
+
+          <label htmlFor="lastName">Last Name:
+            <input type="EmpInputtxt" id="lastName" name="lastName"
+            value={formData.lastName} onChange={handleChange} />
           </label>
-          <label>
-            Email:
-            <input type="email" name="email" value={formData.email} onChange={handleChange} />
+
+          <label htmlFor="email">Email:
+            <input type="EmpInputtxt" id="email" name="email"
+            value={formData.email} onChange={handleChange} />
             {errors.email && <span className="error">{errors.email}</span>}
+            {emailMobileErrors.email && <span className="error">{emailMobileErrors.email}</span>}
           </label>
+
           <label>
-            Password:
-            <input
-              type="password"
-              name="passwordHash"
-              value={formData.passwordHash}
-              onChange={handleChange}
-            />
-            {errors.passwordHash && <span className="error">{errors.passwordHash}</span>}
+            Password
+            <div className="AddEmpMdlPwdInput">
+              <input
+                type={passwordVisible ? "textd" : "passwordd"}
+                name="passwordHash" 
+                value={formData.passwordHash}
+                onChange={handleChange}
+              />
+              <span
+                className="AddEmpMdlEyeIcon"
+                onClick={() => setPasswordVisible(!passwordVisible)}
+              >
+                {passwordVisible ? "👁️‍🗨️" : "👁️"}
+              </span>
+            </div>
+            {errors.passwordHash && (
+              <span className="AddEmpMdlPwdError">{errors.passwordHash}</span>
+            )}
           </label>
-          <label>
-            Mobile No:
-            <input
-              type="AddEmpMdltext"
-              name="mobileNo"
-              value={formData.mobileNo}
-              onChange={handleChange}
-              pattern="\d*"
-            />
+
+          <label htmlFor="mobileNo">Mobile Number:
+            <input type="EmpInputtxt" id="mobileNo" name="mobileNo"
+              value={formData.mobileNo} onChange={handleChange} />
             {errors.mobileNo && <span className="error">{errors.mobileNo}</span>}
+            {emailMobileErrors.mobileNo && <span className="error">{emailMobileErrors.mobileNo}</span>}
           </label>
-          <label>
-            Date of Joining:
-            <input
-              type="date"
-              className="AddEmpMdlDoj"
-              name="dateOfJoining"
-              value={formData.dateOfJoining}
-              onChange={handleChange}
-            />
+
+          <label htmlFor="dateOfJoining">Date of Joining:
+            <input type="date" id="dateOfJoining" name="dateOfJoining" className="AddEmpMdlDoj"
+              value={formData.dateOfJoining} onChange={handleChange} />
             {errors.dateOfJoining && <span className="error">{errors.dateOfJoining}</span>}
           </label>
-          <label>
-            Project Manager:
-            <select
-              name="projectManager"
-              value={getProjectManagerName(formData.projectManagerId)}
-              onChange={handleProjectManagerChange}
-            >
+
+          <label htmlFor="projectManagerId">Project Manager:
+            <select id="projectManagerId" name="projectManagerId"
+              value={formData.projectManagerId} onChange={handleProjectManagerChange} >
               <option value="">Select Project Manager</option>
               {projectManagers.map(pm => (
                 <option key={pm.id} value={`${pm.firstName} ${pm.lastName}`}>
-                  {`${pm.firstName} ${pm.lastName}`}
+                  {pm.firstName} {pm.lastName}
                 </option>
               ))}
             </select>
           </label>
-          <label>
-            Employee Status:
-            <select name="employeeStatus" value={formData.employeeStatus} onChange={handleChange}>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-            </select>
-          </label>
-          <label>
-            Role:
-            <select name="roleId" value={formData.roleId} onChange={handleChange}>
+
+          <label htmlFor="roleId">Role:
+            <select id="roleId" name="roleId" value={formData.roleId} onChange={handleChange}>
               <option value="">Select Role</option>
               {roles.map(role => (
-                <option key={role.id} value={role.id}>{role.name}</option>
+              <option key={role.id} value={role.id}>
+                {role.name}
+              </option>
               ))}
             </select>
             {errors.roleId && <span className="error">{errors.roleId}</span>}
           </label>
-          <label>
-            Skill Sets:
-            <textarea name="skillSets" value={formData.skillSets} onChange={handleChange}></textarea>
+          
+          <label> Skill Sets:
+            <textarea id="skillSets" name="skillSets" value={formData.skillSets} onChange={handleChange}></textarea>
           </label>
           <button type="submit" className="AddEmpMdlSubmitBtn">
             {isEditing ? 'Save Modifications' : 'Add Employee'}

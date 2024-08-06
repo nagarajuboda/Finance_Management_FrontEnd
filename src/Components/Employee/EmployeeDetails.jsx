@@ -10,7 +10,7 @@ const EmployeeDetails = () => {
   const [roles, setRoles] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [employeeToDeactivate, setEmployeeToDeactivate] = useState(null);
+  const [actionType, setActionType] = useState(''); // new state to track action type
   const [projectManagerName, setProjectManagerName] = useState('NA');
   const navigate = useNavigate();
   const empId = localStorage.getItem("id");
@@ -26,6 +26,7 @@ const EmployeeDetails = () => {
       const employeeData = response.data;
       setEmployee(employeeData);
 
+      // Fetch Project Manager details if `projectManagerId` is available
       if (employeeData.projectManagerId) {
         const pmResponse = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`);
         setProjectManagerName(`${pmResponse.data.firstName} ${pmResponse.data.lastName}`);
@@ -56,37 +57,54 @@ const EmployeeDetails = () => {
   };
 
   const handleDeactivate = () => {
-    setEmployeeToDeactivate(employee);
+    setActionType('deactivate');
     setShowConfirmModal(true);
   };
 
-  const confirmDeactivate = async () => {
+  const handleActivate = () => {
+    setActionType('activate');
+    setShowConfirmModal(true);
+  };
+
+  const handleDelete = () => {
+    setActionType('delete');
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirm = async () => {
     try {
-      if (employeeToDeactivate) {
-        await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employeeToDeactivate, employeeStatus: 0 });
+      if (actionType === 'deactivate' && employee) {
+        await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employee, employeeStatus: 0 });
         navigate('/EmployeeDashboard');  
+      } else if (actionType === 'activate' && employee) {
+        await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employee, employeeStatus: 1 });
+        navigate('/EmployeeDashboard');
+      } else if (actionType === 'delete' && employee) {
+        await axios.delete(`https://localhost:44305/api/Employees/${employee.id}`);
+        navigate('/EmployeeDashboard');
       }
       setShowConfirmModal(false);
-      setEmployeeToDeactivate(null);
     } catch (error) {
-      console.error('Error deactivating employee', error.response ? error.response.data : error.message);
+      console.error(`Error during ${actionType} operation`, error.response ? error.response.data : error.message);
     }
   };
 
-  const cancelDeactivate = () => {
+  const cancelAction = () => {
     setShowConfirmModal(false);
-    setEmployeeToDeactivate(null);
+    setActionType('');
   };
 
   if (!employee) {
     return <div>Loading...</div>;
   }
 
+  const isInactive = employee.employeeStatus === 0;
+
   return (
     <div className="EmployeeDetails">
-      <div className="EmpHeader">
+      <div className="EmpDetailsHeader">
         <h3>Employee Details</h3>
-        <button className="EmpBackBtn" onClick={() => navigate('/EmployeeDashboard')}>Back</button>
+        <button className="EmpBackBtn" onClick={() => navigate('/EmployeeDashboard')}>X</button>
       </div>
       <div className="EmpDetailsContainer">
         <div className="EmpDetailsRow">
@@ -115,7 +133,7 @@ const EmployeeDetails = () => {
         </div>
         <div className="EmpDetailsRow">
           <div className="EmpDetailsLabel">Status:</div>
-          <div className="EmpDetailsValue">{employee.employeeStatus === 1 ? 'Active' : 'Inactive'}</div>
+          <div className="EmpDetailsValue">{isInactive ? 'Inactive' : 'Active'}</div>
         </div>
         <div className="EmpDetailsRow">
           <div className="EmpDetailsLabel">Role:</div>
@@ -131,15 +149,24 @@ const EmployeeDetails = () => {
         </div>
       </div>
       <div className="EmpActions">
-        <button className="EmpEditBtn" onClick={handleEdit}>Edit</button>
-        <button className="EmpDeactivateBtn" onClick={handleDeactivate}>Deactivate</button>
+        {isInactive ? (
+          <>
+            <button className="EmpActivateBtn" onClick={handleActivate}>Activate</button>
+            <button className="EmpDeleteBtn" onClick={handleDelete}>Delete</button>
+          </>
+        ) : (
+          <>
+            <button className="EmpEditBtn" onClick={handleEdit}>Edit</button>
+            <button className="EmpDeactivateBtn" onClick={handleDeactivate}>Deactivate</button>
+          </>
+        )}
       </div>
       {showEditModal && <EmployeeModal employee={employee} onClose={() => setShowEditModal(false)} onRefresh={() => fetchEmployeeDetails(empId)} />}
       {showConfirmModal && (
         <ConfirmationModal
-          message={`Are you sure you want to deactivate "${employee.firstName} ${employee.lastName}"?`}
-          onConfirm={confirmDeactivate}
-          onCancel={cancelDeactivate}
+          message={`Are you sure you want to ${actionType} "${employee.firstName} ${employee.lastName}"?`}
+          onConfirm={handleConfirm}
+          onCancel={cancelAction}
         />
       )}
     </div>

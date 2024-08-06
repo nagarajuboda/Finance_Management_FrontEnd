@@ -258,18 +258,18 @@ export default function TimeSheet() {
                               <div
                                 style={{
                                   backgroundColor:
-                                    emp.employeeStatus === "Active"
+                                    emp.employeeStatus === 1
                                       ? "#196e8a"
                                       : "#ADD8E6",
                                   borderRadius: "40px",
                                   color:
-                                    emp.employeeStatus === "Active"
+                                    emp.employeeStatus === 1
                                       ? "white"
                                       : "black",
                                   textAlign: "center",
                                 }}
                               >
-                                <span>{emp.employeeStatus}</span>
+                                <span>{emp.employeeStatus == 1 ? "Active":"In Active"}</span>
                               </div>
                             </td>
                             <td>
