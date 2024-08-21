@@ -40,7 +40,19 @@ export function ViewProject() {
   useEffect(() => {
     FetchData();
   }, [id]);
-
+  const [ProjectValues1, setProjectValues1] = useState({
+    projectID: "",
+    projectName: "",
+    startDate: "",
+    endDate: "",
+    projectRefId: "",
+    projectType: "",
+    progress: "",
+    description: "",
+    teamSize: "",
+    createdDate: "",
+    updatedDate: "",
+  });
   async function FetchData() {
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
     console.log(userDetails, "session data");
@@ -61,15 +73,28 @@ export function ViewProject() {
       setDataReady(true);
     }
   }
-
+  const [status, setStatus] = useState("InActive");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProjectValues({
       ...ProjectValues,
       [name]: value,
     });
+    console.log(values, "=============>");
   };
-
+  const handleInputChange1 = (e) => {
+    const { name, value } = e.target;
+    setProjectValues1((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+    console.log(ProjectValues1);
+  };
+  const handleChange = (event) => {
+    const selectedStatus = event.target.value;
+    setStatus(selectedStatus);
+    console.log("Selected Status:", selectedStatus);
+  };
   useEffect(() => {
     if (dataReady && projectEmployess.length > 0) {
       const table = $("#example11").DataTable({
@@ -175,7 +200,8 @@ export function ViewProject() {
         id,
         projectid
       );
-      if (response.isSuccess) {
+      console.log(response.item.isAssinged, "------------->");
+      if (response.item.isAssinged == false) {
         if (result.isConfirmed) {
           Swal.fire({
             title: "Deleted!",
@@ -419,153 +445,174 @@ export function ViewProject() {
             <form>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">ProjectID</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    ProjectID
+                  </span>
                   <input
                     type="text"
                     name="projectID"
                     value={ProjectValues.projectID}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                     readOnly
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Project Name</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Name
+                  </span>
                   <input
                     type="text"
                     name="projectName"
                     value={ProjectValues.projectName}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Start Date</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Start Date
+                  </span>
                   <input
                     type="text"
                     name="startDate"
                     value={ProjectValues.startDate}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                     readOnly
                   />
                 </div>
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">End Date</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Deadline
+                  </span>
                   <input
                     type="text"
                     name="endDate"
                     value={ProjectValues.endDate}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Project Ref ID</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Ref ID
+                  </span>
                   <input
                     type="text"
                     name="projectRefId"
                     value={ProjectValues.projectRefId}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Client Email</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Client Email
+                  </span>
                   <input
                     type="text"
                     name="clientEmail"
                     value={clientvalues.clientEmailId}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      setClientValues({ clientEmailId: e.target.value })
+                    }
                     readOnly
                   />
                 </div>
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">Project Type</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Type
+                  </span>
                   <input
                     type="text"
                     name="projectType"
                     value={ProjectValues.projectType}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Status</span>
-                  <input
-                    type="text"
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Status
+                  </span>
+                  <select
                     name="status"
-                    value={ProjectValues.status}
+                    value={status}
+                    onChange={handleChange}
                     className="form-control"
-                    onChange={handleInputChange}
-                  />
+                  >
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+                  </select>
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Progress</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Progress
+                  </span>
                   <input
                     type="text"
                     name="progress"
                     value={ProjectValues.progress}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   />
                 </div>
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span>Team Size</span>
-                  <input
-                    type="text"
-                    name="teamSize"
-                    value={ProjectValues.teamSize}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span>Project Manager</span>
+                  <span style={{ color: "black", fontWeight: "600" }}>
+                    Project Manager
+                  </span>
                   <input
                     type="text"
                     name="projectManager"
-                    value={ProjectValues.projectManager}
+                    value={projectManagerName}
                     className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span>Created Date</span>
-                  <input
-                    type="date"
-                    name="createdDate"
-                    value={ProjectValues.createdDate}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span>Updated Date</span>
-                  <input
-                    type="date"
-                    name="updatedDate"
-                    value={ProjectValues.updatedDate}
-                    className="form-control"
-                    onChange={handleInputChange}
+                    onChange={(e) => setProjectManagerName(e.target.value)}
                   />
                 </div>
                 <div className="col-8">
-                  <span>Project Description</span>
+                  <span style={{ color: "black", fontWeight: "600" }}>
+                    Project Description
+                  </span>
                   <textarea
                     className="form-control textareas"
                     name="description"
                     value={ProjectValues.description}
-                    onChange={handleInputChange}
+                    onChange={handleInputChange1}
                   ></textarea>
                 </div>
               </div>

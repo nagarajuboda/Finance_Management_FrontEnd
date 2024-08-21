@@ -23,7 +23,7 @@
 
 .EmpDetailsLabel {
   font-weight: bold;
-  width: 20%; 
+  width: 20%;
 }
 
 .EmpDetailsValue {
@@ -43,7 +43,6 @@
   margin-top: 20px;
   display: flex;
   gap: 10%;
-  
 }
 
 .EmpEditBtn,
@@ -56,12 +55,21 @@
   cursor: pointer;
 }
 
-.EmpEditBtn, .EmpActivateBtn {
-  background-color: #4CAF50;
+.EmpEditBtn,
+.EmpActivateBtn {
+  background-color: #4caf50;
   color: white;
 }
 
-.EmpDeactivateBtn, .EmpDeleteBtn {
+.EmpDeactivateBtn,
+.EmpDeleteBtn {
   background-color: #f44336;
   color: white;
+}
+.rowheader {
+  color: black;
+  font-weight: 700;
+}
+.Td {
+  text-align: left;
 }
