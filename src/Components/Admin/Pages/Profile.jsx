@@ -5,17 +5,19 @@ import "../../../assets/Styles/Profile.css";
 export default function Profile() {
   return (
     <div>
-      <div className="card">
+      <div className="card" style={{ borderRadius: "0px" }}>
         <div className="row">
           <div className="col-4">
             <div className="">
-              <img src={logo} alt="" className="image-container" />
-              <button className="change-image-button">
-                <Link to="/edit-profile" className="changeimage">
-                  Change Image
-                </Link>
-              </button>
+              <img
+                src={logo}
+                alt=""
+                className=""
+                width="100px"
+                height="100px"
+              />
             </div>
+            <button className="changeimagebtn ms-5">Change image</button>
           </div>
           <div className="col-6"></div>
           <div className="col-2">

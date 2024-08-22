@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import RoleModal from './AddRoleModal';
-import '../../assets/Styles/EmployeePages/Roles.css';
-import ConfirmationModal from './DeleteConfirmationEmpModal';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import RoleModal from "./AddRoleModal";
+import "../../assets/Styles/EmployeePages/Roles.css";
+import ConfirmationModal from "./DeleteConfirmationEmpModal";
 
 const priorityMap = {
-  1: 'High',
-  2: 'Medium',
-  3: 'Low',
+  1: "High",
+  2: "Medium",
+  3: "Low",
 };
 
 const Roles = () => {
@@ -23,7 +23,9 @@ const Roles = () => {
 
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
+      const response = await axios.get(
+        "https://localhost:44305/api/Roles/AllRoles"
+      );
       const sortedRoles = response.data.sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
         if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
@@ -31,7 +33,7 @@ const Roles = () => {
       });
       setRoles(sortedRoles);
     } catch (error) {
-      console.error('Error fetching roles', error);
+      console.error("Error fetching roles", error);
     }
   };
 
@@ -48,13 +50,15 @@ const Roles = () => {
   const confirmDelete = async () => {
     try {
       if (roleToDelete) {
-        await axios.delete(`https://localhost:44305/api/Roles/${roleToDelete.id}`);
+        await axios.delete(
+          `https://localhost:44305/api/Roles/${roleToDelete.id}`
+        );
         fetchRoles();
       }
       setShowConfirmModal(false);
       setRoleToDelete(null);
     } catch (error) {
-      console.error('Error deleting role', error);
+      console.error("Error deleting role", error);
     }
   };
 
@@ -65,15 +69,25 @@ const Roles = () => {
 
   return (
     <div className="Rolelist">
-      <div className='RolesSubHeader'>
-        <div className='RolesSubHeaderLeft'>
-          <h3><b>Role List</b></h3>          
+      <div className="RolesSubHeader">
+        <div className="RolesSubHeaderLeft">
+          <h3>
+            <b>Role List</b>
+          </h3>
         </div>
-        <div className='RolesSubHeaderRight'>
-          <button className="AddRoleBtn" onClick={() => { setCurrentRole(null); setShowModal(true); }}>Add Role</button>          
+        <div className="RolesSubHeaderRight">
+          <button
+            className="AddRoleBtn"
+            onClick={() => {
+              setCurrentRole(null);
+              setShowModal(true);
+            }}
+          >
+            Add Role
+          </button>
         </div>
       </div>
-      <table className='RolesTbl'>
+      <table className="RolesTbl">
         <thead>
           <tr>
             <th>Role Name</th>
@@ -82,19 +96,35 @@ const Roles = () => {
           </tr>
         </thead>
         <tbody>
-          {roles.map(role => (
+          {roles.map((role) => (
             <tr key={role.id}>
               <td>{role.name}</td>
               <td>{priorityMap[role.priority]}</td>
               <td>
-                <button className="Rolesedit-btn" onClick={() => handleEdit(role)}>Edit</button>
-                <button className="Rolesdelete-btn" onClick={() => handleDelete(role)}>Delete</button>
+                <button
+                  className="Rolesedit-btn"
+                  onClick={() => handleEdit(role)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="Rolesdelete-btn"
+                  onClick={() => handleDelete(role)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {showModal && <RoleModal role={currentRole} onClose={() => setShowModal(false)} onRefresh={fetchRoles} />}
+      {showModal && (
+        <RoleModal
+          role={currentRole}
+          onClose={() => setShowModal(false)}
+          onRefresh={fetchRoles}
+        />
+      )}
       {showConfirmModal && (
         <ConfirmationModal
           message={`Are you sure you want to delete the role "${roleToDelete?.name}"?`}

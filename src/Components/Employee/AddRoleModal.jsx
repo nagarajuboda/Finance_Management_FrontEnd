@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const AddRoleModal = ({ role, onClose, onRefresh }) => {
   const [formData, setFormData] = useState({
-    name: '',
-    priority: '1',
+    name: "",
+    priority: "1",
   });
   const [roles, setRoles] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
+        const response = await axios.get(
+          "https://localhost:44305/api/Roles/AllRoles"
+        );
         setRoles(response.data);
       } catch (error) {
-        console.error('Error fetching roles', error);
+        console.error("Error fetching roles", error);
       }
     };
 
@@ -26,7 +28,7 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        priority: '1',
+        priority: "1",
       }));
     }
   }, [role]);
@@ -34,17 +36,21 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    if (name === 'name') {
+    if (name === "name") {
       checkRoleName(value);
     }
   };
 
   const checkRoleName = (name) => {
-    const roleNameExists = roles.some((r) => r.name.toLowerCase() === name.toLowerCase() && (!role || r.id !== role.id));
+    const roleNameExists = roles.some(
+      (r) =>
+        r.name.toLowerCase() === name.toLowerCase() &&
+        (!role || r.id !== role.id)
+    );
     if (roleNameExists) {
-      setError('Role name already exists');
+      setError("Role name already exists");
     } else {
-      setError('');
+      setError("");
     }
   };
 
@@ -56,14 +62,20 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
 
     try {
       if (role == null) {
-        await axios.post('https://localhost:44305/api/Roles/CreateRole', formData);
+        await axios.post(
+          "https://localhost:44305/api/Roles/CreateRole",
+          formData
+        );
       } else {
-        await axios.put('https://localhost:44305/api/Roles/UpdateRole', formData);
+        await axios.put(
+          "https://localhost:44305/api/Roles/UpdateRole",
+          formData
+        );
       }
       onRefresh();
       onClose();
     } catch (error) {
-      console.error('Error saving role', error);
+      console.error("Error saving role", error);
     }
   };
 
@@ -72,10 +84,13 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
       <div className="RolesModelContent">
         <div className="RolesModelSubHeader">
           <div className="RolesModelSubHeaderLeft">
-            <h2>{role ? 'Edit Role' : 'Add Role'}</h2>
+            <h2>{role ? "Edit Role" : "Add Role"}</h2>
           </div>
           <div className="RolesModelSubHeaderRight">
-            <button className="RolesModelSubHeaderRightCloseBtn" onClick={onClose}>
+            <button
+              className="RolesModelSubHeaderRightCloseBtn"
+              onClick={onClose}
+            >
               X
             </button>
           </div>
@@ -86,7 +101,7 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
               <div className="Roleslabel">Role Name:</div>
               <div className="Rolesvalue">
                 <input
-                  type="Rolestext"  
+                  type="Rolestext"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
@@ -112,7 +127,11 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
             </div>
             {error && <div className="RolesError">{error}</div>}
           </div>
-          <button type="submit" className="RolesModelSaveBtn" disabled={!!error}>
+          <button
+            type="submit"
+            className="RolesModelSaveBtn"
+            disabled={!!error}
+          >
             Save
           </button>
         </form>

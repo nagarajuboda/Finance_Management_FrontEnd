@@ -1,3 +1,4 @@
+/* =========== */
 .EmployeeDetails {
   padding: 20px;
 }
@@ -6,7 +7,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
   color: #196e8a;
 }
 
@@ -23,7 +23,7 @@
 
 .EmpDetailsLabel {
   font-weight: bold;
-  width: 20%; 
+  width: 20%;
 }
 
 .EmpDetailsValue {
@@ -43,25 +43,87 @@
   margin-top: 20px;
   display: flex;
   gap: 10%;
-  
 }
 
 .EmpEditBtn,
 .EmpDeactivateBtn,
 .EmpActivateBtn,
 .EmpDeleteBtn {
-  padding: 10px 20px;
+  padding: 5px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.EmpEditBtn, .EmpActivateBtn {
-  background-color: #4CAF50;
+.EmpEditBtn,
+.EmpActivateBtn {
+  background-color: #4caf50;
   color: white;
 }
 
-.EmpDeactivateBtn, .EmpDeleteBtn {
+.EmpDeactivateBtn,
+.EmpDeleteBtn {
   background-color: #f44336;
+  color: white;
+}
+/* ManagedEmployeesModal Styles */
+.ManagedEmployeesModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ManagedEmployeesModalCntnt {
+  background-color: rgb(222, 239, 245);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 100vh;
+  overflow-y: auto;
+  width: 40vw;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.EmpDetailsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ManagedEmployeesMdlHeader {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ManagerName {
+  font-style: italic;
+  color: #f44336;
+}
+
+.PMEmpTable {
+  margin-top: 20px;
+}
+
+.PMEmpTable table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.PMEmpTable th,
+.PMEmpTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.PMEmpTable th {
+  background-color: #007bff;
   color: white;
 }

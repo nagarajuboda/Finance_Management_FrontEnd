@@ -27,7 +27,6 @@ export default function Header() {
     // }
   }, []);
   function logoutonclick() {
-    console.log("logout clicked");
     var res = localStorage.removeItem("sessionData");
     navigate("");
   }

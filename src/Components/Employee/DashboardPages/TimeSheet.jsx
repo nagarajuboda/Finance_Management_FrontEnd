@@ -14,6 +14,7 @@ import TimeSheetService from "../../../Service/TimeSheetService";
 import logo from "../../../assets/Images/1.jpg";
 import { GrPowerReset } from "react-icons/gr";
 import { IoSaveOutline } from "react-icons/io5";
+import axios from "axios";
 
 export default function TimeSheet() {
   const [projectDetails, setProjectDetails] = useState([]);
@@ -25,7 +26,9 @@ export default function TimeSheet() {
   const [selectedProjectId, setSelectedProjectID] = useState("");
   const [showButtons, setShowButtons] = useState(true);
   const [employees, setEmployees] = useState([]);
+  const [ProjectEmployees, setProjectEmployees] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
+  const [buttonStyle, setButtonStyle] = useState({});
 
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -39,7 +42,7 @@ export default function TimeSheet() {
       const initialProject = projectDetails[selectedTabIndex].project.id;
       GetProjectDeatis(initialProject, selectedDate);
     }
-  }, [projectDetails, selectedTabIndex, selectedDate]);
+  }, [projectDetails, selectedTabIndex, selectedDate, disiblebuttons]);
 
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(
@@ -84,12 +87,26 @@ export default function TimeSheet() {
   };
 
   const SaveForm = async () => {
-    const data = submitFunction();
+    // const data = submitFunction();
+    const currentProject = projectDetails[selectedTabIndex].project.id;
+
+    const employeeData = ProjectEmployees.map((employee) => ({
+      employeeId: employee.id,
+      hoursWorked: hours[employee.id] || "",
+    }));
+    var projectId = currentProject;
+    var data = {
+      projectId,
+      selectedDate: format(selectedDate, "MMMM yyyy"),
+      employeeData,
+    };
+
     const response = await TimeSheetService.AddNewTimeSheet(
       data,
       userDetails.employee.id,
       false
     );
+
     if (response.isSuccess) {
       toast.success("Successfully saved.", {
         position: "top-right",
@@ -104,7 +121,18 @@ export default function TimeSheet() {
   };
 
   const SubmitFormFunction = async () => {
-    const data = submitFunction();
+    const currentProject = projectDetails[selectedTabIndex].project.id;
+
+    const employeeData = ProjectEmployees.map((employee) => ({
+      employeeId: employee.id,
+      hoursWorked: hours[employee.id] || "",
+    }));
+    var projectId = currentProject;
+    var data = {
+      projectId,
+      selectedDate: format(selectedDate, "MMMM yyyy"),
+      employeeData,
+    };
 
     const response = await TimeSheetService.AddNewTimeSheet(
       data,
@@ -130,21 +158,27 @@ export default function TimeSheet() {
   const GetProjectDeatis = async (id, date) => {
     setSelectedProjectID(id);
     const formattedDate = format(date, "MMMM yyyy");
+    const ProjectEmployees = await axios.get(
+      `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
+    );
 
     const response = await TimeSheetService.GetTimeSheetDeatils(
       formattedDate,
       id
     );
-
+    setProjectEmployees(ProjectEmployees.data.item);
     setEmployees(response.item);
+
     if (response.item.length > 0) {
       if (response.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);
       } else {
         setDisiblebuttons(false);
+        setButtonStyle({ color: "white" });
       }
     } else {
       setDisiblebuttons(false);
+      setButtonStyle({ color: "white" });
     }
 
     const newHours = {};
@@ -221,7 +255,7 @@ export default function TimeSheet() {
                       </tr>
                     </thead>
                     <tbody>
-                      {project.employees.length === 0 ? (
+                      {ProjectEmployees.length === 0 ? (
                         <tr>
                           <td></td>
                           <td></td>
@@ -230,7 +264,7 @@ export default function TimeSheet() {
                           <td></td>
                         </tr>
                       ) : (
-                        project.employees.map((emp, index) => (
+                        ProjectEmployees.map((emp, index) => (
                           <tr key={index}>
                             <td>
                               <div
@@ -269,7 +303,11 @@ export default function TimeSheet() {
                                   textAlign: "center",
                                 }}
                               >
-                                <span>{emp.employeeStatus == 1 ? "Active":"In Active"}</span>
+                                <span>
+                                  {emp.employeeStatus == 1
+                                    ? "Active"
+                                    : "InActive"}
+                                </span>
                               </div>
                             </td>
                             <td>
@@ -338,11 +376,11 @@ export default function TimeSheet() {
                       )}
                     </tbody>
                   </table>
-                  {project.employees.length > 0 && (
+                  {ProjectEmployees.length > 0 && (
                     <div className="d-flex" style={{ justifyContent: "end" }}>
                       <div className="me-4">
                         <button
-                          className="btn btn-primary"
+                          className=" button  resetbutton"
                           onClick={Resetfunction}
                           disabled={disiblebuttons}
                         >
@@ -351,7 +389,7 @@ export default function TimeSheet() {
                       </div>
                       <div className="me-4">
                         <button
-                          className="btn btn-success"
+                          className=" savebutton button"
                           onClick={SaveForm}
                           disabled={disiblebuttons}
                         >
@@ -360,11 +398,7 @@ export default function TimeSheet() {
                       </div>
                       <div>
                         <button
-                          className="form-control"
-                          style={{
-                            backgroundColor: "rgb(25, 110, 138)",
-                            color: "white",
-                          }}
+                          className="submitbutton button"
                           onClick={SubmitFormFunction}
                           disabled={disiblebuttons}
                         >

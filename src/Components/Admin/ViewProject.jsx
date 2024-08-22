@@ -36,14 +36,11 @@ export function ViewProject() {
   const navigate = useNavigate();
 
   const id = localStorage.getItem("projectId");
-  console.log(id, "clicked projectid");
   useEffect(() => {
     FetchData();
   }, [id]);
-
   async function FetchData() {
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-    console.log(userDetails, "session data");
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
@@ -61,7 +58,7 @@ export function ViewProject() {
       setDataReady(true);
     }
   }
-
+  const [status, setStatus] = useState("InActive");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProjectValues({
@@ -70,6 +67,10 @@ export function ViewProject() {
     });
   };
 
+  const handleChange = (event) => {
+    const selectedStatus = event.target.value;
+    setStatus(selectedStatus);
+  };
   useEffect(() => {
     if (dataReady && projectEmployess.length > 0) {
       const table = $("#example11").DataTable({
@@ -102,6 +103,18 @@ export function ViewProject() {
     e.preventDefault();
     navigate("/Employee/Projects");
   }
+  async function updateformsubmit(e) {
+    e.preventDefault();
+    var response = await AdminDashboardServices.fcnUpdateProject(ProjectValues);
+    if (response.isSuccess) {
+      toast.success("Update Successfully done. ", {
+        position: "top-right",
+        autoClose: "4000",
+      });
+      handleClose();
+      FetchData();
+    }
+  }
   async function AddEmployeeSubmit(e) {
     e.preventDefault();
     const requestBody = [
@@ -111,13 +124,16 @@ export function ViewProject() {
       },
     ];
     var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
-
     if (response.isSuccess) {
-      toast.success("Successfully done. ", {
-        position: "top-right",
-        autoClose: "6000",
-      });
       setShoww(false);
+      setTimeout(() => {
+        toast.success("Successfully done.", {
+          position: "top-right",
+          autoClose: 6000,
+        });
+        FetchData();
+      }, 300);
+
       FetchData();
     }
   }
@@ -175,7 +191,7 @@ export function ViewProject() {
         id,
         projectid
       );
-      if (response.isSuccess) {
+      if (response.item.isAssinged == false) {
         if (result.isConfirmed) {
           Swal.fire({
             title: "Deleted!",
@@ -210,7 +226,17 @@ export function ViewProject() {
             </p>
           </div>
           <div>
-            <Link onClick={() => setShow(true)}>Update</Link>
+            <Link
+              onClick={() => setShow(true)}
+              className="btn "
+              style={{
+                padding: "3px 7px",
+                backgroundColor: "#008CBA",
+                color: "white",
+              }}
+            >
+              Update
+            </Link>
           </div>
         </div>
         <div className="headerCards">
@@ -416,10 +442,15 @@ export function ViewProject() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="modelbody">
-            <form>
+            <form onSubmit={updateformsubmit}>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">ProjectID</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    ProjectID
+                  </span>
                   <input
                     type="text"
                     name="projectID"
@@ -430,7 +461,12 @@ export function ViewProject() {
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Project Name</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Name
+                  </span>
                   <input
                     type="text"
                     name="projectName"
@@ -440,7 +476,12 @@ export function ViewProject() {
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Start Date</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Start Date
+                  </span>
                   <input
                     type="text"
                     name="startDate"
@@ -453,9 +494,14 @@ export function ViewProject() {
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">End Date</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Deadline
+                  </span>
                   <input
-                    type="text"
+                    type="date"
                     name="endDate"
                     value={ProjectValues.endDate}
                     className="form-control"
@@ -463,7 +509,12 @@ export function ViewProject() {
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Project Ref ID</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Ref ID
+                  </span>
                   <input
                     type="text"
                     name="projectRefId"
@@ -473,20 +524,32 @@ export function ViewProject() {
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Client Email</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Client Email
+                  </span>
                   <input
                     type="text"
                     name="clientEmail"
                     value={clientvalues.clientEmailId}
                     className="form-control"
-                    onChange={handleInputChange}
+                    onChange={(e) =>
+                      setClientValues({ clientEmailId: e.target.value })
+                    }
                     readOnly
                   />
                 </div>
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span className="ms-1">Project Type</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Project Type
+                  </span>
                   <input
                     type="text"
                     name="projectType"
@@ -496,17 +559,29 @@ export function ViewProject() {
                   />
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Status</span>
-                  <input
-                    type="text"
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Status
+                  </span>
+                  <select
                     name="status"
-                    value={ProjectValues.status}
+                    value={status}
+                    onChange={handleChange}
                     className="form-control"
-                    onChange={handleInputChange}
-                  />
+                  >
+                    <option value="Active">Active</option>
+                    <option value="InActive">InActive</option>
+                  </select>
                 </div>
                 <div className="col-4">
-                  <span className="ms-1">Progress</span>
+                  <span
+                    className="ms-1"
+                    style={{ color: "black", fontWeight: "600" }}
+                  >
+                    Progress
+                  </span>
                   <input
                     type="text"
                     name="progress"
@@ -518,49 +593,21 @@ export function ViewProject() {
               </div>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
-                  <span>Team Size</span>
-                  <input
-                    type="text"
-                    name="teamSize"
-                    value={ProjectValues.teamSize}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span>Project Manager</span>
+                  <span style={{ color: "black", fontWeight: "600" }}>
+                    Project Manager
+                  </span>
                   <input
                     type="text"
                     name="projectManager"
-                    value={ProjectValues.projectManager}
+                    value={projectManagerName}
                     className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span>Created Date</span>
-                  <input
-                    type="date"
-                    name="createdDate"
-                    value={ProjectValues.createdDate}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span>Updated Date</span>
-                  <input
-                    type="date"
-                    name="updatedDate"
-                    value={ProjectValues.updatedDate}
-                    className="form-control"
-                    onChange={handleInputChange}
+                    onChange={(e) => setProjectManagerName(e.target.value)}
                   />
                 </div>
                 <div className="col-8">
-                  <span>Project Description</span>
+                  <span style={{ color: "black", fontWeight: "600" }}>
+                    Project Description
+                  </span>
                   <textarea
                     className="form-control textareas"
                     name="description"

@@ -1,174 +1,330 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import EmployeeModal from './AddEmployeeModal';
-import ConfirmationModal from './DeleteConfirmationEmpModal';
-import '../../assets/Styles/EmployeePages/EmployeeDetails.css';
-
-const EmployeeDetails = () => { 
+import axios from "axios";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import EmployeeModal from "./AddEmployeeModal";
+import ConfirmationModal from "./DeleteConfirmationEmpModal";
+import ManagedEmployeesModal from "./ManagedEmployeesModal";
+import "../../assets/Styles/EmployeePages/EmployeeDetails.css";
+import { IoArrowBackCircle } from "react-icons/io5";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
+const EmployeeDetails = () => {
   const [employee, setEmployee] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [managedEmployees, setManagedEmployees] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [actionType, setActionType] = useState(''); // new state to track action type
-  const [projectManagerName, setProjectManagerName] = useState('NA');
+  const [showManagedEmployeesModal, setShowManagedEmployeesModal] =
+    useState(false);
+  const [actionType, setActionType] = useState("");
+  const [projectManagerName, setProjectManagerName] = useState("NA");
   const navigate = useNavigate();
   const empId = localStorage.getItem("id");
-
+  const [projectManager, setProjectManager] = useState({});
+  const [employeeProject, setEmployeeProject] = useState({});
+  const [Projects, setProjects] = useState({});
+  const [client, setClient] = useState({});
+  const [projectlength, setProjectLength] = useState([]);
+  const [Response1, setResponse] = useState([]);
   useEffect(() => {
     fetchEmployeeDetails(empId);
     fetchRoles();
   }, [empId]);
 
-  const fetchEmployeeDetails = async (empId) => {
-    try {
-      const response = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${empId}`);
-      const employeeData = response.data;
-      setEmployee(employeeData);
+  const fetchEmployeeDetails = useCallback(
+    async (empId) => {
+      try {
+        const response = await axios.get(
+          `https://localhost:44305/api/Employees/GetEmployee?id=${empId}`
+        );
+        const GetProjectsResponse = await EmployeeService.GetEmployeefcn(empId);
+        setProjectLength(GetProjectsResponse.item);
+        setResponse(GetProjectsResponse.item);
+        GetProjectsResponse.item.forEach((obj) => {
+          // setRole(obj.role);
+          setProjectManager(obj.projectManager);
+          setEmployeeProject(obj.employeeProject);
+          setProjects(obj.project);
+          setClient(obj.client);
+        });
+        console.log(client, "===============>");
+        // console.log(GetProjectsResponse, "================>");
+        const employeeData = response.data;
+        setEmployee(employeeData);
+        if (employeeData.projectManagerId) {
+          const pmResponse = await axios.get(
+            `https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`
+          );
+          setProjectManagerName(
+            `${pmResponse.data.firstName} ${pmResponse.data.lastName}`
+          );
+        } else {
+          setProjectManagerName("NA");
+        }
 
-      // Fetch Project Manager details if `projectManagerId` is available
-      if (employeeData.projectManagerId) {
-        const pmResponse = await axios.get(`https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`);
-        setProjectManagerName(`${pmResponse.data.firstName} ${pmResponse.data.lastName}`);
-      } else {
-        setProjectManagerName('NA');
+        // Fetch all employees to check if this employee manages anyone
+        const allEmployeesResponse = await axios.get(
+          `https://localhost:44305/api/Employees/AllEmployees`
+        );
+        const allEmployees = allEmployeesResponse.data;
+        const managed = allEmployees.filter(
+          (emp) => emp.projectManagerId === employeeData.id
+        );
+        setManagedEmployees(managed);
+      } catch (error) {
+        console.error(
+          "Error fetching employee details",
+          error.response ? error.response.data : error.message
+        );
       }
-    } catch (error) {
-      console.error('Error fetching employee details', error.response ? error.response.data : error.message);
-    }
-  };
+    },
+    [empId]
+  );
 
-  const fetchRoles = async () => {
+  const fetchRoles = useCallback(async () => {
     try {
-      const response = await axios.get('https://localhost:44305/api/Roles/AllRoles');
+      const response = await axios.get(
+        "https://localhost:44305/api/Roles/AllRoles"
+      );
       setRoles(response.data);
     } catch (error) {
-      console.error('Error fetching roles', error.response ? error.response.data : error.message);
+      console.error(
+        "Error fetching roles",
+        error.response ? error.response.data : error.message
+      );
     }
-  };
+  }, []);
 
   const getRoleName = (roleId) => {
-    const role = roles.find(r => r.id === roleId);
-    return role ? role.name : 'Unknown Role';
+    const role = roles.find((r) => r.id === roleId);
+    return role ? role.name : "Unknown Role";
   };
 
-  const handleEdit = () => {
-    setShowEditModal(true);
-  };
+  const handleEdit = () => setShowEditModal(true);
 
   const handleDeactivate = () => {
-    setActionType('deactivate');
-    setShowConfirmModal(true);
+    if (
+      getRoleName(employee.roleId) === "Project Manager" &&
+      managedEmployees.length > 0
+    ) {
+      setShowManagedEmployeesModal(true);
+    } else {
+      setActionType("deactivate");
+      setShowConfirmModal(true);
+    }
   };
 
   const handleActivate = () => {
-    setActionType('activate');
+    setActionType("activate");
     setShowConfirmModal(true);
   };
 
   const handleDelete = () => {
-    setActionType('delete');
-    setShowConfirmModal(true);
+    if (
+      getRoleName(employee.roleId) === "Project Manager" &&
+      managedEmployees.length > 0
+    ) {
+      setShowManagedEmployeesModal(true);
+    } else {
+      setActionType("delete");
+      setShowConfirmModal(true);
+    }
   };
 
   const handleConfirm = async () => {
     try {
-      if (actionType === 'deactivate' && employee) {
-        await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employee, employeeStatus: 0 });
-        navigate('/EmployeeDashboard');  
-      } else if (actionType === 'activate' && employee) {
-        await axios.put(`https://localhost:44305/api/Employees/UpdateEmployee`, { ...employee, employeeStatus: 1 });
-        navigate('/EmployeeDashboard');
-      } else if (actionType === 'delete' && employee) {
-        await axios.delete(`https://localhost:44305/api/Employees/${employee.id}`);
-        navigate('/EmployeeDashboard');
+      if (actionType === "deactivate" && employee) {
+        await axios.put(
+          `https://localhost:44305/api/Employees/UpdateEmployee`,
+          { ...employee, employeeStatus: 0 }
+        );
+      } else if (actionType === "activate" && employee) {
+        await axios.put(
+          `https://localhost:44305/api/Employees/UpdateEmployee`,
+          { ...employee, employeeStatus: 1 }
+        );
+      } else if (actionType === "delete" && employee) {
+        await axios.delete(
+          `https://localhost:44305/api/Employees/${employee.id}`
+        );
       }
+      navigate("/EmployeeDashboard");
       setShowConfirmModal(false);
     } catch (error) {
-      console.error(`Error during ${actionType} operation`, error.response ? error.response.data : error.message);
+      console.error(
+        `Error during ${actionType} operation`,
+        error.response ? error.response.data : error.message
+      );
     }
   };
-
+  function backonclick(e) {
+    e.preventDefault();
+    navigate("/EmployeeDashboard");
+  }
   const cancelAction = () => {
     setShowConfirmModal(false);
-    setActionType('');
+    setActionType("");
   };
 
-  if (!employee) {
-    return <div>Loading...</div>;
-  }
+  if (!employee) return <div>Loading...</div>;
 
   const isInactive = employee.employeeStatus === 0;
 
   return (
-    <div className="EmployeeDetails">
-      <div className="EmpDetailsHeader">
-        <h3>Employee Details</h3>
-        <button className="EmpBackBtn" onClick={() => navigate('/EmployeeDashboard')}>X</button>
-      </div>
-      <div className="EmpDetailsContainer">
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Employee ID:</div>
-          <div className="EmpDetailsValue">{employee.employeeId}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">First Name:</div>
-          <div className="EmpDetailsValue">{employee.firstName}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Last Name:</div>
-          <div className="EmpDetailsValue">{employee.lastName}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Email:</div>
-          <div className="EmpDetailsValue">{employee.email}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Mobile No:</div>
-          <div className="EmpDetailsValue">{employee.mobileNo}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Date of Joining:</div>
-          <div className="EmpDetailsValue">{new Date(employee.dateOfJoining).toLocaleDateString('en-GB')}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Status:</div>
-          <div className="EmpDetailsValue">{isInactive ? 'Inactive' : 'Active'}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Role:</div>
-          <div className="EmpDetailsValue">{getRoleName(employee.roleId)}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Project Manager:</div>
-          <div className="EmpDetailsValue">{projectManagerName}</div>
-        </div>
-        <div className="EmpDetailsRow">
-          <div className="EmpDetailsLabel">Skills:</div>
-          <div className="EmpDetailsValue">{employee.skillSets || 'NA'}</div>
-        </div>
-      </div>
-      <div className="EmpActions">
-        {isInactive ? (
-          <>
-            <button className="EmpActivateBtn" onClick={handleActivate}>Activate</button>
-            <button className="EmpDeleteBtn" onClick={handleDelete}>Delete</button>
-          </>
-        ) : (
-          <>
-            <button className="EmpEditBtn" onClick={handleEdit}>Edit</button>
-            <button className="EmpDeactivateBtn" onClick={handleDeactivate}>Deactivate</button>
-          </>
-        )}
-      </div>
-      {showEditModal && <EmployeeModal employee={employee} onClose={() => setShowEditModal(false)} onRefresh={() => fetchEmployeeDetails(empId)} />}
-      {showConfirmModal && (
-        <ConfirmationModal
-          message={`Are you sure you want to ${actionType} "${employee.firstName} ${employee.lastName}"?`}
-          onConfirm={handleConfirm}
-          onCancel={cancelAction}
+    <div className="">
+      <div className="d-flex">
+        {/* <IoArrowBackCircle
+          style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+          onClick={backonclick}
         />
-      )}
+        <p style={{ fontSize: "20px" }} className="ms-1 ">
+          Back
+        </p> */}
+      </div>
+      <div className="EmployeeDetails card" style={{ borderRadius: "0px" }}>
+        <div className="EmpDetailsHeader">
+          <div className="d-flex">
+            <IoArrowBackCircle
+              style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+              onClick={backonclick}
+            />
+
+            <p style={{ fontSize: "1.25rem" }} className="ms-1">
+              Employee Details
+            </p>
+          </div>
+          <div className="EmpActions mb-4">
+            {isInactive ? (
+              <>
+                <button className="EmpActivateBtn" onClick={handleActivate}>
+                  Activate
+                </button>
+                <button className="EmpDeleteBtn" onClick={handleDelete}>
+                  Delete
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="EmpEditBtn" onClick={handleEdit}>
+                  Edit
+                </button>
+                <button
+                  className="EmpDeactivateBtn me-2"
+                  onClick={handleDeactivate}
+                >
+                  Deactivate
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+        <div className="EmpDetailsContainer">
+          {Object.entries({
+            "Employee ID": employee.employeeId,
+            "First Name": employee.firstName,
+            "Last Name": employee.lastName,
+            Email: employee.email,
+            "Mobile No": employee.mobileNo,
+            "Date of Joining": new Date(
+              employee.dateOfJoining
+            ).toLocaleDateString("en-GB"),
+            Status: isInactive ? "Inactive" : "Active",
+            Role: getRoleName(employee.roleId),
+            "Project Manager": projectManagerName,
+            Skills: employee.skillSets || "NA",
+          }).map(([label, value]) => (
+            <div className="EmpDetailsRow" key={label}>
+              <div className="EmpDetailsLabel">{label}:</div>
+              <div className="EmpDetailsValue">{value}</div>
+            </div>
+          ))}
+        </div>
+
+        {showEditModal && (
+          <EmployeeModal
+            employee={employee}
+            onClose={() => setShowEditModal(false)}
+            onRefresh={() => fetchEmployeeDetails(empId)}
+          />
+        )}
+        {showConfirmModal && (
+          <ConfirmationModal
+            message={`Are you sure you want to ${actionType} "${employee.firstName} ${employee.lastName}"?`}
+            onConfirm={handleConfirm}
+            onCancel={cancelAction}
+          />
+        )}
+        {showManagedEmployeesModal && (
+          <ManagedEmployeesModal
+            employees={managedEmployees}
+            managerName={`${employee.firstName} ${employee.lastName}`}
+            onClose={() => setShowManagedEmployeesModal(false)}
+            deactivatingEmployeeName={`${employee.firstName} ${employee.lastName}`}
+          />
+        )}
+        {/* from this logic added by nagaraju */}
+        <div>
+          {Response1.length > 0 ? (
+            <div>
+              <div className="mt-5">
+                <p
+                  className="psDetails"
+                  style={{
+                    fontSize: "1.25rem",
+                    color: "#196e8a",
+                    fontFamily: "sans-serif",
+                    fontWeight: "700",
+                  }}
+                >
+                  PROJECTS
+                </p>
+              </div>
+              <div>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>PROJECT NAME</th>
+                      <th>CLIENT NAME</th>
+                      <th>PROJECT MANAGER</th>
+                      <th>FROM DATE</th>
+                      <th>TO DATE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Response1.map((obj) => (
+                      <tr>
+                        <td>{obj.project.projectName}</td>
+                        <td>{obj.client.clientName}</td>
+                        <td>{`${obj.projectManager.firstName} ${obj.projectManager.lastName}`}</td>
+                        <td>
+                          {new Date(
+                            obj.employeeProject.assignedDate
+                          ).toLocaleDateString("en-GB")}
+                        </td>
+                        <td>
+                          {obj.employeeProject.isAssinged == true ? (
+                            <p
+                              class="large-dash"
+                              style={{ fontSize: "30px", margin: "-16px 30px" }}
+                            >
+                              -
+                            </p>
+                          ) : (
+                            new Date(
+                              obj.employeeProject.deAssignedDate
+                            ).toLocaleDateString("en-GB")
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-4" style={{ textAlign: "center" }}></p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
