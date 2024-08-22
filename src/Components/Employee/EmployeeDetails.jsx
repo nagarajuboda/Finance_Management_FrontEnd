@@ -1,68 +1,86 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import EmployeeModal from "./AddEmployeeModal";
 import ConfirmationModal from "./DeleteConfirmationEmpModal";
+import ManagedEmployeesModal from "./ManagedEmployeesModal";
 import "../../assets/Styles/EmployeePages/EmployeeDetails.css";
-import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 import { IoArrowBackCircle } from "react-icons/io5";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 const EmployeeDetails = () => {
   const [employee, setEmployee] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [managedEmployees, setManagedEmployees] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [actionType, setActionType] = useState(""); // new state to track action type
+  const [showManagedEmployeesModal, setShowManagedEmployeesModal] =
+    useState(false);
+  const [actionType, setActionType] = useState("");
   const [projectManagerName, setProjectManagerName] = useState("NA");
-  const [role, setRole] = useState({});
-  const [projectManager, setProjectManager] = useState({});
-  const [employeeProject, setEmployeeProject] = useState({});
-  const [projectlength, setProjectLength] = useState([]);
-  const [Response1, setResponse] = useState([]);
-  const [Projects, setProjects] = useState({});
-  const [client, setClient] = useState({});
-  const [manager, setManager] = useState({});
   const navigate = useNavigate();
   const empId = localStorage.getItem("id");
-
+  const [projectManager, setProjectManager] = useState({});
+  const [employeeProject, setEmployeeProject] = useState({});
+  const [Projects, setProjects] = useState({});
+  const [client, setClient] = useState({});
+  const [projectlength, setProjectLength] = useState([]);
+  const [Response1, setResponse] = useState([]);
   useEffect(() => {
     fetchEmployeeDetails(empId);
     fetchRoles();
   }, [empId]);
 
-  const fetchEmployeeDetails = async (empId) => {
-    try {
-      // const response = await axios.get(
-      //   `https://localhost:44305/api/Employees/GetEmployee?id=${empId}`
-      // );
-      var getemployee = await axios.get(
-        `https://localhost:44305/api/Employees/GetEmployee?id=${empId}`
-      );
-      var result = getemployee.data.item;
-      console.log(result, "---------->");
+  const fetchEmployeeDetails = useCallback(
+    async (empId) => {
+      try {
+        const response = await axios.get(
+          `https://localhost:44305/api/Employees/GetEmployee?id=${empId}`
+        );
+        const GetProjectsResponse = await EmployeeService.GetEmployeefcn(empId);
+        setProjectLength(GetProjectsResponse.item);
+        setResponse(GetProjectsResponse.item);
+        GetProjectsResponse.item.forEach((obj) => {
+          // setRole(obj.role);
+          setProjectManager(obj.projectManager);
+          setEmployeeProject(obj.employeeProject);
+          setProjects(obj.project);
+          setClient(obj.client);
+        });
+        console.log(client, "===============>");
+        // console.log(GetProjectsResponse, "================>");
+        const employeeData = response.data;
+        setEmployee(employeeData);
+        if (employeeData.projectManagerId) {
+          const pmResponse = await axios.get(
+            `https://localhost:44305/api/Employees/GetEmployee?id=${employeeData.projectManagerId}`
+          );
+          setProjectManagerName(
+            `${pmResponse.data.firstName} ${pmResponse.data.lastName}`
+          );
+        } else {
+          setProjectManagerName("NA");
+        }
 
-      setEmployee(result.employee);
-      setRole(result.role);
-      setManager(result.manager);
-      const response = await EmployeeService.GetEmployeefcn(empId);
-      setResponse(response.item);
-      console.log(Response1, "response=============>");
-      setProjectLength(response.item);
-      response.item.forEach((obj) => {
-        // setRole(obj.role);
-        setProjectManager(obj.projectManager);
-        setEmployeeProject(obj.employeeProject);
-        setProjects(obj.project);
-        setClient(obj.client);
-      });
-    } catch (error) {
-      console.error(
-        "Error fetching employee details",
-        error.response ? error.response.data : error.message
-      );
-    }
-  };
+        // Fetch all employees to check if this employee manages anyone
+        const allEmployeesResponse = await axios.get(
+          `https://localhost:44305/api/Employees/AllEmployees`
+        );
+        const allEmployees = allEmployeesResponse.data;
+        const managed = allEmployees.filter(
+          (emp) => emp.projectManagerId === employeeData.id
+        );
+        setManagedEmployees(managed);
+      } catch (error) {
+        console.error(
+          "Error fetching employee details",
+          error.response ? error.response.data : error.message
+        );
+      }
+    },
+    [empId]
+  );
 
-  const fetchRoles = async () => {
+  const fetchRoles = useCallback(async () => {
     try {
       const response = await axios.get(
         "https://localhost:44305/api/Roles/AllRoles"
@@ -74,20 +92,25 @@ const EmployeeDetails = () => {
         error.response ? error.response.data : error.message
       );
     }
-  };
+  }, []);
 
   const getRoleName = (roleId) => {
     const role = roles.find((r) => r.id === roleId);
     return role ? role.name : "Unknown Role";
   };
 
-  const handleEdit = () => {
-    setShowEditModal(true);
-  };
+  const handleEdit = () => setShowEditModal(true);
 
   const handleDeactivate = () => {
-    setActionType("deactivate");
-    setShowConfirmModal(true);
+    if (
+      getRoleName(employee.roleId) === "Project Manager" &&
+      managedEmployees.length > 0
+    ) {
+      setShowManagedEmployeesModal(true);
+    } else {
+      setActionType("deactivate");
+      setShowConfirmModal(true);
+    }
   };
 
   const handleActivate = () => {
@@ -96,8 +119,15 @@ const EmployeeDetails = () => {
   };
 
   const handleDelete = () => {
-    setActionType("delete");
-    setShowConfirmModal(true);
+    if (
+      getRoleName(employee.roleId) === "Project Manager" &&
+      managedEmployees.length > 0
+    ) {
+      setShowManagedEmployeesModal(true);
+    } else {
+      setActionType("delete");
+      setShowConfirmModal(true);
+    }
   };
 
   const handleConfirm = async () => {
@@ -107,19 +137,17 @@ const EmployeeDetails = () => {
           `https://localhost:44305/api/Employees/UpdateEmployee`,
           { ...employee, employeeStatus: 0 }
         );
-        navigate("/EmployeeDashboard");
       } else if (actionType === "activate" && employee) {
         await axios.put(
           `https://localhost:44305/api/Employees/UpdateEmployee`,
           { ...employee, employeeStatus: 1 }
         );
-        navigate("/EmployeeDashboard");
       } else if (actionType === "delete" && employee) {
         await axios.delete(
           `https://localhost:44305/api/Employees/${employee.id}`
         );
-        navigate("/EmployeeDashboard");
       }
+      navigate("/EmployeeDashboard");
       setShowConfirmModal(false);
     } catch (error) {
       console.error(
@@ -128,259 +156,174 @@ const EmployeeDetails = () => {
       );
     }
   };
-
+  function backonclick(e) {
+    e.preventDefault();
+    navigate("/EmployeeDashboard");
+  }
   const cancelAction = () => {
     setShowConfirmModal(false);
     setActionType("");
   };
 
-  if (!employee) {
-    return <div>Loading...</div>;
-  }
+  if (!employee) return <div>Loading...</div>;
 
   const isInactive = employee.employeeStatus === 0;
 
   return (
-    <div>
+    <div className="">
       <div className="d-flex">
-        <IoArrowBackCircle
+        {/* <IoArrowBackCircle
           style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-          onClick={() => navigate("/EmployeeDashboard")}
+          onClick={backonclick}
         />
         <p style={{ fontSize: "20px" }} className="ms-1 ">
           Back
-        </p>
+        </p> */}
       </div>
-      <div
-        className="EmployeeDetails card"
-        style={{ margin: "0px", borderRadius: "0px" }}
-      >
-        <div>
-          <p
-            className="psDetails"
-            style={{
-              fontSize: "1.25rem",
-              color: "#196e8a",
-              fontFamily: " sans-serif",
-              fontWeight: "700",
-            }}
-          >
-            Employee Details
-          </p>
-        </div>
-        <div className="">
-          {/* <div className="d-flex">
-            <p className="rowheader ">Employee Id:</p>
-            <p className="ms-2">{employee.employeeId}</p>
-          </div>
-          <div className="row">
-            <p className="rowheader col-2">Name :</p>
-            <p className="ms-2 col-2">{`${employee.firstName} ${employee.lastName}`}</p>
-          </div>
+      <div className="EmployeeDetails card" style={{ borderRadius: "0px" }}>
+        <div className="EmpDetailsHeader">
           <div className="d-flex">
-            <p className="rowheader">Email:</p>
-            <p className="ms-2">{employee.email}</p>
-          </div>
-          <div className="d-flex">
-            <p className="rowheader">Mobile No:</p>
-            <p className="ms-2">{employee.mobileNo}</p>
-          </div>
-          <div className="d-flex">
-            <p className="rowheader">Date of Joining:</p>
-            <p className="ms-2">
-              {new Date(employee.dateOfJoining).toLocaleDateString("en-GB")}
+            <IoArrowBackCircle
+              style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+              onClick={backonclick}
+            />
+
+            <p style={{ fontSize: "1.25rem" }} className="ms-1">
+              Employee Details
             </p>
           </div>
-          <div className="d-flex">
-            <p className="rowheader">Status:</p>
-            <p className="ms-2"> {isInactive ? "Inactive" : "Active"}</p>
-          </div>
-        </div>
-        <div className="">
-          <div className="col-2">
-            <p className="rowheader">Role</p>
-            <p>{role.name}</p>
-          </div>
-          <div className="col-2">
-            <p className="rowheader">Manager </p>
-            {manager == null ? (
-              <p>NA</p>
-            ) : (
-              <p>{`${manager.firstName} ${manager.lastName}`}</p>
-            )}
-          </div>
-          <div className="col-2">
-            <p className="rowheader">Skills</p>
-            <p>{employee.skillSets || "NA"}</p>
-          </div> */}
-          <div
-            className="EmpActions"
-            style={{
-              display: "flex",
-              alignItems: "end",
-              justifyContent: "end",
-            }}
-          >
+          <div className="EmpActions mb-4">
             {isInactive ? (
               <>
-                <div className="d-flex me-5">
-                  <button
-                    className="me-5 btn btn-success"
-                    onClick={handleActivate}
-                  >
-                    Activate
-                  </button>
-                  <button className="btn btn-danger" onClick={handleDelete}>
-                    Delete
-                  </button>
-                </div>
+                <button className="EmpActivateBtn" onClick={handleActivate}>
+                  Activate
+                </button>
+                <button className="EmpDeleteBtn" onClick={handleDelete}>
+                  Delete
+                </button>
               </>
             ) : (
               <>
-                <div>
-                  <button className="me-5 btn btn-success" onClick={handleEdit}>
-                    Edit
-                  </button>
-                  <button className="btn btn-danger" onClick={handleDeactivate}>
-                    Deactivate
-                  </button>
-                </div>
+                <button className="EmpEditBtn" onClick={handleEdit}>
+                  Edit
+                </button>
+                <button
+                  className="EmpDeactivateBtn me-2"
+                  onClick={handleDeactivate}
+                >
+                  Deactivate
+                </button>
               </>
             )}
           </div>
-          <div className="EmpDetailsContainer">
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Employee ID:</div>
-              <div className="EmpDetailsValue">{employee.employeeId}</div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">First Name:</div>
-              <div className="EmpDetailsValue">{employee.firstName}</div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Last Name:</div>
-              <div className="EmpDetailsValue">{employee.lastName}</div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Email:</div>
-              <div className="EmpDetailsValue">{employee.email}</div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Mobile No:</div>
-              <div className="EmpDetailsValue">{employee.mobileNo}</div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Date of Joining:</div>
-              <div className="EmpDetailsValue">
-                {new Date(employee.dateOfJoining).toLocaleDateString("en-GB")}
-              </div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Status:</div>
-              <div className="EmpDetailsValue">
-                {isInactive ? "Inactive" : "Active"}
-              </div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Role:</div>
-              <div className="EmpDetailsValue">
-                {getRoleName(employee.roleId)}
-              </div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel"> Manager:</div>
-              <div className="EmpDetailsValue">
-                {manager == null ? (
-                  <p>NA</p>
-                ) : (
-                  <p>{`${manager.firstName} ${manager.lastName}`}</p>
-                )}
-              </div>
-            </div>
-            <div className="EmpDetailsRow">
-              <div className="EmpDetailsLabel">Skills:</div>
-              <div className="EmpDetailsValue">
-                {employee.skillSets || "NA"}
-              </div>
-            </div>
-          </div>
-          <div className="">
-            {showEditModal && (
-              <EmployeeModal
-                employee={employee}
-                onClose={() => setShowEditModal(false)}
-                onRefresh={() => fetchEmployeeDetails(empId)}
-              />
-            )}
-            {showConfirmModal && (
-              <ConfirmationModal
-                message={`Are you sure you want to ${actionType} "${employee.firstName} ${employee.lastName}"?`}
-                onConfirm={handleConfirm}
-                onCancel={cancelAction}
-              />
-            )}
-          </div>
         </div>
-        {Response1.length > 0 ? (
-          <div>
-            <div className="mt-5">
-              <p
-                className="psDetails"
-                style={{
-                  fontSize: "1.25rem",
-                  color: "#196e8a",
-                  fontFamily: "sans-serif",
-                  fontWeight: "700",
-                }}
-              >
-                PROJECTS
-              </p>
+        <div className="EmpDetailsContainer">
+          {Object.entries({
+            "Employee ID": employee.employeeId,
+            "First Name": employee.firstName,
+            "Last Name": employee.lastName,
+            Email: employee.email,
+            "Mobile No": employee.mobileNo,
+            "Date of Joining": new Date(
+              employee.dateOfJoining
+            ).toLocaleDateString("en-GB"),
+            Status: isInactive ? "Inactive" : "Active",
+            Role: getRoleName(employee.roleId),
+            "Project Manager": projectManagerName,
+            Skills: employee.skillSets || "NA",
+          }).map(([label, value]) => (
+            <div className="EmpDetailsRow" key={label}>
+              <div className="EmpDetailsLabel">{label}:</div>
+              <div className="EmpDetailsValue">{value}</div>
             </div>
-            <div>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>PROJECT NAME</th>
-                    <th>CLIENT NAME</th>
-                    <th>PROJECT MANAGER</th>
-                    <th>FROM DATE</th>
-                    <th>TO DATE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Response1.map((obj) => (
-                    <tr>
-                      <td>{obj.project.projectName}</td>
-                      <td>{obj.client.clientName}</td>
-                      <td>{`${obj.projectManager.firstName} ${obj.projectManager.lastName}`}</td>
-                      <td>
-                        {new Date(
-                          obj.employeeProject.assignedDate
-                        ).toLocaleDateString("en-GB")}
-                      </td>
-                      <td>
-                        {obj.employeeProject.isAssinged == true ? (
-                          <p
-                            class="large-dash"
-                            style={{ fontSize: "30px", margin: "-16px 30px" }}
-                          >
-                            -
-                          </p>
-                        ) : (
-                          new Date(
-                            obj.employeeProject.deAssignedDate
-                          ).toLocaleDateString("en-GB")
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ) : (
-          <p className="mt-4" style={{ textAlign: "center" }}></p>
+          ))}
+        </div>
+
+        {showEditModal && (
+          <EmployeeModal
+            employee={employee}
+            onClose={() => setShowEditModal(false)}
+            onRefresh={() => fetchEmployeeDetails(empId)}
+          />
         )}
+        {showConfirmModal && (
+          <ConfirmationModal
+            message={`Are you sure you want to ${actionType} "${employee.firstName} ${employee.lastName}"?`}
+            onConfirm={handleConfirm}
+            onCancel={cancelAction}
+          />
+        )}
+        {showManagedEmployeesModal && (
+          <ManagedEmployeesModal
+            employees={managedEmployees}
+            managerName={`${employee.firstName} ${employee.lastName}`}
+            onClose={() => setShowManagedEmployeesModal(false)}
+            deactivatingEmployeeName={`${employee.firstName} ${employee.lastName}`}
+          />
+        )}
+        {/* from this logic added by nagaraju */}
+        <div>
+          {Response1.length > 0 ? (
+            <div>
+              <div className="mt-5">
+                <p
+                  className="psDetails"
+                  style={{
+                    fontSize: "1.25rem",
+                    color: "#196e8a",
+                    fontFamily: "sans-serif",
+                    fontWeight: "700",
+                  }}
+                >
+                  PROJECTS
+                </p>
+              </div>
+              <div>
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>PROJECT NAME</th>
+                      <th>CLIENT NAME</th>
+                      <th>PROJECT MANAGER</th>
+                      <th>FROM DATE</th>
+                      <th>TO DATE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Response1.map((obj) => (
+                      <tr>
+                        <td>{obj.project.projectName}</td>
+                        <td>{obj.client.clientName}</td>
+                        <td>{`${obj.projectManager.firstName} ${obj.projectManager.lastName}`}</td>
+                        <td>
+                          {new Date(
+                            obj.employeeProject.assignedDate
+                          ).toLocaleDateString("en-GB")}
+                        </td>
+                        <td>
+                          {obj.employeeProject.isAssinged == true ? (
+                            <p
+                              class="large-dash"
+                              style={{ fontSize: "30px", margin: "-16px 30px" }}
+                            >
+                              -
+                            </p>
+                          ) : (
+                            new Date(
+                              obj.employeeProject.deAssignedDate
+                            ).toLocaleDateString("en-GB")
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-4" style={{ textAlign: "center" }}></p>
+          )}
+        </div>
       </div>
     </div>
   );

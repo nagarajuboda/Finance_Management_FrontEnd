@@ -36,26 +36,11 @@ export function ViewProject() {
   const navigate = useNavigate();
 
   const id = localStorage.getItem("projectId");
-  console.log(id, "clicked projectid");
   useEffect(() => {
     FetchData();
   }, [id]);
-  const [ProjectValues1, setProjectValues1] = useState({
-    projectID: "",
-    projectName: "",
-    startDate: "",
-    endDate: "",
-    projectRefId: "",
-    projectType: "",
-    progress: "",
-    description: "",
-    teamSize: "",
-    createdDate: "",
-    updatedDate: "",
-  });
   async function FetchData() {
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-    console.log(userDetails, "session data");
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
@@ -80,20 +65,11 @@ export function ViewProject() {
       ...ProjectValues,
       [name]: value,
     });
-    console.log(values, "=============>");
   };
-  const handleInputChange1 = (e) => {
-    const { name, value } = e.target;
-    setProjectValues1((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-    console.log(ProjectValues1);
-  };
+
   const handleChange = (event) => {
     const selectedStatus = event.target.value;
     setStatus(selectedStatus);
-    console.log("Selected Status:", selectedStatus);
   };
   useEffect(() => {
     if (dataReady && projectEmployess.length > 0) {
@@ -127,6 +103,18 @@ export function ViewProject() {
     e.preventDefault();
     navigate("/Employee/Projects");
   }
+  async function updateformsubmit(e) {
+    e.preventDefault();
+    var response = await AdminDashboardServices.fcnUpdateProject(ProjectValues);
+    if (response.isSuccess) {
+      toast.success("Update Successfully done. ", {
+        position: "top-right",
+        autoClose: "4000",
+      });
+      handleClose();
+      FetchData();
+    }
+  }
   async function AddEmployeeSubmit(e) {
     e.preventDefault();
     const requestBody = [
@@ -136,13 +124,16 @@ export function ViewProject() {
       },
     ];
     var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
-
     if (response.isSuccess) {
-      toast.success("Successfully done. ", {
-        position: "top-right",
-        autoClose: "6000",
-      });
       setShoww(false);
+      setTimeout(() => {
+        toast.success("Successfully done.", {
+          position: "top-right",
+          autoClose: 6000,
+        });
+        FetchData();
+      }, 300);
+
       FetchData();
     }
   }
@@ -200,7 +191,6 @@ export function ViewProject() {
         id,
         projectid
       );
-      console.log(response.item.isAssinged, "------------->");
       if (response.item.isAssinged == false) {
         if (result.isConfirmed) {
           Swal.fire({
@@ -236,7 +226,13 @@ export function ViewProject() {
             </p>
           </div>
           <div>
-            <Link onClick={() => setShow(true)}>Update</Link>
+            <Link
+              onClick={() => setShow(true)}
+              className="btn btn-success"
+              style={{ padding: "3px 7px" }}
+            >
+              Update
+            </Link>
           </div>
         </div>
         <div className="headerCards">
@@ -442,7 +438,7 @@ export function ViewProject() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="modelbody">
-            <form>
+            <form onSubmit={updateformsubmit}>
               <div className="row" style={{ margin: "0", width: "100%" }}>
                 <div className="col-4">
                   <span
@@ -456,7 +452,7 @@ export function ViewProject() {
                     name="projectID"
                     value={ProjectValues.projectID}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                     readOnly
                   />
                 </div>
@@ -472,7 +468,7 @@ export function ViewProject() {
                     name="projectName"
                     value={ProjectValues.projectName}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-4">
@@ -487,7 +483,7 @@ export function ViewProject() {
                     name="startDate"
                     value={ProjectValues.startDate}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                     readOnly
                   />
                 </div>
@@ -501,11 +497,11 @@ export function ViewProject() {
                     Deadline
                   </span>
                   <input
-                    type="text"
+                    type="date"
                     name="endDate"
                     value={ProjectValues.endDate}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-4">
@@ -520,7 +516,7 @@ export function ViewProject() {
                     name="projectRefId"
                     value={ProjectValues.projectRefId}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-4">
@@ -555,7 +551,7 @@ export function ViewProject() {
                     name="projectType"
                     value={ProjectValues.projectType}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-4">
@@ -587,7 +583,7 @@ export function ViewProject() {
                     name="progress"
                     value={ProjectValues.progress}
                     className="form-control"
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -612,7 +608,7 @@ export function ViewProject() {
                     className="form-control textareas"
                     name="description"
                     value={ProjectValues.description}
-                    onChange={handleInputChange1}
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
               </div>
