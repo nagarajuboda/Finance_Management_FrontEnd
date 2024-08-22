@@ -228,8 +228,12 @@ export function ViewProject() {
           <div>
             <Link
               onClick={() => setShow(true)}
-              className="btn btn-success"
-              style={{ padding: "3px 7px" }}
+              className="btn "
+              style={{
+                padding: "3px 7px",
+                backgroundColor: "#008CBA",
+                color: "white",
+              }}
             >
               Update
             </Link>

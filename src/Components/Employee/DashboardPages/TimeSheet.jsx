@@ -42,7 +42,7 @@ export default function TimeSheet() {
       const initialProject = projectDetails[selectedTabIndex].project.id;
       GetProjectDeatis(initialProject, selectedDate);
     }
-  }, [projectDetails, selectedTabIndex, selectedDate]);
+  }, [projectDetails, selectedTabIndex, selectedDate, disiblebuttons]);
 
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(
@@ -172,11 +172,6 @@ export default function TimeSheet() {
     if (response.item.length > 0) {
       if (response.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);
-        console.log("issubmited true");
-        setButtonStyle({
-          opacity: "0.6 !important",
-          cursor: "not-allowed !important",
-        });
       } else {
         setDisiblebuttons(false);
         setButtonStyle({ color: "white" });
@@ -311,7 +306,7 @@ export default function TimeSheet() {
                                 <span>
                                   {emp.employeeStatus == 1
                                     ? "Active"
-                                    : "In Active"}
+                                    : "InActive"}
                                 </span>
                               </div>
                             </td>
@@ -385,28 +380,25 @@ export default function TimeSheet() {
                     <div className="d-flex" style={{ justifyContent: "end" }}>
                       <div className="me-4">
                         <button
-                          className="btn btn-danger button "
+                          className=" button  resetbutton"
                           onClick={Resetfunction}
                           disabled={disiblebuttons}
-                          style={buttonStyle}
                         >
                           Reset
                         </button>
                       </div>
                       <div className="me-4">
                         <button
-                          className="btn btn-primary"
+                          className=" savebutton button"
                           onClick={SaveForm}
                           disabled={disiblebuttons}
-                          style={buttonStyle}
                         >
                           Save
                         </button>
                       </div>
                       <div>
                         <button
-                          className="form-control btn btn-success"
-                          style={buttonStyle}
+                          className="submitbutton button"
                           onClick={SubmitFormFunction}
                           disabled={disiblebuttons}
                         >
