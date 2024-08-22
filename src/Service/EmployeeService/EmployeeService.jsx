@@ -4,7 +4,6 @@ const EmployeeService = {
     const response = await axios.get(
       `https://localhost:44305/api/EmployeeProjects/GetProjectManagerProjects?id=${id}`
     );
-
     return response.data;
   },
   async GetProjectInfo(id) {
