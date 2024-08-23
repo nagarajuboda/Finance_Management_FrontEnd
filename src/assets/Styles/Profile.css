@@ -47,3 +47,6 @@
 .profile-details .col-sm-8 {
   color: #495057;
 }
+.MuiBox-root {
+  width: 50%;
+}

@@ -19,5 +19,13 @@ const EmployeeService = {
 
     return response.data;
   },
+  async UpdateProfilefcn(obj) {
+    const response = await axios.post(
+      `https://localhost:44305/api/Employees/UpdateProfile`,
+      obj
+    );
+
+    return response.data;
+  },
 };
 export default EmployeeService;
