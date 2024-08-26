@@ -70,7 +70,7 @@ export default function Projects() {
                   <td>{user.projectType}</td>
                   <td>{user.startDate}</td>
                   <td>{user.endDate}</td>
-                  <td>{user.progress}</td>
+                  <td>{`${user.progress}${"%"}`}</td>
                 </tr>
               ))
             )}

@@ -3,7 +3,6 @@ import logo from "../../../assets/Images/1.jpg";
 import "../../../assets/Styles/Profile.css";
 import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";
-// import Modal from "react-bootstrap/Modal";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -91,7 +90,7 @@ export default function Profile() {
           <div className="col-md-7">
             <h4 className="mb-2">{`${loginUser.firstName} ${loginUser.lastName}`}</h4>
             <p className="text-muted mb-1">
-              Designation: {loginUser.designation || "N/A"}
+              {/* Designation: {loginUser.designation || "N/A"} */}
             </p>
             <p className="text-muted">Employee ID: {loginUser.employeeId}</p>
           </div>

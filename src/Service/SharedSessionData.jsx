@@ -1,13 +1,17 @@
-import axios from "axios";
 import { Subject } from "rxjs";
 
+// Create a new Subject to hold session data
 let userData = new Subject();
-const GetSessionData = () => {
-  debugger;
-  return userData.asObservable();
+
+// Function to set the session data
+const setSessionData = (sessionData) => {
+  userData.next(sessionData); // Emit the session data to subscribers
 };
 
-const setSessionData = (sessiondata) => {
-  userData.next(sessiondata);
+// Function to get the session data as an observable
+const GetSessionData = () => {
+  debugger;
+  return userData.asObservable(); // Return the observable for session data
 };
+
 export { GetSessionData, setSessionData };

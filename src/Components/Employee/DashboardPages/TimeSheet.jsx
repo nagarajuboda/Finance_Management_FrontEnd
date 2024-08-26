@@ -29,7 +29,7 @@ export default function TimeSheet() {
   const [ProjectEmployees, setProjectEmployees] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
   const [buttonStyle, setButtonStyle] = useState({});
-
+  const [ProjectDepartment, setProjectDepartment] = useState("");
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
@@ -166,9 +166,10 @@ export default function TimeSheet() {
       formattedDate,
       id
     );
-    setProjectEmployees(ProjectEmployees.data.item);
+    setProjectEmployees(ProjectEmployees.data.item.item1);
     setEmployees(response.item);
-
+    setProjectDepartment(ProjectEmployees.data.item.item2);
+    console.log(ProjectDepartment, "========>");
     if (response.item.length > 0) {
       if (response.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);
@@ -242,7 +243,7 @@ export default function TimeSheet() {
                     <thead>
                       <tr>
                         <th className="tableheader">NAME</th>
-                        <th className="tableheader">DESIGNATION</th>
+                        <th className="tableheader">DEPARTMENT</th>
                         <th className="" style={{ textAlign: "center" }}>
                           STATUS
                         </th>
@@ -281,7 +282,7 @@ export default function TimeSheet() {
                             </td>
                             <td>
                               <div style={{ textAlign: "start" }}>
-                                Designation
+                                {ProjectDepartment}
                               </div>
                               <div
                                 className="role"

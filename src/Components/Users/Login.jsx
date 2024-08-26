@@ -36,7 +36,7 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
-      debugger;
+
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {
