@@ -12,10 +12,11 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 // import { data } from "jquery";
-
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
+
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+
   // const [sessionData, setSessionData] = useState(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
@@ -27,10 +28,15 @@ export default function Header() {
     // }
   }, []);
   function logoutonclick() {
+    console.log("logout clicked");
     var res = localStorage.removeItem("sessionData");
     navigate("");
   }
-
+  function NavigateProfile(e) {
+    e.preventDefault();
+    setIsVisibleProfile(false);
+    navigate("/Dashboard/Profile");
+  }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -126,8 +132,9 @@ export default function Header() {
               <div className="cardbody ">
                 <div className="Carduser">
                   <FaUserCircle className="cardicons" />
-                  <p className="popup-item ms-3">
-                    <Link to="Profile">Profile</Link>
+                  <p className="popup-item ms-3 ">
+                    {/* <Link to="/Dashboard/Profile">Profile</Link> */}
+                    <Link onClick={NavigateProfile}>Profile</Link>
                   </p>
                 </div>
                 <div className="cardInbox">

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { style } from "motion";
 import React, { useState, useEffect } from "react";
 
 const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
@@ -7,7 +8,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     firstName: "",
     lastName: "",
     email: "",
-    // passwordHash: null,
+    passwordHash: "",
     mobileNo: "",
     dateOfJoining: "",
     projectManagerId: "",
@@ -36,7 +37,6 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         projectManagerId: employee.projectManagerId
           ? employee.projectManagerId
           : "",
-        passwordHash: null,
       });
     } else {
       const now = new Date();
@@ -138,21 +138,19 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         if (!value) return "Email is required";
         if (!/\S+@\S+\.\S+/.test(value)) return "Email address is invalid";
         break;
-      // case 'passwordHash':
-      //   if (!value) return "Password field is missing";
-      //   const errors = [];
-      //   if (value.length < 8) errors.push('at least 8 characters');
-      //   if (!/[A-Z]/.test(value)) errors.push('at least one uppercase letter');
-      //   if (!/[a-z]/.test(value)) errors.push('at least one lowercase letter');
-      //   if (!/\d/.test(value)) errors.push('at least one number');
-      //   if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) errors.push('at least one special character');
-      //   if (errors.length) return `Password must contain ${errors.join(', ')}`;
-      //   break;
+      case "passwordHash":
+        if (!value) return "Password field is missing";
+        const errors = [];
+        if (value.length < 8) errors.push("at least 8 characters");
+        if (!/[A-Z]/.test(value)) errors.push("at least one uppercase letter");
+        if (!/[a-z]/.test(value)) errors.push("at least one lowercase letter");
+        if (!/\d/.test(value)) errors.push("at least one number");
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(value))
+          errors.push("at least one special character");
+        if (errors.length) return `Password must contain ${errors.join(", ")}`;
+        break;
       case "dateOfJoining":
         if (!value) return "Date of Joining is required";
-        const today = new Date().setHours(0, 0, 0, 0);
-        const selectedDate = new Date(value).setHours(0, 0, 0, 0);
-        if (selectedDate > today) return "Date should not exceed from today";
         break;
       case "roleId":
         if (!value) return "Role is required";
@@ -173,9 +171,9 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     return "";
   };
 
-  // const handlePasswordVisibility = () => {
-  //   setPasswordVisible(!passwordVisible);
-  // };
+  const handlePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -274,7 +272,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       console.error("Error saving employee", error);
     }
   };
-
+  const [isEditMode, setIsEditMode] = useState(false);
   return (
     <div className="AddEmpMdlOverlay">
       <div className="AddEmpMdlContent">
@@ -288,11 +286,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             </button>
           </div>
         </div>
-
         <form className="AddEmpMdl" onSubmit={handleSubmit}>
-          {/* {isEditing && (
-            <input type="hidden" name="employeeId" value={formData.employeeId} />
-          )} */}
           <label htmlFor="firstName">
             Employee ID:
             <input
@@ -348,16 +342,29 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             )}
           </label>
 
-          {/* <label>Password:
-            <div className="AddEmpMdlPwdInput">
-              <input type={passwordVisible ? "text" : "password"}
-                name="passwordHash" value={formData.passwordHash} onChange={handleChange}/>
-              <span className="AddEmpMdlEyeIcon" onClick={() => setPasswordVisible(!passwordVisible)}>
-                {passwordVisible ? "👁️‍🗨️" : "👁️"}
-              </span>
-            </div>
-            {errors.passwordHash && (<span className="AddEmpMdlPwdError">{errors.passwordHash}</span>)}
-          </label> */}
+          {!isEditing && (
+            <label htmlFor="password">
+              Password:
+              <div className="AddEmpMdlPwdInput">
+                <input
+                  type={passwordVisible ? "txt" : "password"}
+                  name="passwordHash"
+                  value={formData.passwordHash}
+                  onChange={handleChange}
+                  disabled={isEditing}
+                />
+                <span
+                  className="AddEmpMdlEyeIcon"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? "👁️‍🗨️" : "👁️"}
+                </span>
+              </div>
+              {errors.passwordHash && (
+                <span className="AddEmpMdlPwdError">{errors.passwordHash}</span>
+              )}
+            </label>
+          )}
 
           <label htmlFor="mobileNo">
             Mobile Number:
@@ -426,7 +433,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             {errors.roleId && <span className="error">{errors.roleId}</span>}
           </label>
 
-          <label>
+          <label htmlFor="skillSets">
             {" "}
             Skill Sets:
             <textarea

@@ -24,6 +24,7 @@ const Home = () => {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const navigate = useNavigate();
+  // Create a new Observable
 
   const onLoginButtonClick = async (data) => {
     try {
@@ -36,7 +37,7 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
-      debugger;
+
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {

@@ -36,7 +36,7 @@ export default function AdminRoutes() {
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Dashboard/Profile" element={<Profile />} />
       </Routes>
     </Sidebar>
   );

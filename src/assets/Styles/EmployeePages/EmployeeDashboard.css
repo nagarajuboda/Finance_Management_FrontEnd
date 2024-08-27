@@ -9,7 +9,7 @@
   height: 100%;
 }
 
-.EmployeeDashboard:hover{
+.EmployeeDashboard:hover {
   opacity: 1;
 }
 
@@ -41,7 +41,7 @@ input[type="EmpSearchtxt"] {
   margin-top: 0px;
 }
 
-.EmpCheckbox{
+.EmpCheckbox {
   margin-right: 5px !important;
   margin-top: 5px;
 }
@@ -62,7 +62,7 @@ input[type="EmpSearchtxt"] {
 .EmpInactiveBtn {
   background-color: #f4d1ce;
   color: #f91a0a;
-  margin-top:10px;
+  margin-top: 10px;
   margin-right: 10px;
   padding: 5px 15px;
   border-radius: 7px;
@@ -98,7 +98,8 @@ input[type="EmpSearchtxt"] {
   margin-bottom: 15px;
 }
 
-.EmpDashboardTbl th, .EmpDashboardTbl td {
+.EmpDashboardTbl th,
+.EmpDashboardTbl td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
@@ -107,27 +108,27 @@ input[type="EmpSearchtxt"] {
 .EmpDashboardTbl th {
   background-color: #007bff;
   cursor: pointer;
-  color: white ;
+  color: white;
   position: relative;
   padding-right: 20px;
 }
 
 .EmpDashboardTbl th.sorted-asc::after {
-  content: '▲';
+  content: "▲";
   font-size: 13px;
   color: yellowgreen;
   position: absolute;
-  right: 5px; 
+  right: 5px;
   top: 50%;
-  transform: translateY(-50%); 
+  transform: translateY(-50%);
 }
 
 .EmpDashboardTbl th.sorted-desc::after {
-  content: '▼';
+  content: "▼";
   color: yellowgreen;
   font-size: 13px;
   position: absolute;
-  right: 5px; 
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -167,7 +168,7 @@ input[type="EmpSearchtxt"] {
   background-color: greenyellow;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;  
+  font-size: 14px;
 }
 
 .EmpPaginationArrow:hover {
@@ -248,7 +249,7 @@ input[type="EmpSearchtxt"] {
 .AddEmpMdlSubmitBtn {
   width: 100%;
   padding: 12px;
-  background: #4CAF50;
+  background: #4caf50;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -266,7 +267,7 @@ input[type="EmpSearchtxt"] {
 .AddEmpMdlDoj {
   padding: 10px;
   width: 100%;
-} 
+}
 
 .AddEmpMdlPwdInput {
   position: relative;
@@ -276,11 +277,12 @@ input[type="EmpSearchtxt"] {
   border: 1px solid #939191;
   box-sizing: border-box;
 }
-.AddEmpMdlPwdInput 
-input[type="passwordd"],
-input[type="textd"] {
-  all: unset;
+
+.AddEmpMdlPwdInput input[type="password"],
+input[type="txt"] {
+  all: unset !important;
 }
+
 .AddEmpMdlEyeIcon {
   position: absolute;
   right: 10px;

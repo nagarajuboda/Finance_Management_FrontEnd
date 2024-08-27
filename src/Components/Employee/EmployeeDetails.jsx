@@ -171,20 +171,12 @@ const EmployeeDetails = () => {
 
   return (
     <div className="">
-      <div className="d-flex">
-        {/* <IoArrowBackCircle
-          style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-          onClick={backonclick}
-        />
-        <p style={{ fontSize: "20px" }} className="ms-1 ">
-          Back
-        </p> */}
-      </div>
+      <div className="d-flex"></div>
       <div className="EmployeeDetails card" style={{ borderRadius: "0px" }}>
         <div className="EmpDetailsHeader">
           <div className="d-flex">
             <IoArrowBackCircle
-              style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+              style={{ cursor: "pointer", fontSize: "28px", color: "black" }}
               onClick={backonclick}
             />
 
