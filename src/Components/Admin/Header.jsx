@@ -12,14 +12,9 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 // import { data } from "jquery";
-import { GetSessionData } from "../../Service/SharedSessionData";
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
-  debugger;
-  GetSessionData().subscribe((data) => {
-    debugger;
-    console.log("Received session data:", data);
-  });
+
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
 
   // const [sessionData, setSessionData] = useState(null);

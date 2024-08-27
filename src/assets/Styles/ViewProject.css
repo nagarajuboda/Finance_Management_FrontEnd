@@ -122,3 +122,7 @@ textarea {
   font-size: 18px;
   justify-content: center;
 }
+
+.dt-orderable-desc .dt-ordering-desc {
+  background-color: rgb(25, 110, 138);
+}

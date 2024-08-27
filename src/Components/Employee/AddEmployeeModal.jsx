@@ -8,7 +8,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
     firstName: "",
     lastName: "",
     email: "",
-    passwordHash: "Archents@123",
+    passwordHash: "",
     mobileNo: "",
     dateOfJoining: "",
     projectManagerId: "",
@@ -32,7 +32,6 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         .split("T")[0];
       setFormData({
         ...employee,
-        passwordHash: "Archents@123",
         dateOfJoining: formattedDate,
         employeeStatus: employee.employeeStatus === 1 ? "Active" : "Inactive",
         projectManagerId: employee.projectManagerId
@@ -343,27 +342,29 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
             )}
           </label>
 
-          <label htmlFor="password">
-            Password:
-            <div className="AddEmpMdlPwdInput">
-              <input
-                type={passwordVisible ? "txt" : "password"}
-                name="passwordHash"
-                value={formData.passwordHash}
-                onChange={handleChange}
-                disabled={isEditing}
-              />
-              <span
-                className="AddEmpMdlEyeIcon"
-                onClick={() => setPasswordVisible(!passwordVisible)}
-              >
-                {passwordVisible ? "👁️‍🗨️" : "👁️"}
-              </span>
-            </div>
-            {errors.passwordHash && (
-              <span className="AddEmpMdlPwdError">{errors.passwordHash}</span>
-            )}
-          </label>
+          {!isEditing && (
+            <label htmlFor="password">
+              Password:
+              <div className="AddEmpMdlPwdInput">
+                <input
+                  type={passwordVisible ? "txt" : "password"}
+                  name="passwordHash"
+                  value={formData.passwordHash}
+                  onChange={handleChange}
+                  disabled={isEditing}
+                />
+                <span
+                  className="AddEmpMdlEyeIcon"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                >
+                  {passwordVisible ? "👁️‍🗨️" : "👁️"}
+                </span>
+              </div>
+              {errors.passwordHash && (
+                <span className="AddEmpMdlPwdError">{errors.passwordHash}</span>
+              )}
+            </label>
+          )}
 
           <label htmlFor="mobileNo">
             Mobile Number:

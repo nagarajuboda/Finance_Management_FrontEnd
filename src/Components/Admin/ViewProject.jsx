@@ -381,12 +381,12 @@ export function ViewProject() {
             >
               <thead className="theadbackgroundcolor">
                 <tr>
-                  <th>Employee ID</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Project Name</th>
-                  <th>Date Of Joining</th>
-                  <th>Actions</th>
+                  <th className="tbh">Employee ID</th>
+                  <th className="tbh">Name</th>
+                  <th className="tbh">Email</th>
+                  <th className="tbh">Project Name</th>
+                  <th className="tbh">Date Of Joining</th>
+                  <th className="tbh">Actions</th>
                 </tr>
               </thead>
               <tbody>
