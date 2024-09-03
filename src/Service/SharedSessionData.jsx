@@ -1,17 +1,14 @@
-import { Subject } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 
-// Create a new Subject to hold session data
-let userData = new Subject();
+// Create a BehaviorSubject to hold the session data with an initial value of null
+const sessionSubject = new BehaviorSubject(null);
 
-// Function to set the session data
-const setSessionData = (sessionData) => {
-  userData.next(sessionData); // Emit the session data to subscribers
+// Function to set session data
+export const setSessionData = (sessionData) => {
+  sessionSubject.next(sessionData); // Push the new session data into the BehaviorSubject
 };
 
 // Function to get the session data as an observable
-const GetSessionData = () => {
-  debugger;
-  return userData.asObservable(); // Return the observable for session data
+export const getSessionData = () => {
+  return sessionSubject.asObservable(); // Return the observable for session data
 };
-
-export { GetSessionData, setSessionData };

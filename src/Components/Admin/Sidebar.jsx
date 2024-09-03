@@ -138,7 +138,19 @@ const Sidebar = ({ children }) => {
     {
       name: "Dashboards",
       icon: <RiDashboard3Line />,
-      submenu: [{ path: "/list2", name: "- Projects" }],
+      submenu: [{ path: "/list2", name: "- AllEmployees" }],
+    },
+  ];
+  const HrMenuItems = [
+    {
+      name: "Dashboards",
+      icon: <RiDashboard3Line />,
+      submenu: [{ path: "/list2", name: "- ViewProjects" }],
+    },
+    {
+      name: "Employees",
+      icon: <RiDashboard3Line />,
+      submenu: [{ path: "/EmployeeDashboard", name: "- AllEmployees" }],
     },
   ];
 
@@ -174,6 +186,8 @@ const Sidebar = ({ children }) => {
       ? adminMenuItems
       : sessionData?.employee?.role?.name === "Project Manager"
       ? ProjectManagerMenuItems
+      : sessionData?.employee?.role?.name === "Hr"
+      ? HrMenuItems
       : employeeMenuItems;
 
   return (

@@ -330,7 +330,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       onPageChange(currentPage + 1);
     }
   };
-
   return (
     <div className="EmpDashPagination">
       <button

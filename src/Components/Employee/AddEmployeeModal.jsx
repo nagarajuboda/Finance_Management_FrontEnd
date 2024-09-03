@@ -98,7 +98,7 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         "https://localhost:44305/api/Roles/AllRoles"
       );
       const projectManagerRole = rolesResponse.data.find(
-        (role) => role.name === "Project Manager"
+        (role) => role.name === "Reporting Manager"
       );
       if (projectManagerRole) {
         const projectManagers = response.data.filter(
@@ -399,13 +399,13 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           </label>
 
           <label htmlFor="projectManagerId">
-            Project Manager:
+            Reporting Manager:
             <select
               name="projectManagerId"
               value={formData.projectManagerId || ""}
               onChange={handleChange}
             >
-              <option value="">Select Project Manager</option>
+              <option value="">Select Reporting Manager</option>
               {projectManagers.map((pm) => (
                 <option key={pm.id} value={pm.id}>
                   {pm.firstName} {pm.lastName}
