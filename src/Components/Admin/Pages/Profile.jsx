@@ -10,7 +10,6 @@ import Button from "@mui/material/Button";
 import EmployeeService from "../../../Service/EmployeeService/EmployeeService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { GetSessionData } from "../../../Service/SharedSessionData";
 export default function Profile() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   //const userDetails = GetSessionData();

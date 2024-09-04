@@ -3,6 +3,7 @@ import "../../assets/Styles/Header.css";
 import profile from "../../assets/Images/profile.jpg";
 import { json, Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/ArchentsLogo.png";
+import { getSessionData } from "../../Service/SharedSessionData";
 import {
   FaSearch,
   FaUserCircle,
@@ -14,9 +15,23 @@ import {
 // import { data } from "jquery";
 export default function Header() {
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
-
+  const [sessionData, setSessionDataState] = useState(null);
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  useEffect(() => {
+    const subscription = getSessionData().subscribe({
+      next: (data) => {
+        setSessionDataState(data);
+        console.log(data, "Updated sessionData");
+      },
+      error: (err) => {
+        console.error("Error fetching session data: ", err);
+      },
+    });
 
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
   // const [sessionData, setSessionData] = useState(null);
   const profileRef = useRef(null);
   const navigate = useNavigate();
@@ -100,11 +115,11 @@ export default function Header() {
             >
               <p className="namep" style={{ fontSize: "1rem" }}>
                 {/* Franklin Jr. */}
-                {`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}
+                {`${userDetails?.employee?.firstName} ${userDetails?.employee?.lastName}`}
               </p>
               {/* {console.log("------------>", userDetails.employee.role)} */}
               <p className="superadminp" style={{ fontSize: "1rem" }}>
-                {userDetails.employee.role.name}
+                {userDetails?.employee?.role.name}
               </p>
             </div>
           </div>
@@ -120,10 +135,10 @@ export default function Header() {
                   className="cardProfile"
                 />
                 <div className="mt-2">
-                  <h6 className="mb-0">{`${userDetails.employee.firstName} ${userDetails.employee.lastName}`}</h6>
+                  <h6 className="mb-0">{`${userDetails?.employee?.firstName} ${userDetails?.employee?.lastName}`}</h6>
                   <div className=" fw-normal text-grey">
                     <p style={{ fontSize: "1em" }} className="superadminp">
-                      {userDetails.employee.role.name}
+                      {userDetails?.employee?.role.name}
                     </p>
                   </div>
                 </div>

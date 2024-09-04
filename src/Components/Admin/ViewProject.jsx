@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import "../../assets/Styles/ViewProject.css";
-import $ from "jquery";
+import $, { data } from "jquery";
 import { ToastContainer, toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import withReactContent from "sweetalert2-react-content";
@@ -16,6 +16,7 @@ import Modal from "react-bootstrap/Modal";
 import { IoMdAddCircle } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
+import { getSessionData } from "../../Service/SharedSessionData";
 export function ViewProject() {
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
@@ -34,11 +35,13 @@ export function ViewProject() {
   const [projectManagerName, setProjectMangerName] = useState("");
   const [sessiondata, setSessiondata] = useState(null);
   const navigate = useNavigate();
-
+  const [sessionData, setSessionDataState] = useState(null);
   const id = localStorage.getItem("projectId");
   useEffect(() => {
     FetchData();
   }, [id]);
+  useEffect(() => {}, []);
+
   async function FetchData() {
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
     setSessiondata(userDetails.employee.role.name);
@@ -100,6 +103,7 @@ export function ViewProject() {
   }
 
   function backtoprojects(e) {
+    FetchData();
     e.preventDefault();
     navigate("/Employee/Projects");
   }
@@ -381,12 +385,42 @@ export function ViewProject() {
             >
               <thead className="theadbackgroundcolor">
                 <tr>
-                  <th className="tbh">Employee ID</th>
-                  <th className="tbh">Name</th>
-                  <th className="tbh">Email</th>
-                  <th className="tbh">Project Name</th>
-                  <th className="tbh">Date Of Joining</th>
-                  <th className="tbh">Actions</th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Employee ID
+                  </th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Name
+                  </th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Email
+                  </th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Project Name
+                  </th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Date Of Joining
+                  </th>
+                  <th
+                    className="tbh"
+                    style={{ backgroundColor: "#196e8a", color: "white" }}
+                  >
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>

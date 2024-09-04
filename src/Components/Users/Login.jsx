@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
+import { setSessionData } from "../../Service/SharedSessionData";
 
 const Home = () => {
   const {
@@ -39,9 +40,11 @@ const Home = () => {
       var result = await responses.data;
 
       localStorage.setItem("sessionData", JSON.stringify(result.item));
+
       setLoggedIn(true); // Update logged-in state
       if (result.isSuccess) {
         setLoggedIn(true); // Update logged-in state
+        setSessionData(result.item);
         navigate("/AdminDashboard"); // Navigate to dashboard or another page
       } else {
         // Handle specific error codes

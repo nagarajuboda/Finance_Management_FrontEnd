@@ -7,6 +7,7 @@ import ManagedEmployeesModal from "./ManagedEmployeesModal";
 import "../../assets/Styles/EmployeePages/EmployeeDetails.css";
 import { IoArrowBackCircle } from "react-icons/io5";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
+import { Today } from "@mui/icons-material";
 const EmployeeDetails = () => {
   const [employee, setEmployee] = useState(null);
   const [roles, setRoles] = useState([]);
@@ -25,6 +26,7 @@ const EmployeeDetails = () => {
   const [client, setClient] = useState({});
   const [projectlength, setProjectLength] = useState([]);
   const [Response1, setResponse] = useState([]);
+  const [employeeTracking, setemployeeTracking] = useState([]);
   useEffect(() => {
     fetchEmployeeDetails(empId);
     fetchRoles();
@@ -37,17 +39,8 @@ const EmployeeDetails = () => {
           `https://localhost:44305/api/Employees/GetEmployee?id=${empId}`
         );
         const GetProjectsResponse = await EmployeeService.GetEmployeefcn(empId);
-        setProjectLength(GetProjectsResponse.item);
-        setResponse(GetProjectsResponse.item);
-        GetProjectsResponse.item.forEach((obj) => {
-          // setRole(obj.role);
-          setProjectManager(obj.projectManager);
-          setEmployeeProject(obj.employeeProject);
-          setProjects(obj.project);
-          setClient(obj.client);
-        });
-        console.log(client, "===============>");
-        // console.log(GetProjectsResponse, "================>");
+        setemployeeTracking(GetProjectsResponse);
+
         const employeeData = response.data;
         setEmployee(employeeData);
         if (employeeData.projectManagerId) {
@@ -221,7 +214,7 @@ const EmployeeDetails = () => {
             ).toLocaleDateString("en-GB"),
             Status: isInactive ? "Inactive" : "Active",
             Role: getRoleName(employee.roleId),
-            "Project Manager": projectManagerName,
+            "Reporting Manager": projectManagerName,
             Skills: employee.skillSets || "NA",
           }).map(([label, value]) => (
             <div className="EmpDetailsRow" key={label}>
@@ -255,66 +248,100 @@ const EmployeeDetails = () => {
         )}
         {/* from this logic added by nagaraju */}
         <div>
-          {Response1.length > 0 ? (
+          <div>
+            <div className="mt-5">
+              <p
+                className="psDetails"
+                style={{
+                  fontSize: "1.25rem",
+                  color: "#196e8a",
+                  fontFamily: "sans-serif",
+                  fontWeight: "700",
+                }}
+              >
+                PROJECTS
+              </p>
+            </div>
             <div>
-              <div className="mt-5">
-                <p
-                  className="psDetails"
-                  style={{
-                    fontSize: "1.25rem",
-                    color: "#196e8a",
-                    fontFamily: "sans-serif",
-                    fontWeight: "700",
-                  }}
-                >
-                  PROJECTS
-                </p>
-              </div>
-              <div>
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>PROJECT NAME</th>
-                      <th>CLIENT NAME</th>
-                      <th>PROJECT MANAGER</th>
-                      <th>FROM DATE</th>
-                      <th>TO DATE</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Response1.map((obj) => (
-                      <tr>
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>PROJECT NAME</th>
+                    <th>CLIENT NAME</th>
+                    <th>PROJECT MANAGER</th>
+                    <th>FROM DATE (dd/mm/yyyy)</th>
+                    <th>TO DATE (dd/mm/yyyy)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employeeTracking.item.map((obj, index) => {
+                    // Split the period into fromDate and toDate
+                    const dates = obj.period.split(" to ");
+                    const fromDate = dates[0];
+                    const toDate = dates[1];
+                    return obj.bench === true ? (
+                      <tr key={index}>
+                        <td>
+                          <p>Bench</p>
+                        </td>
+                        <td>
+                          <p
+                            className="ms-4"
+                            style={{
+                              fontWeight: "800",
+                              margin: "0",
+                            }}
+                          >
+                            --
+                          </p>
+                        </td>
+                        <td>
+                          <p
+                            className="ms-4"
+                            style={{
+                              fontWeight: "800",
+                              margin: "0",
+                            }}
+                          >
+                            --
+                          </p>
+                        </td>
+                        <td style={{ textAlign: "center" }}> {fromDate}</td>
+                        <td style={{ textAlign: "center" }}> {toDate}</td>
+                      </tr>
+                    ) : (
+                      <tr key={index}>
                         <td>{obj.project.projectName}</td>
                         <td>{obj.client.clientName}</td>
-                        <td>{`${obj.projectManager.firstName} ${obj.projectManager.lastName}`}</td>
                         <td>
-                          {new Date(
-                            obj.employeeProject.assignedDate
-                          ).toLocaleDateString("en-GB")}
+                          {obj.projectManager.firstName}{" "}
+                          {obj.projectManager.lastName}
                         </td>
-                        <td>
-                          {obj.employeeProject.isAssinged == true ? (
-                            <p
-                              class="large-dash"
-                              style={{ fontSize: "30px", margin: "-16px 30px" }}
-                            >
-                              -
-                            </p>
-                          ) : (
-                            new Date(
-                              obj.employeeProject.deAssignedDate
-                            ).toLocaleDateString("en-GB")
-                          )}
-                        </td>
+                        <td style={{ textAlign: "center" }}>{fromDate}</td>
+                        {toDate == "present" ? (
+                          <td style={{ fontSize: "1.25rem" }}>
+                            {
+                              <p
+                                style={{
+                                  fontWeight: "800",
+                                  margin: "0",
+                                  textAlign: "center",
+                                }}
+                              >
+                                --
+                              </p>
+                            }
+                          </td>
+                        ) : (
+                          <td style={{ textAlign: "center" }}>{toDate}</td>
+                        )}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-          ) : (
-            <p className="mt-4" style={{ textAlign: "center" }}></p>
-          )}
+          </div>
         </div>
       </div>
     </div>
