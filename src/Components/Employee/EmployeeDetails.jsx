@@ -40,19 +40,7 @@ const EmployeeDetails = () => {
         );
         const GetProjectsResponse = await EmployeeService.GetEmployeefcn(empId);
         setemployeeTracking(GetProjectsResponse);
-        console.log(employeeTracking.item, "=============> employee tracking");
-        // console.log(GetProjectsResponse, "==============>");
-        // setProjectLength(GetProjectsResponse.item);
-        // setResponse(GetProjectsResponse.item);
-        // GetProjectsResponse.item.forEach((obj) => {
-        //   // setRole(obj.role);
-        //   setProjectManager(obj.projectManager);
-        //   setEmployeeProject(obj.employeeProject);
-        //   setProjects(obj.project);
-        //   setClient(obj.client);
-        // });
-        // console.log(client, "===============>");
-        // console.log(GetProjectsResponse, "================>");
+
         const employeeData = response.data;
         setEmployee(employeeData);
         if (employeeData.projectManagerId) {
