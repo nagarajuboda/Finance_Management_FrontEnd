@@ -74,6 +74,12 @@ const AdminDashboardServices = {
 
     return response.data;
   },
+  async GetProjectManager() {
+    const response = await axios.get(
+      `https://localhost:44305/api/Projects/GetProjectManagers`
+    );
+    return response.data;
+  },
 };
 
 export default AdminDashboardServices;
