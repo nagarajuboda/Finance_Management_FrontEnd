@@ -14,7 +14,6 @@ import { FaChevronRight } from "react-icons/fa";
 import { RiDashboard3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import Header from "./Header";
-
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
@@ -138,22 +137,41 @@ const Sidebar = ({ children }) => {
     {
       name: "Dashboards",
       icon: <RiDashboard3Line />,
-      submenu: [{ path: "/list2", name: "- AllEmployees" }],
+      submenu: [{ path: "/list2", name: "- All Employees" }],
     },
   ];
   const HrMenuItems = [
     {
       name: "Dashboards",
       icon: <RiDashboard3Line />,
-      submenu: [{ path: "/list2", name: "- ViewProjects" }],
+      submenu: [{ path: "/Dashboard/AllProjects", name: "-  All Projects" }],
     },
     {
       name: "Employees",
       icon: <RiDashboard3Line />,
-      submenu: [{ path: "/EmployeeDashboard", name: "- AllEmployees" }],
+      submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
     },
   ];
-
+  const IndianFinaceTeamMenu = [
+    {
+      name: "Hr Management",
+      icon: <RiDashboard3Line />,
+      submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
+    },
+    {
+      name: "Project Management",
+      icon: <IoPeopleOutline />,
+      submenu: [{ path: "/Dashboard/AllProjects", name: "- All Projects" }],
+    },
+    {
+      name: "Revenue",
+      icon: <VscProject />,
+      submenu: [
+        { path: "/IndianFinance/Revenue", name: "- Revenue" },
+        { path: "/IndianFinance/Revenuewe", name: "- Monthly Expensive" },
+      ],
+    },
+  ];
   const ProjectManagerMenuItems = [
     // {
     //   name: "Dashboards",
@@ -167,7 +185,7 @@ const Sidebar = ({ children }) => {
     //   ],
     // },
     {
-      name: "Hr Management",
+      name: "Dasboard",
       icon: <IoPeopleOutline />,
       submenu: [{ path: "/EmployeeDashboard", name: "- Employees" }],
     },
@@ -186,6 +204,8 @@ const Sidebar = ({ children }) => {
       ? adminMenuItems
       : sessionData?.employee?.role?.name === "Project Manager"
       ? ProjectManagerMenuItems
+      : sessionData?.employee?.role?.name === "Indian finace"
+      ? IndianFinaceTeamMenu
       : sessionData?.employee?.role?.name === "Hr"
       ? HrMenuItems
       : employeeMenuItems;

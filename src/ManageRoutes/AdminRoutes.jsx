@@ -17,6 +17,7 @@ import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject
 import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
 import Profile from "../Components/Admin/Pages/Profile";
 import AllEmployees from "../Components/Hr/Employees";
+import GetAllRevenue from "../Components/IndianFinance/Revenue";
 
 export default function AdminRoutes() {
   return (
@@ -39,6 +40,7 @@ export default function AdminRoutes() {
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
+        <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
         {/* hrRoutes */}
         <Route path="/AllEmployees" element={<AllEmployees />} />
       </Routes>
