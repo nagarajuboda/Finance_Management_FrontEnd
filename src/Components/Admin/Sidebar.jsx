@@ -152,6 +152,15 @@ const Sidebar = ({ children }) => {
       submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
     },
   ];
+  const USFinanceTeamMenuItems = [
+    {
+      name: "Dashboards",
+      icon: <RiDashboard3Line />,
+      submenu: [
+        { path: "/USFinance/UsFinaceALlProjects", name: "-  All Projects" },
+      ],
+    },
+  ];
   const IndianFinaceTeamMenu = [
     {
       name: "Hr Management",
@@ -173,21 +182,10 @@ const Sidebar = ({ children }) => {
     },
   ];
   const ProjectManagerMenuItems = [
-    // {
-    //   name: "Dashboards",
-    //   icon: <RiDashboard3Line />,
-    //   submenu: [
-    //     { path: "/list2", name: "- Invoice Management" },
-    //     { path: "/list1", name: "- HR management" },
-    //     { path: "/list2", name: "- Job Hiring Management" },
-    //     { path: "/list1", name: "- Project management1" },
-    //     { path: "/list1", name: "- Project management1" },
-    //   ],
-    // },
     {
       name: "Dasboard",
       icon: <IoPeopleOutline />,
-      submenu: [{ path: "/EmployeeDashboard", name: "- Employees" }],
+      submenu: [{ path: "/UnderManagerEmployees", name: "- UnderEmployees" }],
     },
     {
       name: "Project Management",
@@ -198,6 +196,18 @@ const Sidebar = ({ children }) => {
       ],
     },
   ];
+  const ManagerMenuItems = [
+    {
+      name: "Dasboard",
+      icon: <IoPeopleOutline />,
+      submenu: [{ path: "/UnderManagerEmployees", name: "- UnderEmployees" }],
+    },
+    {
+      name: "Project Management",
+      icon: <VscProject />,
+      submenu: [{ path: "/Employee/Projects", name: "- All projects" }],
+    },
+  ];
 
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
@@ -206,6 +216,10 @@ const Sidebar = ({ children }) => {
       ? ProjectManagerMenuItems
       : sessionData?.employee?.role?.name === "Indian finace"
       ? IndianFinaceTeamMenu
+      : sessionData?.employee?.role?.name === "Reporting Manager"
+      ? ManagerMenuItems
+      : sessionData?.employee?.role?.name === "US-Finance"
+      ? USFinanceTeamMenuItems
       : sessionData?.employee?.role?.name === "Hr"
       ? HrMenuItems
       : employeeMenuItems;

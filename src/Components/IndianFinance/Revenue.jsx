@@ -327,7 +327,7 @@ export default function GetAllRevenue() {
     { name: "Name", selector: (row) => row.name, sortable: true },
     { name: "Status", selector: (row) => row.status, sortable: true },
     { name: "Role", selector: (row) => row.role, sortable: true },
-    { name: "Manager", selector: (row) => row.manager, sortable: true },
+    { name: "Project Manager", selector: (row) => row.manager, sortable: true },
     { name: "Hours", selector: (row) => row.hours, sortable: true },
     { name: "Revenue", selector: (row) => row.revenue, sortable: true },
   ];

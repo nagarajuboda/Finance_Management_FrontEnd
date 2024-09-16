@@ -5,7 +5,6 @@ import { data } from "jquery";
 import { useNavigate } from "react-router-dom";
 export default function Projects() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-
   const navigate = useNavigate();
   const [projectDetails, setProjectDetails] = useState([]);
   useEffect(() => {
@@ -42,11 +41,21 @@ export default function Projects() {
         <table className="table table-striped">
           <thead>
             <tr>
-              <th>Project Name</th>
-              <th>Project Type</th>
-              <th>Start Date</th>
-              <th>Deadline</th>
-              <th>Progress </th>
+              <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                Project Name
+              </th>
+              <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                Project Type
+              </th>
+              <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                Start Date
+              </th>
+              <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                Deadline
+              </th>
+              <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                Progress{" "}
+              </th>
             </tr>
           </thead>
           <tbody>

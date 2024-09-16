@@ -161,7 +161,6 @@ export default function TimeSheet() {
     const ProjectEmployees = await axios.get(
       `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
     );
-
     const response = await TimeSheetService.GetTimeSheetDeatils(
       formattedDate,
       id
