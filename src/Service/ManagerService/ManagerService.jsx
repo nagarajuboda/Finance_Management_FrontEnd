@@ -2,7 +2,7 @@ import axios from "axios";
 const ManagerService = {
   async FcnUnderManagerEmployees(id) {
     const response = await axios.get(
-      `https://localhost:44305/api/Employees/UnderManagerEmployees?id=${id}`
+      `https://localhost:44305/api/Employees/GetEmployeesByManager?id=${id}`
     );
     return response.data;
   },
