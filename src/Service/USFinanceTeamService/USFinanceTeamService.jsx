@@ -13,7 +13,6 @@ const USFinanceTeamService = {
     return response.data;
   },
   async AddRevenue(obj, isSubmitted) {
-    console.log(isSubmitted, "000000000000000000000000");
     const response = await axios.post(
       `https://localhost:44305/api/Revenue/AddRevenue?isSubmitted=${isSubmitted}`,
       obj
