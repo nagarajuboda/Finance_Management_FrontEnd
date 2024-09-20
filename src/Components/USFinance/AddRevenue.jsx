@@ -1,6 +1,6 @@
 import "../../assets/Styles/AddRevenue.css";
 import DatePicker from "react-datepicker";
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar } from "@fortawesome/free-solid-svg-icons";
 import USFinanceTeamService from "../../Service/USFinanceTeamService/USFinanceTeamService";
@@ -11,7 +11,7 @@ import { format } from "date-fns";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { timestamp } from "rxjs";
+
 export default function AddRevenue() {
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -20,8 +20,8 @@ export default function AddRevenue() {
   const [projectId, setProjectId] = useState("");
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
   const [ProjectDetails, setProjectDetails] = useState({});
-  const [montth, setMonth] = useState();
   const id = localStorage.getItem("empId");
+
   const [rate, setRate] = useState({});
   const monthMap = {
     January: "1",
@@ -37,30 +37,29 @@ export default function AddRevenue() {
     November: "11",
     December: "12",
   };
+
   useEffect(() => {
     FetchData();
     GetTimeSheet(id, selectedDate);
   }, [id, selectedDate]);
 
   const handleDateChange = async (date) => {
-    const formattedDate = format(date, "MMMM yyyy");
     setSelectedDate(date);
-    const [month, year] = formattedDate.split(" ");
-    const monthNumber = monthMap[month];
-    await GetTimeSheet(id, selectedDate);
+    await GetTimeSheet(id, date);
   };
 
   const navigate = useNavigate();
+
   async function FetchData() {
     var response = await USFinanceTeamService.FcnGetProjectDetails(id);
     setProjectDetails(response.item.project);
   }
+
   const GetTimeSheet = async (ProjectID, date) => {
     const formattedDate = format(date, "MMMM yyyy");
     const [month, year] = formattedDate.split(" ");
     const monthNumber = monthMap[month];
     var loader = true;
-    console.log(GetSubmitedRevenue, "submited revenue ");
     var response = await axios.get(
       `https://localhost:44305/api/Timesheets/GetTimesheetsByMonthAndYear?projectId=${ProjectID}&month=${monthNumber}&year=${year}`
     );
@@ -74,27 +73,27 @@ export default function AddRevenue() {
       monthNumber,
       year
     );
-
     setGetRevenue(GetRevenueResponse);
   };
+
   function backtoprojects(e) {
     FetchData();
     e.preventDefault();
     navigate("/USFinance/UsFinaceALlProjects");
   }
+
   const handleHoursChange = (id, value) => {
-    console.log(id, value, "hours change"); // Check the values being passed
     setRate((prev) => ({
       ...prev,
-      [id]: value, // Update the state with the new value
+      [id]: value,
     }));
   };
+
   const SaveForm = async () => {
     const employeeData = TimeSheetdata.map((employee) => ({
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-    console.log(employeeData, "-------------->");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false
@@ -105,12 +104,13 @@ export default function AddRevenue() {
         autoClose: 4000,
       });
     } else {
-      toast.error(response.error.message, {
+      toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",
         autoClose: 4000,
       });
     }
   };
+
   const SubmitFormFunction = async () => {
     const employeeData = TimeSheetdata.map((employee) => ({
       timesheetId: employee.id,
@@ -127,14 +127,14 @@ export default function AddRevenue() {
       });
 
       await GetTimeSheet(id, selectedDate);
-      //setDisabledTabs((prev) => [...prev, selectedTabIndex]);
     } else {
-      toast.error(response.error.message, {
+      toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",
         autoClose: 4000,
       });
     }
   };
+
   const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <div
       className="custom-input"
@@ -153,10 +153,28 @@ export default function AddRevenue() {
       <span>{value}</span>
     </div>
   ));
+
   const Resetfunction = (e) => {
-    console.log("reset click");
     setRate({});
   };
+
+  // Memoize the table headers
+  const tableHeaders = useMemo(() => {
+    return (
+      <thead>
+        <tr>
+          <th style={{ fontSize: "small", fontWeight: "bold" }}>NAME</th>
+          <th style={{ fontSize: "small" }}>EMAIL</th>
+          <th style={{ textAlign: "center", fontSize: "small" }}>STATUS</th>
+          <th style={{ textAlign: "center", fontSize: "small" }}>ROLE</th>
+          <th style={{ fontSize: "small" }}>WORKED HOURS</th>
+          <th style={{ fontSize: "small" }}>RATE FOR HOURS</th>
+          <th style={{ fontSize: "small" }}>TOTAL REVENUE</th>
+        </tr>
+      </thead>
+    );
+  }, []);
+
   return (
     <div className="revenuemaindiv">
       <div className="d-flex">
@@ -169,86 +187,35 @@ export default function AddRevenue() {
       <div className="card">
         <div className="">
           <p className="conetntrevenue">Add Monthly Revenue</p>
-          <div
-            style={{ display: "flex", justifyContent: "space-between" }}
-            className=""
-          >
-            <div className="" style={{ color: "blue" }}>
-              {ProjectDetails.projectName}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "end",
-              }}
-            >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ color: "blue" }}>{ProjectDetails.projectName}</div>
+            <div style={{ display: "flex", justifyContent: "end" }}>
               <DatePicker
                 selected={selectedDate}
                 onChange={(date) => handleDateChange(date)}
                 showMonthYearPicker
                 dateFormat="MMMM yyyy"
                 customInput={<CustomInput />}
-                className="w-50   "
+                className="w-50"
                 maxDate={maxDate}
               />
             </div>
           </div>
         </div>
 
-        <table className="table table-striped  mt-3">
-          <thead>
-            <tr>
-              <th
-                className=""
-                style={{ fontSize: "small", fontWeight: "bold" }}
-              >
-                NAME
-              </th>
-              <th className="" style={{ fontSize: "small" }}>
-                EMAIL
-              </th>
-              <th
-                className=""
-                style={{ textAlign: "center", fontSize: "small" }}
-              >
-                STATUS
-              </th>
-              <th
-                className=""
-                style={{ textAlign: "center", fontSize: "small" }}
-              >
-                ROLE
-              </th>
-              <th className="" style={{ fontSize: "small" }}>
-                WORKED HOURS
-              </th>
-              <th className="" style={{ fontSize: "small" }}>
-                RATE FOR HOURS
-              </th>
-              <th style={{ fontSize: "small" }}>TOTAL REVENUE</th>
-            </tr>
-          </thead>
+        <table className="table table-striped mt-3">
+          {tableHeaders} {/* Use memoized headers */}
           <tbody>
             {TimeSheetdata.length === 0 ? (
               <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>No employees in this project</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colSpan="7" style={{ textAlign: "center" }}>
+                  No employees in this project
+                </td>
               </tr>
             ) : (
               TimeSheetdata.map((emp, index) => (
                 <tr key={index}>
-                  <td>
-                    <div className="d-flex" style={{ alignItems: "center" }}>
-                      <div>
-                        <div className=" ">{emp.name}</div>
-                      </div>
-                    </div>
-                  </td>
+                  <td>{emp.name}</td>
                   <td>{emp.email}</td>
                   <td>
                     <div
@@ -263,14 +230,10 @@ export default function AddRevenue() {
                       <span>{emp.status == 1 ? "Active" : "InActive"}</span>
                     </div>
                   </td>
-                  <td>
-                    <div className="role" style={{ textAlign: "center" }}>
-                      {emp.role}
-                    </div>
-                  </td>
+                  <td style={{ textAlign: "center" }}>{emp.role}</td>
                   <td style={{ textAlign: "center" }}>{emp.hoursWorked}</td>
                   <td>
-                    {GetSubmitedRevenue.isSuccess === true &&
+                    {GetSubmitedRevenue.isSuccess &&
                     GetSubmitedRevenue.item.some(
                       (obj) => obj.timesheetId === emp.id
                     ) ? (
@@ -278,29 +241,25 @@ export default function AddRevenue() {
                         .filter((obj) => obj.timesheetId === emp.id)
                         .map((filteredEmployee) => (
                           <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited === true ? (
+                            {filteredEmployee.isSubmited == true ? (
                               <div style={{ textAlign: "center" }}>
-                                {console.log("isSubmited true block")}
                                 {filteredEmployee.hourlyRate}
                               </div>
                             ) : (
                               <div
                                 style={{
                                   display: "flex",
-                                  justifyContent: "",
+                                  justifyContent: "center",
                                 }}
                               >
+                                {console.log("false")}
                                 <input
                                   type="number"
-                                  className="form-control w-50"
-                                  value={
-                                    rate[emp.id] !== undefined
-                                      ? rate[emp.id]
-                                      : filteredEmployee.hourlyRate
-                                  } // Use rate if defined, otherwise fallback
+                                  placeholder="Hourly Rate"
+                                  value={rate[emp.id] || ""}
                                   onChange={(e) =>
                                     handleHoursChange(emp.id, e.target.value)
-                                  } // Update the state on change
+                                  }
                                 />
                               </div>
                             )}
@@ -308,67 +267,107 @@ export default function AddRevenue() {
                         ))
                     ) : (
                       <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "",
-                        }}
+                        style={{ display: "flex", justifyContent: "center" }}
                       >
                         <input
                           type="number"
-                          className="form-control w-50"
+                          placeholder="Hourly Rate"
                           value={rate[emp.id] || ""}
+                          disabled={false}
                           onChange={(e) =>
                             handleHoursChange(emp.id, e.target.value)
                           }
+                          style={{ textAlign: "center" }}
                         />
                       </div>
                     )}
                   </td>
                   <td>
-                    {GetSubmitedRevenue.isSuccess === true &&
+                    {GetSubmitedRevenue.isSuccess &&
+                    GetSubmitedRevenue.item.some(
+                      (obj) => obj.timesheetId === emp.id
+                    ) ? (
                       GetSubmitedRevenue.item
                         .filter((obj) => obj.timesheetId === emp.id)
                         .map((filteredEmployee) => (
                           <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited && (
+                            {filteredEmployee.isSubmited ? (
                               <div style={{ textAlign: "center" }}>
                                 {filteredEmployee.totalRevenue}
                               </div>
+                            ) : (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <input
+                                  type="number"
+                                  placeholder="Total Revenue"
+                                  disabled={true}
+                                  style={{
+                                    textAlign: "center",
+                                    border: "none",
+                                  }}
+                                  value={emp.hoursWorked * rate[emp.id] || "0"}
+                                />
+                              </div>
                             )}
                           </div>
-                        ))}
+                        ))
+                    ) : (
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <input
+                          type="number"
+                          placeholder="Total Revenue"
+                          value={emp.hoursWorked * rate[emp.id] || "0"}
+                          disabled={true}
+                          style={{ textAlign: "center" }}
+                        />
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
-        <div className="d-flex" style={{ justifyContent: "end" }}>
-          <div className="me-4">
-            <button
-              className=" button  resetbutton"
-              onClick={Resetfunction}
-              // disabled={disiblebuttons}
-            >
-              Reset
-            </button>
-          </div>
-          <div className="me-4">
-            <button className=" savebutton button" onClick={SaveForm}>
-              Save
-            </button>
-          </div>
-          <div>
-            <button
-              className="submitbutton button"
-              onClick={SubmitFormFunction}
-            >
-              Submit
-            </button>
-          </div>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "15px",
+          }}
+        >
+          <button
+            className="btn btn-primary mr-2"
+            style={{ marginRight: "10px", backgroundColor: "grey" }}
+            onClick={Resetfunction}
+          >
+            Reset
+          </button>
+          <button
+            className="btn btn-primary mr-2"
+            style={{ marginRight: "10px" }}
+            onClick={SaveForm}
+          >
+            Save
+          </button>
+          <button
+            className="btn btn-primary"
+            style={{ backgroundColor: "blue" }}
+            onClick={SubmitFormFunction}
+          >
+            Submit
+          </button>
         </div>
       </div>
-      <ToastContainer position="top-end" autoClose={5000} />
+
+      <ToastContainer />
     </div>
   );
 }

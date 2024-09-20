@@ -648,21 +648,6 @@ export function ViewProject() {
                   <span style={{ color: "black", fontWeight: "600" }}>
                     Project Manager
                   </span>
-                  {/* <select
-                    id="manager"
-                    value={selectedManagerId}
-                    onChange={handleManagerChange}
-                    className="form-control"
-                  >
-                    <option value="">--Select a Manager--</option>
-
-                    {projectManagers.map((manager) => (
-                      <option key={manager.id} value={manager.email}>
-                        {manager.firstName} {manager.lastName}
-                      </option>
-                    ))}
-                  </select>
-                  <input type="text" value={selectedManagerId} /> */}
                   <select
                     id="manager"
                     value={selectedManagerId} // Bound to selected manager email
@@ -676,13 +661,6 @@ export function ViewProject() {
                       </option>
                     ))}
                   </select>
-                  {/* <input
-                    type="text"
-                    name="projectManager"
-                    value={projectManagerName}
-                    className="form-control"
-                    onChange={(e) => setProjectManagerName(e.target.value)}
-                  /> */}
                 </div>
                 <div className="col-8">
                   <span style={{ color: "black", fontWeight: "600" }}>
