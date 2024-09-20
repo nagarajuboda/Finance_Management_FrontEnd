@@ -11,6 +11,8 @@ import { format } from "date-fns";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaDollarSign } from "react-icons/fa6";
+import { useRef } from "react";
 
 export default function AddRevenue() {
   const now = new Date();
@@ -20,6 +22,8 @@ export default function AddRevenue() {
   const [projectId, setProjectId] = useState("");
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
   const [ProjectDetails, setProjectDetails] = useState({});
+  const [flag, setflag] = useState(true);
+
   const id = localStorage.getItem("empId");
 
   const [rate, setRate] = useState({});
@@ -73,6 +77,9 @@ export default function AddRevenue() {
       monthNumber,
       year
     );
+    if (GetRevenueResponse.isSuccess) {
+      setflag(false);
+    }
     setGetRevenue(GetRevenueResponse);
   };
 
@@ -121,6 +128,9 @@ export default function AddRevenue() {
       true
     );
     if (AddtimeSheetResponse.isSuccess) {
+      setflag(false);
+    }
+    if (AddtimeSheetResponse.isSuccess) {
       toast.success("Successfully submitted.", {
         position: "top-right",
         autoClose: 4000,
@@ -158,23 +168,6 @@ export default function AddRevenue() {
     setRate({});
   };
 
-  // Memoize the table headers
-  const tableHeaders = useMemo(() => {
-    return (
-      <thead>
-        <tr>
-          <th style={{ fontSize: "small", fontWeight: "bold" }}>NAME</th>
-          <th style={{ fontSize: "small" }}>EMAIL</th>
-          <th style={{ textAlign: "center", fontSize: "small" }}>STATUS</th>
-          <th style={{ textAlign: "center", fontSize: "small" }}>ROLE</th>
-          <th style={{ fontSize: "small" }}>WORKED HOURS</th>
-          <th style={{ fontSize: "small" }}>RATE FOR HOURS</th>
-          <th style={{ fontSize: "small" }}>TOTAL REVENUE</th>
-        </tr>
-      </thead>
-    );
-  }, []);
-
   return (
     <div className="revenuemaindiv">
       <div className="d-flex">
@@ -204,7 +197,77 @@ export default function AddRevenue() {
         </div>
 
         <table className="table table-striped mt-3">
-          {tableHeaders} {/* Use memoized headers */}
+          <thead>
+            <tr>
+              <th
+                style={{
+                  fontSize: "small",
+                  fontWeight: "bold",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                NAME
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                EMAIL
+              </th>
+              <th
+                style={{
+                  textAlign: "center",
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                STATUS
+              </th>
+              <th
+                style={{
+                  textAlign: "center",
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                ROLE
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                WORKED HOURS
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                RATE FOR HOURS(
+                <FaDollarSign />)
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                TOTAL REVENUE( <FaDollarSign />)
+              </th>
+            </tr>
+          </thead>
           <tbody>
             {TimeSheetdata.length === 0 ? (
               <tr>
@@ -241,8 +304,10 @@ export default function AddRevenue() {
                         .filter((obj) => obj.timesheetId === emp.id)
                         .map((filteredEmployee) => (
                           <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited == true ? (
+                            {filteredEmployee.isSubmited == true &&
+                            flag === false ? (
                               <div style={{ textAlign: "center" }}>
+                                <FaDollarSign style={{ fontSize: "0.90rem" }} />
                                 {filteredEmployee.hourlyRate}
                               </div>
                             ) : (
@@ -255,7 +320,7 @@ export default function AddRevenue() {
                                 {console.log("false")}
                                 <input
                                   type="number"
-                                  placeholder="Hourly Rate"
+                                  placeholder="Hourly Rate In $"
                                   value={rate[emp.id] || ""}
                                   onChange={(e) =>
                                     handleHoursChange(emp.id, e.target.value)
@@ -271,7 +336,7 @@ export default function AddRevenue() {
                       >
                         <input
                           type="number"
-                          placeholder="Hourly Rate"
+                          placeholder="Hourly Rate In $"
                           value={rate[emp.id] || ""}
                           disabled={false}
                           onChange={(e) =>
@@ -291,8 +356,9 @@ export default function AddRevenue() {
                         .filter((obj) => obj.timesheetId === emp.id)
                         .map((filteredEmployee) => (
                           <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited ? (
+                            {filteredEmployee.isSubmited && flag === false ? (
                               <div style={{ textAlign: "center" }}>
+                                <FaDollarSign style={{ fontSize: "0.90rem" }} />
                                 {filteredEmployee.totalRevenue}
                               </div>
                             ) : (

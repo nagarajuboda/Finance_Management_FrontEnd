@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import DataTable from "react-data-table-component";
 import "../../../src/assets/Styles/Revenue.css";
 import IndianFinanceService from "../../Service/IndianFinance/IndianFinanceService";
+import { FaDollarSign } from "react-icons/fa6";
 
 export default function GetAllRevenue() {
   const monthMap = {
@@ -31,278 +32,6 @@ export default function GetAllRevenue() {
     GetRevenue(selectedDate);
   }, [selectedDate]);
   const [data, setData] = useState([]);
-  //   const [data, setData] = useState([
-  //     {
-  //       employeeId: "IARC001",
-  //       name: "Nagaraju",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 200,
-  //       revenue: 1000000,
-  //     },
-  //     {
-  //       employeeId: "IARC002",
-  //       name: "Sita",
-  //       status: "Inactive",
-  //       role: "Manager",
-  //       manager: "Ravi",
-  //       hours: 180,
-  //       revenue: 850000,
-  //     },
-  //     {
-  //       employeeId: "IARC003",
-  //       name: "Ravi",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 210,
-  //       revenue: 1100000,
-  //     },
-  //     {
-  //       employeeId: "IARC004",
-  //       name: "Anil",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 190,
-  //       revenue: 900000,
-  //     },
-  //     {
-  //       employeeId: "IARC005",
-  //       name: "Kiran",
-  //       status: "Inactive",
-  //       role: "Intern",
-  //       manager: "Ravi",
-  //       hours: 150,
-  //       revenue: 500000,
-  //     },
-  //     {
-  //       employeeId: "IARC006",
-  //       name: "Swati",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 220,
-  //       revenue: 1200000,
-  //     },
-  //     {
-  //       employeeId: "IARC007",
-  //       name: "Raj",
-  //       status: "Active",
-  //       role: "Manager",
-  //       manager: "Ravi",
-  //       hours: 200,
-  //       revenue: 950000,
-  //     },
-  //     {
-  //       employeeId: "IARC008",
-  //       name: "Renu",
-  //       status: "Inactive",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 170,
-  //       revenue: 800000,
-  //     },
-  //     {
-  //       employeeId: "IARC009",
-  //       name: "Amit",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 205,
-  //       revenue: 1050000,
-  //     },
-  //     {
-  //       employeeId: "IARC010",
-  //       name: "Pooja",
-  //       status: "Active",
-  //       role: "Intern",
-  //       manager: "Ravi",
-  //       hours: 160,
-  //       revenue: 600000,
-  //     },
-  //     {
-  //       employeeId: "IARC011",
-  //       name: "Meera",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 210,
-  //       revenue: 1150000,
-  //     },
-  //     {
-  //       employeeId: "IARC012",
-  //       name: "Suresh",
-  //       status: "Inactive",
-  //       role: "Manager",
-  //       manager: "Nagaraju",
-  //       hours: 180,
-  //       revenue: 880000,
-  //     },
-  //     {
-  //       employeeId: "IARC013",
-  //       name: "Sanjay",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Ravi",
-  //       hours: 190,
-  //       revenue: 900000,
-  //     },
-  //     {
-  //       employeeId: "IARC014",
-  //       name: "Divya",
-  //       status: "Inactive",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 150,
-  //       revenue: 550000,
-  //     },
-  //     {
-  //       employeeId: "IARC015",
-  //       name: "Vikram",
-  //       status: "Active",
-  //       role: "Manager",
-  //       manager: "Nagaraju",
-  //       hours: 230,
-  //       revenue: 1250000,
-  //     },
-  //     {
-  //       employeeId: "IARC016",
-  //       name: "Gita",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Ravi",
-  //       hours: 220,
-  //       revenue: 1150000,
-  //     },
-  //     {
-  //       employeeId: "IARC017",
-  //       name: "Sandeep",
-  //       status: "Inactive",
-  //       role: "Intern",
-  //       manager: "Raju",
-  //       hours: 140,
-  //       revenue: 450000,
-  //     },
-  //     {
-  //       employeeId: "IARC018",
-  //       name: "Nisha",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 200,
-  //       revenue: 1000000,
-  //     },
-  //     {
-  //       employeeId: "IARC019",
-  //       name: "Akash",
-  //       status: "Active",
-  //       role: "Manager",
-  //       manager: "Ravi",
-  //       hours: 210,
-  //       revenue: 1050000,
-  //     },
-  //     {
-  //       employeeId: "IARC020",
-  //       name: "Neha",
-  //       status: "Inactive",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 170,
-  //       revenue: 750000,
-  //     },
-  //     {
-  //       employeeId: "IARC021",
-  //       name: "Deepak",
-  //       status: "Active",
-  //       role: "Intern",
-  //       manager: "Nagaraju",
-  //       hours: 160,
-  //       revenue: 600000,
-  //     },
-  //     {
-  //       employeeId: "IARC022",
-  //       name: "Rita",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Ravi",
-  //       hours: 200,
-  //       revenue: 1000000,
-  //     },
-  //     {
-  //       employeeId: "IARC023",
-  //       name: "Vinod",
-  //       status: "Inactive",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 150,
-  //       revenue: 500000,
-  //     },
-  //     {
-  //       employeeId: "IARC024",
-  //       name: "Mina",
-  //       status: "Active",
-  //       role: "Manager",
-  //       manager: "Nagaraju",
-  //       hours: 230,
-  //       revenue: 1200000,
-  //     },
-  //     {
-  //       employeeId: "IARC025",
-  //       name: "Kavita",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Ravi",
-  //       hours: 210,
-  //       revenue: 1100000,
-  //     },
-  //     {
-  //       employeeId: "IARC026",
-  //       name: "Rajesh",
-  //       status: "Inactive",
-  //       role: "Intern",
-  //       manager: "Raju",
-  //       hours: 140,
-  //       revenue: 450000,
-  //     },
-  //     {
-  //       employeeId: "IARC027",
-  //       name: "Suman",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 200,
-  //       revenue: 1000000,
-  //     },
-  //     {
-  //       employeeId: "IARC028",
-  //       name: "Arun",
-  //       status: "Active",
-  //       role: "Manager",
-  //       manager: "Ravi",
-  //       hours: 220,
-  //       revenue: 1150000,
-  //     },
-  //     {
-  //       employeeId: "IARC029",
-  //       name: "Meenal",
-  //       status: "Inactive",
-  //       role: "Employee",
-  //       manager: "Raju",
-  //       hours: 160,
-  //       revenue: 600000,
-  //     },
-  //     {
-  //       employeeId: "IARC030",
-  //       name: "Jaya",
-  //       status: "Active",
-  //       role: "Employee",
-  //       manager: "Nagaraju",
-  //       hours: 200,
-  //       revenue: 1000000,
-  //     },
-  //   ]);
   const [searchText, setSearchText] = useState("");
 
   const handleDateChange = async (date) => {
@@ -332,20 +61,48 @@ export default function GetAllRevenue() {
     )
   );
 
+  // Define columns
   const columns = [
     { name: "ID", selector: (row) => row.employeeId, sortable: true },
     { name: "Name", selector: (row) => row.employeeName, sortable: true },
-    { name: "Status", selector: (row) => row.employeeStatus, sortable: true },
+    {
+      name: "Status",
+      selector: (row) => (row.employeeStatus === 1 ? "Active" : "Inactive"),
+      cell: (row) => (
+        <div
+          style={{
+            backgroundColor:
+              row.employeeStatus === 1 ? "#196e8a" : "rgba(248, 215, 218, 0.8)",
+            color: row.employeeStatus === 1 ? "white" : "red",
+            padding: "5px",
+            borderRadius: "8px",
+            textAlign: "center",
+          }}
+        >
+          {row.employeeStatus === 1 ? "Active" : "Inactive"}
+        </div>
+      ),
+      sortable: true,
+    },
     { name: "Role", selector: (row) => row.roleName, sortable: true },
     {
       name: "Project Manager",
-      selector: (row) => row.projectManagerName,
+      selector: (row) =>
+        row.projectManagerName == null ? "NA" : row.projectManagerName,
+
       sortable: true,
     },
     { name: "Hours", selector: (row) => row.hoursWorked, sortable: true },
     {
       name: "Revenue",
       selector: (row) => row.revenueSubmitted,
+      cell: (row) => (
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <FaDollarSign style={{ fontSize: "0.90rem" }} />
+          {/* Add the dollar icon */}
+          {row.revenueSubmitted}
+        </div>
+      ),
       sortable: true,
     },
   ];
