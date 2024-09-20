@@ -34,15 +34,25 @@ export function ViewProject() {
   const [projectManagerEmail, setProjectMangerEmail] = useState("");
   const [projectManagerName, setProjectMangerName] = useState("");
   const [sessiondata, setSessiondata] = useState(null);
+  const [projectManagers, setProjectManagers] = useState([]);
   const navigate = useNavigate();
   const [sessionData, setSessionDataState] = useState(null);
+  const [status, setStatus] = useState("InActive");
   const id = localStorage.getItem("projectId");
   useEffect(() => {
     FetchData();
   }, [id]);
   useEffect(() => {}, []);
+  const [selectedManagerId, setSelectedManagerId] = useState("");
 
+  const handleManagerChange = (event) => {
+    setSelectedManagerId(event.target.value);
+  };
   async function FetchData() {
+    var projectManagerResponse =
+      await AdminDashboardServices.GetProjectManager();
+    setProjectManagers(projectManagerResponse.item);
+
     const userDetails = JSON.parse(localStorage.getItem("sessionData"));
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
@@ -57,11 +67,13 @@ export function ViewProject() {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
       setProjectMangerEmail(result.item.projectMangerEmail);
-      setProjectMangerName(result.item.projectMangerName);
+      //setSelectedManagerId(result.item.projectMangerName);
+      setStatus(result.item.project.status);
+      setSelectedManagerId(result.item.projectMangerEmail);
       setDataReady(true);
     }
   }
-  const [status, setStatus] = useState("InActive");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProjectValues({
@@ -109,6 +121,12 @@ export function ViewProject() {
   }
   async function updateformsubmit(e) {
     e.preventDefault();
+
+    const selectedManageridd = projectManagers.find(
+      (el) => el.email === selectedManagerId
+    );
+    ProjectValues.status = status;
+    ProjectValues.projectManager = selectedManageridd.id;
     var response = await AdminDashboardServices.fcnUpdateProject(ProjectValues);
     if (response.isSuccess) {
       toast.success("Update Successfully done. ", {
@@ -605,8 +623,8 @@ export function ViewProject() {
                     onChange={handleChange}
                     className="form-control"
                   >
-                    <option value="Active">Active</option>
-                    <option value="InActive">InActive</option>
+                    <option value="0">Active</option>
+                    <option value="1">InActive</option>
                   </select>
                 </div>
                 <div className="col-4">
@@ -630,13 +648,19 @@ export function ViewProject() {
                   <span style={{ color: "black", fontWeight: "600" }}>
                     Project Manager
                   </span>
-                  <input
-                    type="text"
-                    name="projectManager"
-                    value={projectManagerName}
+                  <select
+                    id="manager"
+                    value={selectedManagerId} // Bound to selected manager email
+                    onChange={handleManagerChange} // Handle change
                     className="form-control"
-                    onChange={(e) => setProjectManagerName(e.target.value)}
-                  />
+                  >
+                    <option value="">--Select a Manager--</option>
+                    {projectManagers.map((manager) => (
+                      <option key={manager.id} value={manager.email}>
+                        {manager.firstName} {manager.lastName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="col-8">
                   <span style={{ color: "black", fontWeight: "600" }}>

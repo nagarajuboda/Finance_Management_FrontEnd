@@ -6,6 +6,7 @@ export default function ViewMangerProject() {
   const [project, setProject] = useState({});
 
   useEffect(() => {
+    projectManager();
     const projectId = localStorage.getItem("ProjectID");
     setProjectid(projectId);
     if (projectid) {
@@ -15,6 +16,7 @@ export default function ViewMangerProject() {
 
   async function FetchData(projectid) {
     var response = await EmployeeService.FcnGetAllProjectEmployees(projectid);
+
     if (response.isSuccess) {
       setProjectEmployees(response.item.item2);
       setProject(response.item.item1);

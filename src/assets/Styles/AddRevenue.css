@@ -1,0 +1,12 @@
+.conetntrevenue {
+  font-size: 1rem;
+  color: #196e8a;
+  font-family: "Public Sans", sans-serif;
+  font-family: sans-serif;
+  font-weight: 700;
+}
+
+.Revenuetd {
+  display: flex;
+  justify-content: "end";
+}

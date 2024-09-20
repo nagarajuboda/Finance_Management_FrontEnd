@@ -1,0 +1,30 @@
+.viewemployeecontent {
+  font-size: 1.25rem;
+  color: #196e8a;
+  font-family: "Public Sans", sans-serif;
+  font-family: sans-serif;
+  font-weight: 700;
+}
+
+.view-employee-row {
+  margin-bottom: 15px;
+}
+
+.view-employee-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.view-employee-content {
+  margin-top: 20px;
+}
+
+@media (min-width: 768px) {
+  .view-employee-label {
+    font-size: 1.1rem;
+  }
+
+  .view-employee-value {
+    font-size: 1.1rem;
+  }
+}

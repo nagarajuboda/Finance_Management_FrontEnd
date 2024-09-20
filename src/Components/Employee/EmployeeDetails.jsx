@@ -266,11 +266,21 @@ const EmployeeDetails = () => {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    <th>PROJECT NAME</th>
-                    <th>CLIENT NAME</th>
-                    <th>PROJECT MANAGER</th>
-                    <th>FROM DATE (dd/mm/yyyy)</th>
-                    <th>TO DATE (dd/mm/yyyy)</th>
+                    <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                      PROJECT NAME
+                    </th>
+                    <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                      CLIENT NAME
+                    </th>
+                    <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                      PROJECT MANAGER
+                    </th>
+                    <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                      FROM DATE (dd/mm/yyyy)
+                    </th>
+                    <th style={{ backgroundColor: "#196e8a", color: "white" }}>
+                      TO DATE (dd/mm/yyyy)
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

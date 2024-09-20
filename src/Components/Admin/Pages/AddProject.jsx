@@ -96,7 +96,7 @@ export default function AddProject() {
   async function fetchData() {
     try {
       var response1 = await AdminDashboardServices.fcngetEmployees();
-
+      console.log(response1, "getallEmployees");
       setEmployees(response1.item);
       var response = await AdminDashboardServices.FcnGetAllClients();
       var result = response.item;
@@ -107,7 +107,6 @@ export default function AddProject() {
   }
   const handleChange = async (e) => {
     const { name, value } = e.target;
-
     if (name === "Department") {
       if (value === "") {
         setFilteredTeams([]);
@@ -494,7 +493,8 @@ export default function AddProject() {
                       key={client.employee.id}
                       value={client.employee.email}
                     >
-                      {`${client.employee.firstName} ${client.employee.lastName}`}
+                      {`${client.employee.firstName} ${client.employee.lastName}`}{" "}
+                      ({client.role.name})
                     </option>
                   ))}
                 </select>
