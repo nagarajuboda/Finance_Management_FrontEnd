@@ -185,7 +185,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Dasboard",
       icon: <IoPeopleOutline />,
-      submenu: [{ path: "/UnderManagerEmployees", name: "- UnderEmployees" }],
+      submenu: [{ path: "/UnderManagerEmployees", name: "- Employees" }],
     },
     {
       name: "Project Management",

@@ -13,6 +13,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaDollarSign } from "react-icons/fa6";
 import { useRef } from "react";
+import GetAllRevenue from "../IndianFinance/Revenue";
 
 export default function AddRevenue() {
   const now = new Date();
@@ -21,8 +22,9 @@ export default function AddRevenue() {
   const [TimeSheetdata, setTimeSheet] = useState([]);
   const [projectId, setProjectId] = useState("");
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
+
+  const [disiblebuttons, setDisiblebuttons] = useState(false);
   const [ProjectDetails, setProjectDetails] = useState({});
-  const [flag, setflag] = useState(true);
 
   const id = localStorage.getItem("empId");
 
@@ -77,10 +79,20 @@ export default function AddRevenue() {
       monthNumber,
       year
     );
-    if (GetRevenueResponse.isSuccess) {
-      setflag(false);
-    }
     setGetRevenue(GetRevenueResponse);
+
+    if (
+      GetRevenueResponse.isSuccess === true &&
+      GetRevenueResponse.item.length > 0
+    ) {
+      if (GetRevenueResponse.item.every((a) => a.isSubmited === true)) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+    } else {
+      setDisiblebuttons(false);
+    }
   };
 
   function backtoprojects(e) {
@@ -89,10 +101,10 @@ export default function AddRevenue() {
     navigate("/USFinance/UsFinaceALlProjects");
   }
 
-  const handleHoursChange = (id, value) => {
+  const handleHoursChange = (timesheetId, value) => {
     setRate((prev) => ({
       ...prev,
-      [id]: value,
+      [timesheetId]: value,
     }));
   };
 
@@ -101,6 +113,7 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
+
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false
@@ -127,9 +140,7 @@ export default function AddRevenue() {
       employeeData,
       true
     );
-    if (AddtimeSheetResponse.isSuccess) {
-      setflag(false);
-    }
+
     if (AddtimeSheetResponse.isSuccess) {
       toast.success("Successfully submitted.", {
         position: "top-right",
@@ -195,7 +206,6 @@ export default function AddRevenue() {
             </div>
           </div>
         </div>
-
         <table className="table table-striped mt-3">
           <thead>
             <tr>
@@ -259,6 +269,7 @@ export default function AddRevenue() {
               </th>
               <th
                 style={{
+                  textAlign: "center",
                   fontSize: "small",
                   backgroundColor: "#196e8a",
                   color: "white",
@@ -272,7 +283,7 @@ export default function AddRevenue() {
             {TimeSheetdata.length === 0 ? (
               <tr>
                 <td colSpan="7" style={{ textAlign: "center" }}>
-                  No employees in this project
+                  No timesheet in this project
                 </td>
               </tr>
             ) : (
@@ -290,46 +301,56 @@ export default function AddRevenue() {
                         textAlign: "center",
                       }}
                     >
-                      <span>{emp.status == 1 ? "Active" : "InActive"}</span>
+                      <span>{emp.status === 1 ? "Active" : "Inactive"}</span>
                     </div>
                   </td>
                   <td style={{ textAlign: "center" }}>{emp.role}</td>
                   <td style={{ textAlign: "center" }}>{emp.hoursWorked}</td>
-                  <td>
-                    {GetSubmitedRevenue.isSuccess &&
-                    GetSubmitedRevenue.item.some(
-                      (obj) => obj.timesheetId === emp.id
-                    ) ? (
-                      GetSubmitedRevenue.item
-                        .filter((obj) => obj.timesheetId === emp.id)
-                        .map((filteredEmployee) => (
-                          <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited == true &&
-                            flag === false ? (
-                              <div style={{ textAlign: "center" }}>
-                                <FaDollarSign style={{ fontSize: "0.90rem" }} />
-                                {filteredEmployee.hourlyRate}
-                              </div>
-                            ) : (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                {console.log("false")}
-                                <input
-                                  type="number"
-                                  placeholder="Hourly Rate In $"
-                                  value={rate[emp.id] || ""}
-                                  onChange={(e) =>
-                                    handleHoursChange(emp.id, e.target.value)
+                  <td style={{ textAlign: "center" }}>
+                    {GetSubmitedRevenue.isSuccess === true ? (
+                      GetSubmitedRevenue.item.map(
+                        (obj) =>
+                          obj.timesheetId === emp.id &&
+                          (obj.isSubmited === true ? (
+                            <p
+                              key={obj.timesheetId}
+                              style={{ textAlign: "center" }}
+                            >
+                              {obj.hourlyRate}
+                            </p>
+                          ) : (
+                            <div
+                              key={obj.timesheetId}
+                              style={{
+                                display: "flex",
+                                justifyContent: "start",
+                              }}
+                            >
+                              <input
+                                type="number"
+                                placeholder="Hourly Rate In $"
+                                value={
+                                  rate[obj.timesheetId] !== undefined
+                                    ? rate[obj.timesheetId]
+                                    : obj.hourlyRate
+                                }
+                                onChange={(e) => {
+                                  const newRate = e.target.value;
+
+                                  if (
+                                    !isNaN(newRate) &&
+                                    (newRate === "" || newRate >= 0)
+                                  ) {
+                                    handleHoursChange(obj.timesheetId, newRate);
+                                  } else {
+                                    handleHoursChange(obj.timesheetId, rate);
                                   }
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ))
+                                }}
+                                style={{ width: "150px" }}
+                              />
+                            </div>
+                          ))
+                      )
                     ) : (
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -347,41 +368,35 @@ export default function AddRevenue() {
                       </div>
                     )}
                   </td>
-                  <td>
-                    {GetSubmitedRevenue.isSuccess &&
-                    GetSubmitedRevenue.item.some(
-                      (obj) => obj.timesheetId === emp.id
-                    ) ? (
-                      GetSubmitedRevenue.item
-                        .filter((obj) => obj.timesheetId === emp.id)
-                        .map((filteredEmployee) => (
-                          <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited && flag === false ? (
-                              <div style={{ textAlign: "center" }}>
-                                <FaDollarSign style={{ fontSize: "0.90rem" }} />
-                                {filteredEmployee.totalRevenue}
-                              </div>
+
+                  <td style={{ textAlign: "start" }}>
+                    {GetSubmitedRevenue.isSuccess === true ? (
+                      GetSubmitedRevenue.item.map((obj) =>
+                        obj.timesheetId === emp.id ? (
+                          <div
+                            key={obj.timesheetId}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {obj.isSubmited === true ? (
+                              <p>{obj.totalRevenue}</p>
                             ) : (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <input
-                                  type="number"
-                                  placeholder="Total Revenue"
-                                  disabled={true}
-                                  style={{
-                                    textAlign: "center",
-                                    border: "none",
-                                  }}
-                                  value={emp.hoursWorked * rate[emp.id] || "0"}
-                                />
-                              </div>
+                              <input
+                                type="number"
+                                placeholder="Total Revenue"
+                                value={
+                                  emp.hoursWorked * rate[emp.id] ||
+                                  obj.totalRevenue
+                                }
+                                disabled={true}
+                                style={{ textAlign: "center" }}
+                              />
                             )}
                           </div>
-                        ))
+                        ) : null
+                      )
                     ) : (
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -401,36 +416,41 @@ export default function AddRevenue() {
             )}
           </tbody>
         </table>
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "15px",
-          }}
-        >
-          <button
-            className="btn btn-primary mr-2"
-            style={{ marginRight: "10px", backgroundColor: "grey" }}
-            onClick={Resetfunction}
+        {GetSubmitedRevenue.isSuccess === true && (
+          <div
+            className="container"
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: "15px",
+            }}
           >
-            Reset
-          </button>
-          <button
-            className="btn btn-primary mr-2"
-            style={{ marginRight: "10px" }}
-            onClick={SaveForm}
-          >
-            Save
-          </button>
-          <button
-            className="btn btn-primary"
-            style={{ backgroundColor: "blue" }}
-            onClick={SubmitFormFunction}
-          >
-            Submit
-          </button>
-        </div>
+            <button
+              className="resetbutton mr-2 button"
+              style={{ marginRight: "10px", backgroundColor: "grey" }}
+              onClick={Resetfunction}
+              disabled={disiblebuttons}
+            >
+              Reset
+            </button>
+            <button
+              className="savebutton mr-2 button"
+              style={{ marginRight: "10px" }}
+              onClick={SaveForm}
+              disabled={disiblebuttons}
+            >
+              Save
+            </button>
+            <button
+              className="submitbutton button"
+              style={{ backgroundColor: "blue" }}
+              onClick={SubmitFormFunction}
+              disabled={disiblebuttons}
+            >
+              Submit
+            </button>
+          </div>
+        )}
       </div>
 
       <ToastContainer />

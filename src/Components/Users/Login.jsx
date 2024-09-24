@@ -23,16 +23,19 @@ const Home = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [role, setRole] = useState("");
 
   const navigate = useNavigate();
   // Create a new Observable
 
   const onLoginButtonClick = async (data) => {
+    debugger;
     try {
       var obj = {
         Email: data.email,
         Password: data.password,
       };
+      console.log(obj, "========>obj data");
       var responses = await axios.post(
         "https://localhost:44305/api/Login/login",
         obj
@@ -45,7 +48,20 @@ const Home = () => {
       if (result.isSuccess) {
         setLoggedIn(true); // Update logged-in state
         setSessionData(result.item);
-        navigate("/AdminDashboard"); // Navigate to dashboard or another page
+        console.log(result.item.employee.role.name, "==========>");
+        setRole(result.item.employee.role.name);
+        if (role === "US-Finance") {
+          navigate("/USFinance/UsFinaceALlProjects");
+        } else if (role === "Admin") {
+          navigate("/EmployeeDashboard");
+        } else if (role === "Indian finace") {
+          navigate("/EmployeeDashboard");
+        } else if (role === "Project Manager") {
+          navigate("/UnderManagerEmployees");
+        } else if (role === "Reporting Manager") {
+          navigate("/UnderManagerEmployees");
+        }
+        //navigate("/AdminDashboard"); // Navigate to dashboard or another page
       } else {
         // Handle specific error codes
         if (result.error.code === "AUTH001") {
