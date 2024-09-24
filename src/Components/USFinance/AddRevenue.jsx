@@ -416,7 +416,8 @@ export default function AddRevenue() {
             )}
           </tbody>
         </table>
-        {GetSubmitedRevenue.isSuccess === true && (
+        {console.log(TimeSheetdata, "=====>")}
+        {TimeSheetdata.length > 0 && (
           <div
             className="container"
             style={{
