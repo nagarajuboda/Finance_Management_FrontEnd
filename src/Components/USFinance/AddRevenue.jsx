@@ -102,10 +102,12 @@ export default function AddRevenue() {
   }
 
   const handleHoursChange = (timesheetId, value) => {
+    debugger;
     setRate((prev) => ({
       ...prev,
       [timesheetId]: value,
     }));
+    console.log(rate);
   };
 
   const SaveForm = async () => {
@@ -113,7 +115,7 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-
+    console.log(employeeData, "==========>");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false
@@ -177,6 +179,7 @@ export default function AddRevenue() {
 
   const Resetfunction = (e) => {
     setRate({});
+    console.log(rate);
   };
 
   return (
@@ -283,7 +286,7 @@ export default function AddRevenue() {
             {TimeSheetdata.length === 0 ? (
               <tr>
                 <td colSpan="7" style={{ textAlign: "center" }}>
-                  No timesheet in this project
+                  No timesheet available for the selected month.
                 </td>
               </tr>
             ) : (
@@ -312,12 +315,20 @@ export default function AddRevenue() {
                         (obj) =>
                           obj.timesheetId === emp.id &&
                           (obj.isSubmited === true ? (
-                            <p
+                            <div
                               key={obj.timesheetId}
-                              style={{ textAlign: "center" }}
+                              style={{ display: "flex" }}
                             >
-                              {obj.hourlyRate}
-                            </p>
+                              <FaDollarSign
+                                className="mt-1"
+                                style={{
+                                  fontSize: "0.90rem",
+                                }}
+                              />
+                              <p style={{ textAlign: "center" }}>
+                                {obj.hourlyRate}
+                              </p>
+                            </div>
                           ) : (
                             <div
                               key={obj.timesheetId}
@@ -336,9 +347,8 @@ export default function AddRevenue() {
                                 }
                                 onChange={(e) => {
                                   const newRate = e.target.value;
-
                                   if (
-                                    !isNaN(newRate) &&
+                                    newRate &&
                                     (newRate === "" || newRate >= 0)
                                   ) {
                                     handleHoursChange(obj.timesheetId, newRate);
@@ -381,7 +391,15 @@ export default function AddRevenue() {
                             }}
                           >
                             {obj.isSubmited === true ? (
-                              <p>{obj.totalRevenue}</p>
+                              <div style={{ display: "flex" }}>
+                                <FaDollarSign
+                                  className="mt-1"
+                                  style={{
+                                    fontSize: "0.90rem",
+                                  }}
+                                />
+                                <p>{obj.totalRevenue}</p>
+                              </div>
                             ) : (
                               <input
                                 type="number"
@@ -416,7 +434,6 @@ export default function AddRevenue() {
             )}
           </tbody>
         </table>
-        {console.log(TimeSheetdata, "=====>")}
         {TimeSheetdata.length > 0 && (
           <div
             className="container"

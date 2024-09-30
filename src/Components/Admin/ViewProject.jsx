@@ -119,6 +119,10 @@ export function ViewProject() {
     e.preventDefault();
     navigate("/Employee/Projects");
   }
+  function backtofinance(e) {
+    e.preventDefault();
+    navigate("/Dashboard/AllProjects");
+  }
   async function updateformsubmit(e) {
     e.preventDefault();
 
@@ -232,10 +236,35 @@ export function ViewProject() {
       <div>
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div className="d-flex">
-            {sessiondata != "Admin" ? (
+            {/* {sessiondata != "Admin" && sessionData != "Indian finace" ? (
+              <IoArrowBackCircle
+                style={{
+                  cursor: "pointer",
+                  fontSize: "28px",
+                  color: "block",
+                }}
+                onClick={backtoprojects}
+              />
+            ) : (
+              <IoArrowBackCircle
+                style={{
+                  cursor: "pointer",
+                  fontSize: "28px",
+                  color: "block",
+                }}
+                onClick={backonclick}
+              />
+            )} */}
+            {console.log(sessiondata, "=============>")}
+            {sessiondata !== "Admin" && sessiondata !== "Indian finace" ? (
               <IoArrowBackCircle
                 style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
                 onClick={backtoprojects}
+              />
+            ) : sessiondata === "Indian finace" ? (
+              <IoArrowBackCircle
+                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
+                onClick={backtofinance}
               />
             ) : (
               <IoArrowBackCircle
