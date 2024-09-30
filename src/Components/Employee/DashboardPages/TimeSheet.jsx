@@ -348,6 +348,7 @@ export default function TimeSheet() {
                                                 e.target.value
                                               )
                                             }
+                                            style={{ width: "150px" }}
                                           />
                                         </div>
                                       )}

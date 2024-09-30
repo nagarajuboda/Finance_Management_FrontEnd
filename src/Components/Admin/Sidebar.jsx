@@ -147,7 +147,7 @@ const Sidebar = ({ children }) => {
       submenu: [{ path: "/Dashboard/AllProjects", name: "-  All Projects" }],
     },
     {
-      name: "Employees",
+      name: "Hr Management",
       icon: <RiDashboard3Line />,
       submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
     },
@@ -185,7 +185,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Dasboard",
       icon: <IoPeopleOutline />,
-      submenu: [{ path: "/UnderManagerEmployees", name: "- UnderEmployees" }],
+      submenu: [{ path: "/UnderManagerEmployees", name: "- Employees" }],
     },
     {
       name: "Project Management",

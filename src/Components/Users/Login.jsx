@@ -8,13 +8,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
 import { setSessionData } from "../../Service/SharedSessionData";
-
+import { ControlCameraSharp } from "@mui/icons-material";
+import { LoginFormValidation } from "../Admin/Pages/LoginFormValidation";
+import { getotpValidation } from "./getotpValidation";
 const Home = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,30 +19,68 @@ const Home = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
-
   const navigate = useNavigate();
-  // Create a new Observable
+  const [emailvalues, setEmialValuess] = useState({
+    email: "",
+  });
+  const [emailerror, setEmialerror] = useState({
+    email: "",
+  });
+  const [valuess, setValuess] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+  });
 
-  const onLoginButtonClick = async (data) => {
-    try {
+  const onLoginButtonClick = async (e) => {
+    e.preventDefault();
+
+    const newErrors = {
+      email: LoginFormValidation("email", valuess.email),
+      password: LoginFormValidation("password", valuess.password),
+    };
+
+    setError(newErrors);
+
+    const isValid = Object.values(newErrors).every((error) => error === "");
+
+    if (isValid) {
       var obj = {
-        Email: data.email,
-        Password: data.password,
+        Email: valuess.email,
+        Password: valuess.password,
       };
+
       var responses = await axios.post(
         "https://localhost:44305/api/Login/login",
         obj
       );
       var result = await responses.data;
-
       localStorage.setItem("sessionData", JSON.stringify(result.item));
-
       setLoggedIn(true); // Update logged-in state
-      if (result.isSuccess) {
+      if (result.isSuccess === true) {
         setLoggedIn(true); // Update logged-in state
         setSessionData(result.item);
-        navigate("/AdminDashboard"); // Navigate to dashboard or another page
+
+        if (result.item.employee.role.name === "US-Finance") {
+          navigate("/USFinance/UsFinaceALlProjects");
+        } else if (result.item.employee.role.name === "Admin") {
+          navigate("/EmployeeDashboard");
+        } else if (result.item.employee.role.name === "Indian finace") {
+          navigate("/EmployeeDashboard");
+        } else if (result.item.employee.role.name === "Project Manager") {
+          navigate("/UnderManagerEmployees");
+        } else if (result.item.employee.role.name === "Reporting Manager") {
+          navigate("/UnderManagerEmployees");
+        } else if (result.item.employee.role.name === "Hr") {
+          navigate("/EmployeeDashboard");
+        }
+
+        //navigate("/AdminDashboard"); // Navigate to dashboard or another page
       } else {
         // Handle specific error codes
         if (result.error.code === "AUTH001") {
@@ -66,47 +101,24 @@ const Home = () => {
           });
         }
       }
-    } catch (error) {
-      toast.error("Login failed. Please try again.", {
-        position: "top-right",
-        autoClose: 4000,
-      });
-      // Handle error state or display error message to the user
     }
   };
 
   const [values, setValues] = useState({
     Email: "",
   });
-  const [errorss, setErrors] = useState({
-    Email: "",
-  });
-
-  const handleChange1 = (e) => {
-    const { name, value } = e.target;
-
-    setValues({
-      ...values,
-      [name]: value,
-    });
-    setErrors({
-      ...errorss,
-      [name]: getotpValidation(name, value),
-    });
-  };
 
   async function getotpfunction(e) {
     e.preventDefault();
     const newErrors = {
-      Email: getotpValidation("Email", values.Email),
+      email: getotpValidation("email", emailvalues.email),
     };
-    setErrors(newErrors);
+    setEmialerror(newErrors);
 
     const isValid = Object.values(newErrors).every((error) => error === "");
-
-    if (!isValid) {
+    if (isValid) {
       var obj = {
-        Email: values.Email,
+        Email: emailvalues.email,
       };
       var responses = await axios.post(
         "https://localhost:44305/api/Auth/get-otp",
@@ -125,12 +137,6 @@ const Home = () => {
           autoClose: 4000,
         });
       }
-    }
-  }
-  function getotpValidation(name, value) {
-    if (name === "Email") {
-      if (!value) return "Email is required";
-      if (!/\S+@\S+\.\S+/.test(value)) return "Email is invalid";
     }
   }
 
@@ -213,7 +219,33 @@ const Home = () => {
       [name]: validatePassword(name, value),
     });
   };
+  const handleChange22 = async (e) => {
+    const { name, value } = e.target;
 
+    setEmialValuess({
+      ...emailvalues,
+      [name]: value,
+    });
+
+    setEmialerror({
+      ...error,
+      [name]: getotpValidation(name, value),
+    });
+  };
+  const handleChange = async (e) => {
+    const { name, value } = e.target;
+
+    setValuess({
+      ...valuess,
+      [name]: value,
+    });
+
+    setError({
+      ...error,
+      [name]: LoginFormValidation(name, value),
+    });
+    console.log(valuess.password, "=========>values");
+  };
   async function onSetNewPasswordClick(e) {
     e.preventDefault();
 
@@ -291,20 +323,28 @@ const Home = () => {
 
   const renderLoginForm = () => (
     <div className="loginForm">
-      <form onSubmit={handleSubmit(onLoginButtonClick)}>
-        <label className="labelField">
-          Email Address<span className="asterisk">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Email Address"
-          className="inputField"
-          {...register("email", { required: "Email is required" })}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errors.email && (
-          <p className="validationError">{errors.email.message}</p>
-        )}
+      <form>
+        <div>
+          <label className="labelField">
+            Email Address<span className="asterisk">*</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Email Address"
+            className="inputField"
+            name="email"
+            value={valuess.email}
+            onChange={handleChange}
+          />
+          {error.email && (
+            <span
+              className="error ms-1 "
+              style={{ color: "red", textAlign: "start", display: "flex" }}
+            >
+              {error.email}
+            </span>
+          )}
+        </div>
 
         <label className="labelField">
           Password<span className="asterisk">*</span>
@@ -314,8 +354,9 @@ const Home = () => {
             type={showPassword ? "text" : "password"}
             placeholder="Password"
             className="inputField"
-            {...register("password", { required: "Password is required" })}
-            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            value={values.password}
+            onChange={handleChange}
           />
           <div
             className="eyeIcon"
@@ -323,12 +364,19 @@ const Home = () => {
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </div>
+          {error.password && (
+            <span
+              className="ms-1"
+              style={{ color: "red", textAlign: "start", display: "flex" }}
+            >
+              {error.password}
+            </span>
+          )}
         </div>
-        {errors.password && (
-          <p className="validationError">{errors.password.message}</p>
-        )}
 
-        <button className="loginButton">Login</button>
+        <button className="loginButton" onClick={onLoginButtonClick}>
+          Login
+        </button>
       </form>
       <div className="forgotResetContainer">
         <div className="forgotPassword">Forgot your password?</div>
@@ -357,14 +405,19 @@ const Home = () => {
           type="text"
           placeholder="Email Address"
           className="inputField"
-          onChange={handleChange1}
-          name="Email"
-          value={values.Email}
+          onChange={handleChange22}
+          name="email"
+          value={emailvalues.email}
           // {...register('email', { required: 'Email is required' })}
           // onChange={(e) => setEmail(e.target.value)}
         />
-        {errorss.Email && (
-          <span className="validationError">{errorss.Email}</span>
+        {emailerror.email && (
+          <span
+            className="validationError ms-1"
+            style={{ display: "flex", textAlign: "start" }}
+          >
+            {emailerror.email}
+          </span>
         )}
         {/* {errors.email && <p className="validationError">{errors.email.message}</p>} */}
 

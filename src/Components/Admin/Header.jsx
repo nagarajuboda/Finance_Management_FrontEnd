@@ -36,12 +36,6 @@ export default function Header() {
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // console.log(result);
-    // if (data) {
-    //   setSessionData(result);
-    // }
-  }, []);
   function logoutonclick() {
     console.log("logout clicked");
     var res = localStorage.removeItem("sessionData");

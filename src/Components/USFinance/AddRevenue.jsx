@@ -11,6 +11,9 @@ import { format } from "date-fns";
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaDollarSign } from "react-icons/fa6";
+import { useRef } from "react";
+import GetAllRevenue from "../IndianFinance/Revenue";
 
 export default function AddRevenue() {
   const now = new Date();
@@ -19,7 +22,10 @@ export default function AddRevenue() {
   const [TimeSheetdata, setTimeSheet] = useState([]);
   const [projectId, setProjectId] = useState("");
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
+
+  const [disiblebuttons, setDisiblebuttons] = useState(false);
   const [ProjectDetails, setProjectDetails] = useState({});
+
   const id = localStorage.getItem("empId");
 
   const [rate, setRate] = useState({});
@@ -74,6 +80,19 @@ export default function AddRevenue() {
       year
     );
     setGetRevenue(GetRevenueResponse);
+
+    if (
+      GetRevenueResponse.isSuccess === true &&
+      GetRevenueResponse.item.length > 0
+    ) {
+      if (GetRevenueResponse.item.every((a) => a.isSubmited === true)) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+    } else {
+      setDisiblebuttons(false);
+    }
   };
 
   function backtoprojects(e) {
@@ -82,11 +101,13 @@ export default function AddRevenue() {
     navigate("/USFinance/UsFinaceALlProjects");
   }
 
-  const handleHoursChange = (id, value) => {
+  const handleHoursChange = (timesheetId, value) => {
+    debugger;
     setRate((prev) => ({
       ...prev,
-      [id]: value,
+      [timesheetId]: value,
     }));
+    console.log(rate);
   };
 
   const SaveForm = async () => {
@@ -94,6 +115,7 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
+    console.log(employeeData, "==========>");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false
@@ -120,6 +142,7 @@ export default function AddRevenue() {
       employeeData,
       true
     );
+
     if (AddtimeSheetResponse.isSuccess) {
       toast.success("Successfully submitted.", {
         position: "top-right",
@@ -156,24 +179,8 @@ export default function AddRevenue() {
 
   const Resetfunction = (e) => {
     setRate({});
+    console.log(rate);
   };
-
-  // Memoize the table headers
-  const tableHeaders = useMemo(() => {
-    return (
-      <thead>
-        <tr>
-          <th style={{ fontSize: "small", fontWeight: "bold" }}>NAME</th>
-          <th style={{ fontSize: "small" }}>EMAIL</th>
-          <th style={{ textAlign: "center", fontSize: "small" }}>STATUS</th>
-          <th style={{ textAlign: "center", fontSize: "small" }}>ROLE</th>
-          <th style={{ fontSize: "small" }}>WORKED HOURS</th>
-          <th style={{ fontSize: "small" }}>RATE FOR HOURS</th>
-          <th style={{ fontSize: "small" }}>TOTAL REVENUE</th>
-        </tr>
-      </thead>
-    );
-  }, []);
 
   return (
     <div className="revenuemaindiv">
@@ -202,14 +209,84 @@ export default function AddRevenue() {
             </div>
           </div>
         </div>
-
         <table className="table table-striped mt-3">
-          {tableHeaders} {/* Use memoized headers */}
+          <thead>
+            <tr>
+              <th
+                style={{
+                  fontSize: "small",
+                  fontWeight: "bold",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                NAME
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                EMAIL
+              </th>
+              <th
+                style={{
+                  textAlign: "center",
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                STATUS
+              </th>
+              <th
+                style={{
+                  textAlign: "center",
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                ROLE
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                WORKED HOURS
+              </th>
+              <th
+                style={{
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                RATE FOR HOURS(
+                <FaDollarSign />)
+              </th>
+              <th
+                style={{
+                  textAlign: "center",
+                  fontSize: "small",
+                  backgroundColor: "#196e8a",
+                  color: "white",
+                }}
+              >
+                TOTAL REVENUE( <FaDollarSign />)
+              </th>
+            </tr>
+          </thead>
           <tbody>
             {TimeSheetdata.length === 0 ? (
               <tr>
                 <td colSpan="7" style={{ textAlign: "center" }}>
-                  No employees in this project
+                  No timesheet available for the selected month.
                 </td>
               </tr>
             ) : (
@@ -227,51 +304,70 @@ export default function AddRevenue() {
                         textAlign: "center",
                       }}
                     >
-                      <span>{emp.status == 1 ? "Active" : "InActive"}</span>
+                      <span>{emp.status === 1 ? "Active" : "Inactive"}</span>
                     </div>
                   </td>
                   <td style={{ textAlign: "center" }}>{emp.role}</td>
                   <td style={{ textAlign: "center" }}>{emp.hoursWorked}</td>
-                  <td>
-                    {GetSubmitedRevenue.isSuccess &&
-                    GetSubmitedRevenue.item.some(
-                      (obj) => obj.timesheetId === emp.id
-                    ) ? (
-                      GetSubmitedRevenue.item
-                        .filter((obj) => obj.timesheetId === emp.id)
-                        .map((filteredEmployee) => (
-                          <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited == true ? (
-                              <div style={{ textAlign: "center" }}>
-                                {filteredEmployee.hourlyRate}
-                              </div>
-                            ) : (
-                              <div
+                  <td style={{ textAlign: "center" }}>
+                    {GetSubmitedRevenue.isSuccess === true ? (
+                      GetSubmitedRevenue.item.map(
+                        (obj) =>
+                          obj.timesheetId === emp.id &&
+                          (obj.isSubmited === true ? (
+                            <div
+                              key={obj.timesheetId}
+                              style={{ display: "flex" }}
+                            >
+                              <FaDollarSign
+                                className="mt-1"
                                 style={{
-                                  display: "flex",
-                                  justifyContent: "center",
+                                  fontSize: "0.90rem",
                                 }}
-                              >
-                                {console.log("false")}
-                                <input
-                                  type="number"
-                                  placeholder="Hourly Rate"
-                                  value={rate[emp.id] || ""}
-                                  onChange={(e) =>
-                                    handleHoursChange(emp.id, e.target.value)
+                              />
+                              <p style={{ textAlign: "center" }}>
+                                {obj.hourlyRate}
+                              </p>
+                            </div>
+                          ) : (
+                            <div
+                              key={obj.timesheetId}
+                              style={{
+                                display: "flex",
+                                justifyContent: "start",
+                              }}
+                            >
+                              <input
+                                type="number"
+                                placeholder="Hourly Rate In $"
+                                value={
+                                  rate[obj.timesheetId] !== undefined
+                                    ? rate[obj.timesheetId]
+                                    : obj.hourlyRate
+                                }
+                                onChange={(e) => {
+                                  const newRate = e.target.value;
+                                  if (
+                                    newRate &&
+                                    (newRate === "" || newRate >= 0)
+                                  ) {
+                                    handleHoursChange(obj.timesheetId, newRate);
+                                  } else {
+                                    handleHoursChange(obj.timesheetId, rate);
                                   }
-                                />
-                              </div>
-                            )}
-                          </div>
-                        ))
+                                }}
+                                style={{ width: "150px" }}
+                              />
+                            </div>
+                          ))
+                      )
                     ) : (
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
                         <input
                           type="number"
-                          placeholder="Hourly Rate"
+                          placeholder="Hourly Rate In $"
                           value={rate[emp.id] || ""}
                           disabled={false}
                           onChange={(e) =>
@@ -282,40 +378,43 @@ export default function AddRevenue() {
                       </div>
                     )}
                   </td>
-                  <td>
-                    {GetSubmitedRevenue.isSuccess &&
-                    GetSubmitedRevenue.item.some(
-                      (obj) => obj.timesheetId === emp.id
-                    ) ? (
-                      GetSubmitedRevenue.item
-                        .filter((obj) => obj.timesheetId === emp.id)
-                        .map((filteredEmployee) => (
-                          <div key={filteredEmployee.timesheetId}>
-                            {filteredEmployee.isSubmited ? (
-                              <div style={{ textAlign: "center" }}>
-                                {filteredEmployee.totalRevenue}
+
+                  <td style={{ textAlign: "start" }}>
+                    {GetSubmitedRevenue.isSuccess === true ? (
+                      GetSubmitedRevenue.item.map((obj) =>
+                        obj.timesheetId === emp.id ? (
+                          <div
+                            key={obj.timesheetId}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {obj.isSubmited === true ? (
+                              <div style={{ display: "flex" }}>
+                                <FaDollarSign
+                                  className="mt-1"
+                                  style={{
+                                    fontSize: "0.90rem",
+                                  }}
+                                />
+                                <p>{obj.totalRevenue}</p>
                               </div>
                             ) : (
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "center",
-                                }}
-                              >
-                                <input
-                                  type="number"
-                                  placeholder="Total Revenue"
-                                  disabled={true}
-                                  style={{
-                                    textAlign: "center",
-                                    border: "none",
-                                  }}
-                                  value={emp.hoursWorked * rate[emp.id] || "0"}
-                                />
-                              </div>
+                              <input
+                                type="number"
+                                placeholder="Total Revenue"
+                                value={
+                                  emp.hoursWorked * rate[emp.id] ||
+                                  obj.totalRevenue
+                                }
+                                disabled={true}
+                                style={{ textAlign: "center" }}
+                              />
                             )}
                           </div>
-                        ))
+                        ) : null
+                      )
                     ) : (
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
@@ -335,36 +434,41 @@ export default function AddRevenue() {
             )}
           </tbody>
         </table>
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "15px",
-          }}
-        >
-          <button
-            className="btn btn-primary mr-2"
-            style={{ marginRight: "10px", backgroundColor: "grey" }}
-            onClick={Resetfunction}
+        {TimeSheetdata.length > 0 && (
+          <div
+            className="container"
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: "15px",
+            }}
           >
-            Reset
-          </button>
-          <button
-            className="btn btn-primary mr-2"
-            style={{ marginRight: "10px" }}
-            onClick={SaveForm}
-          >
-            Save
-          </button>
-          <button
-            className="btn btn-primary"
-            style={{ backgroundColor: "blue" }}
-            onClick={SubmitFormFunction}
-          >
-            Submit
-          </button>
-        </div>
+            <button
+              className="resetbutton mr-2 button"
+              style={{ marginRight: "10px", backgroundColor: "grey" }}
+              onClick={Resetfunction}
+              disabled={disiblebuttons}
+            >
+              Reset
+            </button>
+            <button
+              className="savebutton mr-2 button"
+              style={{ marginRight: "10px" }}
+              onClick={SaveForm}
+              disabled={disiblebuttons}
+            >
+              Save
+            </button>
+            <button
+              className="submitbutton button"
+              style={{ backgroundColor: "blue" }}
+              onClick={SubmitFormFunction}
+              disabled={disiblebuttons}
+            >
+              Submit
+            </button>
+          </div>
+        )}
       </div>
 
       <ToastContainer />
