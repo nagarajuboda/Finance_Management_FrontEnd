@@ -1,9 +1,12 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EmployeeModal from "./AddEmployeeModal";
 import ConfirmationModal from "./DeleteConfirmationEmpModal";
 import "../../assets/Styles/EmployeePages/EmployeeDashboard.css";
+import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 
 const EmployeeDashboard = () => {
   const [employees, setEmployees] = useState([]);
@@ -11,6 +14,7 @@ const EmployeeDashboard = () => {
   const [projectManagers, setProjectManagers] = useState([]);
   const [inactiveEmployees, setInactiveEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [AllEmployees, setAllEmployees] = useState([]);
   const [sortConfig, setSortConfig] = useState({
     key: "employeeId",
     direction: "asc",
@@ -22,22 +26,36 @@ const EmployeeDashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [showInactive, setShowInactive] = useState(false);
+  const [messagefromchild, setMessageFormChild] = useState("");
   const navigate = useNavigate();
+  const profileRef = useRef(null);
 
   useEffect(() => {
     fetchEmployees();
     fetchRoles();
-  }, []);
+  }, [0]);
+
+  useEffect(() => {
+    successMesage();
+  }, [messagefromchild]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [showInactive]);
-
+  const successMesage = () => {
+    if (messagefromchild) {
+      toast.success(messagefromchild, {
+        position: "top-right",
+        autoClose: "4000",
+      });
+    }
+  };
   const fetchEmployees = async () => {
     try {
       const response = await axios.get(
         "https://localhost:44305/api/Employees/AllEmployees"
       );
+      setAllEmployees(response.data);
       const employeesData = response.data;
       setEmployees(employeesData.filter((emp) => emp.employeeStatus === 1));
       setInactiveEmployees(
@@ -48,7 +66,7 @@ const EmployeeDashboard = () => {
         "https://localhost:44305/api/Roles/AllRoles"
       );
       setRoles(rolesResponse.data);
-
+      console.log(response, "==>repose");
       const projectManagerRole = rolesResponse.data.find(
         (role) => role.name === "Project Manager"
       );
@@ -80,12 +98,12 @@ const EmployeeDashboard = () => {
   };
 
   const getProjectManagerName = (projectManagerId) => {
-    const projectManager = projectManagers.find(
+    const projectManager = AllEmployees.find(
       (emp) => emp.id === projectManagerId
     );
     return projectManager
       ? `${projectManager.firstName} ${projectManager.lastName}`
-      : "N/A";
+      : "--";
   };
 
   const handleEdit = (employee) => {
@@ -168,15 +186,28 @@ const EmployeeDashboard = () => {
     currentPage * itemsPerPage
   );
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log(event);
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowModal(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
   return (
     <div className="EmployeeDashboard">
       <div className="EmpHeader">
         <div className="EmpHeaderLeft">
-          <h1>Employee Dashboard</h1>
+          <h1>Employee List</h1>
         </div>
         <div className="EmpHeaderRight">
           <input
@@ -220,14 +251,9 @@ const EmployeeDashboard = () => {
                 className={getHeaderClass("firstName")}
                 onClick={() => handleSort("firstName")}
               >
-                First Name
+                Name
               </th>
-              <th
-                className={getHeaderClass("lastName")}
-                onClick={() => handleSort("lastName")}
-              >
-                Last Name
-              </th>
+
               <th
                 className={getHeaderClass("email")}
                 onClick={() => handleSort("email")}
@@ -253,7 +279,7 @@ const EmployeeDashboard = () => {
               >
                 Role
               </th>
-              <th>Project Manager</th>
+              <th>Reporting Manager</th>
             </tr>
           </thead>
           <tbody>
@@ -265,8 +291,8 @@ const EmployeeDashboard = () => {
                   className="clickable-row"
                 >
                   <td>{employee.employeeId}</td>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.lastName}</td>
+                  <td>{`${employee.firstName} ${employee.lastName}`}</td>
+
                   <td>{employee.email}</td>
                   <td>{employee.mobileNo}</td>
                   <td>
@@ -296,12 +322,29 @@ const EmployeeDashboard = () => {
           onPageChange={handlePageChange}
         />
         {showModal && (
-          <EmployeeModal
-            employee={currentEmployee}
-            onClose={() => setShowModal(false)}
-            onRefresh={fetchEmployees}
-          />
+          <div>
+            <EmployeeModal
+              prfref={profileRef}
+              successMessage={setMessageFormChild}
+              className="profile-popup"
+              employee={currentEmployee}
+              onClose={() => setShowModal(false)}
+              onRefresh={fetchEmployees}
+            />
+          </div>
         )}
+
+        {/* {showModal && (
+          <div>
+            <EmployeeModal
+              className="addemployeeComponent"
+              employee={currentEmployee}
+              onClose={() => setShowModal(false)}
+              onRefresh={fetchEmployees}
+            />
+          </div>
+        )} */}
+
         {showConfirmModal && (
           <ConfirmationModal
             onConfirm={confirmDeactivate}
@@ -314,6 +357,7 @@ const EmployeeDashboard = () => {
           />
         )}
       </div>
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 };

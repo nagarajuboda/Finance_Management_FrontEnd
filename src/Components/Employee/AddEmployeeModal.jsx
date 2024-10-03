@@ -1,8 +1,15 @@
 import axios from "axios";
 import { style } from "motion";
 import React, { useState, useEffect } from "react";
-
-const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
+import EmployeeDashboard from "./EmployeeDashboard";
+import "../../../src/assets/Styles/EmployeePages/AddEmployeeModal.css";
+const AddEmployeeModal = ({
+  employee,
+  onClose,
+  onRefresh,
+  prfref,
+  successMessage,
+}) => {
   const [formData, setFormData] = useState({
     employeeId: "",
     firstName: "",
@@ -23,6 +30,8 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
   const [employeeExistsError, setEmployeeExistsError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [emailMobileErrors, setEmailMobileErrors] = useState({});
+  const [message, setMessage] = useState(null);
+  const [addandupdateflog, setaddupdateflog] = useState(false);
   const isEditing = !!employee;
 
   useEffect(() => {
@@ -83,12 +92,34 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       const response = await axios.get(
         "https://localhost:44305/api/Roles/AllRoles"
       );
+
       setRoles(response.data);
     } catch (error) {
       console.error("Error fetching roles", error);
     }
   };
 
+  // const fetchProjectManagers = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://localhost:44305/api/Employees/AllEmployees"
+  //     );
+  //     const rolesResponse = await axios.get(
+  //       "https://localhost:44305/api/Roles/AllRoles"
+  //     );
+  //     const projectManagerRole = rolesResponse.data.find(
+  //       (role) => role.name === "Reporting Manager"
+  //     );
+  //     if (projectManagerRole) {
+  //       const projectManagers = response.data.filter(
+  //         (emp) => emp.roleId === projectManagerRole.id
+  //       );
+  //       setProjectManagers(projectManagers);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching project managers", error);
+  //   }
+  // };
   const fetchProjectManagers = async () => {
     try {
       const response = await axios.get(
@@ -97,20 +128,20 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
       const rolesResponse = await axios.get(
         "https://localhost:44305/api/Roles/AllRoles"
       );
+
       const projectManagerRole = rolesResponse.data.find(
-        (role) => role.name === "Reporting Manager"
+        (role) => role.name === "Project Manager"
       );
       if (projectManagerRole) {
         const projectManagers = response.data.filter(
           (emp) => emp.roleId === projectManagerRole.id
         );
-        setProjectManagers(projectManagers);
+        setProjectManagers(response.data);
       }
     } catch (error) {
       console.error("Error fetching project managers", error);
     }
   };
-
   const handleProjectManagerChange = (e) => {
     const selectedName = e.target.value;
     const selectedPm = projectManagers.find(
@@ -255,27 +286,51 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
         projectManagerId: projectManagerId ? projectManagerId : null,
       };
 
-      if (!employee) {
-        await axios.post(
+      if (employee == null) {
+        var response = await axios.post(
           "https://localhost:44305/api/Employees/CreateEmployee",
           dataToSubmit
         );
       } else {
-        await axios.put(
+        var response1 = await axios.put(
           `https://localhost:44305/api/Employees/UpdateEmployee`,
           dataToSubmit
         );
       }
+      if (employee == null) {
+        successMessage(response.data.message);
+      } else {
+        successMessage(response1.data.message);
+      }
+
       onRefresh();
       onClose();
     } catch (error) {
       console.error("Error saving employee", error);
     }
   };
+  const [filterQuery, setFilterQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleFilterChange = (e) => {
+    setFilterQuery(e.target.value);
+  };
+
+  const handleOptionSelect = (id) => {
+    setFormData({ ...formData, projectManagerId: id });
+    setIsOpen(false); // Close the dropdown after selection
+  };
+
+  // Filter project managers based on the filter query
+  const filteredManagers = projectManagers.filter((pm) =>
+    `${pm.firstName} ${pm.lastName}`
+      .toLowerCase()
+      .includes(filterQuery.toLowerCase())
+  );
   const [isEditMode, setIsEditMode] = useState(false);
   return (
     <div className="AddEmpMdlOverlay">
-      <div className="AddEmpMdlContent">
+      <div className="AddEmpMdlContent" ref={prfref}>
         <div className="AddEmpMdlHeader">
           <div className="AddEmpMdlHeaderLeft">
             <h2>{isEditing ? "Edit Employee" : "Add Employee"}</h2>
@@ -287,166 +342,245 @@ const AddEmployeeModal = ({ employee, onClose, onRefresh }) => {
           </div>
         </div>
         <form className="AddEmpMdl" onSubmit={handleSubmit}>
-          <label htmlFor="firstName">
-            Employee ID:
-            <input
-              type="EmpInputtxt"
-              id="employeeId"
-              name="employeeId"
-              value={formData.employeeId}
-              onChange={handleChange}
-              disabled={isEditing}
-            />
-            {errors.employeeId && (
-              <span className="error">{errors.employeeId}</span>
-            )}
-          </label>
-
-          <label htmlFor="firstName">
-            First Name:
-            <input
-              type="EmpInputtxt"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-            />
-            {errors.firstName && (
-              <span className="error">{errors.firstName}</span>
-            )}
-          </label>
-
-          <label htmlFor="lastName">
-            Last Name:
-            <input
-              type="EmpInputtxt"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label htmlFor="email">
-            Email:
-            <input
-              type="EmpInputtxt"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            {errors.email && <span className="error">{errors.email}</span>}
-            {emailMobileErrors.email && (
-              <span className="error">{emailMobileErrors.email}</span>
-            )}
-          </label>
-
-          {!isEditing && (
-            <label htmlFor="password">
-              Password:
-              <div className="AddEmpMdlPwdInput">
-                <input
-                  type={passwordVisible ? "txt" : "password"}
-                  name="passwordHash"
-                  value={formData.passwordHash}
-                  onChange={handleChange}
-                  disabled={isEditing}
-                />
-                <span
-                  className="AddEmpMdlEyeIcon"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                >
-                  {passwordVisible ? "👁️‍🗨️" : "👁️"}
-                </span>
+          <div className="row">
+            <div className="col-6">
+              <div>
+                Employee ID:
+                <div>
+                  <input
+                    type="text"
+                    id="employeeId"
+                    name="employeeId"
+                    className="form-control"
+                    value={formData.employeeId}
+                    onChange={handleChange}
+                    disabled={isEditing}
+                  />
+                  {errors.employeeId && (
+                    <span className="error">{errors.employeeId}</span>
+                  )}
+                </div>
               </div>
-              {errors.passwordHash && (
-                <span className="AddEmpMdlPwdError">{errors.passwordHash}</span>
+            </div>
+            <div className="col-6">
+              First Name
+              <span className="" style={{ color: "red" }}>
+                *
+              </span>
+              <input
+                type="text"
+                id="firstName"
+                className="form-control"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+              />
+              {errors.firstName && (
+                <span className="error">{errors.firstName}</span>
               )}
-            </label>
-          )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              Last Name:
+              <input
+                type="text"
+                id="lastName"
+                className="form-control w-100"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="col-6">
+              Email:<span style={{ color: "red" }}>*</span>
+              <input
+                type="text "
+                className="form-control w-100 "
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {errors.email && <span className="error">{errors.email}</span>}
+              {emailMobileErrors.email && (
+                <span className="error">{emailMobileErrors.email}</span>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              {!isEditing ? (
+                <div>
+                  Password:<span style={{ color: "red" }}>*</span>
+                  <div className="AddEmpMdlPwdInput">
+                    <input
+                      type={passwordVisible ? "txt" : "password"}
+                      name="passwordHash"
+                      value={formData.passwordHash}
+                      onChange={handleChange}
+                      disabled={isEditing}
+                    />
+                    <span
+                      className="AddEmpMdlEyeIcon"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                    >
+                      {passwordVisible ? "👁️‍🗨️" : "👁️"}
+                    </span>
+                  </div>
+                  {errors.passwordHash && (
+                    <span className="AddEmpMdlPwdError">
+                      {errors.passwordHash}
+                    </span>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  Password:
+                  <div className="AddEmpMdlPwdInput">
+                    <input
+                      type={passwordVisible ? "txt" : "password"}
+                      name="passwordHash"
+                      value={formData.passwordHash}
+                      onChange={handleChange}
+                      disabled={isEditing}
+                    />
+                    {/* <span
+                      className="AddEmpMdlEyeIcon"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                    >
+                      {passwordVisible ? "👁️‍🗨️" : "👁️"}
+                    </span> */}
+                  </div>
+                  {errors.passwordHash && (
+                    <span className="AddEmpMdlPwdError">
+                      {errors.passwordHash}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="col-6">
+              Mobile Number:<span style={{ color: "red" }}>*</span>
+              <input
+                type="text"
+                id="mobileNo"
+                className="form-control w-100"
+                name="mobileNo"
+                value={formData.mobileNo}
+                onChange={handleChange}
+              />
+              {errors.mobileNo && (
+                <span className="error">{errors.mobileNo}</span>
+              )}
+              {emailMobileErrors.mobileNo && (
+                <span className="error">{emailMobileErrors.mobileNo}</span>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              Date of Joining:
+              <input
+                type="date"
+                id="dateOfJoining"
+                name="dateOfJoining"
+                className="form-control w-100"
+                value={formData.dateOfJoining}
+                onChange={handleChange}
+              />
+              {errors.dateOfJoining && (
+                <span className="error">{errors.dateOfJoining}</span>
+              )}
+            </div>
+            <div className="col-6">
+              <div className="custom-dropdown">
+                <label>Reporting Manager:</label>
+                <div
+                  className="form-control"
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  {formData.projectManagerId
+                    ? `${
+                        filteredManagers.find(
+                          (pm) => pm.id === formData.projectManagerId
+                        )?.firstName
+                      } ${
+                        filteredManagers.find(
+                          (pm) => pm.id === formData.projectManagerId
+                        )?.lastName
+                      }`
+                    : "Select Reporting Manager"}
+                </div>
 
-          <label htmlFor="mobileNo">
-            Mobile Number:
-            <input
-              type="EmpInputtxt"
-              id="mobileNo"
-              name="mobileNo"
-              value={formData.mobileNo}
-              onChange={handleChange}
-            />
-            {errors.mobileNo && (
-              <span className="error">{errors.mobileNo}</span>
-            )}
-            {emailMobileErrors.mobileNo && (
-              <span className="error">{emailMobileErrors.mobileNo}</span>
-            )}
-          </label>
+                {isOpen && (
+                  <div className="dropdown-menu show">
+                    <input
+                      type="text"
+                      className="form-control mb-2"
+                      placeholder="Filter managers"
+                      value={filterQuery}
+                      onChange={handleFilterChange}
+                      autoFocus
+                    />
+                    <ul className="list-unstyled">
+                      {filteredManagers.length > 0 ? (
+                        filteredManagers.map((pm) => (
+                          <li
+                            key={pm.id}
+                            className="dropdown-item"
+                            onClick={() => handleOptionSelect(pm.id)}
+                          >
+                            <p>
+                              {pm.firstName} {pm.lastName} - {pm.email}
+                            </p>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="dropdown-item">No matching managers</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-6">
+              Role:<span style={{ color: "red" }}>*</span>
+              <select
+                id="roleId"
+                name="roleId"
+                className="form-control"
+                value={formData.roleId}
+                onChange={handleChange}
+              >
+                <option value="">Select Role</option>
+                {roles.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </select>
+              {errors.roleId && <span className="error">{errors.roleId}</span>}
+            </div>
+            <div className="col-6 mb-3">
+              <label> Skill Sets:</label>
+              <textarea
+                id="skillSets"
+                name="skillSets"
+                className="form-control w-100"
+                value={formData.skillSets}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+          </div>
 
-          <label htmlFor="dateOfJoining">
-            Date of Joining:
-            <input
-              type="date"
-              id="dateOfJoining"
-              name="dateOfJoining"
-              className="AddEmpMdlDoj"
-              value={formData.dateOfJoining}
-              onChange={handleChange}
-            />
-            {errors.dateOfJoining && (
-              <span className="error">{errors.dateOfJoining}</span>
-            )}
-          </label>
-
-          <label htmlFor="projectManagerId">
-            Reporting Manager:
-            <select
-              name="projectManagerId"
-              value={formData.projectManagerId || ""}
-              onChange={handleChange}
-            >
-              <option value="">Select Reporting Manager</option>
-              {projectManagers.map((pm) => (
-                <option key={pm.id} value={pm.id}>
-                  {pm.firstName} {pm.lastName}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label htmlFor="roleId">
-            Role:
-            <select
-              id="roleId"
-              name="roleId"
-              value={formData.roleId}
-              onChange={handleChange}
-            >
-              <option value="">Select Role</option>
-              {roles.map((role) => (
-                <option key={role.id} value={role.id}>
-                  {" "}
-                  {role.name}
-                </option>
-              ))}
-            </select>
-            {errors.roleId && <span className="error">{errors.roleId}</span>}
-          </label>
-
-          <label htmlFor="skillSets">
-            {" "}
-            Skill Sets:
-            <textarea
-              id="skillSets"
-              name="skillSets"
-              value={formData.skillSets}
-              onChange={handleChange}
-            ></textarea>
-          </label>
-
-          <button type="submit" className="AddEmpMdlSubmitBtn">
-            {isEditing ? "Save Modifications" : "Add Employee"}
-          </button>
+          <div>
+            <button type="submit" className="AddEmpMdlSubmitBtn">
+              {isEditing ? "Save Modifications" : "Add Employee"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

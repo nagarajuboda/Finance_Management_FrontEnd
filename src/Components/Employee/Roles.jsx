@@ -91,7 +91,7 @@ const Roles = () => {
         <thead>
           <tr>
             <th>Role Name</th>
-            <th>Priority</th>
+            {/* <th>Priority</th> */}
             <th>Actions</th>
           </tr>
         </thead>
@@ -99,7 +99,7 @@ const Roles = () => {
           {roles.map((role) => (
             <tr key={role.id}>
               <td>{role.name}</td>
-              <td>{priorityMap[role.priority]}</td>
+              {/* <td>{priorityMap[role.priority]}</td> */}
               <td>
                 <button
                   className="Rolesedit-btn"

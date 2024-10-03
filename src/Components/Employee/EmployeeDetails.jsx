@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import EmployeeModal from "./AddEmployeeModal";
 import ConfirmationModal from "./DeleteConfirmationEmpModal";
@@ -8,8 +8,13 @@ import "../../assets/Styles/EmployeePages/EmployeeDetails.css";
 import { IoArrowBackCircle } from "react-icons/io5";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 import { Today } from "@mui/icons-material";
+import { ToastContainer, toast } from "react-toastify";
+import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
+
 const EmployeeDetails = () => {
   const [employee, setEmployee] = useState(null);
+  const [messagefromchild, setMessageFormChild] = useState("");
   const [roles, setRoles] = useState([]);
   const [managedEmployees, setManagedEmployees] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -27,11 +32,24 @@ const EmployeeDetails = () => {
   const [projectlength, setProjectLength] = useState([]);
   const [Response1, setResponse] = useState([]);
   const [employeeTracking, setemployeeTracking] = useState([]);
+  const profileRef = useRef(null);
   useEffect(() => {
     fetchEmployeeDetails(empId);
     fetchRoles();
   }, [empId]);
+  useEffect(() => {
+    successMesage();
+  }, [messagefromchild]);
 
+  const successMesage = () => {
+    if (messagefromchild) {
+      toast.success(messagefromchild, {
+        position: "top-right",
+        autoClose: "4000",
+      });
+    }
+  };
+  console.log(messagefromchild, "=======>in employee Details");
   const fetchEmployeeDetails = useCallback(
     async (empId) => {
       try {
@@ -157,7 +175,19 @@ const EmployeeDetails = () => {
     setShowConfirmModal(false);
     setActionType("");
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      console.log(event);
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowEditModal(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
 
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   if (!employee) return <div>Loading...</div>;
 
   const isInactive = employee.employeeStatus === 0;
@@ -205,8 +235,7 @@ const EmployeeDetails = () => {
         <div className="EmpDetailsContainer">
           {Object.entries({
             "Employee ID": employee.employeeId,
-            "First Name": employee.firstName,
-            "Last Name": employee.lastName,
+            Name: `${employee.firstName} ${employee.lastName}`,
             Email: employee.email,
             "Mobile No": employee.mobileNo,
             "Date of Joining": new Date(
@@ -215,7 +244,7 @@ const EmployeeDetails = () => {
             Status: isInactive ? "Inactive" : "Active",
             Role: getRoleName(employee.roleId),
             "Reporting Manager": projectManagerName,
-            Skills: employee.skillSets || "NA",
+            Skills: employee.skillSets || "--",
           }).map(([label, value]) => (
             <div className="EmpDetailsRow" key={label}>
               <div className="EmpDetailsLabel">{label}:</div>
@@ -225,11 +254,16 @@ const EmployeeDetails = () => {
         </div>
 
         {showEditModal && (
-          <EmployeeModal
-            employee={employee}
-            onClose={() => setShowEditModal(false)}
-            onRefresh={() => fetchEmployeeDetails(empId)}
-          />
+          <div>
+            <EmployeeModal
+              prfref={profileRef}
+              className="profile-popup"
+              successMessage={setMessageFormChild}
+              employee={employee}
+              onClose={() => setShowEditModal(false)}
+              onRefresh={() => fetchEmployeeDetails(empId)}
+            />
+          </div>
         )}
         {showConfirmModal && (
           <ConfirmationModal
@@ -354,6 +388,7 @@ const EmployeeDetails = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 };

@@ -23,7 +23,7 @@
 } */
 
 .dataTable {
-  width: 100%;
+  /* width: 100%; */
   border-top-style: none;
   border-bottom-style: none;
   border-left-style: none;
@@ -170,4 +170,27 @@ table {
 .dt-column-order {
   display: flex;
   text-align: left;
+}
+.search-container {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-input {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+/* Ensure pointer cursor for row hover */
+.rdt_TableRow {
+  cursor: pointer !important;
+}
+.TableCell,
+.TableSortLabel {
+  color: white;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 6.5px 20px;
 }

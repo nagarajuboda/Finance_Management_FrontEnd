@@ -1,6 +1,4 @@
-export const AddProjectFormValidation = (name, value) => {
-  console.log(name, "projectmanagername");
-  console.log(value, "project manager Value");
+export const AddProjectFormValidation = (name, value, values) => {
   if (name === "ProjectID") {
     if (!value) return "Project ID is required";
   }
@@ -12,7 +10,15 @@ export const AddProjectFormValidation = (name, value) => {
   }
   if (name === "EndDate") {
     if (!value) return "Deadline Date is required";
+    console.log(value, "=====>");
+    if (
+      new Date(value) < new Date(values.StartDate) ||
+      new Date(value) < new Date(values.StartDate)
+    ) {
+      return "Deadline Date cannot be earlier than Start Date";
+    }
   }
+
   if (name === "ClientEmail") {
     if (!value) return "Please select client";
   }

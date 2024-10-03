@@ -8,6 +8,7 @@ import $, { data } from "jquery";
 import { ToastContainer, toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import withReactContent from "sweetalert2-react-content";
+import DataTable from "react-data-table-component";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import "datatables.net";
@@ -35,6 +36,7 @@ export function ViewProject() {
   const [projectManagerName, setProjectMangerName] = useState("");
   const [sessiondata, setSessiondata] = useState(null);
   const [projectManagers, setProjectManagers] = useState([]);
+  const [projectManagername, setProjectManagerName] = useState("");
   const navigate = useNavigate();
   const [sessionData, setSessionDataState] = useState(null);
   const [status, setStatus] = useState("InActive");
@@ -70,10 +72,11 @@ export function ViewProject() {
       //setSelectedManagerId(result.item.projectMangerName);
       setStatus(result.item.project.status);
       setSelectedManagerId(result.item.projectMangerEmail);
+      setProjectManagerName(result.item.projectMangerName);
       setDataReady(true);
     }
   }
-
+  console.log(projectEmployess, "project Employees");
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProjectValues({
@@ -203,6 +206,24 @@ export function ViewProject() {
       return newSelectedRowIds;
     });
   };
+  const projectStartDate = new Date("2024-09-02");
+  const projectDeadline = new Date("2024-10-01");
+  const currentDate = new Date();
+  const calculateProgressPercentage = () => {
+    if (currentDate < projectStartDate) {
+      return 0;
+    } else if (currentDate > projectDeadline) {
+      return 100;
+    } else {
+      const totalDuration = projectDeadline - projectStartDate;
+      const remainingTime = projectDeadline - currentDate;
+      const progressPercentage =
+        ((totalDuration - remainingTime) / totalDuration) * 100;
+      return Math.min(Math.max(progressPercentage, 0), 100);
+    }
+  };
+
+  const progressPercentage = calculateProgressPercentage();
   async function handleDelete(id, projectid) {
     Swal.fire({
       title: "Are you sure?",
@@ -230,32 +251,69 @@ export function ViewProject() {
       }
     });
   }
+  const [searchText, setSearchText] = useState("");
+  const [filteredProjects, setFilteredProjects] = useState(projectEmployess);
+
+  // Search functionality inside useEffect
+  useEffect(() => {
+    const filteredData = projectEmployess.filter((project) => {
+      const employeeName = `${project.employee.firstName} ${project.employee.lastName}`;
+      const lowerSearchText = searchText.toLowerCase();
+
+      return (
+        project.employee.employeeId.toString().includes(lowerSearchText) ||
+        employeeName.toLowerCase().includes(lowerSearchText) ||
+        project.employee.email.toLowerCase().includes(lowerSearchText) ||
+        new Date(project.project.startDate)
+          .toLocaleDateString()
+          .includes(lowerSearchText)
+      );
+    });
+
+    setFilteredProjects(filteredData);
+  }, [searchText, projectEmployess]);
+
+  const columns = [
+    {
+      name: "Employee ID",
+      selector: (row) => row.employee.employeeId,
+      sortable: true,
+    },
+    {
+      name: "Name",
+      selector: (row) => `${row.employee.firstName} ${row.employee.lastName}`,
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.employee.email,
+      sortable: true,
+    },
+    {
+      name: "Assigned Date",
+      selector: (row) => new Date(row.project.startDate).toLocaleDateString(),
+      sortable: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <RiDeleteBin6Line
+          className="deleteicon"
+          onClick={() => handleDelete(row.employee.id, row.project.id)}
+        />
+      ),
+    },
+  ];
+
+  const noDataMessage = (
+    <div style={{ padding: "10px", textAlign: "center" }}>No records found</div>
+  );
 
   return (
     <div>
       <div>
         <div className="d-flex" style={{ justifyContent: "space-between" }}>
           <div className="d-flex">
-            {/* {sessiondata != "Admin" && sessionData != "Indian finace" ? (
-              <IoArrowBackCircle
-                style={{
-                  cursor: "pointer",
-                  fontSize: "28px",
-                  color: "block",
-                }}
-                onClick={backtoprojects}
-              />
-            ) : (
-              <IoArrowBackCircle
-                style={{
-                  cursor: "pointer",
-                  fontSize: "28px",
-                  color: "block",
-                }}
-                onClick={backonclick}
-              />
-            )} */}
-            {console.log(sessiondata, "=============>")}
             {sessiondata !== "Admin" && sessiondata !== "Indian finace" ? (
               <IoArrowBackCircle
                 style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
@@ -312,11 +370,23 @@ export function ViewProject() {
             </div>
             <div className="progressbaranddates">
               <div className="circularProgressbar">
-                <CircularProgressbar
+                {/* <CircularProgressbar
                   value={Projectresponse.progress}
                   text={`${Projectresponse.progress}%`}
+                /> */}
+                <div
+                  style={{
+                    width: `${progressPercentage}%`,
+                    height: "20px",
+                    backgroundColor:
+                      progressPercentage === 100 ? "green" : "orange",
+                    borderRadius: "5px",
+                    transition: "width 0.5s ease",
+                  }}
                 />
+                <p>{progressPercentage.toFixed(2)}% </p>
               </div>
+
               <div className="startdatediv">
                 <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
                   Start Date
@@ -349,23 +419,20 @@ export function ViewProject() {
                   fontFamily: "Open Sans, sans-serif",
                 }}
               >
-                Project Manager
+                Project Manager Info
               </p>
             </div>
             <div className="ProjectMangerProfile d-flex">
               <div className="d-flex">
                 <div>
                   <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                    {projectManagerName}
+                    {projectManagername}
                   </p>
                   <p style={{ marginBottom: "0px", fontWeight: "400" }}>
                     {projectManagerEmail}
                   </p>
                 </div>
               </div>
-              {/* <div className="addlead">
-                <Link>Change Manager</Link>
-              </div> */}
             </div>
           </div>
           <div className="card ms-3" style={{ borderRadius: "0px" }}>
@@ -376,7 +443,7 @@ export function ViewProject() {
                   fontFamily: "Open Sans, sans-serif",
                 }}
               >
-                Client
+                Client Info
               </p>
             </div>
             <div className="d-flex">
@@ -425,11 +492,30 @@ export function ViewProject() {
             </Link>
           </div>
           <div>
-            <table
-              id="example11"
-              className="table table-striped projectemployeetable"
-              style={{ width: "100%" }}
-            >
+            <div className="search-container ">
+              <input
+                type="text"
+                placeholder="Search by id,name,email...."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+                className="form-control mb-3 search-input"
+              />
+            </div>
+
+            {/* <DataTable
+              columns={columns}
+              data={filteredProjects.length > 0 ? filteredProjects : []}
+              pagination
+              striped
+              highlightOnHover
+              noDataComponent={
+                <div style={{ textAlign: "center" }}>
+                  No records in the table
+                </div>
+              } // Custom no data message
+            /> */}
+
+            <table className="table table-striped projectemployeetable">
               <thead className="theadbackgroundcolor">
                 <tr>
                   <th
@@ -454,13 +540,7 @@ export function ViewProject() {
                     className="tbh"
                     style={{ backgroundColor: "#196e8a", color: "white" }}
                   >
-                    Project Name
-                  </th>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Date Of Joining
+                    Assigned date
                   </th>
                   <th
                     className="tbh"
@@ -479,6 +559,8 @@ export function ViewProject() {
                   </tr>
                 ) : (
                   projectEmployess.map((obj, index) => {
+                    const dateOfJoining =
+                      obj.employee.dateOfJoining.split("T")[0];
                     return (
                       <tr key={index}>
                         <td className="data">
@@ -486,8 +568,7 @@ export function ViewProject() {
                         </td>
                         <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
                         <td className="data">{obj.employee.email}</td>
-                        <td className="data">{obj.project.projectName}</td>
-                        <td className="data">{obj.employee.dateOfJoining}</td>
+                        <td className="data">{dateOfJoining}</td>
                         <td className="data">
                           <div className="deleteicontd">
                             <RiDeleteBin6Line
@@ -800,7 +881,6 @@ export function ViewProject() {
                                 toggleIcon(e, index, obj.employee.id)
                               }
                               className="addemployeecircle "
-                              style={{ cursor: "pointer", margin: "0px 15px" }}
                             />
                           )}
                         </td>

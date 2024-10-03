@@ -1,0 +1,33 @@
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+.custom-dropdown .form-control {
+  cursor: pointer;
+  display: block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  padding: 6px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+.list-unstyled {
+  height: 60px;
+}
