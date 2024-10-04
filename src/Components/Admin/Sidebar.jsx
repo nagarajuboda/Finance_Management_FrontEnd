@@ -22,7 +22,7 @@ const Sidebar = ({ children }) => {
   const toggle = () => {
     setIsOpen(!isOpen);
     if (isOpen) {
-      setOpenDropdowns([]); // Close all dropdowns when sidebar is minimized
+      setOpenDropdowns([]);
     }
   };
 
@@ -34,7 +34,7 @@ const Sidebar = ({ children }) => {
   }, []);
 
   const toggleDropdown = (index) => {
-    if (!isOpen) return; // Prevent dropdowns from opening when sidebar is minimized
+    if (!isOpen) return;
     setOpenDropdowns((prevOpenDropdowns) => {
       if (prevOpenDropdowns.includes(index)) {
         return prevOpenDropdowns.filter((i) => i !== index);
@@ -113,7 +113,7 @@ const Sidebar = ({ children }) => {
       icon: <VscProject />,
       submenu: [
         { path: "/IndianFinance/Revenue", name: "- Revenue" },
-        { path: "/IndianFinance/Revenuewe", name: "- Monthly Expensive" },
+        { path: "/IndianFinance/Revenuewe", name: "- Monthly Expense" },
       ],
     },
   ];

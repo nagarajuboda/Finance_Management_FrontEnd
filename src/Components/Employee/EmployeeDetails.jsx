@@ -71,15 +71,16 @@ const EmployeeDetails = () => {
         } else {
           setProjectManagerName("NA");
         }
-
         // Fetch all employees to check if this employee manages anyone
         const allEmployeesResponse = await axios.get(
           `https://localhost:44305/api/Employees/AllEmployees`
         );
         const allEmployees = allEmployeesResponse.data;
+        console.log(allEmployees, "all employees");
         const managed = allEmployees.filter(
           (emp) => emp.projectManagerId === employeeData.id
         );
+        console.log(managed, "managed");
         setManagedEmployees(managed);
       } catch (error) {
         console.error(

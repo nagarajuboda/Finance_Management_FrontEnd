@@ -239,15 +239,15 @@ main {
   background-color: rgb(186, 211, 219);
 }
 /* Sidebar.css */
-.link.submenu_link.active {
-  background-color: #196e8a; /* Highlight color */
+/* .link.submenu_link.active {
+  background-color: #196e8a;
   color: white;
 }
 
 .link.submenu_link.active .link_text {
-  color: white; /* Highlight text as well */
+  color: white;
 }
 
 .dropdown-icon.open {
-  transform: rotate(90deg); /* Rotate chevron for open dropdowns */
-}
+  transform: rotate(90deg);
+} */

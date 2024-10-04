@@ -172,13 +172,12 @@ table {
   text-align: left;
 }
 .search-container {
-  margin-bottom: 15px;
   display: flex;
   justify-content: flex-end;
 }
 
 .search-input {
-  padding: 8px;
+  padding: 0px;
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 250px;
@@ -193,4 +192,10 @@ table {
 }
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 6.5px 20px;
+}
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root {
+  box-shadow: none !important;
+}
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 8px 15px !important;
 }

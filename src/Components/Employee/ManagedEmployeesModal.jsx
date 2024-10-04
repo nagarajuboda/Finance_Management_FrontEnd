@@ -1,7 +1,6 @@
 import React from "react";
 
 const ManagedEmployeesModal = ({ managerName, employees, onClose }) => {
-  console.log(managerName, "============>");
   return (
     <div className="ManagedEmployeesModal">
       <div className="ManagedEmployeesModalCntnt">

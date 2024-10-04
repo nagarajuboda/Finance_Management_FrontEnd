@@ -167,7 +167,10 @@ const AddEmployeeModal = ({
         break;
       case "email":
         if (!value) return "Email is required";
-        if (!/\S+@\S+\.\S+/.test(value)) return "Email address is invalid";
+        // if (!/\S+@\S+\.\S+/.test(value)) return "Email address is invalid";
+        if (!/^[a-zA-Z]+\.[a-zA-Z]+@archents\.com$/.test(value)) {
+          return "Email must be in the format name.surname@archents.com";
+        }
         break;
       case "passwordHash":
         if (!value) return "Password field is missing";
@@ -526,15 +529,19 @@ const AddEmployeeModal = ({
                     <ul className="list-unstyled">
                       {filteredManagers.length > 0 ? (
                         filteredManagers.map((pm) => (
-                          <li
-                            key={pm.id}
-                            className="dropdown-item"
-                            onClick={() => handleOptionSelect(pm.id)}
-                          >
-                            <p>
-                              {pm.firstName} {pm.lastName} - {pm.email}
-                            </p>
-                          </li>
+                          <div>
+                            {pm.employeeStatus === 1 && (
+                              <li
+                                key={pm.id}
+                                className="dropdown-item"
+                                onClick={() => handleOptionSelect(pm.id)}
+                              >
+                                <p>
+                                  {pm.firstName} {pm.lastName}
+                                </p>
+                              </li>
+                            )}
+                          </div>
                         ))
                       ) : (
                         <li className="dropdown-item">No matching managers</li>
