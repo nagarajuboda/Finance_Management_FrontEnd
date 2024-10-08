@@ -8,6 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 
+import { post } from "jquery";
+
 const EmployeeDashboard = () => {
   const [employees, setEmployees] = useState([]);
   const [roles, setRoles] = useState([]);
@@ -27,8 +29,11 @@ const EmployeeDashboard = () => {
   const [itemsPerPage] = useState(10);
   const [showInactive, setShowInactive] = useState(false);
   const [messagefromchild, setMessageFormChild] = useState("");
+  const [selectedfile, setSelectedFile] = useState(null);
+  const [existvalues, setExsitValue] = useState([]);
   const navigate = useNavigate();
   const profileRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchEmployees();
@@ -38,7 +43,6 @@ const EmployeeDashboard = () => {
   useEffect(() => {
     successMesage();
   }, [messagefromchild]);
-
   useEffect(() => {
     setCurrentPage(1);
   }, [showInactive]);
@@ -57,6 +61,7 @@ const EmployeeDashboard = () => {
       );
       setAllEmployees(response.data);
       const employeesData = response.data;
+      console.log(employeesData, "employee data");
       setEmployees(employeesData.filter((emp) => emp.employeeStatus === 1));
       setInactiveEmployees(
         employeesData.filter((emp) => emp.employeeStatus === 0)
@@ -66,7 +71,7 @@ const EmployeeDashboard = () => {
         "https://localhost:44305/api/Roles/AllRoles"
       );
       setRoles(rolesResponse.data);
-      console.log(response, "==>repose");
+
       const projectManagerRole = rolesResponse.data.find(
         (role) => role.name === "Project Manager"
       );
@@ -203,11 +208,72 @@ const EmployeeDashboard = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+  const InsertbulkDate = async (e) => {
+    e.preventDefault();
+    if (!selectedfile) {
+      alert("please select ex sheet");
+    }
+    const formData = new FormData();
+    formData.append("file", selectedfile);
+    const response = await axios.post(
+      "https://localhost:44305/api/Employees/BulkInsert",
+      formData
+    );
+    var result = response.data;
+    debugger;
+    if (result.item.item2 == false) {
+      debugger;
+      // fileInputRef.current.value = null;
+      setAllEmployees(result.item.item1);
+      setEmployees(result.item.item1.filter((emp) => emp.employeeStatus === 1));
+      setInactiveEmployees(
+        result.item.item1.filter((emp) => emp.employeeStatus === 0)
+      );
+      fetchEmployees();
+      Swal.fire({
+        title: "Good job!",
+        text: "Data inserted successfully done ...",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } else {
+      let vlauesss = [];
+      var emails = result.item.item1.map((obj) => obj.email);
+      var ids = result.item.item1.map((obj) => obj.employeeId);
+      console.log(result.item.item1, "======>");
+      vlauesss.push(...emails); // Spread the emails array into vlauesss
+      vlauesss.push(...ids); // Spread the ids array into vlauesss
+      //setExsitValue(emails);
+
+      Swal.fire({
+        title: "Error!",
+        text: vlauesss,
+        //text: result.message || "Something went wrong while adding the project",
+        icon: "error",
+        confirmButtonText: "Try Again",
+      });
+    }
+  };
   return (
     <div className="EmployeeDashboard">
       <div className="EmpHeader">
         <div className="EmpHeaderLeft">
           <h1>Employee List</h1>
+          <form onSubmit={InsertbulkDate}>
+            <div style={{ justifyContent: "end" }}>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                ref={fileInputRef}
+                placeholder="please select Excel sheet"
+              />
+              <button className="btn btn-success">Add</button>
+            </div>
+          </form>
         </div>
         <div className="EmpHeaderRight">
           <input

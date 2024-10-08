@@ -15,7 +15,7 @@ const AddEmployeeModal = ({
     firstName: "",
     lastName: "",
     email: "",
-    passwordHash: "",
+    passwordHash: "Nagaraju@123",
     mobileNo: "",
     dateOfJoining: "",
     projectManagerId: "",
@@ -172,7 +172,7 @@ const AddEmployeeModal = ({
           return "Email must be in the format name.surname@archents.com";
         }
         break;
-      case "passwordHash":
+      case "passwordHash1":
         if (!value) return "Password field is missing";
         const errors = [];
         if (value.length < 8) errors.push("at least 8 characters");
@@ -348,7 +348,9 @@ const AddEmployeeModal = ({
           <div className="row">
             <div className="col-6">
               <div>
-                Employee ID:
+                <span style={{ fontWeight: "550" }}> Employee ID:</span>
+                <span style={{ color: "red" }}>*</span>
+
                 <div>
                   <input
                     type="text"
@@ -366,7 +368,8 @@ const AddEmployeeModal = ({
               </div>
             </div>
             <div className="col-6">
-              First Name
+              <span style={{ fontWeight: "550" }}>First Name:</span>
+
               <span className="" style={{ color: "red" }}>
                 *
               </span>
@@ -385,7 +388,8 @@ const AddEmployeeModal = ({
           </div>
           <div className="row">
             <div className="col-6">
-              Last Name:
+              <span style={{ fontWeight: "550" }}> Last Name:</span>
+
               <input
                 type="text"
                 id="lastName"
@@ -396,7 +400,8 @@ const AddEmployeeModal = ({
               />
             </div>
             <div className="col-6">
-              Email:<span style={{ color: "red" }}>*</span>
+              <span style={{ fontWeight: "550" }}> Email:</span>
+              <span style={{ color: "red" }}>*</span>
               <input
                 type="text "
                 className="form-control w-100 "
@@ -413,58 +418,8 @@ const AddEmployeeModal = ({
           </div>
           <div className="row">
             <div className="col-6">
-              {!isEditing ? (
-                <div>
-                  Password:<span style={{ color: "red" }}>*</span>
-                  <div className="AddEmpMdlPwdInput">
-                    <input
-                      type={passwordVisible ? "txt" : "password"}
-                      name="passwordHash"
-                      value={formData.passwordHash}
-                      onChange={handleChange}
-                      disabled={isEditing}
-                    />
-                    <span
-                      className="AddEmpMdlEyeIcon"
-                      onClick={() => setPasswordVisible(!passwordVisible)}
-                    >
-                      {passwordVisible ? "👁️‍🗨️" : "👁️"}
-                    </span>
-                  </div>
-                  {errors.passwordHash && (
-                    <span className="AddEmpMdlPwdError">
-                      {errors.passwordHash}
-                    </span>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  Password:
-                  <div className="AddEmpMdlPwdInput">
-                    <input
-                      type={passwordVisible ? "txt" : "password"}
-                      name="passwordHash"
-                      value={formData.passwordHash}
-                      onChange={handleChange}
-                      disabled={isEditing}
-                    />
-                    {/* <span
-                      className="AddEmpMdlEyeIcon"
-                      onClick={() => setPasswordVisible(!passwordVisible)}
-                    >
-                      {passwordVisible ? "👁️‍🗨️" : "👁️"}
-                    </span> */}
-                  </div>
-                  {errors.passwordHash && (
-                    <span className="AddEmpMdlPwdError">
-                      {errors.passwordHash}
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
-            <div className="col-6">
-              Mobile Number:<span style={{ color: "red" }}>*</span>
+              <span style={{ fontWeight: "550" }}> Mobile Number:</span>
+              <span style={{ color: "red" }}>*</span>
               <input
                 type="text"
                 id="mobileNo"
@@ -480,10 +435,8 @@ const AddEmployeeModal = ({
                 <span className="error">{emailMobileErrors.mobileNo}</span>
               )}
             </div>
-          </div>
-          <div className="row">
             <div className="col-6">
-              Date of Joining:
+              <span style={{ fontWeight: "550" }}> Date of Joining:</span>
               <input
                 type="date"
                 id="dateOfJoining"
@@ -496,9 +449,11 @@ const AddEmployeeModal = ({
                 <span className="error">{errors.dateOfJoining}</span>
               )}
             </div>
+          </div>
+          <div className="row">
             <div className="col-6">
               <div className="custom-dropdown">
-                <label>Reporting Manager:</label>
+                <span style={{ fontWeight: "550" }}>Reporting Manager:</span>
                 <div
                   className="form-control"
                   onClick={() => setIsOpen(!isOpen)}
@@ -551,10 +506,9 @@ const AddEmployeeModal = ({
                 )}
               </div>
             </div>
-          </div>
-          <div className="row">
             <div className="col-6">
-              Role:<span style={{ color: "red" }}>*</span>
+              <span style={{ fontWeight: "550" }}>Role:</span>
+              <span style={{ color: "red" }}>*</span>
               <select
                 id="roleId"
                 name="roleId"
@@ -571,8 +525,11 @@ const AddEmployeeModal = ({
               </select>
               {errors.roleId && <span className="error">{errors.roleId}</span>}
             </div>
-            <div className="col-6 mb-3">
-              <label> Skill Sets:</label>
+          </div>
+          <div className="row">
+            {/* <div className="col-6"></div> */}
+            <div className="col-12 mb-3">
+              <span style={{ fontWeight: "550" }}>Skill Sets:</span>
               <textarea
                 id="skillSets"
                 name="skillSets"

@@ -69,7 +69,7 @@ const EmployeeDetails = () => {
             `${pmResponse.data.firstName} ${pmResponse.data.lastName}`
           );
         } else {
-          setProjectManagerName("NA");
+          setProjectManagerName("--");
         }
         // Fetch all employees to check if this employee manages anyone
         const allEmployeesResponse = await axios.get(
@@ -114,10 +114,8 @@ const EmployeeDetails = () => {
   const handleEdit = () => setShowEditModal(true);
 
   const handleDeactivate = () => {
-    if (
-      getRoleName(employee.roleId) === "Project Manager" &&
-      managedEmployees.length > 0
-    ) {
+    // getRoleName(employee.roleId) === "Project Manager" &&
+    if (managedEmployees.length > 0) {
       setShowManagedEmployeesModal(true);
     } else {
       setActionType("deactivate");

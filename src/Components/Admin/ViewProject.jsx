@@ -26,7 +26,7 @@ export function ViewProject() {
   const handleClose = () => setShow(false);
 
   const [Employeeids, setIds] = useState([]);
-
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [ProjectValues, setProjectValues] = useState({});
   const [clientvalues, setClientValues] = useState({});
   const [dataReady, setDataReady] = useState(false);
@@ -40,6 +40,9 @@ export function ViewProject() {
   const navigate = useNavigate();
   const [sessionData, setSessionDataState] = useState(null);
   const [status, setStatus] = useState("InActive");
+  const [projectStartDate1, setprojectStartDate] = useState("");
+  const [projectDeadline1, setprojectDeadline] = useState("");
+  const [searchText, setSearchText] = useState("");
   const id = localStorage.getItem("projectId");
   useEffect(() => {
     FetchData();
@@ -69,14 +72,15 @@ export function ViewProject() {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
       setProjectMangerEmail(result.item.projectMangerEmail);
-      //setSelectedManagerId(result.item.projectMangerName);
       setStatus(result.item.project.status);
       setSelectedManagerId(result.item.projectMangerEmail);
       setProjectManagerName(result.item.projectMangerName);
+      setprojectStartDate(result.item.project.startDate);
+      setprojectDeadline(result.item.project.endDate);
       setDataReady(true);
     }
   }
-  console.log(projectEmployess, "project Employees");
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProjectValues({
@@ -99,6 +103,10 @@ export function ViewProject() {
       };
     }
   }, [dataReady]);
+  useEffect(() => {
+    setProgressPercentage(calculateProgressPercentage());
+    console.log("percentage", calculateProgressPercentage());
+  }, [projectDeadline1]);
 
   useEffect(() => {
     if (showw) {
@@ -206,10 +214,13 @@ export function ViewProject() {
       return newSelectedRowIds;
     });
   };
-  const projectStartDate = new Date("2024-09-02");
-  const projectDeadline = new Date("2024-10-01");
+
   const currentDate = new Date();
   const calculateProgressPercentage = () => {
+    debugger;
+    const projectStartDate = new Date(projectStartDate1);
+    const projectDeadline = new Date(projectDeadline1);
+
     if (currentDate < projectStartDate) {
       return 0;
     } else if (currentDate > projectDeadline) {
@@ -223,7 +234,6 @@ export function ViewProject() {
     }
   };
 
-  const progressPercentage = calculateProgressPercentage();
   async function handleDelete(id, projectid) {
     Swal.fire({
       title: "Are you sure?",
@@ -251,63 +261,18 @@ export function ViewProject() {
       }
     });
   }
-  const [searchText, setSearchText] = useState("");
-  const [filteredProjects, setFilteredProjects] = useState(projectEmployess);
+  const filteredEmployees = projectEmployess.filter((employeeObj) => {
+    const { employeeId, firstName, lastName, email } = employeeObj.employee;
 
-  // Search functionality inside useEffect
-  useEffect(() => {
-    const filteredData = projectEmployess.filter((project) => {
-      const employeeName = `${project.employee.firstName} ${project.employee.lastName}`;
-      const lowerSearchText = searchText.toLowerCase();
+    const searchLower = searchText.toLowerCase();
+    const fullName = `${firstName} ${lastName}`.toLowerCase();
 
-      return (
-        project.employee.employeeId.toString().includes(lowerSearchText) ||
-        employeeName.toLowerCase().includes(lowerSearchText) ||
-        project.employee.email.toLowerCase().includes(lowerSearchText) ||
-        new Date(project.project.startDate)
-          .toLocaleDateString()
-          .includes(lowerSearchText)
-      );
-    });
-
-    setFilteredProjects(filteredData);
-  }, [searchText, projectEmployess]);
-
-  const columns = [
-    {
-      name: "Employee ID",
-      selector: (row) => row.employee.employeeId,
-      sortable: true,
-    },
-    {
-      name: "Name",
-      selector: (row) => `${row.employee.firstName} ${row.employee.lastName}`,
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => row.employee.email,
-      sortable: true,
-    },
-    {
-      name: "Assigned Date",
-      selector: (row) => new Date(row.project.startDate).toLocaleDateString(),
-      sortable: true,
-    },
-    {
-      name: "Action",
-      cell: (row) => (
-        <RiDeleteBin6Line
-          className="deleteicon"
-          onClick={() => handleDelete(row.employee.id, row.project.id)}
-        />
-      ),
-    },
-  ];
-
-  const noDataMessage = (
-    <div style={{ padding: "10px", textAlign: "center" }}>No records found</div>
-  );
+    return (
+      employeeId.toLowerCase().includes(searchLower) ||
+      fullName.includes(searchLower) ||
+      email.toLowerCase().includes(searchLower)
+    );
+  });
 
   return (
     <div>
@@ -370,21 +335,30 @@ export function ViewProject() {
             </div>
             <div className="progressbaranddates">
               <div className="circularProgressbar">
+                <div>
+                  <CircularProgressbar
+                    value={progressPercentage}
+                    text={`${progressPercentage.toFixed(2)}%`}
+                    styles={{
+                      path: {
+                        stroke: progressPercentage === 100 ? "green" : "orange",
+                        transition: "stroke-dashoffset 0.5s ease",
+                      },
+                      text: {
+                        fill: "#000",
+                        fontSize: "21px",
+                      },
+                      trail: {
+                        stroke: "#d6d6d6",
+                      },
+                    }}
+                  />
+                </div>
                 {/* <CircularProgressbar
                   value={Projectresponse.progress}
                   text={`${Projectresponse.progress}%`}
                 /> */}
-                <div
-                  style={{
-                    width: `${progressPercentage}%`,
-                    height: "20px",
-                    backgroundColor:
-                      progressPercentage === 100 ? "green" : "orange",
-                    borderRadius: "5px",
-                    transition: "width 0.5s ease",
-                  }}
-                />
-                <p>{progressPercentage.toFixed(2)}% </p>
+                <div />
               </div>
 
               <div className="startdatediv">
@@ -495,25 +469,12 @@ export function ViewProject() {
             <div className="search-container ">
               <input
                 type="text"
-                placeholder="Search by id,name,email...."
+                placeholder="Search by Id, Name, Email...."
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 className="form-control mb-3 search-input"
               />
             </div>
-
-            {/* <DataTable
-              columns={columns}
-              data={filteredProjects.length > 0 ? filteredProjects : []}
-              pagination
-              striped
-              highlightOnHover
-              noDataComponent={
-                <div style={{ textAlign: "center" }}>
-                  No records in the table
-                </div>
-              } // Custom no data message
-            /> */}
 
             <table className="table table-striped projectemployeetable">
               <thead className="theadbackgroundcolor">
@@ -551,14 +512,14 @@ export function ViewProject() {
                 </tr>
               </thead>
               <tbody>
-                {projectEmployess.length === 0 ? (
+                {filteredEmployees.length === 0 ? (
                   <tr>
                     <td colSpan="6" style={{ textAlign: "center" }}>
                       No records in the table
                     </td>
                   </tr>
                 ) : (
-                  projectEmployess.map((obj, index) => {
+                  filteredEmployees.map((obj, index) => {
                     const dateOfJoining =
                       obj.employee.dateOfJoining.split("T")[0];
                     return (

@@ -63,7 +63,9 @@
 .updatebtn {
   border-radius: 10px;
 }
-
+.dt-inp {
+  font-size: none !important;
+}
 textarea {
   padding: 12px 20px;
   box-sizing: border-box;

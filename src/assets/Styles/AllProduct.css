@@ -199,3 +199,9 @@ table {
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 8px 15px !important;
 }
+.css-1qgma8u-MuiButtonBase-root-MuiTableSortLabel-root {
+  font-size: medium;
+}
+.css-1ex1afd-MuiTableCell-root {
+  font-size: 0.9rem;
+}

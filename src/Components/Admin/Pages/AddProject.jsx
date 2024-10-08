@@ -1169,7 +1169,7 @@ export default function AddProject() {
       if (response.isSuccess === true) {
         Swal.fire({
           title: "Good job!",
-          text: " New project added successfully done",
+          text: "Project added successfully done",
           icon: "success",
         });
         navigate("/Dashboard/AllProjects");

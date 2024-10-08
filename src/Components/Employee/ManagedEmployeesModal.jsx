@@ -7,7 +7,7 @@ const ManagedEmployeesModal = ({ managerName, employees, onClose }) => {
         <div className="EmpDetailsHeader">
           <p className="ManagedEmployeesMdlHeader">
             Please Unassign <span className="ManagerName">{managerName}</span>{" "}
-            as Project Manager from the employees below to deactivate.
+            as Reporting Manager from the employees below to deactivate.
           </p>
           <button className="EmpBackBtn" onClick={onClose}>
             X
