@@ -212,6 +212,7 @@ const EmployeeDashboard = () => {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+  // for insert employee bulk data logic
   const InsertbulkDate = async (e) => {
     e.preventDefault();
     if (!selectedfile) {
@@ -224,10 +225,7 @@ const EmployeeDashboard = () => {
       formData
     );
     var result = response.data;
-    debugger;
     if (result.item.item2 == false) {
-      debugger;
-      // fileInputRef.current.value = null;
       setAllEmployees(result.item.item1);
       setEmployees(result.item.item1.filter((emp) => emp.employeeStatus === 1));
       setInactiveEmployees(
@@ -240,21 +238,36 @@ const EmployeeDashboard = () => {
         icon: "success",
         confirmButtonText: "OK",
       });
+      setSelectedFile(null);
+      fileInputRef.current.value = "";
     } else {
       let vlauesss = [];
-      var emails = result.item.item1.map((obj) => obj.email);
-      var ids = result.item.item1.map((obj) => obj.employeeId);
-      console.log(result.item.item1, "======>");
-      vlauesss.push(...emails); // Spread the emails array into vlauesss
-      vlauesss.push(...ids); // Spread the ids array into vlauesss
-      //setExsitValue(emails);
+      var emails = result.item.item1
+        .map((obj) => obj.email)
+        .filter((email) => email !== null && email !== undefined);
 
+      var ids = result.item.item1
+        .map((obj) => obj.employeeId)
+        .filter((id) => id !== null && id !== undefined);
+      var empnumbers = result.item.item1
+        .map((obj) => obj.mobileNo)
+        .filter((mobileNo) => mobileNo !== null && mobileNo !== undefined);
+      vlauesss.push(...emails);
+      vlauesss.push(...ids);
+      vlauesss.push(...empnumbers);
+      let formattedText = vlauesss.join(",");
+      const formatedData = formattedText;
       Swal.fire({
         title: "Error!",
-        text: vlauesss,
-        //text: result.message || "Something went wrong while adding the project",
+        html: `<div style="width: auto; max-height: 80px; overflow-y: auto; overflow-x: hidden;">
+        <span style="font-weight: 600; color: black;">${formatedData.replace(
+          /,/g,
+          "<br>"
+        )}</span>
+      </div>`,
         icon: "error",
         confirmButtonText: "Try Again",
+        footer: '<a href="#" style="color: red;">This value already exists</a>',
       });
     }
   };
