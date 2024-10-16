@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
 import { format } from "date-fns";
 import TimeSheetService from "../../../Service/TimeSheetService";
-import logo from "../../../assets/Images/1.jpg";
 import { GrPowerReset } from "react-icons/gr";
 import { IoSaveOutline } from "react-icons/io5";
 import axios from "axios";

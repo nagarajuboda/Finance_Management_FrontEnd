@@ -1,177 +1,149 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background: url("src/assets/Images/Login3.jpg") no-repeat center center fixed;
-  background-size: cover;
+.maindiv {
   display: flex;
-  justify-content: flex-end; /* Align items to the right */
-  align-items: center;
-  height: 100vh;
 }
-
-.backgroundImage {
-  background: url("src/assets/Images/Login3.jpg") no-repeat center center fixed;
-  background-size: cover;
-  height: 100vh;
-  width: 100%;
+.imagediv {
+  width: 44.3%;
+  background-color: #b7e2e8;
 }
-.mainContainer {
-  background-color: rgba(255, 255, 255, 0.4);
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 500px;
-  max-width: 600px;
-  margin-right: 100px; /* Adjust margin-right value to move container slightly left */
+.Loginimagelogo {
+  height: 729px;
+  width: 700px;
 }
-
-.logo {
-  width: 150px;
-  height: auto;
-  margin-bottom: 20px;
+.formdiv {
+  background-color: #fafffb;
+  width: 55.7%;
 }
-
-.welcomeMessage {
-  margin-bottom: 10px;
+.formdiv1 {
+  margin: 70px 180px;
+  left: 765px;
+  width: 450px;
 }
-
-.Welcome {
-  font-family: "Quicksand", sans-serif;
-  font-weight: 700;
-  font-size: 25px;
-  color: #2b7a78;
-  padding-bottom: 15px;
+.archentslogo {
+  top: 90px;
+  left: 799px;
+  width: 137px;
+  height: 31px;
+  background: transparent url("img/primary-logo.png") 0% 0% no-repeat
+    padding-box;
+  opacity: 1;
 }
-
-.Text {
-  color: #17252a;
-  font-size: 16px;
-  font-weight: 400;
-  font-family: "Quicksand", sans-serif;
-  padding-bottom: 15px;
-}
-
-.loginForm,
-.resetPasswordForm,
-.verifyOtpForm,
-.setNewPasswordForm {
-  display: flex;
-  flex-direction: column;
-}
-
-.labelField {
-  font-family: "Quicksand", sans-serif;
-  color: #17252a;
+.logincontent {
+  margin-top: 50px;
+  /* = */
   text-align: left;
-  font-weight: 600;
-  margin-bottom: 5px;
-  display: block;
+  font-family: "Exo", sans-serif;
+  font-weight: bold; /* For bold text */
+  font-size: 22px; /* Font size */
+  line-height: 36px; /* Line height */
+  letter-spacing: 0px; /* Letter spacing */
+  color: #000000; /* Text color */
+  opacity: 1; /* Opacity */
 }
-
-.inputField {
-  margin-bottom: 10px;
-  padding: 15px;
-  border: 1px solid #cccccc;
+.financecontent {
+  width: 330px;
+  margin-top: 17px;
+  height: 19px;
+  text-align: left;
+  font: normal normal 600 16px/18px Raleway;
+  letter-spacing: 0px;
+  color: #585a5b;
+  opacity: 1;
+}
+.pleaseLoginContent {
+  margin-top: 10px;
+  text-align: left;
+  font-family: "Raleway", sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+}
+.inputdiv {
+  margin-top: 32px;
+}
+label {
+  text-align: left;
+  font: normal normal 600 13px/22px Raleway;
+  letter-spacing: 0px;
+  color: #585a5b;
+  opacity: 1;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 22px;
+  font-family: "Raleway", sans-serif;
+}
+.emailandpassword {
   border-radius: 5px;
-  width: 100%;
-  max-width: 450px;
-  font-family: "Quicksand", sans-serif;
-}
-
-.validationError {
-  color: red;
-  font-size: 14px;
+  opacity: 1;
   text-align: left;
-  font-family: "Quicksand", sans-serif;
-  margin-bottom: 10px;
-}
-
-.loginButton {
-  padding: 15px;
-  background-color: #3aafa9;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
+  width: 100%;
+  padding: 7px;
   border: none;
+  border: 1px solid #e6e6e6;
+}
+.emailandpassword::placeholder {
+  color: #c5c5c5;
+  opacity: 1;
+}
+.remembermecontent {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 26px;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0px;
+  color: #585a5b;
+  opacity: 0.8;
+}
+.buttonlogin {
+  background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
+  opacity: 1;
+  width: 100%;
+  letter-spacing: 0px;
+  color: #ffffff;
+  border: none;
+  margin-top: 32px;
+  font-weight: bold;
+  padding: 7px;
   cursor: pointer;
-  width: 100%;
-  max-width: 450px;
-  font-family: "Quicksand", sans-serif;
 }
-
-.loginButton:hover {
-  background-color: #acebea;
-  color: #3aafa9;
-  transition: background-color 0.3s ease;
+.forcontect {
+  font: normal normal 600 15px/17px Raleway;
+  letter-spacing: 0px;
+  margin-top: 55px;
+  text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 15px;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0;
+  color: #5a5a5a;
+  opacity: 1;
 }
-
-.asterisk {
-  color: red;
-}
-
-.passwordContainer {
+.mt-4 {
   position: relative;
-  width: 100%;
 }
-
+.emailandpassword {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6e6e6;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  padding-right: 40px;
+}
 .eyeIcon {
   position: absolute;
+  top: 69%;
   right: 10px;
-  top: 45%;
-  color: rgba(5, 5, 5, 0.5);
-  font-size: 18px;
   transform: translateY(-50%);
   cursor: pointer;
-}
-
-.forgotResetContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.forgotPassword {
-  font-size: 16px;
-  color: #17252a;
-  font-family: "Quicksand", sans-serif;
-}
-.resetLink,
-.backToLogin {
-  font-size: 16px;
-  color: #237494;
-  cursor: pointer;
-  font-family: "Quicksand", sans-serif;
-}
-
-.resetLink:hover,
-.backToLogin:hover {
-  color: #9bbac0;
-  text-decoration: underline;
-  transition: color 0.3s ease;
-}
-
-.backToLogin {
-  align-self: flex-end; /* Align the back to login link to the right */
-  margin-top: 20px; /* Add margin to the top for spacing */
-}
-
-.passwordContainer {
-  position: relative;
-  width: 100%;
-}
-
-.eyeIcon {
-  position: absolute;
-  right: 10px;
-  top: 45%;
-  transform: translateY(-50%);
-  cursor: pointer;
+  font-size: 20px;
+  color: #888;
 }

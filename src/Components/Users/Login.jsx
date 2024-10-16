@@ -11,6 +11,9 @@ import { setSessionData } from "../../Service/SharedSessionData";
 import { ControlCameraSharp } from "@mui/icons-material";
 import { LoginFormValidation } from "../Admin/Pages/LoginFormValidation";
 import { getotpValidation } from "./getotpValidation";
+import loginLogo from "../../../src/assets/Images/loginbg1.png";
+import archetslogo from "../../../src/assets/Images/primary-logo.png";
+import rememeberme from "../../assets/Images/checkbox.svg";
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -36,7 +39,10 @@ const Home = () => {
     email: "",
     password: "",
   });
-
+  const navigatetoforgotpasswordpage = async () => {
+    debugger;
+    navigate("forgotpassword");
+  };
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
 
@@ -321,233 +327,104 @@ const Home = () => {
     }
   }
 
-  const renderLoginForm = () => (
-    <div className="loginForm">
-      <form>
-        <div>
-          <label className="labelField">
-            Email Address<span className="asterisk">*</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Email Address"
-            className="inputField"
-            name="email"
-            value={valuess.email}
-            onChange={handleChange}
-          />
-          {error.email && (
-            <span
-              className="error ms-1 "
-              style={{ color: "red", textAlign: "start", display: "flex" }}
-            >
-              {error.email}
-            </span>
-          )}
-        </div>
-
-        <label className="labelField">
-          Password<span className="asterisk">*</span>
-        </label>
-        <div className="passwordContainer">
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="Password"
-            className="inputField"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-          />
-          <div
-            className="eyeIcon"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </div>
-          {error.password && (
-            <span
-              className="ms-1"
-              style={{ color: "red", textAlign: "start", display: "flex" }}
-            >
-              {error.password}
-            </span>
-          )}
-        </div>
-
-        <button className="loginButton" onClick={onLoginButtonClick}>
-          Login
-        </button>
-      </form>
-      <div className="forgotResetContainer">
-        <div className="forgotPassword">Forgot your password?</div>
-        <div className="resetLink" onClick={() => setView("resetPassword")}>
-          Reset Here
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderResetPasswordForm = () => (
-    <div className="resetPasswordForm">
-      <form onSubmit={getotpfunction}>
-        <div className="welcomeMessage">
-          <h2 className="Welcome">Reset Password</h2>
-          <p className="Text">
-            Enter your email address to receive an OTP for resetting your
-            password.
-          </p>
-        </div>
-
-        <label className="labelField">
-          Email Address<span className="asterisk">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Email Address"
-          className="inputField"
-          onChange={handleChange22}
-          name="email"
-          value={emailvalues.email}
-          // {...register('email', { required: 'Email is required' })}
-          // onChange={(e) => setEmail(e.target.value)}
-        />
-        {emailerror.email && (
-          <span
-            className="validationError ms-1"
-            style={{ display: "flex", textAlign: "start" }}
-          >
-            {emailerror.email}
-          </span>
-        )}
-        {/* {errors.email && <p className="validationError">{errors.email.message}</p>} */}
-
-        <button className="loginButton">Get OTP</button>
-        <div className="backToLogin" onClick={() => setView("login")}>
-          Back to Login
-        </div>
-      </form>
-    </div>
-  );
-
-  const renderVerifyOtpForm = () => (
-    <div className="verifyOtpForm">
-      <form onSubmit={onVerifyOtpClick}>
-        <div className="welcomeMessage">
-          <h2 className="Welcome">Verify OTP</h2>
-          <p className="Text">
-            Please enter the OTP sent to your email to verify your identity.
-          </p>
-        </div>
-
-        <label className="labelField">
-          Enter OTP<span className="asterisk">*</span>
-        </label>
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          className="inputField"
-          onChange={handleOtpChange}
-          name="Otp"
-          value={otpValues.Otp}
-          // {...register('otp', { required: 'OTP is required' })}
-          // onChange={(e) => setOtp(e.target.value)}
-        />
-        {/* {errors.otp && <p className="validationError">{errors.otp.message}</p>} */}
-        {otpErrors.Otp && (
-          <span className="validationError">{otpErrors.Otp}</span>
-        )}
-
-        <button className="loginButton">Verify OTP</button>
-        <div className="backToLogin" onClick={() => setView("login")}>
-          Back to Login
-        </div>
-      </form>
-    </div>
-  );
-
-  const renderSetNewPasswordForm = () => (
-    <div className="setNewPasswordForm">
-      <form onSubmit={onSetNewPasswordClick}></form>
-      <div className="welcomeMessage">
-        <h2 className="Welcome">Set New Password</h2>
-        <p className="Text">
-          Enter and confirm your new password to complete the reset process.
-        </p>
-      </div>
-
-      <label className="labelField">
-        New Password<span className="asterisk">*</span>
-      </label>
-      <input
-        type="password"
-        placeholder="New Password"
-        className="inputField"
-        name="NewPassword"
-        value={passwordValues.NewPassword}
-        onChange={handlePasswordChange}
-      />
-      {passwordErrors.NewPassword && (
-        <p className="validationError">{passwordErrors.NewPassword}</p>
-      )}
-      <label className="labelField">
-        Confirm Password<span className="asterisk">*</span>
-      </label>
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        className="inputField"
-        name="ConfirmPassword"
-        value={passwordValues.ConfirmPassword}
-        onChange={handlePasswordChange}
-      />
-      {passwordErrors.ConfirmPassword && (
-        <p className="validationError">{passwordErrors.ConfirmPassword}</p>
-      )}
-
-      <button className="loginButton" onClick={onSetNewPasswordClick}>
-        Set New Password
-      </button>
-      <div className="backToLogin" onClick={() => setView("login")}>
-        Back to Login
-      </div>
-    </div>
-  );
-
   return (
-    <div className="mainContainer">
-      <Helmet>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
-          rel="stylesheet"
-        />
-      </Helmet>
-      {/* Toast Container for displaying messages */}
-      <ToastContainer />
-
-      {/* Logo */}
-      <img
-        src="src/assets/Images/ArchentsLogo.png"
-        alt="Logo"
-        className="logo"
-      />
-
-      {view === "login" && (
-        <div className="welcomeMessage">
-          <div className="Welcome">Welcome back!</div>
-          <div className="Text">
-            Please login using your email and password.
+    <div className="maindiv" style={{ display: "flex" }}>
+      <div className="imagediv">
+        <img src={loginLogo} alt="" className="Loginimagelogo" />
+      </div>
+      <div className="formdiv">
+        <div className="formdiv1">
+          <div className="" style={{ marginTop: "39px" }}>
+            <img src={archetslogo} alt="" className="archentslogo" />
+          </div>
+          <div className="logincontent">Login</div>
+          <div className="financecontent">Welcome to Finance Management !</div>
+          <div className="pleaseLoginContent">
+            Please login using email id and password
+          </div>
+          <div className="inputdiv">
+            <div>
+              <div>
+                <label>
+                  Email ID <span style={{ color: "red" }}>*</span>
+                </label>
+              </div>
+              <input
+                type="text"
+                placeholder="enter your username"
+                className="emailandpassword"
+                name="email"
+                value={valuess.email}
+                onChange={handleChange}
+              />
+              {error.email && (
+                <span
+                  className="error ms-1 "
+                  style={{ color: "red", textAlign: "start", display: "flex" }}
+                >
+                  {error.email}
+                </span>
+              )}
+            </div>
+            <div className="mt-4">
+              <div>
+                <label>
+                  Password <span style={{ color: "red" }}>*</span>
+                </label>
+              </div>
+              <input
+                //type="password"
+                type={showPassword ? "text" : "password"}
+                className="emailandpassword"
+                placeholder="enter your username"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+              />
+              <div
+                className="eyeIcon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+            </div>
+            {error.password && (
+              <span
+                className="ms-1"
+                style={{ color: "red", textAlign: "start", display: "flex" }}
+              >
+                {error.password}
+              </span>
+            )}
+          </div>
+          <div
+            className="forgotpasswordtag mt-1"
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            <div style={{ display: "flex" }}>
+              <img src={rememeberme} alt="" />
+              <p className="remembermecontent m-2">Remember me</p>
+            </div>
+            <div className="mt-2">
+              <a
+                onClick={navigatetoforgotpasswordpage}
+                style={{ color: "#0071FF", cursor: "pointer" }}
+              >
+                Forgot Password?
+              </a>
+            </div>
+          </div>
+          <div className="loginbutton">
+            <button className="buttonlogin" onClick={onLoginButtonClick}>
+              Login
+            </button>
+          </div>
+          <div className="forcontect">
+            if you are a new user, please contact archents support team.
           </div>
         </div>
-      )}
-
-      {/* Conditional rendering based on view state */}
-      {view === "login" && renderLoginForm()}
-      {view === "resetPassword" && renderResetPasswordForm()}
-      {view === "verifyOtp" && renderVerifyOtpForm()}
-      {view === "setNewPassword" && renderSetNewPasswordForm()}
-
-      {/* Conditional rendering based on login status */}
-      {loggedIn ? <div></div> : <div />}
+      </div>
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 };
