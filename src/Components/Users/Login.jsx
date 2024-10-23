@@ -41,7 +41,7 @@ const Home = () => {
   });
   const navigatetoforgotpasswordpage = async () => {
     debugger;
-    navigate("forgotpassword");
+    navigate("/user/forgotpassword");
   };
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
@@ -71,15 +71,15 @@ const Home = () => {
       if (result.isSuccess === true) {
         setLoggedIn(true); // Update logged-in state
         setSessionData(result.item);
-
+        debugger;
         if (result.item.employee.role.name === "US-Finance") {
           navigate("/USFinance/UsFinaceALlProjects");
         } else if (result.item.employee.role.name === "Admin") {
-          navigate("/EmployeeDashboard");
+          navigate("/dashboard/EmployeeDashboard");
         } else if (result.item.employee.role.name === "Indian finace") {
           navigate("/EmployeeDashboard");
         } else if (result.item.employee.role.name === "Project Manager") {
-          navigate("/UnderManagerEmployees");
+          navigate("/dashboard/UnderManagerEmployees");
         } else if (result.item.employee.role.name === "Reporting Manager") {
           navigate("/UnderManagerEmployees");
         } else if (result.item.employee.role.name === "Hr") {
@@ -359,7 +359,7 @@ const Home = () => {
               />
               {error.email && (
                 <span
-                  className="error ms-1 "
+                  className="error ms-1 emailrequirederrormessage "
                   style={{ color: "red", textAlign: "start", display: "flex" }}
                 >
                   {error.email}
@@ -390,7 +390,7 @@ const Home = () => {
             </div>
             {error.password && (
               <span
-                className="ms-1"
+                className="ms-1 emailrequirederrormessage"
                 style={{ color: "red", textAlign: "start", display: "flex" }}
               >
                 {error.password}
@@ -407,6 +407,7 @@ const Home = () => {
             </div>
             <div className="mt-2">
               <a
+                className="forgotpasswordatag"
                 onClick={navigatetoforgotpasswordpage}
                 style={{ color: "#0071FF", cursor: "pointer" }}
               >

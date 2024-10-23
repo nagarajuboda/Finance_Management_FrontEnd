@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logo from "../../../assets/Images/2.jpg";
 import "../../../assets/Styles/Profile.css";
 import { useState, useEffect } from "react";
 import "react-toastify/dist/ReactToastify.css";

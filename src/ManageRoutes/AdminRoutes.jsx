@@ -22,12 +22,13 @@ import UnderManagerEmployees from "../Components/Manager/UnderManagerEmployees";
 import ViewEmployee from "../Components/Manager/ViewEmployee";
 import AddRevenue from "../Components/USFinance/AddRevenue";
 import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
+import Employees from "../Components/Employee/Employees";
+import AddEmployee from "../Components/Employee/AddEmployee";
 
 export default function AdminRoutes() {
   return (
     <Sidebar>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
         <Route path="/" element={<EmployeeDashboard />} />
         <Route path="/about" element={<About />} />
         <Route path="/comment" element={<Comment />} />
@@ -47,6 +48,8 @@ export default function AdminRoutes() {
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
         <Route path="/ViewEmployee" element={<ViewEmployee />} />
         <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
+        <Route path="/Employees" element={<Employees />} />
+        <Route path="/AddEmployee" element={<AddEmployee />} />
         <Route
           path="/UnderManagerEmployees"
           element={<UnderManagerEmployees />}

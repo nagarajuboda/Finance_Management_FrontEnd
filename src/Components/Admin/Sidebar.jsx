@@ -13,7 +13,16 @@ import { VscTasklist } from "react-icons/vsc";
 import { FaChevronRight } from "react-icons/fa";
 import { RiDashboard3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
+import "../../assets/Styles/Sidebar.css";
+import archetslogo from "../../../src/assets/Images/primary-logo.png";
+import dashboardsidebarimage from "../../assets/Images/DBicon.png";
+import billing from "../../assets/Images/billing.png";
+import Logout from "../../assets/Images/Logout.png";
+import report from "../../assets/Images/accountandreport.png";
+import ProjectManagement from "../../assets/Images/ProjectManagement.png";
+import hrManagement from "../../assets/Images/management.png";
 import Header from "./Header";
+import sidebarimage from "../../../src/assets/Images/sidemenu.png";
 const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
@@ -31,7 +40,7 @@ const Sidebar = ({ children }) => {
     if (data) {
       setSessionData(JSON.parse(data));
     }
-  }, []);
+  }, [isOpen]);
 
   const toggleDropdown = (index) => {
     if (!isOpen) return;
@@ -46,218 +55,195 @@ const Sidebar = ({ children }) => {
 
   const adminMenuItems = [
     {
-      name: "Hr Management",
-      icon: <IoPeopleOutline />,
+      name: "Dashboard",
+      icon: dashboardsidebarimage,
+    },
+    {
+      name: "HR Management",
+      icon: hrManagement,
       submenu: [
-        { path: "/EmployeeDashboard", name: "- Employees" },
-        { path: "/Roles", name: "- Roles" },
-        // { path: "/list2", name: "- Jobs" },
-        // { path: "/list1", name: "- Condidates" },
-        // { path: "/list1", name: "- Attendance" },
-        // { path: "/list1", name: "- Leaves" },
+        { path: "/dashboard/Employees", name: "Employees" },
+        { path: "/Dashboard/AllProjects", name: "Roles" },
       ],
     },
     {
       name: "Project Management",
-      icon: <VscProject />,
-      submenu: [
-        //   { path: "/contracts", name: "- Contracts" },
-        { path: "/Dashboard/AllProjects", name: "- Projects" },
-        // { path: "/Files", name: "- Files" },
-        // { path: "/Profile", name: "- Profile" },
-      ],
+      icon: ProjectManagement,
+      submenu: [{ path: "/dashboard/Dashboard/AllProjects", name: "Projects" }],
+    },
+    {
+      name: "Billing",
+      icon: billing,
+      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
+    },
+    {
+      name: "Accounts & Reports",
+      icon: report,
+      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
+    },
+    {
+      name: "Logout",
+      icon: Logout,
+      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
     },
   ];
 
-  const employeeMenuItems = [
-    {
-      name: "Dashboards",
-      icon: <RiDashboard3Line />,
-      submenu: [{ path: "/list2", name: "- All Employees" }],
-    },
-  ];
-  const HrMenuItems = [
-    {
-      name: "Dashboards",
-      icon: <RiDashboard3Line />,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "-  All Projects" }],
-    },
-    {
-      name: "Hr Management",
-      icon: <RiDashboard3Line />,
-      submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
-    },
-  ];
-  const USFinanceTeamMenuItems = [
-    {
-      name: "Dashboards",
-      icon: <RiDashboard3Line />,
-      submenu: [
-        { path: "/USFinance/UsFinaceALlProjects", name: "-  All Projects" },
-      ],
-    },
-  ];
-  const IndianFinaceTeamMenu = [
-    {
-      name: "Hr Management",
-      icon: <RiDashboard3Line />,
-      submenu: [{ path: "/EmployeeDashboard", name: "- All Employees" }],
-    },
-    {
-      name: "Project Management",
-      icon: <IoPeopleOutline />,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "- All Projects" }],
-    },
-    {
-      name: "Revenue",
-      icon: <VscProject />,
-      submenu: [
-        { path: "/IndianFinance/Revenue", name: "- Revenue" },
-        { path: "/IndianFinance/Revenuewe", name: "- Monthly Expense" },
-      ],
-    },
-  ];
   const ProjectManagerMenuItems = [
     {
-      name: "Dasboard",
-      icon: <IoPeopleOutline />,
-      submenu: [{ path: "/UnderManagerEmployees", name: "- Employees" }],
-    },
-    {
-      name: "Project Management",
-      icon: <VscProject />,
-      submenu: [
-        { path: "/Employee/Projects", name: "- All projects" },
-        { path: "/Employee/TimeSheet", name: "- Timesheet" },
-      ],
-    },
-  ];
-  const ManagerMenuItems = [
-    {
-      name: "Dasboard",
-      icon: <IoPeopleOutline />,
-      submenu: [{ path: "/UnderManagerEmployees", name: "- UnderEmployees" }],
-    },
-    {
-      name: "Project Management",
-      icon: <VscProject />,
-      submenu: [{ path: "/Employee/Projects", name: "- All projects" }],
+      name: "Dashboard",
+      icon: dashboardsidebarimage,
+      submenu: [{ path: "/Dashboard/AllProjects", name: "-  All Projects" }],
     },
   ];
 
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
-      : sessionData?.employee?.role?.name === "Project Manager"
-      ? ProjectManagerMenuItems
-      : sessionData?.employee?.role?.name === "Indian finace"
-      ? IndianFinaceTeamMenu
-      : sessionData?.employee?.role?.name === "Reporting Manager"
-      ? ManagerMenuItems
-      : sessionData?.employee?.role?.name === "US-Finance"
-      ? USFinanceTeamMenuItems
-      : sessionData?.employee?.role?.name === "Hr"
-      ? HrMenuItems
-      : employeeMenuItems;
+      : ProjectManagerMenuItems;
 
   return (
     <div className="containers" style={{ width: "100vw" }}>
       <div
-        style={{ width: isOpen ? "370px" : "80px", backgroundColor: "white" }}
+        style={{
+          height: "100vh",
+          width: isOpen ? "215px" : "60px",
+          // backgroundColor: "yellow",
+          // backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
+        }}
         className="sidebar"
       >
         <div className="top_section">
           <div
-            style={{ marginLeft: isOpen ? "222px" : "0px" }}
+            style={{
+              marginLeft: isOpen ? "215" : "0px",
+              display: "flex",
+
+              justifyContent: isOpen ? "flex-start" : "center",
+            }}
             className="bars"
           >
-            <i
-              className="bi bi-list openandcloseicon"
-              onClick={toggle}
-              style={{ cursor: "pointer" }}
-            ></i>
+            <div style={{ width: "60px", height: "100vh !important" }}>
+              <img
+                src={sidebarimage}
+                alt=""
+                onClick={toggle}
+                style={{
+                  cursor: "pointer",
+                  marginTop: "12px",
+                  marginLeft: "13px",
+                  height: "32px",
+                  width: "32px",
+                }}
+              />
+            </div>
+            {isOpen && (
+              <img
+                src={archetslogo}
+                alt="Logo"
+                className="archentslogo"
+                style={{
+                  marginLeft: "16px",
+                  marginTop: "17px",
+                  height: "21px",
+                  width: "93px",
+                }}
+              />
+            )}
           </div>
         </div>
         {menuItems.map((item, index) => (
-          <div key={index} className="sidebarmenu">
-            {isOpen &&
-              (index === 0 ? (
-                <div>
-                  <p className="Mainmenup ms-4 mb-4 ls-1 text-grey text-uppercase">
-                    Main Home
-                  </p>
-                  <p className="b-2 text-uppercase ms-3 mt-4 mb-2">Home</p>
-                </div>
-              ) : index === 1 ? (
-                <p className="mb-2 text-uppercase ms-3 mt-4 mb-2">SASS</p>
-              ) : index === 4 ? (
-                <p className="b-2 text-uppercase ms-3 mt-4 mb-2">APPS</p>
-              ) : null)}
-            <NavLink
-              to={item.path}
-              className="link"
-              onClick={() => item.submenu && toggleDropdown(index)}
-            >
-              <div className="icon" style={{ color: "black" }}>
-                {item.icon}
-                <div
-                  style={{
-                    display: isOpen ? "block" : "none",
-                    fontSize: "16px",
-                    margin: "0px 5px",
-                    color: "black",
-                  }}
-                  className="link_text"
-                >
-                  {item.name}
-                </div>
-              </div>
-
-              {item.submenu && (
-                <FaChevronRight
-                  className={`dropdown-icon ${
-                    openDropdowns.includes(index) ? "open" : ""
-                  }`}
-                  style={{ color: "#9f9f9f" }}
-                />
-              )}
-            </NavLink>
-            {item.submenu && (
-              <div
-                className={`submenu ${
-                  openDropdowns.includes(index) ? "open" : ""
-                }`}
-                style={{
-                  padding: isOpen ? "0px 0px" : "8px 0px",
-                  backgroundColor: isOpen ? "#DEEFF5" : "white",
-                }}
+          <div
+            key={index}
+            className="menu-item tree"
+            style={{ marginTop: "20px", width: "215px" }}
+          >
+            <ul>
+              <NavLink
+                to={item.path}
+                className="link"
+                onClick={() => item.submenu && toggleDropdown(index)}
               >
-                {item.submenu.map((subItem, subIndex) => (
-                  <NavLink
-                    to={subItem.path}
-                    key={subIndex}
-                    className="link submenu_link"
-                    activeClassName="active"
+                <div className="icon">
+                  {typeof item.icon === "string" ? (
+                    index === 1 ? (
+                      <img
+                        className="indexicon"
+                        style={{ marginLeft: "15px" }}
+                        src={item.icon}
+                        alt={item.name}
+                      />
+                    ) : (
+                      <img
+                        className="iconimages"
+                        src={item.icon}
+                        alt={item.name}
+                      />
+                    )
+                  ) : (
+                    item.icon
+                  )}
+
+                  <div
+                    style={{
+                      display: isOpen ? "" : "none",
+                    }}
+                    className="link_text"
                   >
-                    <div
-                      style={{ display: isOpen ? "block" : "none" }}
-                      className="link_text"
-                    >
-                      {subItem.name}
-                    </div>
-                  </NavLink>
-                ))}
-              </div>
-            )}
+                    {index === 0 ? (
+                      <div className="menuname1">{item.name}</div>
+                    ) : (
+                      <div className="menuname">{item.name}</div>
+                    )}
+
+                    {item.submenu && index !== 0 && (
+                      <FaChevronRight
+                        className={`dropdown-icon ${
+                          openDropdowns.includes(index) ? "open" : ""
+                        }`}
+                        style={{ color: "#9f9f9f" }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </NavLink>
+              <ul>
+                {item.submenu && (
+                  <div
+                    className={`submenu ${
+                      openDropdowns.includes(index) ? "open" : ""
+                    }`}
+                  >
+                    {item.submenu.map((subItem, subIndex) => (
+                      <NavLink
+                        to={subItem.path}
+                        key={subIndex}
+                        className="link submenu_link"
+                      >
+                        <div
+                          style={{ display: isOpen ? "block" : "none" }}
+                          className="link_text"
+                        >
+                          <li>
+                            <span>{subItem.name}</span>
+                          </li>
+                        </div>
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </ul>
+            </ul>
           </div>
         ))}
       </div>
 
-      <div className="renderdiv">
-        <Header />
+      <div className="renderdiv" style={{ backgroundColor: "#FAFAFA" }}>
+        <div>
+          <Header isOpen={isOpen} />
+        </div>
         <main
-          style={{ backgroundColor: "rgb(222, 239, 245)" }}
           className="childercomponents"
+          style={{ width: isOpen ? "100%" : "100%" }}
         >
           {children}
         </main>

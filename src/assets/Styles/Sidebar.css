@@ -3,7 +3,6 @@
   padding: 0;
   text-decoration: none !important;
 }
-
 .containers {
   display: flex;
   height: 100vh;
@@ -15,91 +14,7 @@ main {
   width: 100%;
   padding: 20px;
   overflow-y: auto;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-}
-
-.sidebar {
-  /* background: #fff; */
-  color: #202020;
-  /* background-color: white; */
-  /* background-color: rgb(67, 97, 107); */
-  /* background-color: rgb(81, 110, 120); */
-  background-color: "#fff";
-
-  width: 200px;
-  transition: all 0.5s;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 7px; /* Width of the scrollbar */
-  height: 10px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: #fff; /* Background color of the scrollbar track */
-  border-radius: 10px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background-color: #ccc; /* Color of the scrollbar thumb */
-  border-radius: 10px; /* Rounding the corners of the thumb */
-  border: none; /* Removing the border */
-}
-
-/* For Firefox */
-.sidebar {
-  scrollbar-width: thin; /* Set the width of the scrollbar */
-
-  scrollbar-color: #ccc #fff; /* Set the thumb and track colors */
-}
-
-/* For Edge */
-.sidebar {
-  -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide scrollbar when not in use */
-}
-
-.top_section {
-  display: flex;
-  align-items: center;
-  padding: 20px 25px;
-}
-
-.logo {
-  font-size: 30px;
-}
-
-.bars {
-  display: flex;
-  font-size: 25px;
-  margin-left: 50px;
-  transition: all 0.5s;
-}
-
-.link {
-  display: flex;
-  color: #202020;
-  /* padding: 13px 25px; */
-  padding: 9px 30px;
-  gap: 15px;
-  transition: all 0.5s;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.link:hover {
-  transition: all 0.5s;
-  background-color: #deeff5;
-}
-
-.icon,
-.link_text {
-  font-size: 20px;
-  color: black;
+  overflow-x: hidden;
 }
 
 .renderdiv {
@@ -115,22 +30,7 @@ main {
   overflow-y: auto;
   overflow-x: hidden;
 }
-.link {
-  display: flex;
-  color: #202020;
-  /* padding: 13px 25px; */
-  padding: 9px 30px;
-  gap: 15px;
-  transition: all 0.5s;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.link:hover {
-  transition: all 0.5s;
-  /* background-color: #deeff5; */
-  background-color: #b0d0e8;
-}
 .dropdown-link {
   color: #8f8f8f;
   list-style-type: none;
@@ -150,8 +50,6 @@ main {
 
 .icon,
 .link_text:hover {
-  /* color: black; */
-  /* color: white; */
   text-decoration: none;
   list-style-type: none;
 }
@@ -162,40 +60,16 @@ main {
   font-weight: 600;
   font-family: "Public Sans" sans-serif;
 }
-.icon {
-  color: black;
-}
+
 .icon,
 .link_text {
   font-size: 20px;
   color: black;
-  /* color: white; */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.dropdown-link {
-  color: #8f8f8f;
-}
-
-/* .active {
-  background: #f6eeff;
-} */
-
-.submenu_link {
-  margin: 0px 25px;
-  width: 100%;
-}
-
-.menu_items {
-  flex-grow: 1;
-}
-
-.submenu_link,
-.link_text {
-  font-size: 0.875rem;
-}
 .dropdown-icon {
   transition: transform 0.3s;
 }
@@ -208,14 +82,74 @@ main {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-  padding: 0 25px;
+}
+.iconimages {
+  width: 20px;
+  margin-left: 15px;
+  width: 20px;
 }
 
 .submenu.open {
   max-height: 500px;
-  /* color: #9f9f9f; */
+}
+.icon {
+  display: flex;
+  height: 50px;
+  color: "black";
 }
 
+.link_text {
+  display: flex;
+  font-size: 15px;
+  margin: 0px 5px;
+  color: black;
+}
+.center {
+  text-align: center;
+  border-left: 2px solid #707070;
+  font-size: 13px;
+}
+
+.menuname {
+  width: 143px;
+  /* height: 14px; */
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: "Raleway";
+}
+.menuname1 {
+  width: 160px;
+
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: "Raleway";
+}
+
+.submenunames {
+  font-size: 14px;
+  margin-left: 20px;
+  color: #707070;
+}
+.sidebarcontent {
+  top: 140px;
+  left: 49px;
+  width: 117px;
+
+  text-align: left;
+
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 49px;
+  font-family: "Raleway", sans-serif;
+}
 .dropdown-icon {
   transition: transform 0.5s;
 }
@@ -223,31 +157,43 @@ main {
 .dropdown-icon.open {
   transform: rotate(90deg);
 }
-/* .Mainmenup {
-  color: rgba(165, 165, 165, 1);
-} */
-.sidebarmenu p {
-  color: rgba(165, 165, 165, 1);
-}
-.submenu {
-  padding-left: 20px; /* Adjust this value as needed */
-}
-.openandcloseicon {
-  color: black;
-}
-.childercomponents {
-  background-color: rgb(186, 211, 219);
-}
-/* Sidebar.css */
-/* .link.submenu_link.active {
-  background-color: #196e8a;
-  color: white;
+.tree ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
-.link.submenu_link.active .link_text {
-  color: white;
+.tree li {
+  margin: 0;
+  padding: 0 0 0 40px;
+  position: relative;
 }
 
-.dropdown-icon.open {
-  transform: rotate(90deg);
-} */
+.tree li::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 23px;
+
+  width: 20px;
+  border-top: 2px solid #707070;
+}
+
+.tree li span {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 8px;
+  color: #707070;
+}
+
+.tree ul ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  margin-left: 26px;
+  bottom: 9px;
+
+  border-left: 2px solid #707070;
+}

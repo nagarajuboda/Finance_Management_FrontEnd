@@ -87,7 +87,7 @@ export default function ForgotPassword() {
           </div>
           <div className="forgotpasswordcontent">Forgot your password?</div>
           <div className="enetremailid">
-            Enter your email id,we will reset your passward.
+            Enter your email id, we will reset your passward.
           </div>
           <form onSubmit={getotpfunction}>
             <div className="forgotform">
@@ -103,26 +103,20 @@ export default function ForgotPassword() {
                 />
               </div>
               <div className="backtologin mt-2">
-                {emailerror.email && (
-                  <span
-                    className=" ms-1"
-                    style={{
-                      display: "flex",
-                      textAlign: "start",
-                      color: "red",
-                    }}
-                  >
-                    {emailerror.email}
-                  </span>
-                )}
-                <div style={{ display: "flex", justifyContent: "end" }}>
-                  <a
-                    style={{ color: "#0071FF", cursor: "pointer" }}
-                    onClick={backtoLogin}
-                  >
-                    Back to login
-                  </a>
+                <div>
+                  {emailerror.email && (
+                    <span className=" ms-1 emailrequirederrormessage">
+                      {emailerror.email}
+                    </span>
+                  )}
                 </div>
+
+                <a
+                  style={{ color: "#0071FF", cursor: "pointer" }}
+                  onClick={backtoLogin}
+                >
+                  Back to login
+                </a>
               </div>
 
               <div className="loginbutton">
