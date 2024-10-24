@@ -8,13 +8,21 @@ import "reactjs-popup/dist/index.css";
 
 import ImportPopup from "./ImportPopup";
 import EditEmployeePopup from "./EditEmployeePopup";
+import SuccessPopup from "./SuccessPopup";
 export default function Employees() {
   const navigate = useNavigate();
+  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [isopen, setisopen] = useState(false);
   const tableRef = useRef(null);
   const searchInputRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const handleOpenPopup = () => {
+    setIsSuccessPopupOpen(true);
+  };
 
+  const handleClosePopup = () => {
+    setIsSuccessPopupOpen(false);
+  };
   useEffect(() => {
     if ($.fn.dataTable.isDataTable("#example")) {
       $("#example").DataTable().destroy();
@@ -295,7 +303,7 @@ export default function Employees() {
         <div
           className="row"
           style={{
-            paddingTop: "33px",
+            paddingTop: "5px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -386,12 +394,7 @@ export default function Employees() {
               </div>
             </div>
             <div className="col-2">
-              <button
-                className="DeleteRecordbutton"
-                onClick={() => alert("Edit Employee clicked!")}
-              >
-                Delete Selected
-              </button>
+              <button className="DeleteRecordbutton">Delete Selected</button>
             </div>
             <div
               className="col-3"
@@ -478,8 +481,13 @@ export default function Employees() {
                   <td>
                     <img
                       src={deleteicon}
+                      onClick={handleOpenPopup}
                       alt=""
-                      style={{ width: "24px", height: "24px" }}
+                      style={{
+                        width: "24px",
+                        height: "24px",
+                        cursor: "pointer",
+                      }}
                     />
                   </td>
                 </tr>
@@ -487,6 +495,7 @@ export default function Employees() {
             </tbody>
           </table>
         </div>
+        <SuccessPopup open={isSuccessPopupOpen} onClose={handleClosePopup} />
         <EditEmployeePopup
           isEditOpen={isEditPopupOpen}
           handleEditClose={EdittogglePopup}
