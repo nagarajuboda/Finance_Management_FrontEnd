@@ -1,4 +1,5 @@
 export const addEmployeeFormValidation = (name, value) => {
+  console.log(value, "======validation names");
   if (name === "employeeId") {
     if (!value) return "Employee ID is required";
 
@@ -8,13 +9,23 @@ export const addEmployeeFormValidation = (name, value) => {
       return "Employee ID must start with 'IARC' followed by numbers only.";
   }
 
+  //   if (name === "firstName") {
+  //     if (!value) return "First name is required";
+
+  //     const namePattern = /^[A-Za-z]+$/;
+
+  //     if (!namePattern.test(value))
+  //       return "First name must contain only letters.";
+  //   }
   if (name === "firstName") {
     if (!value) return "First name is required";
 
-    const namePattern = /^[A-Za-z]+$/;
+    // Updated pattern to allow letters and a single space between words
+    const namePattern = /^[A-Za-z]+(?: [A-Za-z]+)?$/;
 
-    if (!namePattern.test(value))
-      return "First name must contain only letters.";
+    if (!namePattern.test(value)) {
+      return "First name must contain only letters ";
+    }
   }
   if (name === "email") {
     if (!value) return "Email is required";
@@ -29,8 +40,14 @@ export const addEmployeeFormValidation = (name, value) => {
     }
   }
   if (name === "role") {
+    console.log(value, "in validation");
     if (!value) return "Please select role";
   }
-
+  if (name === "dateOfJoining") {
+    if (!value) return "Date of joining is required";
+  }
+  if (name === "projectManager") {
+    if (!value) return "Please select Manager";
+  }
   return "";
 };

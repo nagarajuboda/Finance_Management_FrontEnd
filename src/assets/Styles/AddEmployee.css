@@ -37,3 +37,22 @@
   font-size: 35px !important; /* Custom font size */
   opacity: 1; /* Make sure opacity is applied */
 }
+.MuiFormControl-root {
+  width: 100%;
+}
+.css-1yq5fb3-MuiButtonBase-root-MuiIconButton-root {
+  background-image: url("../Images/calendar.png");
+  background-image: no-repeat;
+  background-size: cover; /* Ensures the image covers the element */
+  background-repeat: no-repeat; /* Prevents repeating the image */
+  background-position: center; /* Centers the image within the element */
+  height: 20px;
+  width: 20px;
+}
+.MuiButtonBase-root svg {
+  display: none;
+}
+.css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 0 !important;
+  height: 36px !important;
+}
