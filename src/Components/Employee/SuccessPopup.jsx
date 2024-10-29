@@ -10,7 +10,8 @@ import "../../assets/Styles/SuccessPopup.css";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
-const SuccessPopup = ({ open, onClose }) => {
+const SuccessPopup = ({ open, onClose, actionType }) => {
+  console.log(actionType, "========>");
   if (!open) return null;
   return (
     <div className="unique-popup-overlay">

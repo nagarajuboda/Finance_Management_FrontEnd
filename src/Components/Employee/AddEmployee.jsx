@@ -6,6 +6,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   MenuItem,
   FormControl,
@@ -13,20 +15,26 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-
 import InputAdornment from "@mui/material/InputAdornment";
 import pulsimage from "../../assets/Images/plus.png";
 import calendar from "../../assets/Images/calendar.png";
 import { addEmployeeFormValidation } from "./addEmployeeFormValidation";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
 import { ContentPasteSearchOutlined } from "@mui/icons-material";
+import "../../assets/Styles/SuccessPopup.css";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ellips from "../../assets/Images/Ellipse.png";
+import checkimage from "../../assets/Images/check.png";
+import { useNavigate } from "react-router-dom";
 export default function AddEmployee() {
+  const [isopen, setIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedProjectManager, setSelectedProjectManager] = useState("");
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [roles, setRoles] = useState([]);
 
   const [date, setDate] = useState(null);
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
 
   const [values, setValues] = useState({
@@ -103,7 +111,10 @@ export default function AddEmployee() {
       [name]: addEmployeeFormValidation(name, value),
     });
   };
-
+  const closeSuccessPopup = () => {
+    setIsOpen(false);
+    navigate("/dashboard/Employees");
+  };
   async function AddEmployeeForm(e) {
     e.preventDefault();
     console.log(values);
@@ -130,6 +141,34 @@ export default function AddEmployee() {
     setErrors(newErrors);
     console.log(errors, "errors");
     const isValid = Object.values(newErrors).every((error) => error === "");
+    if (isValid) {
+      var obj = {
+        employeeId: values.employeeId,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        mobileNo: values.mobileNo,
+        dateOfJoining: formattedDate,
+        otp: values.projectManager,
+        roleId: values.role,
+        skillSets: values.skillSets,
+      };
+      console.log(obj, "formData");
+
+      var response = await axios.post(
+        "https://localhost:44305/api/Employees/Add",
+        obj
+      );
+      console.log(response, "=======>response");
+      if (response.data.isSuccess == true) {
+        setIsOpen(true);
+      } else {
+        toast.error(response.data.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
+      }
+    }
   }
   console.log(values.role);
   return (
@@ -172,7 +211,7 @@ export default function AddEmployee() {
                 }}
                 InputLabelProps={{
                   sx: {
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontFamily: "Segoe UI sans-serif",
                     color: "#000000",
                     fontWeight: "600",
@@ -232,7 +271,7 @@ export default function AddEmployee() {
                 }}
                 InputLabelProps={{
                   sx: {
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontFamily: "Segoe UI sans-serif",
                     color: "#000000",
                     fontWeight: "600",
@@ -292,7 +331,7 @@ export default function AddEmployee() {
                 }}
                 InputLabelProps={{
                   sx: {
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontFamily: "Segoe UI sans-serif",
                     color: "#000000",
                     fontWeight: "600",
@@ -346,7 +385,7 @@ export default function AddEmployee() {
                 }}
                 InputLabelProps={{
                   sx: {
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontFamily: "Segoe UI sans-serif",
                     color: "#000000",
                     fontWeight: "600",
@@ -408,7 +447,7 @@ export default function AddEmployee() {
                 }}
                 InputLabelProps={{
                   sx: {
-                    fontSize: "13px",
+                    fontSize: "15px",
                     fontFamily: "Segoe UI sans-serif",
                     color: "#000000",
                     fontWeight: "600",
@@ -484,7 +523,7 @@ export default function AddEmployee() {
                       }}
                       InputLabelProps={{
                         sx: {
-                          fontSize: "20px",
+                          fontSize: "15px",
                           fontFamily: "Segoe UI sans-serif",
                           color: "#000000",
                           fontWeight: "600",
@@ -626,7 +665,7 @@ export default function AddEmployee() {
                     },
                   }}
                 >
-                  Reporting Manager
+                  Manager
                 </InputLabel>
                 <Select
                   labelId="custom-dropdown-label"
@@ -642,7 +681,27 @@ export default function AddEmployee() {
                     "& .MuiSelect-select": {
                       display: "flex",
                       alignItems: "center",
-                      height: "100%",
+                    },
+                  }}
+                  InputLabelProps={{
+                    sx: {
+                      fontSize: "15px",
+                      fontFamily: "Segoe UI sans-serif",
+                      color: "#000000",
+                      fontWeight: "600",
+                      lineHeight: "20px",
+                      transform: "translate(8px, 8px) scale(1)",
+                      "&.Mui-focused": {
+                        transform: "translate(13px, -8px) scale(0.75)",
+                        fontSize: "18px",
+                        fontFamily: "Segoe UI sans-serif",
+                        color: "#000000",
+                        fontWeight: "600",
+                        lineHeight: "20px",
+                      },
+                      "&.MuiFormLabel-filled": {
+                        transform: "translate(14px, -8px) scale(0.75)",
+                      },
                     },
                   }}
                   inputProps={{
@@ -717,7 +776,7 @@ export default function AddEmployee() {
                   }}
                   InputLabelProps={{
                     sx: {
-                      fontSize: "13px",
+                      fontSize: "15px",
                       fontFamily: "Segoe UI sans-serif",
                       color: "#000000",
                       fontWeight: "600",
@@ -764,7 +823,7 @@ export default function AddEmployee() {
               rows={4}
               InputLabelProps={{
                 sx: {
-                  fontSize: "13px",
+                  fontSize: "15px",
                   fontFamily: "Segoe UI sans-serif",
                   color: "#000000",
                   fontWeight: "600",
@@ -812,18 +871,49 @@ export default function AddEmployee() {
               }}
             />
           </div>
-          <div className="row m-0" style={{ marginTop: "20px !important" }}>
-            <div className="col-10"></div>
-            <div
-              className="col-2"
-              style={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <button className="btn btn-success">Submit</button>
-              <button className="btn btn-primary me-5">reset</button>
+          <div className="row m-0 buttonrows">
+            <div className="col-9"></div>
+            <div className="col-3">
+              <button className=" addEmployeeSubmitbutton">
+                <span className="addemployeespan">submit</span>
+              </button>
+              <button className="addemployeeResetbutton  ">
+                <span className="resetspan">reset</span>
+              </button>
             </div>
           </div>
         </form>
       </div>
+      {isopen && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={checkimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={ellips}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Deleted Successfully</h2>
+            <p className="unique-popup-message">Click OK to see the results</p>
+            <button className="unique-popup-button" onClick={closeSuccessPopup}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 }

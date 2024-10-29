@@ -9,22 +9,13 @@ export const addEmployeeFormValidation = (name, value) => {
       return "Employee ID must start with 'IARC' followed by numbers only.";
   }
 
-  //   if (name === "firstName") {
-  //     if (!value) return "First name is required";
-
-  //     const namePattern = /^[A-Za-z]+$/;
-
-  //     if (!namePattern.test(value))
-  //       return "First name must contain only letters.";
-  //   }
   if (name === "firstName") {
     if (!value) return "First name is required";
 
-    // Updated pattern to allow letters and a single space between words
     const namePattern = /^[A-Za-z]+(?: [A-Za-z]+)?$/;
 
     if (!namePattern.test(value)) {
-      return "First name must contain only letters ";
+      return "First name must contain only letters and a single space between words.";
     }
   }
   if (name === "email") {

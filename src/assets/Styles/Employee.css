@@ -188,7 +188,7 @@ table.dataTable {
   width: 300px;
 }
 .employeeTable tbody td {
-  height: 17px; /* Sets the height of the element */
+  height: 17px;
   text-align: left; /* Aligns the text to the left */
   font-family: "Segoe UI"; /* Specifies the font family */
   font-weight: normal; /* Specifies the font weight */
@@ -226,7 +226,6 @@ button:focus {
 .userCheckbox {
   width: 15px;
   height: 15px;
-
   background: #ffffff 0% 0% padding-box;
   border: 1px solid #b7b7b7;
 }
@@ -349,9 +348,9 @@ thead tr th {
   opacity: 1;
   margin-left: 16px;
 }
-table.dataTable tbody td {
+/* table.dataTable tbody td {
   padding: 0px 0px !important;
-}
+} */
 table.dataTable tbody tr {
   height: 43px;
 }
