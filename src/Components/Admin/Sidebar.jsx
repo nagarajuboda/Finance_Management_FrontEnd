@@ -27,7 +27,13 @@ const Sidebar = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
   const [sessionData, setSessionData] = useState(null);
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState(null);
+  const togglePopup = (item) => {
+    if (!isOpen) return;
+    setSelectedMenu(item);
+    setIsPopupOpen(!isPopupOpen);
+  };
   const toggle = () => {
     setIsOpen(!isOpen);
     if (isOpen) {
@@ -69,7 +75,10 @@ const Sidebar = ({ children }) => {
     {
       name: "Project Management",
       icon: ProjectManagement,
-      submenu: [{ path: "/dashboard/Dashboard/AllProjects", name: "Projects" }],
+      submenu: [
+        { path: "/Dashboard/AddProject", name: "Add Project" },
+        { path: "/Dashboard/All/Projects", name: "Projects" },
+      ],
     },
     {
       name: "Billing",
@@ -92,7 +101,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Dashboard",
       icon: dashboardsidebarimage,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "-  All Projects" }],
+      submenu: [{ path: "/Dashboard/AllProjects", name: "- AddProjects" }],
     },
   ];
 
@@ -107,8 +116,6 @@ const Sidebar = ({ children }) => {
         style={{
           height: "100vh",
           width: isOpen ? "215px" : "60px",
-          // backgroundColor: "yellow",
-          // backgroundColor: "#FFFFFF 0% 0% no-repeat padding-box",
         }}
         className="sidebar"
       >

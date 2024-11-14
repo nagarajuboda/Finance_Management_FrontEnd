@@ -24,6 +24,7 @@ import AddRevenue from "../Components/USFinance/AddRevenue";
 import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
 import Employees from "../Components/Employee/Employees";
 import AddEmployee from "../Components/Employee/AddEmployee";
+import Projectss from "../Components/Admin/Pages/Projects";
 
 export default function AdminRoutes() {
   return (
@@ -34,7 +35,8 @@ export default function AdminRoutes() {
         <Route path="/comment" element={<Comment />} />
         <Route path="/AdminDashboard" element={<Dashboard />} />
         <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
-        <Route path="/Dashboard/AddProject" element={<AddProject />} />
+        <Route path="/AddProject" element={<AddProject />} />
+        <Route path="/All/Projects" element={<Projectss />} />
         <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />

@@ -17,8 +17,8 @@
   width: 40%;
   position: relative;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
-  top: 140px;
-  left: 287px;
+  top: 75px;
+  left: 160px;
   width: 925px;
   height: 445px;
   /* UI Properties */
@@ -61,7 +61,21 @@
   justify-content: flex-end;
   gap: 10px;
 }
-
+.skillsetbox {
+  height: 28px !important;
+  margin: 0px 5px;
+}
+/* .skillsetdiv {
+  overflow-y: "scroll";
+  height: "70px";
+  resize: "none";
+  width: "100%";
+  border: "1px solid #ccc";
+  padding: "5px";
+  background-color: white;
+  border-radius: "4px";
+  display: "flex";
+} */
 .btn-submit {
   background-color: #28a745;
   color: white;

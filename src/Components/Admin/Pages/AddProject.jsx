@@ -1,794 +1,12 @@
-// import { useState, useEffect } from "react";
-// import "../../../assets/Styles/AddProject.css";
-// import { Link, useNavigate } from "react-router-dom";
-// import { IoAddCircle } from "react-icons/io5";
-// import axios from "axios";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import Modal from "react-bootstrap/Modal";
-// import { AddClientValidation } from "./AddClientValidation";
-// import AdminDashboardServices from "../../../Service/AdminService/AdminDashboardServices";
-// import Swal from "sweetalert2";
-// import { FaArrowLeft } from "react-icons/fa";
-// import withReactContent from "sweetalert2-react-content";
-// import { IoArrowBackCircle } from "react-icons/io5";
-// import { AddProjectFormValidation } from "./AddProjectFormValidation";
-// import { Description } from "@mui/icons-material";
-// import "select2/dist/css/select2.min.css";
-// import "select2/dist/js/select2.full.min.js";
-// export default function AddProject() {
-//   var navigate = useNavigate();
-//   const MySwal = withReactContent(Swal);
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [clients, setClients] = useState([]);
-//   const [GetAllemployees, setEmployees] = useState([]);
-//   const [clientName, setClientName] = useState("");
-//   const [selectedProjectManager, setSelectedProjectManager] = useState("");
-//   const [show, setShow] = useState(false);
-//   const [close, setclose] = useState(false);
-//   const handleClose = () => setShow(false);
-//   const handleShow = () => setShow(true);
-//   const [AllCurrency, SetAllCurrency] = useState([]);
-//   const [AllDepartments, SetAllDepartments] = useState([]);
-//   const [filteredTeams, setFilteredTeams] = useState([]);
-//   const [projectManagerEmail, setProjectManagerEmail] = useState("");
-
-//   const [values, setValues] = useState({
-//     ClientName: "",
-//     ClientEmailId: "",
-//     ClientLocation: "",
-//     ReferenceName: "",
-//     ProjectID: "",
-//     ProjectName: "",
-//     currencyType: "",
-//     StartDate: "",
-//     ClientEmail: "",
-//     id: "",
-//     Description: "",
-//     EndDate: "",
-//     ProjectRefId: "",
-//     ProjectType: "",
-//     Progress: 0,
-//     departmentTeam: "",
-//     ProjectManager: "",
-//   });
-
-//   const [errors, setErrors] = useState({
-//     ClientName: "",
-//     ClientEmailId: "",
-//     ClientLocation: "",
-//   });
-//   const [errorss, setErrorss] = useState({
-//     ProjectID: "",
-//     ProjectName: "",
-//     Department: "",
-//     currencyType: "",
-//     ProjectType: "",
-//     departmentTeam: "",
-//     ProjectManager: "",
-//     Description: "",
-//     ClientEmail: "",
-//     EndDate: "",
-//     StartDate: "",
-//   });
-
-//   function backonclick(e) {
-//     navigate("/Dashboard/AllProjects");
-//     e.preventDefault();
-//   }
-//   useEffect(() => {
-//     fetchData();
-//     FetchCurrency();
-//     // $(".select2").select2();
-
-//     // $(".select2").on("change", function (e) {
-//     //   setSelectedProjectManager($(this).val());
-//     // });
-//   }, []);
-
-//   async function FetchCurrency() {
-//     var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
-//     SetAllCurrency(CurrencyResponse.item);
-
-//     var getallDepartments = await AdminDashboardServices.GetAllDepartments();
-//     SetAllDepartments(getallDepartments.item);
-//   }
-//   async function fetchData() {
-//     try {
-//       var response1 = await AdminDashboardServices.fcngetEmployees();
-//       console.log(response1, "getallEmployees");
-//       setEmployees(response1.item);
-//       var response = await AdminDashboardServices.FcnGetAllClients();
-//       var result = response.item;
-//       setClients(result);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//     }
-//   }
-//   const handleChange = async (e) => {
-//     const { name, value } = e.target;
-//     if (name === "Department") {
-//       if (value === "") {
-//         setFilteredTeams([]);
-//       } else {
-//         const selectedDepartment = AllDepartments.find(
-//           (dept) => dept.deptName === value
-//         );
-
-//         const response = await axios.get(
-//           `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
-//         );
-
-//         setFilteredTeams(response.data.item);
-//       }
-//     }
-
-//     setValues({
-//       ...values,
-//       [name]: value,
-//     });
-
-//     setErrors({
-//       ...errors,
-//       [name]: AddClientValidation(name, value),
-//     });
-
-//     setErrorss({
-//       ...errorss,
-//       [name]: AddProjectFormValidation(name, value),
-//     });
-//   };
-
-//   async function AddClientFormSubmit(e) {
-//     e.preventDefault();
-//     const newErrors = {
-//       ClientName: AddClientValidation("ClientName", values.ClientName),
-//       ClientEmailId: AddClientValidation("ClientEmailId", values.ClientEmailId),
-
-//       ClientLocation: AddClientValidation(
-//         "ClientLocation",
-//         values.ClientLocation
-//       ),
-//     };
-//     setErrors(newErrors);
-
-//     const isValid = Object.values(newErrors).every((error) => error === "");
-//     if (isValid) {
-//       const obj = {
-//         ClientName: values.ClientName,
-//         ClientEmailId: values.ClientEmailId,
-//         ClientLocation: values.ClientLocation,
-//         ReferenceName: values.ReferenceName,
-//       };
-
-//       var response = await AdminDashboardServices.fcnAddClientAsync(obj);
-
-//       if (response.isSuccess === true) {
-//         toast.success("Successfully done. ", {
-//           position: "top-right",
-//           autoClose: "4000",
-//         });
-//         handleClose();
-//         setValues({
-//           ClientName: "",
-//           ClientEmailId: "",
-//           file: "",
-//           ClientLocation: "",
-//           ReferenceName: "",
-//         });
-//         setClientName("");
-//         fetchData();
-//       } else {
-//         toast.error(response.error.message, {
-//           position: "top-right",
-//           autoClose: "4000",
-//         });
-//       }
-//     }
-//   }
-
-//   async function formSubmit(e) {
-//     setProjectManagerEmail(selectedProjectManager);
-//     e.preventDefault();
-//     // const newErrors = {
-//     //   ProjectID: AddProjectFormValidation("ProjectID", values.ProjectID),
-//     //   ProjectName: AddProjectFormValidation("ProjectName", values.ProjectName),
-//     //   currencyType: AddProjectFormValidation(
-//     //     "currencyType",
-//     //     values.currencyType
-//     //   ),
-//     //   Description: AddProjectFormValidation("Description", values.Description),
-//     //   Department: AddProjectFormValidation("Department", values.Department),
-//     //   departmentTeam: AddProjectFormValidation(
-//     //     "departmentTeam",
-//     //     values.departmentTeam
-//     //   ),
-//     //   ClientEmail: AddProjectFormValidation("ClientEmail", values.ClientEmail),
-//     //   ProjectManager: AddProjectFormValidation(
-//     //     "ProjectManager",
-//     //     values.ProjectManager
-//     //   ),
-//     //   StartDate: AddProjectFormValidation("StartDate", values.StartDate),
-//     //   EndDate: AddProjectFormValidation("EndDate", values.EndDate),
-//     // };
-//     const newErrors = {
-//       ProjectID: AddProjectFormValidation(
-//         "ProjectID",
-//         values.ProjectID,
-//         values
-//       ),
-//       ProjectName: AddProjectFormValidation(
-//         "ProjectName",
-//         values.ProjectName,
-//         values
-//       ),
-//       currencyType: AddProjectFormValidation(
-//         "currencyType",
-//         values.currencyType,
-//         values
-//       ),
-//       Description: AddProjectFormValidation(
-//         "Description",
-//         values.Description,
-//         values
-//       ),
-//       Department: AddProjectFormValidation(
-//         "Department",
-//         values.Department,
-//         values
-//       ),
-//       departmentTeam: AddProjectFormValidation(
-//         "departmentTeam",
-//         values.departmentTeam,
-//         values
-//       ),
-//       ClientEmail: AddProjectFormValidation(
-//         "ClientEmail",
-//         values.ClientEmail,
-//         values
-//       ),
-//       ProjectManager: AddProjectFormValidation(
-//         "ProjectManager",
-//         values.ProjectManager,
-//         values
-//       ),
-//       StartDate: AddProjectFormValidation(
-//         "StartDate",
-//         values.StartDate,
-//         values
-//       ),
-//       EndDate: AddProjectFormValidation("EndDate", values.EndDate, values),
-//     };
-
-//     setErrorss(newErrors);
-
-//     const isValid = Object.values(newErrors).every((error) => error === "");
-//     console.log(values, "");
-
-//     if (isValid) {
-//       var obj = {
-//         project: {
-//           ProjectID: values.ProjectID,
-//           ProjectName: values.ProjectName,
-//           currencyType: values.currencyType,
-//           Description: values.Description,
-//           clientId: null,
-//           departmentTeam: null,
-//           StartDate: values.StartDate,
-//           EndDate: values.EndDate,
-//           ProjectRefId: values.ProjectRefId,
-//           ProjectType: values.ProjectType,
-//           Progress: values.Progress,
-//         },
-//         clientemail: values.ClientEmail,
-//         // ProjectManager: selectedProjectManager,
-//         ProjectManager: values.ProjectManager,
-//         DepartmentTeam: values.departmentTeam,
-//         Department: values.Department,
-//       };
-
-//       var response = await AdminDashboardServices.fcnAddProject(obj);
-
-//       if (response.isSuccess === true) {
-//         Swal.fire({
-//           title: "Good job!",
-//           text: " New project added successfully done",
-//           icon: "success",
-//         });
-//         navigate("/Dashboard/AllProjects");
-//       } else {
-//         toast.error(response.error.message, {
-//           position: "top-right",
-//           autoClose: "4000",
-//         });
-//       }
-//     }
-//   }
-
-//   return (
-//     <div className="maindiv1">
-//       <div
-//         className="maindiv card  addproductcard"
-//         style={{ borderRadius: "0px" }}
-//       >
-//         <div className="addproject ">
-//           <div className="d-flex">
-//             <IoArrowBackCircle
-//               onClick={backonclick}
-//               style={{ cursor: "pointer", fontSize: "28px" }}
-//             />
-//             <p style={{ fontSize: "20px" }} className="ms-1 ">
-//               Back
-//             </p>
-//           </div>
-//           <p
-//             style={{ fontSize: "20px", textDecoration: "underline" }}
-//             className="ms-3 backiconbutton"
-//           >
-//             Add New Project
-//           </p>
-//         </div>
-//         <div>
-//           <form onSubmit={formSubmit}>
-//             <div className="row m-0 mt-2">
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Project ID
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Enter ProjectID"
-//                   className="form-control"
-//                   name="ProjectID"
-//                   value={values.ProjectID}
-//                   onChange={handleChange}
-//                 />
-//                 {errorss.ProjectID && (
-//                   <span className="error ms-1">{errorss.ProjectID}</span>
-//                 )}
-//               </div>
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Project Name
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Enter ProjectName"
-//                   className="form-control"
-//                   name="ProjectName"
-//                   value={values.ProjectName}
-//                   onChange={handleChange}
-//                 />
-//                 {errorss.ProjectName && (
-//                   <span className="error ms-1">{errorss.ProjectName}</span>
-//                 )}
-//               </div>
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Start Date
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <input
-//                   type="date"
-//                   placeholder="Enter StartDate"
-//                   className="form-control"
-//                   style={{ cursor: "pointer" }}
-//                   name="StartDate"
-//                   value={values.StartDate}
-//                   onChange={handleChange}
-//                 />
-//                 {errorss.StartDate && (
-//                   <span className="error ms-1">{errorss.StartDate}</span>
-//                 )}
-//               </div>
-//             </div>
-//             <div className="row m-0 mt-2">
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless d-flex">
-//                     Deadline
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <input
-//                   type="date"
-//                   placeholder="Enter EndDate"
-//                   className="form-control"
-//                   style={{ cursor: "pointer" }}
-//                   name="EndDate"
-//                   value={values.EndDate}
-//                   onChange={handleChange}
-//                 />
-//                 {errorss.EndDate && (
-//                   <span className="error ms-1">{errorss.EndDate}</span>
-//                 )}
-//               </div>
-//               <div className="col-4">
-//                 <label className="labless d-flex">
-//                   Select Client
-//                   <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                 </label>
-//                 <div className="dropdown d-flex">
-//                   <select
-//                     id="myList"
-//                     className="form-control w-100"
-//                     name="ClientEmail"
-//                     value={values.clientEmailId}
-//                     onChange={handleChange}
-//                   >
-//                     <option value="">Select client</option>
-//                     {clients.map((client) => (
-//                       <option key={client.id} value={client.clientEmailId}>
-//                         <div>
-//                           <span className="clientname">
-//                             {client.clientName}
-//                           </span>
-//                           <span style={{ marginLeft: "8px" }}>
-//                             - {client.clientEmailId}
-//                           </span>
-//                         </div>
-//                       </option>
-//                     ))}
-//                   </select>
-
-//                   <span>
-//                     <IoAddCircle className="addicon" onClick={handleShow} />
-//                   </span>
-//                 </div>
-//                 {errorss.ClientEmail && (
-//                   <span className="error ms-1">{errorss.ClientEmail}</span>
-//                 )}
-//               </div>
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Currency
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <select
-//                   id="myList"
-//                   className="form-control w-100"
-//                   name="currencyType"
-//                   value={values.currencyType}
-//                   onChange={handleChange}
-//                 >
-//                   <option value="">Select Currency</option>
-//                   {AllCurrency.map((currency) => (
-//                     <option key={currency.id} value={currency.type}>
-//                       <div>
-//                         <span className="clientname">{currency.type}</span>
-//                       </div>
-//                     </option>
-//                   ))}
-//                 </select>
-//                 {errorss.currencyType && (
-//                   <span className="error ms-1">{errorss.currencyType}</span>
-//                 )}
-//               </div>
-//             </div>
-//             {/* <div className="row m-0 mt-2">
-//               <div className="col-4">
-//                 <div>
-//                   <span className="labless">ProjectRef ID</span>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Enter ProjectRefId"
-//                   className="form-control"
-//                   name="ProjectRefId"
-//                   value={values.ProjectRefId}
-//                   onChange={handleChange}
-//                 />
-//               </div>
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Project Type
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Enter ProjectType"
-//                   className="form-control"
-//                   name="ProjectType"
-//                   value={values.ProjectType}
-//                   onChange={handleChange}
-//                 />
-//                 {errorss.ProjectType && (
-//                   <span className="error ms-1">{errorss.ProjectType}</span>
-//                 )}
-//               </div>
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">Progress</label>
-//                 </div>
-//                 <input
-//                   type="text"
-//                   placeholder="Enter Progress"
-//                   className="form-control"
-//                   name="Progress"
-//                   value={values.Progress}
-//                   readOnly
-//                   onChange={handleChange}
-//                 />
-//               </div>
-//             </div> */}
-//             <div className="row m-0 mt-2">
-//               <div className="col-4">
-//                 <label className="labless">
-//                   Project Manager
-//                   <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                 </label>
-//                 <select
-//                   style={{ width: "100%" }}
-//                   className="form-control select2"
-//                   name="ProjectManager"
-//                   value={values.ProjectManager}
-//                   onChange={handleChange}
-//                 >
-//                   <option>Select</option>
-//                   {GetAllemployees.map((client) => (
-//                     <option
-//                       key={client.employee.id}
-//                       value={client.employee.email}
-//                     >
-//                       {`${client.employee.firstName} ${client.employee.lastName}`}{" "}
-//                       ({client.role.name})
-//                     </option>
-//                   ))}
-//                 </select>
-//                 {errorss.ProjectManager && (
-//                   <span className="error ms-1">{errorss.ProjectManager}</span>
-//                 )}
-//               </div>
-
-//               {/* <div className="col-4">
-//                 <div>
-//                   <span className="labless">Department</span>
-//                 </div>
-
-//                 <select
-//                   id="departmentList"
-//                   className="form-control w-100"
-//                   name="Department"
-//                   value={values.Department}
-//                   onChange={handleChange}
-//                 >
-//                   <option value="">Select Department</option>
-//                   {AllDepartments.map((dept) => (
-//                     <option key={dept.id} value={dept.deptName}>
-//                       {dept.deptName}
-//                     </option>
-//                   ))}
-//                 </select>
-//                 {errorss.Department && (
-//                   <span className="error ms-1">{errorss.Department}</span>
-//                 )}
-//               </div> */}
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Department
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <select
-//                   id="departmentList"
-//                   className="form-control w-100"
-//                   name="Department"
-//                   value={values.Department}
-//                   onChange={handleChange}
-//                 >
-//                   <option value="">Select Department</option>
-//                   {AllDepartments.map((dept) => (
-//                     <option key={dept.id} value={dept.deptName}>
-//                       {dept.deptName}
-//                     </option>
-//                   ))}
-//                 </select>
-//                 {errorss.Department && (
-//                   <span className="error ms-1">{errorss.Department}</span>
-//                 )}
-//               </div>
-
-//               <div className="col-4">
-//                 <div>
-//                   <label className="labless">
-//                     Team
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <select
-//                   id="teamList"
-//                   className="form-control w-100"
-//                   name="departmentTeam"
-//                   value={values.Team}
-//                   onChange={handleChange}
-//                 >
-//                   <option value="">Select Team</option>
-//                   {filteredTeams.map((team) => (
-//                     <option key={team.id} value={team.teamName}>
-//                       {team.teamName}
-//                     </option>
-//                   ))}
-//                 </select>
-//                 {errorss.departmentTeam && (
-//                   <span className="error ms-1">{errorss.departmentTeam}</span>
-//                 )}
-//               </div>
-//             </div>
-//             <div className="row m-0 mt-2">
-//               <div className="col-8">
-//                 <div>
-//                   <label className="labless">
-//                     Description
-//                     <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-//                   </label>
-//                 </div>
-//                 <textarea
-//                   className="form-control"
-//                   placeholder="Enter Description"
-//                   name="Description"
-//                   value={values.Description}
-//                   onChange={handleChange}
-//                 ></textarea>
-//                 {errorss.Description && (
-//                   <span className="error ms-1">{errorss.Description}</span>
-//                 )}
-//               </div>
-//               <div className="col-4"></div>
-//             </div>
-//             <div className="row m-0 mt-2">
-//               <div className="col-8"></div>
-//               <div className="col-2"></div>
-//               <div className="col-2">
-//                 <button
-//                   className="form-control addbutton"
-//                   style={{ borderRadius: "10px" }}
-//                 >
-//                   Add
-//                 </button>
-//               </div>
-//             </div>
-//           </form>
-//           <div style={{ width: "1000px" }} className="modeldiv">
-//             <Modal show={show} onHide={handleClose} animation={false}>
-//               <Modal.Header
-//                 closeButton
-//                 style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
-//               >
-//                 <Modal.Title>New Client</Modal.Title>
-//               </Modal.Header>
-//               <Modal.Body>
-//                 <form onSubmit={AddClientFormSubmit} className="formclass">
-//                   <div className="row m-0">
-//                     <div className="col-6">
-//                       <label className="labless">
-//                         Client Name
-//                         <span style={{ color: "red", marginLeft: "5px" }}>
-//                           *
-//                         </span>
-//                       </label>
-//                       <input
-//                         type="text"
-//                         placeholder="Enter ClientName"
-//                         className="form-control"
-//                         name="ClientName"
-//                         value={values.clientName}
-//                         onChange={handleChange}
-//                       />
-//                       {errors.ClientName && (
-//                         <span className="error ms-1">{errors.ClientName}</span>
-//                       )}
-//                     </div>
-//                     <div className="col-6">
-//                       <label className="labless">
-//                         Client EmailId
-//                         <span style={{ color: "red", marginLeft: "5px" }}>
-//                           *
-//                         </span>
-//                       </label>
-//                       <div>
-//                         <input
-//                           type="text"
-//                           placeholder="Enter Email"
-//                           name="ClientEmailId"
-//                           className="form-control"
-//                           value={values.ClientEmailId}
-//                           onChange={handleChange}
-//                         />
-//                       </div>
-//                       {errors.ClientEmailId && (
-//                         <span className="error ms-1">
-//                           {errors.ClientEmailId}
-//                         </span>
-//                       )}
-//                     </div>
-//                   </div>
-//                   <div className="row m-0 mt-2">
-//                     <div className="col-6">
-//                       <div>
-//                         <label className="labless">Reference Name</label>
-//                         <input
-//                           type="text"
-//                           placeholder="Enter ReferenceName"
-//                           className="form-control"
-//                           name="ReferenceName"
-//                           value={values.ReferenceName}
-//                           onChange={handleChange}
-//                         />
-//                       </div>
-//                     </div>
-//                     <div className="col-6">
-//                       <label className="labless">
-//                         Client Location
-//                         <span style={{ color: "red", marginLeft: "5px" }}>
-//                           *
-//                         </span>
-//                       </label>
-//                       <div>
-//                         <input
-//                           type="text"
-//                           placeholder="Enter Location"
-//                           name="ClientLocation"
-//                           value={values.ClientLocation}
-//                           onChange={handleChange}
-//                           className="form-control"
-//                         />
-//                       </div>
-//                       {errors.ClientLocation && (
-//                         <span className="error ms-1">
-//                           {errors.ClientLocation}
-//                         </span>
-//                       )}
-//                     </div>
-//                   </div>
-//                   <div className="row m-0">
-//                     <div className="col-6"></div>
-//                     <div className="col-4"></div>
-//                     <div className="col-2"></div>
-//                   </div>
-//                   <div className="row m-0 mt-3">
-//                     <div className="col-8"></div>
-//                     <div className="col-2">
-//                       <button
-//                         onClick={handleClose}
-//                         className="form-control  btn btn-danger"
-//                       >
-//                         Close
-//                       </button>
-//                     </div>
-//                     <div className="col-2">
-//                       <button className="form-control addbutton">Add</button>
-//                     </div>
-//                   </div>
-//                 </form>
-//               </Modal.Body>
-//             </Modal>
-//           </div>
-//         </div>
-//         <ToastContainer position="top-end" autoClose={5000} />
-//       </div>
-//     </div>
-//   );
-// }
 import { useState, useEffect } from "react";
 import "../../../assets/Styles/AddProject.css";
 import { Link, useNavigate } from "react-router-dom";
 import { IoAddCircle } from "react-icons/io5";
 import axios from "axios";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import image from "../../../assets/Images/plus.png";
 import Modal from "react-bootstrap/Modal";
 import { AddClientValidation } from "./AddClientValidation";
 import AdminDashboardServices from "../../../Service/AdminService/AdminDashboardServices";
@@ -799,24 +17,41 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import { AddProjectFormValidation } from "./AddProjectFormValidation";
 import { Description } from "@mui/icons-material";
 import "select2/dist/css/select2.min.css";
+
 import "select2/dist/js/select2.full.min.js";
+import * as React from "react";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs from "dayjs";
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
+import {
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  TextField,
+  Button,
+} from "@mui/material";
+import ellips from "../../../assets/Images/Ellipse.png";
+import checkimage from "../../../assets/Images/check.png";
+
 export default function AddProject() {
-  var navigate = useNavigate();
-  const MySwal = withReactContent(Swal);
-  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
   const [clients, setClients] = useState([]);
-  const [GetAllemployees, setEmployees] = useState([]);
-  const [clientName, setClientName] = useState("");
-  const [selectedProjectManager, setSelectedProjectManager] = useState("");
-  const [show, setShow] = useState(false);
-  const [close, setclose] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [employees, setEmployees] = useState([]);
   const [AllCurrency, SetAllCurrency] = useState([]);
   const [AllDepartments, SetAllDepartments] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);
-  const [projectManagerEmail, setProjectManagerEmail] = useState("");
-
+  const [AddClientpopup, setAddclientPopup] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null); // State for selected date
+  const [isopen, setisOpen] = useState(false);
+  useEffect(() => {
+    fetchData();
+    FetchCurrency();
+  }, [selectedDate]);
   const [values, setValues] = useState({
     ClientName: "",
     ClientEmailId: "",
@@ -836,7 +71,6 @@ export default function AddProject() {
     departmentTeam: "",
     ProjectManager: "",
   });
-
   const [errors, setErrors] = useState({
     ClientName: "",
     ClientEmailId: "",
@@ -855,20 +89,29 @@ export default function AddProject() {
     EndDate: "",
     StartDate: "",
   });
-
-  function backonclick(e) {
-    navigate("/Dashboard/AllProjects");
-    e.preventDefault();
-  }
-  useEffect(() => {
-    fetchData();
-    FetchCurrency();
-    // $(".select2").select2();
-
-    // $(".select2").on("change", function (e) {
-    //   setSelectedProjectManager($(this).val());
-    // });
-  }, []);
+  // const [startdate, setstartdate] = useState("");
+  const handleSelectedDate = (newDate) => {
+    console.log(newDate);
+    setValues({
+      ...values,
+      StartDate: newDate ? newDate.format("MM/DD/YYYY") : "",
+    });
+    console.log(
+      "Selected Start Date:",
+      newDate ? newDate.format("MM/DD/YYYY") : ""
+    );
+  };
+  const handleSelectedEndDate = (newDate) => {
+    console.log(newDate);
+    setValues({
+      ...values,
+      EndDate: newDate ? newDate.format("MM/DD/YYYY") : "",
+    });
+    console.log(
+      "Selected Start Date:",
+      newDate ? newDate.format("MM/DD/YYYY") : ""
+    );
+  };
 
   async function FetchCurrency() {
     var CurrencyResponse = await AdminDashboardServices.GetAllCurrency();
@@ -877,54 +120,11 @@ export default function AddProject() {
     var getallDepartments = await AdminDashboardServices.GetAllDepartments();
     SetAllDepartments(getallDepartments.item);
   }
-  async function fetchData() {
-    try {
-      var response1 = await AdminDashboardServices.fcngetEmployees();
-      console.log(response1, "getallEmployees");
-      setEmployees(response1.item);
-      var response = await AdminDashboardServices.FcnGetAllClients();
-      var result = response.item;
-      setClients(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
 
-  // const handleChange = async (e) => {
-  //   const { name, value } = e.target;
-  //   if (name === "Department") {
-  //     if (value === "") {
-  //       setFilteredTeams([]);
-  //     } else {
-  //       const selectedDepartment = AllDepartments.find(
-  //         (dept) => dept.deptName === value
-  //       );
-
-  //       const response = await axios.get(
-  //         `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
-  //       );
-
-  //       setFilteredTeams(response.data.item);
-  //     }
-  //   }
-
-  //   setValues({
-  //     ...values,
-  //     [name]: value,
-  //   });
-
-  //   setErrors({
-  //     ...errors,
-  //     [name]: AddClientValidation(name, value),
-  //   });
-
-  //   setErrorss({
-  //     ...errorss,
-  //     [name]: AddProjectFormValidation(name, value),
-  //   });
-  // };
   const handleChange = async (e) => {
     const { name, value } = e.target;
+
+    console.log(value);
     if (name === "Department") {
       if (value === "") {
         setFilteredTeams([]);
@@ -946,150 +146,19 @@ export default function AddProject() {
       [name]: value,
     });
 
-    // Validate the current input change
     setErrors({
       ...errors,
       [name]: AddClientValidation(name, value),
     });
 
-    // Perform additional validations for other fields
-    if (name === "EndDate") {
-      const endDateError = AddProjectFormValidation(name, value, {
-        ...values,
-        StartDate: values.StartDate, // Ensure StartDate is available for comparison
-      });
-      setErrorss({
-        ...errorss,
-        [name]: endDateError,
-      });
-    } else {
-      setErrorss({
-        ...errorss,
-        [name]: AddProjectFormValidation(name, value, values),
-      });
-    }
+    setErrorss({
+      ...errorss,
+      [name]: AddProjectFormValidation(name, value),
+    });
   };
-
-  async function AddClientFormSubmit(e) {
-    e.preventDefault();
-    const newErrors = {
-      ClientName: AddClientValidation("ClientName", values.ClientName),
-      ClientEmailId: AddClientValidation("ClientEmailId", values.ClientEmailId),
-
-      ClientLocation: AddClientValidation(
-        "ClientLocation",
-        values.ClientLocation
-      ),
-    };
-    setErrors(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (isValid) {
-      const obj = {
-        ClientName: values.ClientName,
-        ClientEmailId: values.ClientEmailId,
-        ClientLocation: values.ClientLocation,
-        ReferenceName: values.ReferenceName,
-      };
-
-      var response = await AdminDashboardServices.fcnAddClientAsync(obj);
-
-      if (response.isSuccess === true) {
-        toast.success("Successfully done. ", {
-          position: "top-right",
-          autoClose: "4000",
-        });
-        handleClose();
-        setValues({
-          ClientName: "",
-          ClientEmailId: "",
-          file: "",
-          ClientLocation: "",
-          ReferenceName: "",
-        });
-        setClientName("");
-        fetchData();
-      } else {
-        toast.error(response.error.message, {
-          position: "top-right",
-          autoClose: "4000",
-        });
-      }
-    }
-  }
-
+  console.log(values);
   async function formSubmit(e) {
-    setProjectManagerEmail(selectedProjectManager);
     e.preventDefault();
-    // const newErrors = {
-    //   ProjectID: AddProjectFormValidation("ProjectID", values.ProjectID),
-    //   ProjectName: AddProjectFormValidation("ProjectName", values.ProjectName),
-    //   currencyType: AddProjectFormValidation(
-    //     "currencyType",
-    //     values.currencyType
-    //   ),
-    //   Description: AddProjectFormValidation("Description", values.Description),
-    //   Department: AddProjectFormValidation("Department", values.Department),
-    //   departmentTeam: AddProjectFormValidation(
-    //     "departmentTeam",
-    //     values.departmentTeam
-    //   ),
-    //   ClientEmail: AddProjectFormValidation("ClientEmail", values.ClientEmail),
-    //   ProjectManager: AddProjectFormValidation(
-    //     "ProjectManager",
-    //     values.ProjectManager
-    //   ),
-    //   StartDate: AddProjectFormValidation("StartDate", values.StartDate),
-    //   EndDate: AddProjectFormValidation("EndDate", values.EndDate),
-    // };
-    // const newErrors = {
-    //   ProjectID: AddProjectFormValidation(
-    //     "ProjectID",
-    //     values.ProjectID,
-    //     values
-    //   ),
-    //   ProjectName: AddProjectFormValidation(
-    //     "ProjectName",
-    //     values.ProjectName,
-    //     values
-    //   ),
-    //   currencyType: AddProjectFormValidation(
-    //     "currencyType",
-    //     values.currencyType,
-    //     values
-    //   ),
-    //   Description: AddProjectFormValidation(
-    //     "Description",
-    //     values.Description,
-    //     values
-    //   ),
-    //   Department: AddProjectFormValidation(
-    //     "Department",
-    //     values.Department,
-    //     values
-    //   ),
-    //   departmentTeam: AddProjectFormValidation(
-    //     "departmentTeam",
-    //     values.departmentTeam,
-    //     values
-    //   ),
-    //   ClientEmail: AddProjectFormValidation(
-    //     "ClientEmail",
-    //     values.ClientEmail,
-    //     values
-    //   ),
-    //   ProjectManager: AddProjectFormValidation(
-    //     "ProjectManager",
-    //     values.ProjectManager,
-    //     values
-    //   ),
-    //   StartDate: AddProjectFormValidation(
-    //     "StartDate",
-    //     values.StartDate,
-    //     values
-    //   ),
-    //   EndDate: AddProjectFormValidation("EndDate", values.EndDate, values),
-    // };
     const newErrors = {
       ProjectID: AddProjectFormValidation(
         "ProjectID",
@@ -1139,9 +208,10 @@ export default function AddProject() {
       EndDate: AddProjectFormValidation("EndDate", values.EndDate, values),
     };
     setErrorss(newErrors);
-
+    console.log(values, "=>values");
     const isValid = Object.values(newErrors).every((error) => error === "");
-    console.log(values, "values");
+
+    console.log(isValid, "values");
     if (isValid) {
       var obj = {
         project: {
@@ -1163,16 +233,11 @@ export default function AddProject() {
         DepartmentTeam: values.departmentTeam,
         Department: values.Department,
       };
-
+      console.log(obj, "final obj");
       var response = await AdminDashboardServices.fcnAddProject(obj);
 
       if (response.isSuccess === true) {
-        Swal.fire({
-          title: "Good job!",
-          text: "Project added successfully done",
-          icon: "success",
-        });
-        navigate("/Dashboard/AllProjects");
+        setisOpen(true);
       } else {
         toast.error(response.error.message, {
           position: "top-right",
@@ -1181,481 +246,970 @@ export default function AddProject() {
       }
     }
   }
+  const navigantetoAllProjects = () => {
+    setisOpen(false);
+    navigate("/Dashboard/All/Projects/");
+  };
+  const ClientPopup = () => {
+    setAddclientPopup(true);
+  };
+  async function fetchData() {
+    try {
+      var response1 = await AdminDashboardServices.fcngetEmployees();
+      setEmployees(response1.item);
+      var response = await AdminDashboardServices.FcnGetAllClients();
+      var result = response.item;
+      setClients(result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
+  const closeModal = () => {
+    setValues({
+      ClientName: "",
+      ClientEmailId: "",
+      file: "",
+      ClientLocation: "",
+      ReferenceName: "",
+    });
+    setAddclientPopup(false);
+  };
+  const clearprojectvalues = () => {
+    setValues({
+      ProjectID: "",
+      ProjectName: "",
+      currencyType: "",
+      StartDate: "",
+      ClientEmail: "",
+
+      Description: "",
+      EndDate: "",
+
+      departmentTeam: "",
+      ProjectManager: "",
+    });
+  };
+  async function AddClientFormSubmit(e) {
+    e.preventDefault();
+    const newErrors = {
+      ClientName: AddClientValidation("ClientName", values.ClientName),
+      ClientEmailId: AddClientValidation("ClientEmailId", values.ClientEmailId),
+
+      ClientLocation: AddClientValidation(
+        "ClientLocation",
+        values.ClientLocation
+      ),
+    };
+    setErrors(newErrors);
+    console.log(errors, "errorrs");
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    console.log(isValid, "isvalid");
+    if (isValid) {
+      const obj = {
+        ClientName: values.ClientName,
+        ClientEmailId: values.ClientEmailId,
+        ClientLocation: values.ClientLocation,
+        ReferenceName: values.ReferenceName,
+      };
+
+      var response = await AdminDashboardServices.fcnAddClientAsync(obj);
+
+      if (response.isSuccess === true) {
+        setValues({
+          ClientName: "",
+          ClientEmailId: "",
+          file: "",
+          ClientLocation: "",
+          ReferenceName: "",
+        });
+
+        fetchData();
+        setAddclientPopup(false);
+      } else {
+        toast.error(response.error.message, {
+          position: "top-right",
+          autoClose: "4000",
+        });
+      }
+    }
+  }
   return (
-    <div className="maindiv1">
-      <div
-        className="maindiv card  addproductcard"
-        style={{ borderRadius: "0px" }}
-      >
-        <div className="addproject ">
-          <div className="d-flex">
-            <IoArrowBackCircle
-              onClick={backonclick}
-              style={{ cursor: "pointer", fontSize: "28px" }}
-            />
-            <p style={{ fontSize: "20px" }} className="ms-1 ">
-              Back
-            </p>
+    <div className="addProjectMainDiv">
+      <div>
+        <p className="addNewProjectHeader">add New Project</p>
+      </div>
+      <div className="carddiv">
+        <form onSubmit={formSubmit}>
+          <div className="row m-0" style={{ paddingTop: "25px" }}>
+            <div className="col-3">
+              <TextField
+                label="Project ID"
+                placeholder="12"
+                variant="outlined"
+                name="ProjectID"
+                value={values.ProjectID}
+                onChange={handleChange}
+                fullWidth
+                className="custom-text-field"
+              />
+              {errorss.ProjectID && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.ProjectID}
+                </span>
+              )}
+            </div>
+            <div className="col-3">
+              <TextField
+                label="Project Name"
+                placeholder="loreum ipsum"
+                variant="outlined"
+                name="ProjectName"
+                value={values.ProjectName}
+                onChange={handleChange}
+                fullWidth
+                className="custom-text-field"
+              />
+              {errorss.ProjectName && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.ProjectName}
+                </span>
+              )}
+            </div>
+            <div className="col-3">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Project Start date & Time"
+                  className="datepicker-custom"
+                  onChange={handleSelectedDate}
+                  value={selectedDate}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder={"01/16/2024 04:00 AM"}
+                      variant="outlined"
+                      className="DatePicker-placeholder"
+                      fullWidth
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          fontSize: "12px",
+                          "& fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                          "&:hover fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                          "&.Mui-focused fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#000000",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          transform: "translate(15px, 9px)",
+                          "&.Mui-focused": {
+                            color: "black !important",
+                          },
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          height: "22px",
+                          padding: "8px 12px",
+                          fontSize: "12px",
+                        },
+                        "& .MuiInputLabel-shrink": {
+                          fontSize: "12px",
+                          transform: "translate(14px, -9px) scale(0.75)",
+                        },
+                        "& input::placeholder": {
+                          fontSize: "12px",
+                          color: "#AEAEAE",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+              {errorss.StartDate && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.StartDate}
+                </span>
+              )}
+            </div>
+            <div className="col-3">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Project End date & Time"
+                  className="datepicker-custom"
+                  onChange={handleSelectedEndDate}
+                  value={selectedDate}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="MM/DD/YYYY"
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          fontSize: "12px",
+                          "& fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                          "&:hover fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                          "&.Mui-focused fieldset": {
+                            border: "1px solid #DCDCDC",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#000000",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          transform: "translate(15px, 9px)",
+                          "&.Mui-focused": {
+                            color: "black !important",
+                          },
+                        },
+                        "& .MuiOutlinedInput-input": {
+                          height: "22px",
+                          padding: "8px 12px",
+                          fontSize: "12px",
+                        },
+                        "& .MuiInputLabel-shrink": {
+                          fontSize: "12px",
+                          transform: "translate(14px, -9px) scale(0.75)",
+                        },
+                        "& input::placeholder": {
+                          fontSize: "12px",
+                          color: "#AEAEAE",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+              {errorss.EndDate && (
+                <span
+                  className="error "
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.EndDate}
+                </span>
+              )}
+            </div>
           </div>
-          <p
-            style={{ fontSize: "20px", textDecoration: "underline" }}
-            className="ms-3 backiconbutton"
-          >
-            Add New Project
-          </p>
-        </div>
-        <div>
-          <form onSubmit={formSubmit}>
-            <div className="row m-0 mt-2">
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Project ID
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter ProjectID"
-                  className="form-control"
-                  name="ProjectID"
-                  value={values.ProjectID}
-                  onChange={handleChange}
-                />
-                {errorss.ProjectID && (
-                  <span className="error ms-1">{errorss.ProjectID}</span>
-                )}
-              </div>
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Project Name
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter ProjectName"
-                  className="form-control"
-                  name="ProjectName"
-                  value={values.ProjectName}
-                  onChange={handleChange}
-                />
-                {errorss.ProjectName && (
-                  <span className="error ms-1">{errorss.ProjectName}</span>
-                )}
-              </div>
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Start Date
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <input
-                  type="date"
-                  placeholder="Enter StartDate"
-                  className="form-control"
-                  style={{ cursor: "pointer" }}
-                  name="StartDate"
-                  value={values.StartDate}
-                  onChange={handleChange}
-                />
-                {errorss.StartDate && (
-                  <span className="error ms-1">{errorss.StartDate}</span>
-                )}
-              </div>
-            </div>
-            <div className="row m-0 mt-2">
-              <div className="col-4">
-                <div>
-                  <label className="labless d-flex">
-                    Deadline
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <input
-                  type="date"
-                  placeholder="Enter EndDate"
-                  className="form-control"
-                  style={{ cursor: "pointer" }}
-                  name="EndDate"
-                  value={values.EndDate}
-                  onChange={handleChange}
-                />
-                {errorss.EndDate && (
-                  <span className="error ms-1">{errorss.EndDate}</span>
-                )}
-              </div>
-              <div className="col-4">
-                <label className="labless d-flex">
-                  Select Client
-                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                </label>
-                <div className="dropdown d-flex">
-                  <select
-                    id="myList"
-                    className="form-control w-100"
-                    name="ClientEmail"
-                    value={values.clientEmailId}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select client</option>
-                    {clients.map((client) => (
-                      <option key={client.id} value={client.clientEmailId}>
-                        <div>
-                          <span className="clientname">
-                            {client.clientName}
-                          </span>
-                          <span style={{ marginLeft: "8px" }}>
-                            - {client.clientEmailId}
-                          </span>
-                        </div>
-                      </option>
-                    ))}
-                  </select>
-
-                  <span>
-                    <IoAddCircle className="addicon" onClick={handleShow} />
-                  </span>
-                </div>
-                {errorss.ClientEmail && (
-                  <span className="error ms-1">{errorss.ClientEmail}</span>
-                )}
-              </div>
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Currency
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <select
-                  id="myList"
-                  className="form-control w-100"
-                  name="currencyType"
-                  value={values.currencyType}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Currency</option>
-                  {AllCurrency.map((currency) => (
-                    <option key={currency.id} value={currency.type}>
-                      <div>
-                        <span className="clientname">{currency.type}</span>
-                      </div>
-                    </option>
-                  ))}
-                </select>
-                {errorss.currencyType && (
-                  <span className="error ms-1">{errorss.currencyType}</span>
-                )}
-              </div>
-            </div>
-            {/* <div className="row m-0 mt-2">
-              <div className="col-4">
-                <div>
-                  <span className="labless">ProjectRef ID</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter ProjectRefId"
-                  className="form-control"
-                  name="ProjectRefId"
-                  value={values.ProjectRefId}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Project Type
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter ProjectType"
-                  className="form-control"
-                  name="ProjectType"
-                  value={values.ProjectType}
-                  onChange={handleChange}
-                />
-                {errorss.ProjectType && (
-                  <span className="error ms-1">{errorss.ProjectType}</span>
-                )}
-              </div>
-              <div className="col-4">
-                <div>
-                  <label className="labless">Progress</label>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter Progress"
-                  className="form-control"
-                  name="Progress"
-                  value={values.Progress}
-                  readOnly
-                  onChange={handleChange}
-                />
-              </div>
-            </div> */}
-            <div className="row m-0 mt-2">
-              <div className="col-4">
-                <label className="labless">
-                  Project Manager
-                  <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                </label>
-                <select
-                  style={{ width: "100%" }}
-                  className="form-control select2"
-                  name="ProjectManager"
-                  value={values.ProjectManager}
-                  onChange={handleChange}
-                >
-                  <option>Select</option>
-                  {GetAllemployees.map((client) => (
-                    <option
-                      key={client.employee.id}
-                      value={client.employee.email}
-                    >
-                      {`${client.employee.firstName} ${client.employee.lastName}`}{" "}
-                      ({client.role.name})
-                    </option>
-                  ))}
-                </select>
-                {errorss.ProjectManager && (
-                  <span className="error ms-1">{errorss.ProjectManager}</span>
-                )}
-              </div>
-
-              {/* <div className="col-4">
-                <div>
-                  <span className="labless">Department</span>
-                </div>
-
-                <select
-                  id="departmentList"
-                  className="form-control w-100"
-                  name="Department"
-                  value={values.Department}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Department</option>
-                  {AllDepartments.map((dept) => (
-                    <option key={dept.id} value={dept.deptName}>
-                      {dept.deptName}
-                    </option>
-                  ))}
-                </select>
-                {errorss.Department && (
-                  <span className="error ms-1">{errorss.Department}</span>
-                )}
-              </div> */}
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Department
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <select
-                  id="departmentList"
-                  className="form-control w-100"
-                  name="Department"
-                  value={values.Department}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Department</option>
-                  {AllDepartments.map((dept) => (
-                    <option key={dept.id} value={dept.deptName}>
-                      {dept.deptName}
-                    </option>
-                  ))}
-                </select>
-                {errorss.Department && (
-                  <span className="error ms-1">{errorss.Department}</span>
-                )}
-              </div>
-
-              <div className="col-4">
-                <div>
-                  <label className="labless">
-                    Team
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <select
-                  id="teamList"
-                  className="form-control w-100"
-                  name="departmentTeam"
-                  value={values.Team}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Team</option>
-                  {filteredTeams.map((team) => (
-                    <option key={team.id} value={team.teamName}>
-                      {team.teamName}
-                    </option>
-                  ))}
-                </select>
-                {errorss.departmentTeam && (
-                  <span className="error ms-1">{errorss.departmentTeam}</span>
-                )}
-              </div>
-            </div>
-            <div className="row m-0 mt-2">
-              <div className="col-8">
-                <div>
-                  <label className="labless">
-                    Description
-                    <span style={{ color: "red", marginLeft: "5px" }}>*</span>
-                  </label>
-                </div>
-                <textarea
-                  className="form-control"
-                  placeholder="Enter Description"
-                  name="Description"
-                  value={values.Description}
-                  onChange={handleChange}
-                ></textarea>
-                {errorss.Description && (
-                  <span className="error ms-1">{errorss.Description}</span>
-                )}
-              </div>
-              <div className="col-4"></div>
-            </div>
-            <div className="row m-0 mt-2">
-              <div className="col-8"></div>
-              <div className="col-2"></div>
-              <div className="col-2">
-                <button
-                  className="form-control addbutton"
-                  style={{ borderRadius: "10px" }}
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-          </form>
-          <div style={{ width: "1000px" }} className="modeldiv">
-            <Modal show={show} onHide={handleClose} animation={false}>
-              <Modal.Header
-                closeButton
-                style={{ backgroundColor: "rgb(25, 110, 138)", color: "white" }}
+          <div className="row m-0" style={{ paddingTop: "50px" }}>
+            <div
+              className="col-3 row m-0"
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <TextField
+                label="Client"
+                variant="outlined"
+                name="ClientEmail"
+                value={values.clientEmailId}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  width: "85%",
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
               >
-                <Modal.Title>New Client</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <form onSubmit={AddClientFormSubmit} className="formclass">
-                  <div className="row m-0">
+                <MenuItem value="">
+                  <em>Select/Add Client</em>
+                </MenuItem>
+                {clients && clients.length > 0 ? (
+                  clients.map((client, index) => (
+                    <MenuItem key={client.id} value={client.clientEmailId}>
+                      <span style={{ fontSize: "12px" }}>
+                        {" "}
+                        {client.clientName}
+                      </span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Client Found</MenuItem>
+                )}
+              </TextField>
+
+              <div className="" style={{ width: "15%" }}>
+                <img
+                  src={image}
+                  alt=""
+                  width="35px"
+                  height="36px"
+                  style={{ cursor: "pointer" }}
+                  onClick={ClientPopup}
+                />
+              </div>
+              {errorss.ClientEmail && (
+                <span
+                  className="error  "
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    padding: " 0px 1px",
+                  }}
+                >
+                  {errorss.ClientEmail}
+                </span>
+              )}
+            </div>
+
+            <div className="col-3">
+              <TextField
+                label="Project Manager"
+                variant="outlined"
+                name="ProjectManager"
+                value={values.ProjectManager}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "0.85rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black", // Desired color when focused
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select</em>
+                </MenuItem>
+                {employees && employees.length > 0 ? (
+                  employees.map((emp, index) => (
+                    <MenuItem key={emp.employee.id} value={emp.employee.email}>
+                      <span style={{ fontSize: "12px" }}>
+                        {emp.employee.firstName}
+                        {emp.employee.lastName}
+                      </span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Employees Found</MenuItem>
+                )}
+              </TextField>
+              {errorss.ProjectManager && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.ProjectManager}
+                </span>
+              )}
+            </div>
+            <div className="col-3">
+              <TextField
+                label="Department"
+                placeholder="Enter your Role"
+                variant="outlined"
+                name="Department"
+                value={values.Department}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "0.85rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select</em>
+                </MenuItem>
+                {AllDepartments && AllDepartments.length > 0 ? (
+                  AllDepartments.map((dept, index) => (
+                    <MenuItem key={dept.id} value={dept.deptName}>
+                      <span style={{ fontSize: "12px" }}> {dept.deptName}</span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Departments Found</MenuItem>
+                )}
+              </TextField>
+              {errorss.Department && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.Department}
+                </span>
+              )}
+            </div>
+            <div className="col-3">
+              <TextField
+                label="Team"
+                placeholder="Enter your Role"
+                variant="outlined"
+                name="departmentTeam"
+                value={values.Team}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select</em>
+                </MenuItem>
+                {filteredTeams && filteredTeams.length > 0 ? (
+                  filteredTeams.map((team, index) => (
+                    <MenuItem key={team.id} value={team.teamName}>
+                      <span style={{ fontSize: "12px" }}> {team.teamName}</span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Teams Found</MenuItem>
+                )}
+              </TextField>
+              {errorss.departmentTeam && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.departmentTeam}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="row m-0" style={{ paddingTop: "50px" }}>
+            <div className="col-3">
+              <TextField
+                label="Currency"
+                variant="outlined"
+                name="currencyType"
+                value={values.currencyType}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "0.85rem",
+                    fontWeight: "600",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>Select</em>
+                </MenuItem>
+                {AllCurrency && AllCurrency.length > 0 ? (
+                  AllCurrency.map((currency, index) => (
+                    <MenuItem key={currency.id} value={currency.type}>
+                      <span style={{ fontSize: "12px" }}>{currency.type}</span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Currency Found</MenuItem>
+                )}
+              </TextField>
+              {errorss.currencyType && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.currencyType}
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="row m-0" style={{ paddingTop: "50px" }}>
+            <div className="col-12">
+              <TextField
+                variant="outlined"
+                label="Description"
+                placeholder="Enter Description"
+                name="Description"
+                value={values.Description}
+                onChange={handleChange}
+                multiline
+                height="100px"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              />
+              {errorss.Description && (
+                <span
+                  className="error ms-1"
+                  style={{ color: "red", fontSize: "13px" }}
+                >
+                  {errorss.Description}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className="row m-0"
+            style={{
+              paddingTop: "20px",
+            }}
+          >
+            <div className="col-10"></div>
+            <div
+              className="col-2"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: "35px",
+              }}
+            >
+              <button className="addEmployeeSubmitbutton me-1 ">
+                <span className="addemployeespan ">submit</span>
+              </button>
+              <button
+                className="addemployeeResetbutton  "
+                onClick={clearprojectvalues}
+              >
+                <span className="resetspan">reset</span>
+              </button>
+            </div>
+          </div>
+        </form>
+        {AddClientpopup && (
+          <div className="client-modal-overlay">
+            <div className="client-modal-box">
+              <div className="client-modal-header">
+                <h2 className="headercontent">Add Client Details</h2>
+                <sapn className="cancelicon1">
+                  <i
+                    class="bi bi-x-lg"
+                    onClick={closeModal}
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                </sapn>
+              </div>
+              <form onSubmit={AddClientFormSubmit}>
+                <div className="client-modal-content">
+                  <div className="row m-0 w-100" style={{ paddingTop: "5px" }}>
                     <div className="col-6">
-                      <label className="labless">
-                        Client Name
-                        <span style={{ color: "red", marginLeft: "5px" }}>
-                          *
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter ClientName"
-                        className="form-control"
+                      <TextField
+                        label="Client Name"
+                        variant="outlined"
+                        fullWidth
                         name="ClientName"
                         value={values.clientName}
                         onChange={handleChange}
+                        className="custom-text-field"
                       />
                       {errors.ClientName && (
-                        <span className="error ms-1">{errors.ClientName}</span>
+                        <span
+                          className="error ms-1"
+                          style={{ color: "red", fontSize: "13px" }}
+                        >
+                          {errors.ClientName}
+                        </span>
                       )}
                     </div>
                     <div className="col-6">
-                      <label className="labless">
-                        Client EmailId
-                        <span style={{ color: "red", marginLeft: "5px" }}>
-                          *
-                        </span>
-                      </label>
-                      <div>
-                        <input
-                          type="text"
-                          placeholder="Enter Email"
-                          name="ClientEmailId"
-                          className="form-control"
-                          value={values.ClientEmailId}
-                          onChange={handleChange}
-                        />
-                      </div>
+                      <TextField
+                        label="Client Email ID"
+                        variant="outlined"
+                        fullWidth
+                        className="custom-text-field"
+                        name="ClientEmailId"
+                        value={values.ClientEmailId}
+                        onChange={handleChange}
+                      />
+
                       {errors.ClientEmailId && (
-                        <span className="error ms-1">
+                        <span
+                          className="error ms-1"
+                          style={{ color: "red", fontSize: "13px" }}
+                        >
                           {errors.ClientEmailId}
                         </span>
                       )}
                     </div>
                   </div>
-                  <div className="row m-0 mt-2">
+                  <div className="row m-0 w-100" style={{ paddingTop: "18px" }}>
                     <div className="col-6">
-                      <div>
-                        <label className="labless">Reference Name</label>
-                        <input
-                          type="text"
-                          placeholder="Enter ReferenceName"
-                          className="form-control"
-                          name="ReferenceName"
-                          value={values.ReferenceName}
-                          onChange={handleChange}
-                        />
-                      </div>
+                      <TextField
+                        label="Client Referance"
+                        variant="outlined"
+                        name="ReferenceName"
+                        value={values.ReferenceName}
+                        onChange={handleChange}
+                        fullWidth
+                        select
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            fontSize: "12px",
+                            "& fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&:hover fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&.Mui-focused fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#000000",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            transform: "translate(15px, 9px)",
+                            "&.Mui-focused": {
+                              color: "black",
+                            },
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            height: "22px",
+                            padding: "8px 12px",
+                            fontSize: "1rem",
+                          },
+                          "& .MuiInputLabel-shrink": {
+                            fontSize: "1rem",
+                            transform: "translate(14px, -9px) scale(0.75)",
+                          },
+                          "& input::placeholder": {
+                            fontSize: "12px",
+                            color: "#AEAEAE",
+                          },
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>Select</em>
+                        </MenuItem>
+                        <MenuItem value="John">
+                          <span style={{ fontSize: "12px" }}>John</span>
+                        </MenuItem>
+                        <MenuItem value="Sonu">
+                          <span style={{ fontSize: "12px" }}>Sonu</span>
+                        </MenuItem>
+                      </TextField>
                     </div>
                     <div className="col-6">
-                      <label className="labless">
-                        Client Location
-                        <span style={{ color: "red", marginLeft: "5px" }}>
-                          *
-                        </span>
-                      </label>
-                      <div>
-                        <input
-                          type="text"
-                          placeholder="Enter Location"
-                          name="ClientLocation"
-                          value={values.ClientLocation}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
+                      <TextField
+                        label="Client Location"
+                        variant="outlined"
+                        name="ClientLocation"
+                        value={values.ClientLocation}
+                        onChange={handleChange}
+                        fullWidth
+                        select
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            fontSize: "12px",
+                            "& fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&:hover fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&.Mui-focused fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#000000",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            transform: "translate(15px, 9px)",
+                            "&.Mui-focused": {
+                              color: "black",
+                            },
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            height: "22px",
+                            padding: "8px 12px",
+                            fontSize: "1rem",
+                          },
+                          "& .MuiInputLabel-shrink": {
+                            fontSize: "1rem",
+                            transform: "translate(14px, -9px) scale(0.75)",
+                          },
+                          "& input::placeholder": {
+                            fontSize: "12px",
+                            color: "#AEAEAE",
+                          },
+                        }}
+                      >
+                        <MenuItem value="">
+                          <em>Select</em>
+                        </MenuItem>
+                        <MenuItem value="USA">
+                          <span style={{ fontSize: "12px" }}>USA</span>
+                        </MenuItem>
+                        <MenuItem value="UK">
+                          <span style={{ fontSize: "12px" }}>UK</span>
+                        </MenuItem>
+                      </TextField>
                       {errors.ClientLocation && (
-                        <span className="error ms-1">
+                        <span
+                          className="error ms-1"
+                          style={{ color: "red", fontSize: "13px" }}
+                        >
                           {errors.ClientLocation}
                         </span>
                       )}
                     </div>
                   </div>
-                  <div className="row m-0">
-                    <div className="col-6"></div>
-                    <div className="col-4"></div>
-                    <div className="col-2"></div>
-                  </div>
-                  <div className="row m-0 mt-3">
-                    <div className="col-8"></div>
-                    <div className="col-2">
+                  <div
+                    className="row m-0 w-100"
+                    style={{ paddingTop: "5px", paddingBottom: "12px" }}
+                  >
+                    <div
+                      className="col-4"
+                      style={{ display: "flex", alignContent: "center" }}
+                    >
+                      <button className="addclient-popup-submit-button">
+                        <span className="addclient-popup-submit-button-span">
+                          Add
+                        </span>
+                      </button>
                       <button
-                        onClick={handleClose}
-                        className="form-control  btn btn-danger"
+                        className="addclient-popup-Cancel-button ms-3 "
+                        onClick={closeModal}
                       >
-                        Close
+                        <span className="addclient-popup-Cancel-button-span">
+                          cancel
+                        </span>
                       </button>
                     </div>
-                    <div className="col-2">
-                      <button className="form-control addbutton">Add</button>
-                    </div>
+                    <div className="col-8"></div>
                   </div>
-                </form>
-              </Modal.Body>
-            </Modal>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+      {isopen && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={checkimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={ellips}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Added Project Successfully!</h2>
+            <p className="unique-popup-message">
+              Click OK to view added project
+            </p>
+            <button
+              className="unique-popup-button"
+              onClick={navigantetoAllProjects}
+            >
+              OK
+            </button>
           </div>
         </div>
-        <ToastContainer position="top-end" autoClose={5000} />
-      </div>
+      )}
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 }

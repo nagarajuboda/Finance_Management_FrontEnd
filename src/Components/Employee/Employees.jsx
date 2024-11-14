@@ -1,107 +1,153 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/Styles/Employee.css";
 import editicon from "../../assets/Images/Editicon.png";
 import deleteicon from "../../assets/Images/deleteicon.png";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import images from "../../assets/Images/User.png";
+import axios from "axios";
+import EditEmployeePopup from "./EditEmployeePopup";
+import ImportPopup from "./ImportPopup";
 import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
-
-import ImportPopup from "./ImportPopup";
-import EditEmployeePopup from "./EditEmployeePopup";
-import SuccessPopup from "./SuccessPopup";
-import axios from "axios";
-
 export default function Employees() {
   const navigate = useNavigate();
   const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
-  const [actionType, setActionType] = useState("");
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isEditPopupOpen, setEditIsPopupOpen] = useState(false);
+  const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [employees, setEmployees] = useState([]);
-  const [isopen, setisopen] = useState(false);
-  const [tableInitialized, setTableInitialized] = useState(false);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const tableRef = useRef(null);
-  const searchInputRef = useRef(null);
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
   const [open, setOpen] = useState(false);
+  const [id, setid] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef(null);
   useEffect(() => {
     FetchData();
   }, []);
+
+  const EdittogglePopup = (e, index, employeeid) => {
+    setid(employeeid);
+    setEditIsPopupOpen(!isEditPopupOpen);
+  };
+
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
   const FetchData = async () => {
     const response = await axios.get(
-      "https://localhost:44305/api/Employees/AllEmployees"
+      "https://localhost:44305/api/Employees/GetAllEmployees"
     );
-    setEmployees(response.data);
+    var result = response.data.item;
+    setEmployees(result);
   };
-  const handleOpenPopup = async (e, index, id) => {
-    setActionType("employeeDelete");
 
+  const handleOpenPopup = async (e, index, id) => {
     var response = await axios.put(
       `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
     );
     var result = response.data;
-    if (result.isSuccess == true) {
+    if (result.isSuccess === true) {
+      FetchData();
       setOpen(true);
     }
   };
+
   const closeDeletePopup = () => {
-    FetchData();
     setOpen(false);
   };
-
-  useEffect(() => {
-    if (employees.length > 0 && !tableInitialized) {
-      const dataTable = $(tableRef.current).DataTable({
-        ordering: false,
-        lengthMenu: [
-          [10, 25, 50, -1],
-          [
-            "Show 10 Entities",
-            "Show 25 Entities",
-            "Show 50 Entities",
-            "Show All",
-          ],
-        ],
-        language: {
-          lengthMenu: "_MENU_",
-        },
-        columnDefs: [{ orderable: false, targets: 0 }],
-      });
-
-      // Manual search functionality
-      searchInputRef.current.addEventListener("keyup", function () {
-        dataTable.search(this.value).draw();
-      });
-
-      setTableInitialized(true);
-    }
-
-    return () => {
-      if (tableInitialized) {
-        $(tableRef.current).DataTable().destroy();
-        setTableInitialized(false);
-      }
-    };
-  }, [employees, tableInitialized]);
-
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
+    if (isChecked) {
+      const allEmployeeIds = currentItems.map(
+        (employee) => employee.employeeDetails.id
+      );
+      setSelectedEmployeeIds(allEmployeeIds);
+      setDisiblebuttons(false);
+    } else {
+      setSelectedEmployeeIds([]);
+      setDisiblebuttons(true); // Disable buttons if none are selected
+    }
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
       checkbox.checked = isChecked;
     });
   };
 
-  const Addemployeefuncton = async () => {
+  const Addemployeefuncton = () => {
     navigate("/dashboard/AddEmployee");
   };
+  const DeleteSelectedRecords = async () => {
+    const response = await axios.put(
+      "https://localhost:44305/api/Employees/DeleteSelectedEmployees",
+      selectedEmployeeIds
+    );
+    const result = response.data;
 
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+    if (result.isSuccess) {
+      setOpen(true);
+      FetchData();
+    }
   };
-  // const togglePopup = () => setIsPopupOpen(!isPopupOpen);
-  const [isEditPopupOpen, setEditIsPopupOpen] = useState(false);
-  const EdittogglePopup = () => setEditIsPopupOpen(!isEditPopupOpen);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value); // Update search query state
+  };
+
+  const filteredEmployees = employees.filter((employee) => {
+    return (
+      employee.employeeDetails.firstName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      employee.employeeDetails.lastName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      employee.employeeDetails.email
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      employee.employeeDetails.employeeId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredEmployees.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleCheckboxChange = (employeeId, isChecked) => {
+    setSelectedEmployeeIds((prevSelected) => {
+      if (isChecked) {
+        setDisiblebuttons(false);
+        return [...prevSelected, employeeId];
+      } else {
+        setDisiblebuttons(true);
+        return prevSelected.filter((id) => id !== employeeId);
+      }
+    });
+  };
+  console.log(selectedEmployeeIds, "selected ids");
 
   return (
     <div className="Employeemaindiv">
@@ -126,19 +172,19 @@ export default function Employees() {
             <input
               type="text"
               className="searchinput"
-              ref={searchInputRef}
               placeholder="Search employees"
-              style={{ width: "300px", padding: "5px" }}
+              style={{ width: "450px", padding: "5px", fontSize: "12px" }}
+              onChange={handleSearchChange}
+              value={searchQuery}
             />
           </div>
           <div className="col-6 row">
-            <div className="col-3">
+            <div className="col-2" style={{ cursor: "pointer" }}>
               <select
+                style={{ cursor: "pointer" }}
                 className="numberpagenation"
-                onChange={(e) => {
-                  const length = e.target.value;
-                  $(tableRef.current).DataTable().page.len(length).draw();
-                }}
+                onChange={handleItemsPerPageChange}
+                value={itemsPerPage}
               >
                 <option value="10">Show 10 Entities</option>
                 <option value="25">Show 25 Entities</option>
@@ -146,13 +192,16 @@ export default function Employees() {
                 <option value="-1">Show All</option>
               </select>
             </div>
-            <div className="col-2">
-              <button className="importbutton import-btn" onClick={togglePopup}>
+            <div className="col-3">
+              <button
+                className="importbutton import-btn ms-5"
+                onClick={() => setIsPopupOpen(true)}
+              >
                 Import
               </button>
             </div>
             <div className="col-2">
-              <div className="dropdown">
+              <div className="importdropdown">
                 <a
                   className="importdropwlist dropdown-toggle"
                   href="#"
@@ -161,7 +210,7 @@ export default function Employees() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Export to
+                  <span> Export to</span>
                 </a>
                 <ul
                   className="dropdown-menu"
@@ -186,33 +235,41 @@ export default function Employees() {
               </div>
             </div>
             <div className="col-2">
-              <button className="DeleteRecordbutton">Delete Selected</button>
-            </div>
-            <div
-              className="col-3"
-              style={{ display: "flex", justifyContent: "end" }}
-            >
               <button
-                className="addemployeebutton"
+                className="DeleteRecordbutton"
+                disabled={disiblebuttons}
+                onClick={DeleteSelectedRecords}
+              >
+                <span className="deleteSelectedSpan">Delete Selected</span>
+              </button>
+            </div>
+            <div className="col-2">
+              <button
+                style={{ display: "flex", width: "120px" }}
+                className="add-new-project-button"
                 onClick={Addemployeefuncton}
               >
                 <span>
-                  <i
-                    className="bi bi-person-circle"
-                    style={{ fontSize: "17px" }}
-                  ></i>
+                  <img
+                    src={images}
+                    alt=""
+                    height="18px"
+                    width="18px"
+                    className="ms-2"
+                  />
                 </span>
-                Add Employee
+                <span className="add-new-project-span ms-1 ">Add Employee</span>
               </button>
             </div>
           </div>
         </div>
-        <div>
+
+        <div style={{ padding: "10px" }}>
           <table
             id="example"
             className="employeeTable"
-            ref={tableRef}
-            style={{ width: "98.5%" }}
+            style={{ width: "100%" }}
+            // style={{ width: "100%" }}
           >
             <thead>
               <tr className="tableheader">
@@ -223,52 +280,78 @@ export default function Employees() {
                     className="userCheckbox"
                   />
                 </th>
-                <th>Employee ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Mobile Number</th>
-                <th>Date of Joining</th>
-                <th>Status</th>
-                <th>Role</th>
-                <th>Manager</th>
+                <th style={{ fontSize: "12px" }}>Employee ID</th>
+                <th style={{ fontSize: "12px" }}>First Name</th>
+                <th style={{ fontSize: "12px" }}>Last Name</th>
+                <th style={{ fontSize: "12px" }}>Email</th>
+                <th style={{ fontSize: "12px" }}>Mobile Number</th>
+                <th style={{ fontSize: "12px" }}>Date of Joining</th>
+                <th style={{ fontSize: "12px" }}>Status</th>
+                <th style={{ fontSize: "12px" }}>Role</th>
+                <th style={{ fontSize: "12px" }}>Manager</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {employees.length > 0 ? (
-                employees.map((employee, index) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((employee, index) => (
                   <tr
-                    key={index}
+                    key={employee.employeeDetails.id}
                     className="tablebody"
                     style={{ backgroundColor: "white" }}
                   >
-                    <td>
+                    <td style={{ textAlign: "start" }}>
                       <input
                         type="checkbox"
-                        className="row-checkbox userCheckbox"
+                        className="row-checkbox "
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            employee.employeeDetails.id,
+                            e.target.checked
+                          )
+                        }
                       />
                     </td>
-                    <td>{employee.employeeId}</td>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.lastName}</td>
-                    <td>{employee.email}</td>
-                    <td>{employee.mobileNo}</td>
-                    <td>
-                      {new Date(employee.dateOfJoining).toLocaleDateString(
-                        "en-GB"
-                      )}
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.employeeId}
                     </td>
-                    <td>
-                      {employee.employeeStatus === 1 ? "Active" : "Inactive"}
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.firstName}
                     </td>
-                    <td>{employee.role}</td>
-                    <td>{employee.projectManager}</td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.lastName}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.email}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.mobileNo}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {new Date(
+                        employee.employeeDetails.dateOfJoining
+                      ).toLocaleDateString("en-GB")}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employeeDetails.employeeStatus === 1
+                        ? "Active"
+                        : "Inactive"}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.roleDetails.roleName}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.reportingManagerDetails !== "N/A"
+                        ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
+                        : "N/A"}
+                    </td>
                     <td>
                       <img
                         src={editicon}
-                        onClick={EdittogglePopup}
+                        onClick={(e) =>
+                          EdittogglePopup(e, index, employee.employeeDetails.id)
+                        }
                         alt=""
                         style={{
                           width: "18px",
@@ -280,7 +363,9 @@ export default function Employees() {
                     <td>
                       <img
                         src={deleteicon}
-                        onClick={(e) => handleOpenPopup(e, index, employee.id)}
+                        onClick={(e) =>
+                          handleOpenPopup(e, index, employee.employeeDetails.id)
+                        }
                         alt=""
                         style={{
                           width: "24px",
@@ -346,8 +431,18 @@ export default function Employees() {
         <EditEmployeePopup
           isEditOpen={isEditPopupOpen}
           handleEditClose={EdittogglePopup}
+          employeeID={id}
         />
         <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
+      </div>
+
+      <div className="pagination">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          Prev
+        </button>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
       </div>
     </div>
   );

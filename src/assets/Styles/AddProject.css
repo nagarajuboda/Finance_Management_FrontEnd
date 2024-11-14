@@ -1,146 +1,261 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-.maindiv1 {
-  margin: 0;
-  padding: 0;
-}
-.card {
-  height: auto;
-  width: 100%;
-}
-
-.addproject {
-  font-size: 1.75rem;
-  color: rgba(32, 32, 32, 1);
-  font-family: "Public Sans", sans-serif;
-  font-weight: 700;
-}
-
-.addbtn {
-  background: rgba(146, 74, 239, 1);
-  color: white;
-  border-radius: 15px;
-}
-.backbtn {
-  /* background: rgb(95, 158, 160); */
-  border-radius: 15px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-self: center;
-}
-.addbutton:focus {
-  color: white;
-  background-color: #167291;
-  border-radius: 10px;
-}
-
-.addbutton {
-  color: white;
-  background-color: #257a96;
-}
-/* .backbuttom:hover {
-  color: #257a96;
-  background-color: #257a96;
-} */
-.backiconbutton {
-  color: #196e8a;
-  font-family: sans-serif;
-}
-.backbuttom {
-  width: 50px;
-  font-size: 20px;
-}
-
-lable {
-  font-weight: 600;
-}
-input {
-  margin-top: 5px;
-}
-input:focus {
-  border-color: rgba(146, 74, 239, 1);
-}
-input :hover {
-  border-color: rgba(146, 74, 239, 1);
-}
-.dropdown-toggle {
+.addNewProjectHeader {
+  height: 19px;
+  /* UI Properties */
   text-align: left;
+  font: normal normal bold 14px/24px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.carddiv {
+  /* UI Properties */
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 2px 16px #e5e5e5;
+  border-radius: 5px;
+  opacity: 1;
+}
+.addProjectsubmitbutton {
+  width: 105px;
+  height: 36px;
+  /* UI Properties */
+  background: #139bff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
+  text-align: center;
+  font: normal normal bold 12px/30px Raleway;
+  letter-spacing: 0px;
+  color: #ffffff;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.addProjectResertbutton1 {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  opacity: 1;
+
+  /* UI Properties */
+  text-align: left;
+  font: normal normal bold 12px/30px Raleway;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+.custom-text-field .MuiOutlinedInput-root {
+  font-size: 1rem;
+}
+
+.custom-text-field .MuiOutlinedInput-root fieldset {
+  border: 1px solid #dcdcdc;
+}
+
+.custom-text-field .MuiOutlinedInput-root:hover fieldset {
+  border: 1px solid #dcdcdc;
+}
+
+.custom-text-field .MuiOutlinedInput-root.Mui-focused fieldset {
+  border: 1px solid #dcdcdc;
+}
+
+.custom-text-field .MuiInputLabel-root {
+  color: #000000;
+  font-size: 12px;
+  font-weight: 600;
+  transform: translate(10px, 9px);
+}
+
+.custom-text-field .MuiInputLabel-root.Mui-focused {
+  color: black;
+}
+
+.custom-text-field .MuiOutlinedInput-input {
+  height: 22px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.custom-text-field .MuiInputLabel-shrink {
+  font-size: 1rem;
+  transform: translate(14px, -9px) scale(0.75);
+}
+
+.custom-text-field input::placeholder {
+  font-size: 12px;
+  color: #aeaeae;
+}
+.css-19qnlrw-MuiFormLabel-root-MuiInputLabel-root {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  transform: translate(15px, 9px) !important;
+  color: #000000 !important;
+}
+.css-113d811-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  font-weight: 600 !important;
+  color: #000000 !important;
+  border-color: #aeaeae !important;
+}
+.css-jupps9-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #aeaeae !important;
+}
+.datepicker-custom ::placeholder {
+  font-size: 12px;
+}
+
+/* =============== */
+.client-modal-open-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.client-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.client-modal-box {
+  width: 610px;
+
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #cecece;
+  border-radius: 3px;
+  position: relative;
+}
+
+.client-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 610px;
+  height: 36px;
+  /* UI Properties */
+  background: #139bff 0% 0% no-repeat padding-box;
 }
-.dropdown-menu {
-  width: 100%;
+.DatePicker-placeholder::placeholder {
+  display: none;
 }
-/* span {
-  color: red;
-} */
-.clientdropdown {
-  padding: 7px 94px;
-  border-radius: 7px;
+.client-modal-title {
+  text-align: left;
+  font: normal normal bold 13px/19px Segoe UI;
+  letter-spacing: 0px;
+  color: #ffffff;
 }
-.addclientmodel {
-  background-color: #faf9f6;
+
+.client-modal-close-btn {
+  font-size: 28px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+
+  opacity: 1;
 }
-.modal-dialog {
-  top: 10%;
-  right: 7%;
+
+.client-modal-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
 }
-.modal-lg {
-  top: 1%;
-  left: 5%;
+
+.client-input-field {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
 }
-.modal {
-  top: 5%;
+
+.client-input-field label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
 }
-.modal-content {
-  width: 700px;
+
+.client-input-field input,
+.client-input-field select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
-.addicon {
-  padding: 0;
-  font-size: 40px;
+
+.client-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.client-modal-add-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
-.addiconcol1 {
-  display: flex;
-  align-items: center;
-  place-content: center;
-  justify-content: end;
-  text-align: end;
-}
 
-.error {
-  color: red;
+.client-modal-cancel-btn {
+  background-color: #ddd;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.labless {
-  margin: 0;
-  font-family: sans-serif;
-  font-weight: 600;
-  margin-left: 3px;
+.addclient-popup-submit-button {
+  width: 85px;
+  height: 36px;
+  /* UI Properties */
+  background: #139bff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
 }
-.form-control:focus {
-  outline: none; /* Optionally remove the default outline */
-  border-color: rgba(146, 74, 239, 1);
-}
-.clientAddbtn:focus {
-  background-color: #4a90e2;
-  color: white;
-}
-.clientaddbtn {
-  background-color: #4a90e2;
-  color: white;
-}
-.select2-container .select2-selection--single {
-  height: 40px !important;
-}
+.addclient-popup-submit-button-span {
+  width: 26px;
 
-.select2-container--default .select2-selection--single {
-  border: 1px solid #ccc !important;
-  border-radius: 5px !important;
+  text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0px;
+  color: #ffffff;
+  text-transform: uppercase;
+  opacity: 1;
 }
-.select2-selection__arrow {
-  margin-top: 3px;
+.addclient-popup-Cancel-button {
+  width: 85px;
+  height: 36px;
+  /* UI Properties */
+  background: #e5e5e5 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+
+  opacity: 1;
+}
+.addclient-popup-Cancel-button-span {
+  width: 48px;
+  text-align: center;
+  font-style: normal;
+  font-weight: medium;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
 }

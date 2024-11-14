@@ -35,6 +35,18 @@ const AdminDashboardServices = {
     );
     return response.data;
   },
+  async fcngetEmployee(employeeID) {
+    var response = await axios.get(
+      `https://localhost:44305/api/Employees/GetEmployee?id=${employeeID}`
+    );
+    return response.data;
+  },
+  async fcngetEmployeeDetails(employeeID) {
+    var response = await axios.get(
+      `https://localhost:44305/api/Employees/EmployeeDetails?id=${employeeID}`
+    );
+    return response.data;
+  },
   async fcnAssignEmployee(obj) {
     const response = await axios.post(
       "https://localhost:44305/api/Projects/AssignEmployee",

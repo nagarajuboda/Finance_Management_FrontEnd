@@ -6,23 +6,147 @@ import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import pulsimage from "../../assets/Images/plus.png";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
-const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
+import { Button, Box, Typography } from "@mui/material";
+import checkimage1 from "../../assets/Images/cancelbutton.png";
+const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
   const [employees, setEmployees] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [employee, setEmployee] = useState({});
+  const [empid, setempid] = useState("");
+  const [role, setRoleName] = useState("");
+  const [roleId, setRoleId] = useState("");
+  const [ReportingManagerid, setReportingManagerid] = useState("");
+  const [ReportingManagerName, setReportingManagerName] = useState("");
+  const [ReportingManagerEmail, setReportingManagerEmail] = useState("");
+  const [namesList, setNamesList] = useState([]);
+  const [Skills, setSkills] = useState([]);
+  const [name, setName] = useState("");
+
   useEffect(() => {
     FeatchData();
-  }, []);
+  }, [employeeID]);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEmployee({
+      ...employee,
+      [name]: value,
+    });
+  };
+
+  const [values, setValues] = useState({
+    employeeId: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobileNo: "",
+    dateOfJoining: "",
+    employeeStatus: "",
+    projectManager: "",
+    role: "",
+    skillSets: "",
+  });
+  const [errors, setErrors] = useState({
+    employeeId: "",
+    firstName: "",
+    email: "",
+    mobileNo: "",
+    dateOfJoining: "",
+    projectManager: "",
+    role: "",
+  });
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setEmployee((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const [status, setStatus] = useState("InActive");
+  const handleChange = (event) => {
+    const selectedStatus = event.target.value;
+    setStatus(selectedStatus);
+  };
+
   const FeatchData = async () => {
     var response = await AdminDashboardServices.fcngetEmployees();
+    var getEmployeeResponse =
+      await AdminDashboardServices.fcngetEmployeeDetails(employeeID);
+    console.log(getEmployeeResponse, "EmployeeDetails");
+    setRoleName(getEmployeeResponse.item.getRole.name);
+    setempid(getEmployeeResponse.item.employee.employeeId);
+    setReportingManagerName(
+      `${getEmployeeResponse.item.reportingManager.firstName} ${getEmployeeResponse.item.reportingManager.lastName}`
+    );
+    setReportingManagerid(getEmployeeResponse.item.reportingManager.id);
+    setReportingManagerEmail(getEmployeeResponse.item.reportingManager.email);
+    setEmployee(getEmployeeResponse.item.employee);
+    setSkills(getEmployeeResponse.item.getSkillsets);
+
     const Rolesresponse = await axios.get(
       "https://localhost:44305/api/Roles/AllRoles"
     );
-    console.log(Rolesresponse);
+
     var rolesResult = Rolesresponse.data;
     setRoles(rolesResult);
     if (response.isSuccess) {
       setEmployees(response.item);
     }
+  };
+  const handleManagerOnChange = (event) => {
+    const selectedManagerEmail = event.target.value;
+    setReportingManagerEmail(selectedManagerEmail);
+
+    // Find the selected manager from the employees array
+    const selectedManager = employees.find(
+      (emp) => emp.employee.email === selectedManagerEmail
+    );
+
+    if (selectedManager) {
+      setReportingManagerid(selectedManager.employee.id);
+      setReportingManagerName(
+        `${selectedManager.employee.firstName} ${selectedManager.employee.lastName}`
+      );
+    }
+  };
+
+  const [ManagerName, setManagerName] = useState("");
+  const [ManagerId, setManagerId] = useState("");
+  const handleRoleOnChange = (event) => {
+    const selectedRoleName = event.target.value;
+    setRoleName(selectedRoleName);
+
+    // Find the ID associated with the selected role name
+    const selectedRole = roles.find((role) => role.name === selectedRoleName);
+    setRoleId(selectedRole ? selectedRole.id : "");
+  };
+
+  const handleStatusChange = (e) => {
+    const { value } = e.target;
+    setEmployee((prevEmployee) => ({
+      ...prevEmployee,
+      employeeStatus: parseInt(value, 10),
+    }));
+  };
+  const handleInputChange11 = (e) => {
+    setName(e.target.value); // Update the name state
+  };
+  const addName = () => {
+    if (name.trim() !== "") {
+      setNamesList([...namesList, name]);
+      setName("");
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      addName();
+    }
+  };
+  const cancleSkill = (e, index, skill) => {
+    setNamesList((prevLanguages) =>
+      prevLanguages.filter((item) => item.trim() !== skill)
+    );
   };
 
   if (!isEditOpen) return null;
@@ -31,13 +155,13 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
       <div className="modal-content">
         <div className="modalheader">
           <h2 className="employeeDetailsContent">Edit Employee Details</h2>
-          <sapn className="cancelicon1">
+          <span className="cancelicon1">
             <i
-              class="bi bi-x-lg"
+              className="bi bi-x-lg"
               onClick={handleEditClose}
               style={{ cursor: "pointer" }}
             ></i>
-          </sapn>
+          </span>
         </div>
 
         <div
@@ -47,21 +171,33 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
           <div className="col-4">
             <TextField
               label="Employee ID"
-              placeholder="Enter your EmployeeID"
               variant="outlined"
+              name="employeeId"
+              onChange={handleOnChange}
+              value={employee.employeeId || ""}
               fullWidth
-              select // This prop turns the TextField into a dropdown
+              select
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
                   fontSize: "1rem",
-                  color: "#000000",
+                  "& fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&:hover fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
                   fontSize: "0.85rem",
-                  fontWeight: "600",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
@@ -69,25 +205,60 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
                   fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
-                  color: "#000000",
                   fontSize: "1rem",
-                  fontWeight: "600",
-                  paddingBottom: "10px !important",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "12px",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "12px",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black",
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "12px",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "12px",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
               {employees && employees.length > 0 ? (
                 employees.map((emp, index) => (
-                  <MenuItem key={index} value={emp.employee.id}>
-                    {emp.employee.employeeId}
+                  <MenuItem key={emp.id} value={emp.employee.employeeId}>
+                    <span style={{ fontSize: "12px" }}>
+                      {emp.employee.employeeId}
+                    </span>
                   </MenuItem>
                 ))
               ) : (
@@ -98,70 +269,122 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
           <div className="col-4">
             <TextField
               label="First Name"
-              placeholder="Enter your email"
+              name="firstName"
+              value={employee.firstName || ""}
               variant="outlined"
+              onChange={handleInputChange}
               fullWidth
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
+                  fontSize: "12px",
                   "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
+                    border: "1px solid #DCDCDC",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
                   },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "12px",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "12px",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "12px",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "12px",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             />
           </div>
           <div className="col-4">
             <TextField
               label="Last Name"
-              placeholder="Enter your email"
+              value={employee.lastName || ""}
+              onChange={handleInputChange}
               variant="outlined"
               fullWidth
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  background: "#FFFFFF 0% 0% no-repeat padding-box",
-
-                  borderradius: "5px",
+                  fontSize: "12px",
+                  "& fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&:hover fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
@@ -178,118 +401,252 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
           <div className="col-4">
             <TextField
               label="Email ID"
-              placeholder="Enter your email"
+              value={employee.email || ""}
+              onChange={handleInputChange}
               variant="outlined"
+              name="email"
               fullWidth
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
+                  fontSize: "12px",
                   "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
+                    border: "1px solid #DCDCDC",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
                   },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "1rem",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "0.85rem",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "1rem",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             />
           </div>
           <div className="col-4">
             <TextField
               label="Mobile Number"
-              placeholder="Enter your email"
               variant="outlined"
+              name="mobileNo"
+              value={employee.mobileNo || ""}
+              onChange={handleInputChange}
               fullWidth
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
+                  fontSize: "12px",
                   "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
+                    border: "1px solid #DCDCDC",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
                   },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "1rem",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "0.85rem",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "1rem",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             />
           </div>
           <div className="col-4">
             <TextField
               label="Date of Joining"
-              placeholder="Enter your email"
               variant="outlined"
+              type="date"
+              name="dateOfJoining"
+              value={
+                employee.dateOfJoining
+                  ? new Date(employee.dateOfJoining).toISOString().split("T")[0]
+                  : ""
+              }
+              onChange={handleOnChange}
               fullWidth
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
+                  fontSize: "12px",
                   "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
+                    border: "1px solid #DCDCDC",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
                   },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "1rem",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "0.85rem",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "1rem",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             />
           </div>
         </div>
@@ -298,165 +655,185 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
           style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
         >
           <div className="col-4">
-            {/* <TextField
-              label="Status"
-              placeholder="Enter your email"
-              variant="outlined"
-              fullWidth
-              sx={{
-                width: "291px",
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  transform: "translate(15px, 9px)",
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            /> */}
             <TextField
               label="Status"
-              placeholder="Select Status"
               variant="outlined"
+              name="employeeStatus"
+              value={employee.employeeStatus || ""}
+              className="row-checkbox "
+              onChange={(e) => handleStatusChange(e)}
               fullWidth
-              select // This prop turns the TextField into a dropdown
+              select
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  color: "#000000",
+                  fontSize: "12px",
+                  "& fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&:hover fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  fontSize: "1rem",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
-                  color: "#000000",
                   fontSize: "1rem",
-                  fontWeight: "600",
-                  paddingBottom: "10px !important",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "12px",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "12px",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black",
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "12px",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             >
-              <MenuItem value=""></MenuItem>
-              <MenuItem value={10}>Active</MenuItem>
-              <MenuItem value={20}>InActive</MenuItem>
+              <MenuItem value={1} style={{ fontSize: "12px" }}>
+                Active
+              </MenuItem>
+              <MenuItem value={0} style={{ fontSize: "12px" }}>
+                InActive
+              </MenuItem>
             </TextField>
           </div>
           <div className="col-4">
-            {/* <TextField
-              label="Role"
-              placeholder="Enter your email"
-              variant="outlined"
-              fullWidth
-              sx={{
-                width: "291px",
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  transform: "translate(15px, 9px)",
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            /> */}
             <TextField
               label="Role"
-              placeholder="Enter your Role"
+              name="role"
+              onChange={handleRoleOnChange}
+              value={role}
               variant="outlined"
               fullWidth
-              select // This prop turns the TextField into a dropdown
+              select
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  color: "#000000",
+                  fontSize: "12px",
+                  "& fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&:hover fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  fontSize: "1rem",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
-                  color: "#000000",
                   fontSize: "1rem",
-                  fontWeight: "600",
-                  paddingBottom: "10px !important",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "1rem",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "0.85rem",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "1rem",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
               {roles && roles.length > 0 ? (
                 roles.map((role, index) => (
-                  <MenuItem key={index} value={role.id}>
-                    {role.name}
+                  <MenuItem key={role.id} value={role.name}>
+                    <span style={{ fontSize: "12px" }}> {role.name}</span>
                   </MenuItem>
                 ))
               ) : (
@@ -465,86 +842,96 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
             </TextField>
           </div>
           <div className="col-4">
-            {/* <TextField
-              label="Reporting Manager"
-              placeholder="Enter your email"
-              variant="outlined"
-              fullWidth
-              sx={{
-                width: "291px",
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  transform: "translate(15px, 9px)",
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            /> */}
             <TextField
               label="Reporting Manager"
-              placeholder="Enter your Role"
               variant="outlined"
+              onChange={handleManagerOnChange}
+              value={ReportingManagerEmail || ""}
+              // value={`${ReportingManagerName.firstName} ${ReportingManagerName.lastName}`}
               fullWidth
-              select // This prop turns the TextField into a dropdown
+              select
               sx={{
-                width: "291px",
                 "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  color: "#000000",
+                  fontSize: "12px",
+                  "& fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&:hover fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
+                  },
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
+                  // fontSize: "0.85rem",
+                  fontWeight: "500",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  fontSize: "1rem",
+                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
-                  color: "#000000",
                   fontSize: "1rem",
-                  fontWeight: "600",
-                  paddingBottom: "10px !important",
-                  transform: "translate(14px, -6px) scale(0.75)",
+                  transform: "translate(14px, -9px) scale(0.75)",
                 },
                 "& input::placeholder": {
                   fontSize: "12px",
                   color: "#AEAEAE",
                 },
               }}
+              // sx={{
+              //   "& .MuiOutlinedInput-root": {
+              //     fontSize: "1rem",
+              //     "& fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&:hover fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //     "&.Mui-focused fieldset": {
+              //       border: "1px solid #DCDCDC",
+              //     },
+              //   },
+              //   "& .MuiInputLabel-root": {
+              //     color: "#000000",
+              //     fontSize: "0.85rem",
+              //     fontWeight: "600",
+              //     transform: "translate(15px, 9px)",
+              //     "&.Mui-focused": {
+              //       color: "black", // Desired color when focused
+              //     },
+              //   },
+              //   "& .MuiOutlinedInput-input": {
+              //     height: "22px",
+              //     padding: "8px 12px",
+              //     fontSize: "1rem",
+              //   },
+              //   "& .MuiInputLabel-shrink": {
+              //     fontSize: "1rem",
+              //     transform: "translate(14px, -6px) scale(0.75)",
+              //   },
+              //   "& input::placeholder": {
+              //     fontSize: "12px",
+              //     color: "#AEAEAE",
+              //   },
+              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
               {employees && employees.length > 0 ? (
-                employees.map((emp, index) => (
-                  <MenuItem key={index} value={emp.employee.email}>
-                    {emp.employee.firstName} {emp.employee.lastName}
+                employees.map((emp) => (
+                  <MenuItem key={emp.employee.id} value={emp.employee.email}>
+                    <span style={{ fontSize: "12px" }}>
+                      {emp.employee.firstName} {emp.employee.lastName}
+                    </span>
                   </MenuItem>
                 ))
               ) : (
@@ -564,35 +951,42 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
             <div>
               <TextField
                 label="Add Skill"
-                placeholder="Enter your email"
                 variant="outlined"
+                value={name}
+                onChange={handleInputChange11}
+                onKeyPress={handleKeyPress} // Detect Enter key press
                 fullWidth
-                width=""
                 sx={{
                   width: "240px",
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
-                      borderColor: "#DCDCDC", // Border color
+                      border: "1px solid #DCDCDC",
                     },
                     "&:hover fieldset": {
-                      borderColor: "#757575", // Hover border color
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
                     },
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    // fontSize: "0.85rem",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black", // Desired color when focused
+                    },
                   },
                   "& .MuiOutlinedInput-input": {
                     height: "22px",
-                    padding: "8px 12px", // Padding inside the input
-                    fontSize: "1rem",
+                    padding: "8px 12px",
+                    // fontSize: "1rem",
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -602,27 +996,183 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
               />
             </div>
             <div className="ms-2">
-              <img src={pulsimage} alt="" width="35px" height="36px" />
+              <img
+                src={pulsimage}
+                alt=""
+                width="35px"
+                height="36px"
+                onClick={addName}
+                style={{ cursor: "pointer" }}
+              />
             </div>
           </div>
           <div className="col-8">
-            <TextField
-              id="outlined-basic"
-              label="Skill Sets"
+            {/* <span
+              style={{
+                fontSize: "12px",
+                margin: "0",
+                padding: "0",
+              }}
+            >
+              Skill Sets
+            </span> */}
+            <div
+              className="skillsetdiv"
+              style={{
+                overflowY: "scroll",
+                height: "70px",
+                resize: "none",
+                width: "100%",
+                border: "1px solid #ccc",
+                padding: "5px",
+                // backgroundColor: "#f9f9f9",
+                borderRadius: "4px",
+                display: "flex",
+              }}
+            >
+              {Skills.map((name, index) => (
+                <div
+                  key={index}
+                  className="skillsetbox"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <p
+                    className="ms-2 mt-3  "
+                    style={{ fontSize: "12px", width: "auto" }}
+                  >
+                    {name.skill}
+                  </p>
+                  <img
+                    src={checkimage1}
+                    alt=""
+                    height="15px"
+                    width="15px"
+                    style={{ cursor: "pointer" }}
+                    className="m-1"
+                    onClick={(e) => cancleSkill(e, index, name)}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* <textarea
+              disabled
+              name=""
+              id=""
+              style={{
+                overflowY: "scroll",
+                height: "70px",
+                resize: "none",
+                width: "100%",
+              }}
+              value={Skills.map(skill => skill.skill).join(", ")}
+            >
+
+              <Box>
+                {Skills.map((name, index) => (
+                  <Box key={index} className="skillsetbox">
+                    <Typography
+                      className="skillsetitem "
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        //padding: "0px 0px 0px 5px",
+                      }}
+                    >
+                      <p
+                        className="ms-2"
+                        style={{ fontSize: "12px", width: "auto" }}
+                      >
+                        {name.skill}
+                      </p>
+                      <p className="ms-2">
+                        <img
+                          src={checkimage1}
+                          alt=""
+                          className="me-2"
+                          height="15px"
+                          width="15px"
+                          style={{ cursor: "pointer" }}
+                          onClick={(e) => cancleSkill(e, index, name)}
+                        />
+                      </p>
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </textarea> */}
+            {/* <TextField
               variant="outlined"
-              placeholder="Add Skills"
+              label="Skill Sets"
+              //placeholder="Add Skills"
               multiline
-              rows={1.5}
+              height="10px"
+              disabled
+              InputProps={{
+                startAdornment: (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      // flexWrap: "wrap",
+                      gap: "5px", // Space between each name box
+                      // marginTop: 2,
+                    }}
+                  >
+                    {Skills.map((name, index) => (
+                      <Box key={index} className="skillsetbox">
+                        <Typography
+                          className="skillsetitem "
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            //padding: "0px 0px 0px 5px",
+                          }}
+                        >
+                          <p
+                            className="ms-2"
+                            style={{ fontSize: "12px", width: "auto" }}
+                          >
+                            {name.skill}
+                          </p>
+                          <p className="ms-2">
+                            <img
+                              src={checkimage1}
+                              alt=""
+                              className="me-2"
+                              height="15px"
+                              width="15px"
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) => cancleSkill(e, index, name)}
+                            />
+                          </p>
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+                ),
+              }}
               sx={{
-                width: "600px",
-                height: "10px",
+                width: "100%",
                 "& .MuiOutlinedInput-root": {
+                  height: "auto", // Sets max height for scrollable area
+                  // overflowY: "auto", // Enables vertical scrolling within the box
+                  // width: "100%",
+                  // padding: "8px", // Add padding for better readability
                   fontSize: "1rem",
                   "& fieldset": {
-                    borderColor: "#DCDCDC", // Border color
+                    border: "1px solid #DCDCDC",
                   },
                   "&:hover fieldset": {
-                    borderColor: "#757575", // Hover border color
+                    border: "1px solid #DCDCDC",
+                  },
+                  "&.Mui-focused fieldset": {
+                    border: "1px solid #DCDCDC",
                   },
                 },
                 "& .MuiInputLabel-root": {
@@ -630,11 +1180,14 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
                   fontSize: "0.85rem",
                   fontWeight: "600",
                   transform: "translate(15px, 9px)",
+                  "&.Mui-focused": {
+                    color: "black", // Desired color when focused
+                  },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
-                  padding: "8px 12px", // Padding inside the input
-                  fontSize: "1rem",
+                  padding: "8px 12px",
+                  fontSize: "12px",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -645,12 +1198,12 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose }) => {
                   color: "#AEAEAE",
                 },
               }}
-            />
+            /> */}
           </div>
         </div>
         <div
           className=" row"
-          style={{ marginTop: "60px", marginLeft: "7px", marginRight: "12px" }}
+          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
         >
           <div className="col-4">
             <button className="EditformSubmit">
