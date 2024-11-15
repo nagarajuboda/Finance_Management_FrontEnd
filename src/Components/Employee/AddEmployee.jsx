@@ -34,13 +34,13 @@ export default function AddEmployee() {
   const [selectedProjectManager, setSelectedProjectManager] = useState("");
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [roles, setRoles] = useState([]);
-  const [name, setName] = useState(""); // State for the current name input
-  const [namesList, setNamesList] = useState([]); // State for the list of names
+  const [name, setName] = useState("");
+  const [namesList, setNamesList] = useState([]);
   const [date, setDate] = useState(null);
   const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
   const handleInputChange = (e) => {
-    setName(e.target.value); // Update the name state
+    setName(e.target.value);
   };
   const addName = () => {
     if (name.trim() !== "") {

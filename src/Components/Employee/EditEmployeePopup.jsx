@@ -15,20 +15,23 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
   const [empid, setempid] = useState("");
   const [role, setRoleName] = useState("");
   const [roleId, setRoleId] = useState("");
-  const [ReportingManagerid, setReportingManagerid] = useState("");
+  // const [ReportingManagerid, setReportingManagerid] = useState("");
+  const [ReportingManagerId, setReportingManagerId] = useState("");
   const [ReportingManagerName, setReportingManagerName] = useState("");
   const [ReportingManagerEmail, setReportingManagerEmail] = useState("");
   const [namesList, setNamesList] = useState([]);
   const [Skills, setSkills] = useState([]);
+  const [employeelist, setEmployeelist] = useState([]);
+  const [employeeData, setEmployeeData] = useState({});
+  const [roleList, setRoleList] = useState([]);
   const [name, setName] = useState("");
-
   useEffect(() => {
     FeatchData();
   }, [employeeID]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEmployee({
-      ...employee,
+    setEmployeeData({
+      ...employeeData,
       [name]: value,
     });
   };
@@ -57,7 +60,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setEmployee((prevValues) => ({
+    setEmployeeData((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
@@ -71,70 +74,82 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
 
   const FeatchData = async () => {
     var response = await AdminDashboardServices.fcngetEmployees();
-    var getEmployeeResponse =
-      await AdminDashboardServices.fcngetEmployeeDetails(employeeID);
-    console.log(getEmployeeResponse, "EmployeeDetails");
-    setRoleName(getEmployeeResponse.item.getRole.name);
-    setempid(getEmployeeResponse.item.employee.employeeId);
-    setReportingManagerName(
-      `${getEmployeeResponse.item.reportingManager.firstName} ${getEmployeeResponse.item.reportingManager.lastName}`
-    );
-    setReportingManagerid(getEmployeeResponse.item.reportingManager.id);
-    setReportingManagerEmail(getEmployeeResponse.item.reportingManager.email);
-    setEmployee(getEmployeeResponse.item.employee);
-    setSkills(getEmployeeResponse.item.getSkillsets);
-
     const Rolesresponse = await axios.get(
       "https://localhost:44305/api/Roles/AllRoles"
     );
 
     var rolesResult = Rolesresponse.data;
-    setRoles(rolesResult);
-    if (response.isSuccess) {
-      setEmployees(response.item);
-    }
-  };
-  const handleManagerOnChange = (event) => {
-    const selectedManagerEmail = event.target.value;
-    setReportingManagerEmail(selectedManagerEmail);
+    setRoleList(rolesResult);
 
-    // Find the selected manager from the employees array
-    const selectedManager = employees.find(
-      (emp) => emp.employee.email === selectedManagerEmail
+    // if (response.isSuccess) {
+    //   setEmployees(response.item);
+    // }
+    setEmployeelist(response.item);
+    var getEmployeeResponse =
+      await AdminDashboardServices.fcngetEmployeeDetails(employeeID);
+    setEmployeeData(getEmployeeResponse.item.employee);
+    setRoleName(getEmployeeResponse.item.getRole.name);
+    setRoleId(getEmployeeResponse.item.getRole.id);
+    setempid(getEmployeeResponse.item.employee.employeeId);
+    console.log(getEmployeeResponse, "getemployee response");
+    setReportingManagerName(
+      getEmployeeResponse.item.reportingManager
+        ? `${getEmployeeResponse.item.reportingManager.firstName || ""} ${
+            getEmployeeResponse.item.reportingManager.lastName || ""
+          }`.trim()
+        : "NA"
     );
+    // setReportingManagerId(
+    //   getEmployeeResponse.item.reportingManager
+    //     ? getEmployeeResponse.item.reportingManager.id
+    //     : "NA"
+    // );
 
-    if (selectedManager) {
-      setReportingManagerid(selectedManager.employee.id);
-      setReportingManagerName(
-        `${selectedManager.employee.firstName} ${selectedManager.employee.lastName}`
-      );
-    }
+    // setReportingManagerid(getEmployeeResponse.item.reportingManager.id);
+    // setReportingManagerEmail(
+    //   getEmployeeResponse.item.reportingManager
+    //     ? `${getEmployeeResponse.item.reportingManager.email || ""} ${
+    //         getEmployeeResponse.item.reportingManager.email || ""
+    //       }`.trim()
+    //     : "NA"
+    // );
+    setEmployee(getEmployeeResponse.item.employee);
+    setNamesList(getEmployeeResponse.item.getSkillsets);
   };
 
-  const [ManagerName, setManagerName] = useState("");
-  const [ManagerId, setManagerId] = useState("");
+  // const handleManagerOnChange = (event) => {
+  //   const selectedManagerEmail = event.target.value;
+  //   setReportingManagerEmail(selectedManagerEmail);
+  //   const selectedManager = employees.find(
+  //     (emp) => emp.employee.email === selectedManagerEmail
+  //   );
+
+  //   if (selectedManager) {
+  //     setReportingManagerid(selectedManager.employee.id);
+  //     setReportingManagerName(
+  //       `${selectedManager.employee.firstName} ${selectedManager.employee.lastName}`
+  //     );
+  //   }
+  // };
   const handleRoleOnChange = (event) => {
     const selectedRoleName = event.target.value;
-    setRoleName(selectedRoleName);
 
-    // Find the ID associated with the selected role name
-    const selectedRole = roles.find((role) => role.name === selectedRoleName);
-    setRoleId(selectedRole ? selectedRole.id : "");
+    setRoleId(selectedRoleName);
   };
-
   const handleStatusChange = (e) => {
     const { value } = e.target;
-    setEmployee((prevEmployee) => ({
+    setEmployeeData((prevEmployee) => ({
       ...prevEmployee,
       employeeStatus: parseInt(value, 10),
     }));
   };
+
   const handleInputChange11 = (e) => {
-    setName(e.target.value); // Update the name state
+    setName(e.target.value);
   };
   const addName = () => {
     if (name.trim() !== "") {
-      setNamesList([...namesList, name]);
+      setNamesList([...namesList, { skill: name }]);
       setName("");
     }
   };
@@ -143,11 +158,27 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
       addName();
     }
   };
-  const cancleSkill = (e, index, skill) => {
-    setNamesList((prevLanguages) =>
-      prevLanguages.filter((item) => item.trim() !== skill)
+
+  const cancleSkill = (e, index) => {
+    setNamesList((prevNamesList) =>
+      prevNamesList.filter((_, i) => i !== index)
     );
   };
+  const handleManagerOnChange = (event) => {
+    const selectedId = event.target.value;
+    setReportingManagerId(selectedId);
+    const selectedEmployee = employeelist.find(
+      (emp) => emp.employee.id === selectedId
+    );
+    if (selectedEmployee) {
+      setReportingManagerName(
+        `${selectedEmployee.employee.firstName} ${selectedEmployee.employee.lastName}`
+      );
+    } else {
+      setReportingManagerName("NA");
+    }
+  };
+  console.log(employeeData.employeeStatus, "status");
 
   if (!isEditOpen) return null;
   return (
@@ -174,7 +205,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               variant="outlined"
               name="employeeId"
               onChange={handleOnChange}
-              value={employee.employeeId || ""}
+              value={employeeData.employeeId || ""}
               fullWidth
               select
               sx={{
@@ -196,7 +227,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
@@ -213,48 +244,12 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "12px",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "12px",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black",
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "12px",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "12px",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {employees && employees.length > 0 ? (
-                employees.map((emp, index) => (
+              {employeelist && employeelist.length > 0 ? (
+                employeelist.map((emp, index) => (
                   <MenuItem key={emp.id} value={emp.employee.employeeId}>
                     <span style={{ fontSize: "12px" }}>
                       {emp.employee.employeeId}
@@ -270,7 +265,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             <TextField
               label="First Name"
               name="firstName"
-              value={employee.firstName || ""}
+              value={employeeData.firstName || ""}
               variant="outlined"
               onChange={handleInputChange}
               fullWidth
@@ -289,17 +284,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -310,48 +304,13 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "12px",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "12px",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "12px",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "12px",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             />
           </div>
           <div className="col-4">
             <TextField
               label="Last Name"
-              value={employee.lastName || ""}
+              name="lastName"
+              value={employeeData.lastName || ""}
               onChange={handleInputChange}
               variant="outlined"
               fullWidth
@@ -401,7 +360,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
           <div className="col-4">
             <TextField
               label="Email ID"
-              value={employee.email || ""}
+              value={employeeData.email || ""}
               onChange={handleInputChange}
               variant="outlined"
               name="email"
@@ -421,17 +380,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -442,42 +400,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "1rem",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "0.85rem",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "1rem",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             />
           </div>
           <div className="col-4">
@@ -485,7 +407,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Mobile Number"
               variant="outlined"
               name="mobileNo"
-              value={employee.mobileNo || ""}
+              value={employeeData.mobileNo || ""}
               onChange={handleInputChange}
               fullWidth
               sx={{
@@ -503,17 +425,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -524,42 +445,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "1rem",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "0.85rem",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "1rem",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             />
           </div>
           <div className="col-4">
@@ -569,8 +454,10 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               type="date"
               name="dateOfJoining"
               value={
-                employee.dateOfJoining
-                  ? new Date(employee.dateOfJoining).toISOString().split("T")[0]
+                employeeData.dateOfJoining
+                  ? new Date(employeeData.dateOfJoining)
+                      .toISOString()
+                      .split("T")[0]
                   : ""
               }
               onChange={handleOnChange}
@@ -590,17 +477,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -611,42 +497,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "1rem",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "0.85rem",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "1rem",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             />
           </div>
         </div>
@@ -659,7 +509,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Status"
               variant="outlined"
               name="employeeStatus"
-              value={employee.employeeStatus || ""}
+              value={employeeData.employeeStatus || ""}
               className="row-checkbox "
               onChange={(e) => handleStatusChange(e)}
               fullWidth
@@ -679,17 +529,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -700,42 +549,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "12px",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "12px",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black",
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "12px",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             >
               <MenuItem value={1} style={{ fontSize: "12px" }}>
                 Active
@@ -750,7 +563,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Role"
               name="role"
               onChange={handleRoleOnChange}
-              value={role}
+              value={roleId}
               variant="outlined"
               fullWidth
               select
@@ -769,17 +582,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -790,54 +602,18 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "1rem",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "0.85rem",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "1rem",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {roles && roles.length > 0 ? (
-                roles.map((role, index) => (
-                  <MenuItem key={role.id} value={role.name}>
+              {roleList && roleList.length > 0 ? (
+                roleList.map((role, index) => (
+                  <MenuItem key={role.id} value={role.id}>
                     <span style={{ fontSize: "12px" }}> {role.name}</span>
                   </MenuItem>
                 ))
               ) : (
-                <MenuItem disabled>No Employees Found</MenuItem>
+                <MenuItem disabled>No Roles Found</MenuItem>
               )}
             </TextField>
           </div>
@@ -846,8 +622,9 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Reporting Manager"
               variant="outlined"
               onChange={handleManagerOnChange}
-              value={ReportingManagerEmail || ""}
-              // value={`${ReportingManagerName.firstName} ${ReportingManagerName.lastName}`}
+              //value={ReportingManagerName || ""}
+              value={ReportingManagerId || ""}
+              //value={`${ReportingManagerName.firstName} ${ReportingManagerName.lastName}`}
               fullWidth
               select
               sx={{
@@ -886,49 +663,13 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   color: "#AEAEAE",
                 },
               }}
-              // sx={{
-              //   "& .MuiOutlinedInput-root": {
-              //     fontSize: "1rem",
-              //     "& fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&:hover fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //     "&.Mui-focused fieldset": {
-              //       border: "1px solid #DCDCDC",
-              //     },
-              //   },
-              //   "& .MuiInputLabel-root": {
-              //     color: "#000000",
-              //     fontSize: "0.85rem",
-              //     fontWeight: "600",
-              //     transform: "translate(15px, 9px)",
-              //     "&.Mui-focused": {
-              //       color: "black", // Desired color when focused
-              //     },
-              //   },
-              //   "& .MuiOutlinedInput-input": {
-              //     height: "22px",
-              //     padding: "8px 12px",
-              //     fontSize: "1rem",
-              //   },
-              //   "& .MuiInputLabel-shrink": {
-              //     fontSize: "1rem",
-              //     transform: "translate(14px, -6px) scale(0.75)",
-              //   },
-              //   "& input::placeholder": {
-              //     fontSize: "12px",
-              //     color: "#AEAEAE",
-              //   },
-              // }}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {employees && employees.length > 0 ? (
-                employees.map((emp) => (
-                  <MenuItem key={emp.employee.id} value={emp.employee.email}>
+              {employeelist && employeelist.length > 0 ? (
+                employeelist.map((emp) => (
+                  <MenuItem key={emp.employee.id} value={emp.employee.id}>
                     <span style={{ fontSize: "12px" }}>
                       {emp.employee.firstName} {emp.employee.lastName}
                     </span>
@@ -940,7 +681,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             </TextField>
           </div>
         </div>
-        <div
+        {/*  <div
           className="row  employeeUpdateSkills"
           style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
         >
@@ -954,7 +695,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 variant="outlined"
                 value={name}
                 onChange={handleInputChange11}
-                onKeyPress={handleKeyPress} // Detect Enter key press
+                onKeyPress={handleKeyPress}
                 fullWidth
                 sx={{
                   width: "240px",
@@ -972,17 +713,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    // fontSize: "0.85rem",
+
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
                     height: "22px",
                     padding: "8px 12px",
-                    // fontSize: "1rem",
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
@@ -1007,30 +747,25 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             </div>
           </div>
           <div className="col-8">
-            {/* <span
-              style={{
-                fontSize: "12px",
-                margin: "0",
-                padding: "0",
-              }}
-            >
-              Skill Sets
-            </span> */}
             <div
               className="skillsetdiv"
               style={{
                 overflowY: "scroll",
-                height: "70px",
+
                 resize: "none",
                 width: "100%",
                 border: "1px solid #ccc",
                 padding: "5px",
-                // backgroundColor: "#f9f9f9",
+                gap: "2px",
+
+                height: "70px",
+
                 borderRadius: "4px",
                 display: "flex",
+                flexWrap: "wrap",
               }}
             >
-              {Skills.map((name, index) => (
+              {namesList.map((name, index) => (
                 <div
                   key={index}
                   className="skillsetbox"
@@ -1058,147 +793,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 </div>
               ))}
             </div>
-
-            {/* <textarea
-              disabled
-              name=""
-              id=""
-              style={{
-                overflowY: "scroll",
-                height: "70px",
-                resize: "none",
-                width: "100%",
-              }}
-              value={Skills.map(skill => skill.skill).join(", ")}
-            >
-
-              <Box>
-                {Skills.map((name, index) => (
-                  <Box key={index} className="skillsetbox">
-                    <Typography
-                      className="skillsetitem "
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        //padding: "0px 0px 0px 5px",
-                      }}
-                    >
-                      <p
-                        className="ms-2"
-                        style={{ fontSize: "12px", width: "auto" }}
-                      >
-                        {name.skill}
-                      </p>
-                      <p className="ms-2">
-                        <img
-                          src={checkimage1}
-                          alt=""
-                          className="me-2"
-                          height="15px"
-                          width="15px"
-                          style={{ cursor: "pointer" }}
-                          onClick={(e) => cancleSkill(e, index, name)}
-                        />
-                      </p>
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </textarea> */}
-            {/* <TextField
-              variant="outlined"
-              label="Skill Sets"
-              //placeholder="Add Skills"
-              multiline
-              height="10px"
-              disabled
-              InputProps={{
-                startAdornment: (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      // flexWrap: "wrap",
-                      gap: "5px", // Space between each name box
-                      // marginTop: 2,
-                    }}
-                  >
-                    {Skills.map((name, index) => (
-                      <Box key={index} className="skillsetbox">
-                        <Typography
-                          className="skillsetitem "
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            //padding: "0px 0px 0px 5px",
-                          }}
-                        >
-                          <p
-                            className="ms-2"
-                            style={{ fontSize: "12px", width: "auto" }}
-                          >
-                            {name.skill}
-                          </p>
-                          <p className="ms-2">
-                            <img
-                              src={checkimage1}
-                              alt=""
-                              className="me-2"
-                              height="15px"
-                              width="15px"
-                              style={{ cursor: "pointer" }}
-                              onClick={(e) => cancleSkill(e, index, name)}
-                            />
-                          </p>
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                ),
-              }}
-              sx={{
-                width: "100%",
-                "& .MuiOutlinedInput-root": {
-                  height: "auto", // Sets max height for scrollable area
-                  // overflowY: "auto", // Enables vertical scrolling within the box
-                  // width: "100%",
-                  // padding: "8px", // Add padding for better readability
-                  fontSize: "1rem",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "600",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black", // Desired color when focused
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                  fontSize: "12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -6px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            /> */}
           </div>
         </div>
         <div
@@ -1214,7 +808,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             </button>
           </div>
           <div className="col-8"></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
