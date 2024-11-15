@@ -17,8 +17,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
   const [roleId, setRoleId] = useState("");
   // const [ReportingManagerid, setReportingManagerid] = useState("");
   const [ReportingManagerId, setReportingManagerId] = useState("");
-  const [ReportingManagerName, setReportingManagerName] = useState("");
-  const [ReportingManagerEmail, setReportingManagerEmail] = useState("");
+  const [status, setStatus] = useState("InActive");
   const [namesList, setNamesList] = useState([]);
   const [Skills, setSkills] = useState([]);
   const [employeelist, setEmployeelist] = useState([]);
@@ -65,13 +64,6 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
       [name]: value,
     }));
   };
-
-  const [status, setStatus] = useState("InActive");
-  const handleChange = (event) => {
-    const selectedStatus = event.target.value;
-    setStatus(selectedStatus);
-  };
-
   const FeatchData = async () => {
     var response = await AdminDashboardServices.fcngetEmployees();
     const Rolesresponse = await axios.get(
@@ -91,14 +83,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
     setRoleName(getEmployeeResponse.item.getRole.name);
     setRoleId(getEmployeeResponse.item.getRole.id);
     setempid(getEmployeeResponse.item.employee.employeeId);
-    console.log(getEmployeeResponse, "getemployee response");
-    setReportingManagerName(
-      getEmployeeResponse.item.reportingManager
-        ? `${getEmployeeResponse.item.reportingManager.firstName || ""} ${
-            getEmployeeResponse.item.reportingManager.lastName || ""
-          }`.trim()
-        : "NA"
-    );
+    setStatus(getEmployeeResponse.item.employee.employeeStatus);
+    setReportingManagerId(getEmployeeResponse.item.reportingManager?.id || "");
+
+    // setReportingManagerName(
+    //   getEmployeeResponse.item.reportingManager
+    //     ? ` ${
+    //         getEmployeeResponse.item.reportingManager.lastName || ""
+    //       }`.trim()
+    //     : "NA"
+    // );
     // setReportingManagerId(
     //   getEmployeeResponse.item.reportingManager
     //     ? getEmployeeResponse.item.reportingManager.id
@@ -136,14 +130,18 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
 
     setRoleId(selectedRoleName);
   };
-  const handleStatusChange = (e) => {
-    const { value } = e.target;
-    setEmployeeData((prevEmployee) => ({
-      ...prevEmployee,
-      employeeStatus: parseInt(value, 10),
-    }));
-  };
+  // const handleStatusChange = (e) => {
+  //   const { value } = e.target;
+  //   setEmployeeData((prevEmployee) => ({
+  //     ...prevEmployee,
+  //     employeeStatus: parseInt(value, 10),
+  //   }));
+  // };
 
+  const handleStatusChange = (event) => {
+    const selectedStatus = event.target.value;
+    setStatus(selectedStatus);
+  };
   const handleInputChange11 = (e) => {
     setName(e.target.value);
   };
@@ -165,20 +163,25 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
     );
   };
   const handleManagerOnChange = (event) => {
-    const selectedId = event.target.value;
-    setReportingManagerId(selectedId);
-    const selectedEmployee = employeelist.find(
-      (emp) => emp.employee.id === selectedId
-    );
-    if (selectedEmployee) {
-      setReportingManagerName(
-        `${selectedEmployee.employee.firstName} ${selectedEmployee.employee.lastName}`
-      );
-    } else {
-      setReportingManagerName("NA");
-    }
+    const selectedManagerId = event.target.value;
+    setReportingManagerId(selectedManagerId);
   };
-  console.log(employeeData.employeeStatus, "status");
+  const UpdateEmployeeDetails = async () => {
+    var employeeData1 = {
+      ...employeeData,
+      employeeStatus: status,
+      roleId: roleId,
+      projectManagerId: ReportingManagerId,
+    };
+    const payload = {
+      emp: employeeData1,
+      skillsset: namesList,
+    };
+    var response = await axios.put(
+      "https://localhost:44305/api/Employees/UpdateEmployee",
+      payload
+    );
+  };
 
   if (!isEditOpen) return null;
   return (
@@ -329,17 +332,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -509,9 +511,9 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Status"
               variant="outlined"
               name="employeeStatus"
-              value={employeeData.employeeStatus || ""}
+              value={status}
               className="row-checkbox "
-              onChange={(e) => handleStatusChange(e)}
+              onChange={handleStatusChange}
               fullWidth
               select
               sx={{
@@ -622,9 +624,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
               label="Reporting Manager"
               variant="outlined"
               onChange={handleManagerOnChange}
-              //value={ReportingManagerName || ""}
               value={ReportingManagerId || ""}
-              //value={`${ReportingManagerName.firstName} ${ReportingManagerName.lastName}`}
               fullWidth
               select
               sx={{
@@ -642,17 +642,16 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 },
                 "& .MuiInputLabel-root": {
                   color: "#000000",
-                  // fontSize: "0.85rem",
+
                   fontWeight: "500",
                   transform: "translate(15px, 9px)",
                   "&.Mui-focused": {
-                    color: "black", // Desired color when focused
+                    color: "black",
                   },
                 },
                 "& .MuiOutlinedInput-input": {
                   height: "22px",
                   padding: "8px 12px",
-                  // fontSize: "1rem",
                 },
                 "& .MuiInputLabel-shrink": {
                   fontSize: "1rem",
@@ -681,7 +680,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             </TextField>
           </div>
         </div>
-        {/*  <div
+        <div
           className="row  employeeUpdateSkills"
           style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
         >
@@ -800,7 +799,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
           style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
         >
           <div className="col-4">
-            <button className="EditformSubmit">
+            <button className="EditformSubmit" onClick={UpdateEmployeeDetails}>
               <span className="editformspan">Save</span>
             </button>
             <button className="EditformCancel ms-2" onClick={handleEditClose}>
@@ -808,7 +807,7 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
             </button>
           </div>
           <div className="col-8"></div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
