@@ -8,10 +8,14 @@ import pulsimage from "../../assets/Images/plus.png";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
 import { Button, Box, Typography } from "@mui/material";
 import checkimage1 from "../../assets/Images/cancelbutton.png";
-const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
+const EditEmployeePopup = () => {
   const [employees, setEmployees] = useState([]);
+  const [isopen, setopen] = useState(false);
   const [roles, setRoles] = useState([]);
   const [employee, setEmployee] = useState({});
+  const navigate = useNavigate();
   const [empid, setempid] = useState("");
   const [role, setRoleName] = useState("");
   const [roleId, setRoleId] = useState("");
@@ -24,8 +28,11 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
   const [employeeData, setEmployeeData] = useState({});
   const [roleList, setRoleList] = useState([]);
   const [name, setName] = useState("");
+  const employeeID = sessionStorage.getItem("EmployeeID");
+  console.log(employeeID, "=========>");
   useEffect(() => {
     FeatchData();
+    //setopen(isEditOpen);
   }, [employeeID]);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,58 +93,15 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
     setStatus(getEmployeeResponse.item.employee.employeeStatus);
     setReportingManagerId(getEmployeeResponse.item.reportingManager?.id || "");
 
-    // setReportingManagerName(
-    //   getEmployeeResponse.item.reportingManager
-    //     ? ` ${
-    //         getEmployeeResponse.item.reportingManager.lastName || ""
-    //       }`.trim()
-    //     : "NA"
-    // );
-    // setReportingManagerId(
-    //   getEmployeeResponse.item.reportingManager
-    //     ? getEmployeeResponse.item.reportingManager.id
-    //     : "NA"
-    // );
-
-    // setReportingManagerid(getEmployeeResponse.item.reportingManager.id);
-    // setReportingManagerEmail(
-    //   getEmployeeResponse.item.reportingManager
-    //     ? `${getEmployeeResponse.item.reportingManager.email || ""} ${
-    //         getEmployeeResponse.item.reportingManager.email || ""
-    //       }`.trim()
-    //     : "NA"
-    // );
     setEmployee(getEmployeeResponse.item.employee);
     setNamesList(getEmployeeResponse.item.getSkillsets);
   };
 
-  // const handleManagerOnChange = (event) => {
-  //   const selectedManagerEmail = event.target.value;
-  //   setReportingManagerEmail(selectedManagerEmail);
-  //   const selectedManager = employees.find(
-  //     (emp) => emp.employee.email === selectedManagerEmail
-  //   );
-
-  //   if (selectedManager) {
-  //     setReportingManagerid(selectedManager.employee.id);
-  //     setReportingManagerName(
-  //       `${selectedManager.employee.firstName} ${selectedManager.employee.lastName}`
-  //     );
-  //   }
-  // };
   const handleRoleOnChange = (event) => {
     const selectedRoleName = event.target.value;
 
     setRoleId(selectedRoleName);
   };
-  // const handleStatusChange = (e) => {
-  //   const { value } = e.target;
-  //   setEmployeeData((prevEmployee) => ({
-  //     ...prevEmployee,
-  //     employeeStatus: parseInt(value, 10),
-  //   }));
-  // };
-
   const handleStatusChange = (event) => {
     const selectedStatus = event.target.value;
     setStatus(selectedStatus);
@@ -181,523 +145,108 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
       "https://localhost:44305/api/Employees/UpdateEmployee",
       payload
     );
+    var result = response.data;
+    if (result.isSuccess) {
+      navigate("/dashboard/Employees");
+    }
   };
-
-  if (!isEditOpen) return null;
+  const handleEditClose1 = () => {
+    navigate("/dashboard/Employees");
+  };
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="modalheader">
-          <h2 className="employeeDetailsContent">Edit Employee Details</h2>
-          <span className="cancelicon1">
-            <i
-              className="bi bi-x-lg"
-              onClick={handleEditClose}
-              style={{ cursor: "pointer" }}
-            ></i>
-          </span>
-        </div>
-
-        <div
-          className="row  "
-          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
-        >
-          <div className="col-4">
-            <TextField
-              label="Employee ID"
-              variant="outlined"
-              name="employeeId"
-              onChange={handleOnChange}
-              value={employeeData.employeeId || ""}
-              fullWidth
-              select
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "1rem",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-                  fontSize: "0.85rem",
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                  fontSize: "1rem",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {employeelist && employeelist.length > 0 ? (
-                employeelist.map((emp, index) => (
-                  <MenuItem key={emp.id} value={emp.employee.employeeId}>
-                    <span style={{ fontSize: "12px" }}>
-                      {emp.employee.employeeId}
-                    </span>
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Employees Found</MenuItem>
-              )}
-            </TextField>
+    <div>
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <div className="modalheader">
+            <h2 className="employeeDetailsContent">Edit Employee Details</h2>
+            <span className="cancelicon1">
+              <i
+                className="bi bi-x-lg"
+                onClick={handleEditClose1}
+                style={{ cursor: "pointer" }}
+              ></i>
+            </span>
           </div>
-          <div className="col-4">
-            <TextField
-              label="First Name"
-              name="firstName"
-              value={employeeData.firstName || ""}
-              variant="outlined"
-              onChange={handleInputChange}
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
 
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            />
-          </div>
-          <div className="col-4">
-            <TextField
-              label="Last Name"
-              name="lastName"
-              value={employeeData.lastName || ""}
-              onChange={handleInputChange}
-              variant="outlined"
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div
-          className="row  employeeUpdateSkills"
-          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
-        >
-          <div className="col-4">
-            <TextField
-              label="Email ID"
-              value={employeeData.email || ""}
-              onChange={handleInputChange}
-              variant="outlined"
-              name="email"
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            />
-          </div>
-          <div className="col-4">
-            <TextField
-              label="Mobile Number"
-              variant="outlined"
-              name="mobileNo"
-              value={employeeData.mobileNo || ""}
-              onChange={handleInputChange}
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            />
-          </div>
-          <div className="col-4">
-            <TextField
-              label="Date of Joining"
-              variant="outlined"
-              type="date"
-              name="dateOfJoining"
-              value={
-                employeeData.dateOfJoining
-                  ? new Date(employeeData.dateOfJoining)
-                      .toISOString()
-                      .split("T")[0]
-                  : ""
-              }
-              onChange={handleOnChange}
-              fullWidth
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div
-          className="row  employeeUpdateSkills"
-          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
-        >
-          <div className="col-4">
-            <TextField
-              label="Status"
-              variant="outlined"
-              name="employeeStatus"
-              value={status}
-              className="row-checkbox "
-              onChange={handleStatusChange}
-              fullWidth
-              select
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            >
-              <MenuItem value={1} style={{ fontSize: "12px" }}>
-                Active
-              </MenuItem>
-              <MenuItem value={0} style={{ fontSize: "12px" }}>
-                InActive
-              </MenuItem>
-            </TextField>
-          </div>
-          <div className="col-4">
-            <TextField
-              label="Role"
-              name="role"
-              onChange={handleRoleOnChange}
-              value={roleId}
-              variant="outlined"
-              fullWidth
-              select
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {roleList && roleList.length > 0 ? (
-                roleList.map((role, index) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    <span style={{ fontSize: "12px" }}> {role.name}</span>
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Roles Found</MenuItem>
-              )}
-            </TextField>
-          </div>
-          <div className="col-4">
-            <TextField
-              label="Reporting Manager"
-              variant="outlined"
-              onChange={handleManagerOnChange}
-              value={ReportingManagerId || ""}
-              fullWidth
-              select
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  fontSize: "12px",
-                  "& fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&:hover fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                  "&.Mui-focused fieldset": {
-                    border: "1px solid #DCDCDC",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#000000",
-
-                  fontWeight: "500",
-                  transform: "translate(15px, 9px)",
-                  "&.Mui-focused": {
-                    color: "black",
-                  },
-                },
-                "& .MuiOutlinedInput-input": {
-                  height: "22px",
-                  padding: "8px 12px",
-                },
-                "& .MuiInputLabel-shrink": {
-                  fontSize: "1rem",
-                  transform: "translate(14px, -9px) scale(0.75)",
-                },
-                "& input::placeholder": {
-                  fontSize: "12px",
-                  color: "#AEAEAE",
-                },
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {employeelist && employeelist.length > 0 ? (
-                employeelist.map((emp) => (
-                  <MenuItem key={emp.employee.id} value={emp.employee.id}>
-                    <span style={{ fontSize: "12px" }}>
-                      {emp.employee.firstName} {emp.employee.lastName}
-                    </span>
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No Employees Found</MenuItem>
-              )}
-            </TextField>
-          </div>
-        </div>
-        <div
-          className="row  employeeUpdateSkills"
-          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
-        >
           <div
-            className="col-4"
-            style={{ display: "flex", justifyContent: "space-between" }}
+            className="row  "
+            style={{
+              marginTop: "20px",
+              marginLeft: "7px",
+              marginRight: "12px",
+            }}
           >
-            <div>
+            <div className="col-4">
               <TextField
-                label="Add Skill"
+                label="Employee ID"
                 variant="outlined"
-                value={name}
-                onChange={handleInputChange11}
-                onKeyPress={handleKeyPress}
+                name="employeeId"
+                onChange={handleOnChange}
+                value={employeeData.employeeId || ""}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "0.85rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                    fontSize: "1rem",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {employeelist && employeelist.length > 0 ? (
+                  employeelist.map((emp, index) => (
+                    <MenuItem key={index} value={emp.employee.employeeId}>
+                      <span style={{ fontSize: "12px" }}>
+                        {emp.employee.employeeId}
+                      </span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Employees Found</MenuItem>
+                )}
+              </TextField>
+            </div>
+            <div className="col-4">
+              <TextField
+                label="First Name"
+                name="firstName"
+                value={employeeData.firstName || ""}
+                variant="outlined"
+                onChange={handleInputChange}
                 fullWidth
                 sx={{
-                  width: "240px",
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
                     "& fieldset": {
@@ -734,79 +283,527 @@ const EditEmployeePopup = ({ isEditOpen, handleEditClose, employeeID }) => {
                 }}
               />
             </div>
-            <div className="ms-2">
-              <img
-                src={pulsimage}
-                alt=""
-                width="35px"
-                height="36px"
-                onClick={addName}
-                style={{ cursor: "pointer" }}
+            <div className="col-4">
+              <TextField
+                label="Last Name"
+                name="lastName"
+                value={employeeData.lastName || ""}
+                onChange={handleInputChange}
+                variant="outlined"
+                fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
               />
             </div>
           </div>
-          <div className="col-8">
-            <div
-              className="skillsetdiv"
-              style={{
-                overflowY: "scroll",
+          <div
+            className="row  employeeUpdateSkills"
+            style={{
+              marginTop: "20px",
+              marginLeft: "7px",
+              marginRight: "12px",
+            }}
+          >
+            <div className="col-4">
+              <TextField
+                label="Email ID"
+                value={employeeData.email || ""}
+                onChange={handleInputChange}
+                variant="outlined"
+                name="email"
+                fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
 
-                resize: "none",
-                width: "100%",
-                border: "1px solid #ccc",
-                padding: "5px",
-                gap: "2px",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Mobile Number"
+                variant="outlined"
+                name="mobileNo"
+                value={employeeData.mobileNo || ""}
+                onChange={handleInputChange}
+                fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
 
-                height: "70px",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              />
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Date of Joining"
+                variant="outlined"
+                type="date"
+                name="dateOfJoining"
+                value={
+                  employeeData.dateOfJoining
+                    ? new Date(employeeData.dateOfJoining)
+                        .toISOString()
+                        .split("T")[0]
+                    : ""
+                }
+                onChange={handleOnChange}
+                fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
 
-                borderRadius: "4px",
-                display: "flex",
-                flexWrap: "wrap",
-              }}
-            >
-              {namesList.map((name, index) => (
-                <div
-                  key={index}
-                  className="skillsetbox"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <p
-                    className="ms-2 mt-3  "
-                    style={{ fontSize: "12px", width: "auto" }}
-                  >
-                    {name.skill}
-                  </p>
-                  <img
-                    src={checkimage1}
-                    alt=""
-                    height="15px"
-                    width="15px"
-                    style={{ cursor: "pointer" }}
-                    className="m-1"
-                    onClick={(e) => cancleSkill(e, index, name)}
-                  />
-                </div>
-              ))}
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              />
             </div>
           </div>
-        </div>
-        <div
-          className=" row"
-          style={{ marginTop: "20px", marginLeft: "7px", marginRight: "12px" }}
-        >
-          <div className="col-4">
-            <button className="EditformSubmit" onClick={UpdateEmployeeDetails}>
-              <span className="editformspan">Save</span>
-            </button>
-            <button className="EditformCancel ms-2" onClick={handleEditClose}>
-              <span className="editformcacelspan">Cancel</span>
-            </button>
+          <div
+            className="row  employeeUpdateSkills"
+            style={{
+              marginTop: "20px",
+              marginLeft: "7px",
+              marginRight: "12px",
+            }}
+          >
+            <div className="col-4">
+              <TextField
+                label="Status"
+                variant="outlined"
+                name="employeeStatus"
+                value={status}
+                className="row-checkbox "
+                onChange={handleStatusChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  Active
+                </MenuItem>
+                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                  InActive
+                </MenuItem>
+              </TextField>
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Role"
+                name="role"
+                onChange={handleRoleOnChange}
+                value={roleId}
+                variant="outlined"
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {roleList && roleList.length > 0 ? (
+                  roleList.map((role, index) => (
+                    <MenuItem key={role.id} value={role.id}>
+                      <span style={{ fontSize: "12px" }}> {role.name}</span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Roles Found</MenuItem>
+                )}
+              </TextField>
+            </div>
+            <div className="col-4">
+              <TextField
+                label="Reporting Manager"
+                variant="outlined"
+                onChange={handleManagerOnChange}
+                value={ReportingManagerId || ""}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "12px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "22px",
+                    padding: "8px 12px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(14px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "12px",
+                    color: "#AEAEAE",
+                  },
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {employeelist && employeelist.length > 0 ? (
+                  employeelist.map((emp) => (
+                    <MenuItem key={emp.employee.id} value={emp.employee.id}>
+                      <span style={{ fontSize: "12px" }}>
+                        {emp.employee.firstName} {emp.employee.lastName}
+                      </span>
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Employees Found</MenuItem>
+                )}
+              </TextField>
+            </div>
           </div>
-          <div className="col-8"></div>
+          <div
+            className="row  employeeUpdateSkills"
+            style={{
+              marginTop: "20px",
+              marginLeft: "7px",
+              marginRight: "12px",
+            }}
+          >
+            <div
+              className="col-4"
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <div>
+                <TextField
+                  label="Add Skill"
+                  variant="outlined"
+                  value={name}
+                  onChange={handleInputChange11}
+                  onKeyPress={handleKeyPress}
+                  fullWidth
+                  sx={{
+                    width: "240px",
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+              <div className="ms-2">
+                <img
+                  src={pulsimage}
+                  alt=""
+                  width="35px"
+                  height="36px"
+                  onClick={addName}
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            </div>
+            <div className="col-8">
+              <div
+                className="skillsetdiv"
+                style={{
+                  overflowY: "scroll",
+
+                  resize: "none",
+                  width: "100%",
+                  border: "1px solid #ccc",
+                  padding: "5px",
+                  gap: "2px",
+
+                  height: "70px",
+
+                  borderRadius: "4px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {namesList.map((name, index) => (
+                  <div
+                    key={index}
+                    className="skillsetbox"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p
+                      className="ms-2 mt-3  "
+                      style={{ fontSize: "12px", width: "auto" }}
+                    >
+                      {name.skill}
+                    </p>
+                    <img
+                      src={checkimage1}
+                      alt=""
+                      height="15px"
+                      width="15px"
+                      style={{ cursor: "pointer" }}
+                      className="m-1"
+                      onClick={(e) => cancleSkill(e, index, name)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className=" row"
+            style={{
+              marginTop: "20px",
+              marginLeft: "7px",
+              marginRight: "12px",
+            }}
+          >
+            <div className="col-4">
+              <button
+                className="EditformSubmit"
+                onClick={UpdateEmployeeDetails}
+              >
+                <span className="editformspan">Save</span>
+              </button>
+              <button
+                className="EditformCancel ms-2"
+                onClick={handleEditClose1}
+              >
+                <span className="editformcacelspan">Cancel</span>
+              </button>
+            </div>
+            <div className="col-8"></div>
+          </div>
         </div>
       </div>
     </div>

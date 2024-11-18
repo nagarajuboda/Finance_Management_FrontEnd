@@ -25,6 +25,7 @@ import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
 import Employees from "../Components/Employee/Employees";
 import AddEmployee from "../Components/Employee/AddEmployee";
 import Projectss from "../Components/Admin/Pages/Projects";
+import EditEmployeePopup from "../Components/Employee/EditEmployeePopup";
 
 export default function AdminRoutes() {
   return (
@@ -45,6 +46,7 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
+        <Route path="/EditEmployee" element={<EditEmployeePopup />} />
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />

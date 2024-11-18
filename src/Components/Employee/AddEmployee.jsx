@@ -293,6 +293,42 @@ export default function AddEmployee() {
                 name="employeeId"
                 onChange={Handleonchnage}
                 fullWidth
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "12px",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "12px",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -309,10 +345,10 @@ export default function AddEmployee() {
                   "& .MuiInputLabel-root": {
                     color: "#000000",
                     fontSize: "12px",
-                    fontWeight: "600",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -322,7 +358,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -348,9 +384,45 @@ export default function AddEmployee() {
                 name="firstName"
                 onChange={Handleonchnage}
                 fullWidth
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -363,11 +435,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -377,7 +449,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -402,9 +474,45 @@ export default function AddEmployee() {
                 name="lastName"
                 onChange={Handleonchnage}
                 fullWidth
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -417,11 +525,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -431,7 +539,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -448,9 +556,45 @@ export default function AddEmployee() {
                 name="email"
                 onChange={Handleonchnage}
                 fullWidth
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -463,11 +607,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -477,7 +621,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -504,9 +648,45 @@ export default function AddEmployee() {
                 onChange={Handleonchnage}
                 variant="outlined"
                 fullWidth
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -519,11 +699,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -533,7 +713,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
@@ -567,10 +747,11 @@ export default function AddEmployee() {
                       {...params}
                       placeholder="MM/DD/YYYY"
                       variant="outlined"
+                      type="date"
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {
-                          fontSize: "1rem",
+                          fontSize: "12px",
                           "& fieldset": {
                             border: "1px solid #DCDCDC",
                           },
@@ -583,27 +764,62 @@ export default function AddEmployee() {
                         },
                         "& .MuiInputLabel-root": {
                           color: "#000000",
-                          fontSize: "0.85rem",
-                          fontWeight: "600",
+
+                          fontWeight: "500",
                           transform: "translate(15px, 9px)",
                           "&.Mui-focused": {
-                            color: "black", // Desired color when focused
+                            color: "black",
                           },
                         },
                         "& .MuiOutlinedInput-input": {
                           height: "22px",
                           padding: "8px 12px",
-                          fontSize: "12px",
                         },
                         "& .MuiInputLabel-shrink": {
-                          fontSize: "1rem",
-                          transform: "translate(14px, -6px) scale(0.75)",
+                          fontSize: "12px",
+                          transform: "translate(14px, -9px) scale(0.75)",
                         },
                         "& input::placeholder": {
                           fontSize: "12px",
                           color: "#AEAEAE",
                         },
                       }}
+                      // sx={{
+                      //   "& .MuiOutlinedInput-root": {
+                      //     fontSize: "1rem",
+                      //     "& fieldset": {
+                      //       border: "1px solid #DCDCDC",
+                      //     },
+                      //     "&:hover fieldset": {
+                      //       border: "1px solid #DCDCDC",
+                      //     },
+                      //     "&.Mui-focused fieldset": {
+                      //       border: "1px solid #DCDCDC",
+                      //     },
+                      //   },
+                      //   "& .MuiInputLabel-root": {
+                      //     color: "#000000",
+                      //     fontSize: "0.85rem",
+                      //     fontWeight: "600",
+                      //     transform: "translate(15px, 9px)",
+                      //     "&.Mui-focused": {
+                      //       color: "black", // Desired color when focused
+                      //     },
+                      //   },
+                      //   "& .MuiOutlinedInput-input": {
+                      //     height: "22px",
+                      //     padding: "8px 12px",
+                      //     fontSize: "12px",
+                      //   },
+                      //   "& .MuiInputLabel-shrink": {
+                      //     fontSize: "1rem",
+                      //     transform: "translate(14px, -6px) scale(0.75)",
+                      //   },
+                      //   "& input::placeholder": {
+                      //     fontSize: "12px",
+                      //     color: "#AEAEAE",
+                      //   },
+                      // }}
                     />
                   )}
                 />
@@ -630,7 +846,7 @@ export default function AddEmployee() {
                 select // This prop turns the TextField into a dropdown
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -643,11 +859,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -657,13 +873,49 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
                     color: "#AEAEAE",
                   },
                 }}
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -699,7 +951,7 @@ export default function AddEmployee() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "12px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -712,11 +964,11 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "12px",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
@@ -726,13 +978,49 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
+                    transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
                     fontSize: "12px",
                     color: "#AEAEAE",
                   },
                 }}
+                // sx={{
+                //   "& .MuiOutlinedInput-root": {
+                //     fontSize: "1rem",
+                //     "& fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&:hover fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //     "&.Mui-focused fieldset": {
+                //       border: "1px solid #DCDCDC",
+                //     },
+                //   },
+                //   "& .MuiInputLabel-root": {
+                //     color: "#000000",
+                //     fontSize: "0.85rem",
+                //     fontWeight: "600",
+                //     transform: "translate(15px, 9px)",
+                //     "&.Mui-focused": {
+                //       color: "black", // Desired color when focused
+                //     },
+                //   },
+                //   "& .MuiOutlinedInput-input": {
+                //     height: "22px",
+                //     padding: "8px 12px",
+                //     fontSize: "12px",
+                //   },
+                //   "& .MuiInputLabel-shrink": {
+                //     fontSize: "1rem",
+                //     transform: "translate(14px, -6px) scale(0.75)",
+                //   },
+                //   "& input::placeholder": {
+                //     fontSize: "12px",
+                //     color: "#AEAEAE",
+                //   },
+                // }}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -770,10 +1058,11 @@ export default function AddEmployee() {
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress} // Detect Enter key press
                   fullWidth
-                  width=""
                   sx={{
+                    width: "215px",
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "1rem",
+                      fontSize: "12px",
+
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -786,11 +1075,11 @@ export default function AddEmployee() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-                      fontSize: "0.85rem",
-                      fontWeight: "600",
+                      fontSize: "12px",
+                      fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
-                        color: "black", // Desired color when focused
+                        color: "black",
                       },
                     },
                     "& .MuiOutlinedInput-input": {
@@ -800,13 +1089,49 @@ export default function AddEmployee() {
                     },
                     "& .MuiInputLabel-shrink": {
                       fontSize: "1rem",
-                      transform: "translate(14px, -6px) scale(0.75)",
+                      transform: "translate(14px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
                       fontSize: "12px",
                       color: "#AEAEAE",
                     },
                   }}
+                  // sx={{
+                  //   "& .MuiOutlinedInput-root": {
+                  //     fontSize: "1rem",
+                  //     "& fieldset": {
+                  //       border: "1px solid #DCDCDC",
+                  //     },
+                  //     "&:hover fieldset": {
+                  //       border: "1px solid #DCDCDC",
+                  //     },
+                  //     "&.Mui-focused fieldset": {
+                  //       border: "1px solid #DCDCDC",
+                  //     },
+                  //   },
+                  //   "& .MuiInputLabel-root": {
+                  //     color: "#000000",
+                  //     fontSize: "0.85rem",
+                  //     fontWeight: "600",
+                  //     transform: "translate(15px, 9px)",
+                  //     "&.Mui-focused": {
+                  //       color: "black", // Desired color when focused
+                  //     },
+                  //   },
+                  //   "& .MuiOutlinedInput-input": {
+                  //     height: "22px",
+                  //     padding: "8px 12px",
+                  //     fontSize: "12px",
+                  //   },
+                  //   "& .MuiInputLabel-shrink": {
+                  //     fontSize: "1rem",
+                  //     transform: "translate(14px, -6px) scale(0.75)",
+                  //   },
+                  //   "& input::placeholder": {
+                  //     fontSize: "12px",
+                  //     color: "#AEAEAE",
+                  //   },
+                  // }}
                 />
               </div>
               <div className=" col-1">
@@ -832,7 +1157,53 @@ export default function AddEmployee() {
             }}
           >
             <div className="col-12">
-              <TextField
+              <div
+                className="skillsetdiv"
+                style={{
+                  overflowY: "scroll",
+
+                  resize: "none",
+                  width: "100%",
+                  border: "1px solid #ccc",
+                  padding: "5px",
+                  gap: "2px",
+
+                  height: "70px",
+
+                  borderRadius: "4px",
+                  display: "flex",
+                  flexWrap: "wrap",
+                }}
+              >
+                {namesList.map((name, index) => (
+                  <div
+                    key={index}
+                    className="skillsetbox"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p
+                      className="ms-2 mt-3  "
+                      style={{ fontSize: "12px", width: "auto" }}
+                    >
+                      {name}
+                    </p>
+                    <img
+                      src={checkimage1}
+                      alt=""
+                      height="15px"
+                      width="15px"
+                      style={{ cursor: "pointer" }}
+                      className="m-2"
+                      onClick={(e) => cancleSkill(e, index, name)}
+                    />
+                  </div>
+                ))}
+              </div>
+              {/* <TextField
                 variant="outlined"
                 label="Skill Sets"
                 //placeholder="Add Skills"
@@ -916,7 +1287,7 @@ export default function AddEmployee() {
                     color: "#AEAEAE",
                   },
                 }}
-              />
+              /> */}
             </div>
           </div>
           <div className="row m-0" style={{ paddingTop: "25px " }}>
