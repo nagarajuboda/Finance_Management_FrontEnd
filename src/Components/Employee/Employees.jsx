@@ -89,7 +89,7 @@ export default function Employees() {
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value); // Update search query state
+    setSearchQuery(e.target.value);
   };
 
   const filteredEmployees = employees.filter((employee) => {
@@ -179,7 +179,7 @@ export default function Employees() {
         <div
           className="d-flex justify-content-between"
           style={{
-            paddingTop: "25px",
+            paddingTop: "12px",
             display: "flex",
             alignItems: "center",
           }}

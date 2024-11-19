@@ -138,8 +138,8 @@ const Sidebar = ({ children }) => {
                   cursor: "pointer",
                   marginTop: "12px",
                   marginLeft: "13px",
-                  height: "27px",
-                  width: "27px",
+                  height: "28px",
+                  width: "28px",
                 }}
               />
             </div>
@@ -162,7 +162,8 @@ const Sidebar = ({ children }) => {
           <div
             key={index}
             className="menu-item tree"
-            style={{ marginTop: "10px", width: "215px" }}
+            style={{ marginTop: "10px" }}
+            //style={{ marginTop: "10px", width: "215px" }}
           >
             <ul>
               <NavLink

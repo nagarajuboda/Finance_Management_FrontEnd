@@ -508,7 +508,7 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div
               className="col-3 row m-0"
               style={{ display: "flex", justifyContent: "space-between" }}
@@ -810,7 +810,7 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div className="col-3">
               <TextField
                 label="Currency"
@@ -880,7 +880,7 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div className="col-12">
               <TextField
                 variant="outlined"
