@@ -250,7 +250,7 @@ export default function Employees() {
                   aria-expanded="false"
                   style={{ fontSize: "12px", height: "30px" }}
                 >
-                  Export togit branch -M main
+                  Export to
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="">
                   <li
