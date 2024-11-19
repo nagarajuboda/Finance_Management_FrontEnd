@@ -53,6 +53,8 @@ table.dataTable {
   opacity: 1;
   border: none;
   height: 30px;
+  margin-right: 34px;
+  width: 109%;
 }
 .searchinput::placeholder {
   text-align: left;
@@ -255,7 +257,7 @@ thead tr th {
 }
 .userCheckbox {
   width: 15px;
-  height: 15px;
+  /* height: 15px; */
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #b7b7b7;
   border-radius: 3px;

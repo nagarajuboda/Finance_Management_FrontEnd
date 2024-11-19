@@ -13,16 +13,14 @@ import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
 export default function Employees() {
   const navigate = useNavigate();
-  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isEditPopupOpen, setEditIsPopupOpen] = useState(false);
+
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
   const [open, setOpen] = useState(false);
-  const [id, setid] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const searchInputRef = useRef(null);
+
   useEffect(() => {
     FetchData();
   }, []);
@@ -30,8 +28,6 @@ export default function Employees() {
   const EdittogglePopup = (e, index, employeeid) => {
     sessionStorage.setItem("EmployeeID", employeeid);
     navigate("/dashboard/EditEmployee");
-    // setid(employeeid);
-    // setEditIsPopupOpen(!isEditPopupOpen);
   };
 
   const togglePopup = () => {
@@ -192,14 +188,26 @@ export default function Employees() {
             <p className="employeecontent">Employee list</p>
           </div>
           <div className="row">
-            <div className="col-3">
+            <div className="col-3" style={{ position: "relative" }}>
               <input
                 type="text"
-                className="searchinput form-control"
+                className="searchinput "
                 placeholder="Search employees"
                 onChange={handleSearchChange}
                 value={searchQuery}
               />
+              <i
+                className="bi bi-search"
+                style={{
+                  fontSize: "12px",
+                  position: "absolute",
+                  left: "200px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  pointerEvents: "none",
+                }}
+              ></i>
             </div>
             <div className="col-2" style={{ cursor: "pointer" }}>
               <select
@@ -242,26 +250,25 @@ export default function Employees() {
                   aria-expanded="false"
                   style={{ fontSize: "12px", height: "30px" }}
                 >
-                  Export to
+                  Export togit branch -M main
                 </a>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuLink"
-                >
+                <ul className="dropdown-menu" aria-labelledby="">
                   <li
-                    className="dropdonwli"
+                    className=" ms-3"
                     onClick={() => DownloadExcel("employees", "excel")}
                   >
-                    <p className="dropdown-item" style={{ fontSize: "12px" }}>
+                    <p
+                      className=""
+                      style={{ fontSize: "12px", cursor: "pointer" }}
+                    >
                       MS Excel
                     </p>
                   </li>
-
-                  <li>
+                  <li style={{ cursor: "pointer" }} className="ms-3">
                     <p
                       style={{ fontSize: "12px" }}
-                      className="dropdown-item"
-                      onClick={() => DownloadExcel("employees", "pdf")} // Pass parameters correctly
+                      className=""
+                      onClick={() => DownloadExcel("employees", "pdf")}
                     >
                       Adobe PDF
                     </p>
@@ -271,7 +278,6 @@ export default function Employees() {
             </div>
             <div className="col-2">
               <button
-                // className="DeleteRecordbutton deleteSelectedSpan"
                 className="btn btn-danger"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
@@ -428,25 +434,6 @@ export default function Employees() {
                   </tr>
                 ))
               ) : (
-                // <tr
-                //   className="tablebody"
-                //   style={{
-                //     backgroundColor: "white",
-                //     display: "flex",
-                //     alignItems: "center",
-                //     justifyContent: "center",
-                //   }}
-                // >
-                //   <td></td>
-                //   <td></td>
-                //   <td></td>
-                //   <td></td>
-                //   <td> No recordson the tablesss</td>
-                //   <td></td>
-                //   <td></td>
-                //   <td></td>
-                //   <td></td>
-                // </tr>
                 <tr style={{ width: "100%" }}>
                   <td></td>
                   <td></td>
