@@ -19,13 +19,14 @@ import Profile from "../Components/Admin/Pages/Profile";
 import AllEmployees from "../Components/Hr/Employees";
 import GetAllRevenue from "../Components/IndianFinance/Revenue";
 import UnderManagerEmployees from "../Components/Manager/UnderManagerEmployees";
-import ViewEmployee from "../Components/Manager/ViewEmployee";
+//import ViewEmployee from "../Components/Manager/ViewEmployee";
 import AddRevenue from "../Components/USFinance/AddRevenue";
 import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
 import Employees from "../Components/Employee/Employees";
 import AddEmployee from "../Components/Employee/AddEmployee";
 import Projectss from "../Components/Admin/Pages/Projects";
 import EditEmployeePopup from "../Components/Employee/EditEmployeePopup";
+//import ViewEmployeeDetails from "../Components/Employee/ViewEmployee";
 
 export default function AdminRoutes() {
   return (
@@ -47,10 +48,11 @@ export default function AdminRoutes() {
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/EditEmployee" element={<EditEmployeePopup />} />
+        {/* <Route path="/ViewDetails" element={<ViewEmployeeDetails />} /> */}
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
-        <Route path="/ViewEmployee" element={<ViewEmployee />} />
+        {/* <Route path="/ViewEmployee" element={<ViewEmployee />} /> */}
         <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
         <Route path="/Employees" element={<Employees />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />

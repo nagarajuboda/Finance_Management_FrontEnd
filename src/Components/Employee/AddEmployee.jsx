@@ -639,7 +639,7 @@ export default function AddEmployee() {
               )}
             </div>
           </div>
-          <div className="row  m-0" style={{ paddingTop: "50px" }}>
+          <div className="row  m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3">
               <TextField
                 label="Mobile Number"
@@ -1047,7 +1047,7 @@ export default function AddEmployee() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3" style={{ display: "flex" }}>
               <div>
                 <TextField
@@ -1153,7 +1153,7 @@ export default function AddEmployee() {
           <div
             className="row m-0"
             style={{
-              paddingTop: "44px",
+              paddingTop: "30px",
             }}
           >
             <div className="col-12">

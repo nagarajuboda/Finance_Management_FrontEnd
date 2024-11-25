@@ -1,129 +1,92 @@
-/* =========== */
-.EmployeeDetails {
-  padding: 20px;
+.view-employee-maindiv {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 2px 16px #e5e5e5;
+  border-radius: 5px;
+  opacity: 1;
+  height: 400px;
+  margin-top: 15px;
 }
-
-.EmpDetailsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #196e8a;
-}
-
-.EmpDetailsContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.EmpDetailsRow {
-  display: flex;
-  justify-content: space-between;
-}
-
-.EmpDetailsLabel {
+.Employee-details-content {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
   font-weight: bold;
-  width: 20%;
+  font-size: 16px;
+  font-family: "Segoe UI", sans-serif;
+
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.employee-name {
+  text-align: left;
+  font: normal normal bold 14px/29px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+  margin: 0;
+}
+.employee-id {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500; /* Medium corresponds to font-weight 500 */
+  font-size: 13px;
+  font-family: "Roboto", sans-serif;
+  color: #000000;
+  opacity: 1;
+  margin: 0;
 }
 
-.EmpDetailsValue {
-  flex: 1;
-}
-
-.EmpBackBtn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #f44336;
-  color: white;
-  cursor: pointer;
-}
-
-.EmpActions {
-  margin-top: 20px;
-  display: flex;
-  gap: 10%;
-}
-
-.EmpEditBtn,
-.EmpDeactivateBtn,
-.EmpActivateBtn,
-.EmpDeleteBtn {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.EmpEditBtn,
-.EmpActivateBtn {
-  background-color: #4caf50;
-  color: white;
-}
-
-.EmpDeactivateBtn,
-.EmpDeleteBtn {
-  background-color: #f44336;
-  color: white;
-}
-/* ManagedEmployeesModal Styles */
-.ManagedEmployeesModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+.activeorDeactiveDropdownlist {
+  background: #63d266 0% 0% no-repeat padding-box;
+  border-radius: 42px;
+  /* opacity: 1; */
+  width: 59px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
+  color: white;
 }
-
-.ManagedEmployeesModalCntnt {
-  background-color: rgb(222, 239, 245);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-height: 100vh;
-  overflow-y: auto;
-  width: 40vw;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.EmpDetailsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ManagedEmployeesMdlHeader {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.ManagerName {
-  font-style: italic;
-  color: #f44336;
-}
-
-.PMEmpTable {
-  margin-top: 20px;
-}
-
-.PMEmpTable table {
-  width: 100%;
-  border-collapse: collapse;
+.dot {
+  height: 5px;
+  width: 5px;
   background-color: white;
-}
-
-.PMEmpTable th,
-.PMEmpTable td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-.PMEmpTable th {
-  background-color: #007bff;
+  border-radius: 50%;
   color: white;
+  display: inline-block;
+}
+.dropdowninside {
+  /* box-shadow: 0px 2px 16px #e5e5e5; */
+  font-size: 12px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-style: normal;
+  font-variant: normal;
+  /* font-weight: 500; */
+  font-size: 12px;
+  /* line-height: 29px; */
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  color: white;
+}
+
+.personal-details {
+  border-right: 1px solid #918a8a;
+  border-color: #918a8a;
+}
+.project-list {
+  text-align: left;
+  font: normal normal bold 12px/17px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.employee-Details-table {
+  height: 40px;
+  background: #f8f8f9 0% 0% no-repeat padding-box;
+  border-radius: 5px;
 }
