@@ -39,7 +39,7 @@ export default function AdminRoutes() {
         <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
         <Route path="/AddProject" element={<AddProject />} />
         <Route path="/All/Projects" element={<Projectss />} />
-        <Route path="/Dashboard/ViewProject" element={<ViewProject />} />
+        <Route path="/ViewProject" element={<ViewProject />} />
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />

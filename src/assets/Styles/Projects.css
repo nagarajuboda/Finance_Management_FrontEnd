@@ -125,3 +125,9 @@ table.dataTable thead td {
 table.dataTable thead th {
   border-bottom: none;
 }
+.Project-list-content {
+  text-align: left;
+  font: normal normal bold 12px/17px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+}

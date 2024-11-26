@@ -255,7 +255,7 @@ const Sidebar = ({ children }) => {
         </div>
         <main
           className="childercomponents"
-          style={{ width: isOpen ? "100%" : "100%" }}
+          style={{ width: isOpen ? "100%" : "100%", padding: "11px" }}
         >
           {children}
         </main>

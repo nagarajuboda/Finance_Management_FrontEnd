@@ -150,7 +150,6 @@ export default function Employees() {
     });
   };
   const DownloadExcel = async (listtype, filetype) => {
-    console.log(isDivVisible, "isvisible");
     let response;
     try {
       if (isDivVisible == false) {

@@ -5,7 +5,7 @@ import axios from "axios";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function EmployeeDetails() {
   const employeeID = sessionStorage.getItem("id");
-  console.log(employeeID, "employee id in view Employee");
+
   const [employee, setEmployee] = useState({});
   const [ReportingManager, setReportingManager] = useState({});
   const [Skills, setSkills] = useState([]);
@@ -26,12 +26,8 @@ export default function EmployeeDetails() {
     const GetProjectsResponse = await EmployeeService.GetEmployeefcn(
       employeeID
     );
-    console.log(GetProjectsResponse, "=============>");
     setemployeeTracking(GetProjectsResponse.item);
-    // console.log(GetProjectsResponse, "response");
   };
-
-  console.log(employeeTracking, "role");
 
   return (
     <div className="">
@@ -161,14 +157,30 @@ export default function EmployeeDetails() {
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              // style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{
+                overflowY: "scroll",
+                resize: "none",
+                //width: "75%",
+                border: "1px solid #ccc",
+                padding: "5px",
+                gap: "5px",
+
+                height: "40px",
+                borderRadius: "4px",
+                display: "flex",
+                flexWrap: "wrap",
+                fontSize: "12px",
+                fontWeight: "600",
+                color: "#000000",
+              }}
             >
               {Skills.length > 0 ? (
                 Skills.map((empskill, index) => (
-                  <p key={index}>{empskill.skill}</p>
+                  <p key={index}>{`${empskill.skill} ${","}`}</p>
                 ))
               ) : (
-                <p>NA</p>
+                <p style={{ margin: "0" }}>NA</p>
               )}
             </div>
           </div>
@@ -179,7 +191,7 @@ export default function EmployeeDetails() {
           <table className="employeeTable" style={{ width: "100%" }}>
             <thead className="employee-Details-table">
               <tr>
-                <th className="ms-2">Project Name</th>
+                <th style={{ padding: "0px 8px" }}>Project Name</th>
                 <th>Client Name</th>
                 <th>Project Manager</th>
                 <th>Start Date</th>
@@ -195,13 +207,14 @@ export default function EmployeeDetails() {
                 return obj.bench === true ? (
                   <tr key={index}>
                     <td>
-                      <p style={{ margin: "0" }}>Bench</p>
+                      <p style={{ margin: "0", padding: "0px 8px" }}>Bench</p>
                     </td>
                     <td>
                       <p
                         style={{
                           fontWeight: "800",
                           margin: "0",
+                          padding: "0px 8px",
                         }}
                       >
                         --
@@ -212,6 +225,7 @@ export default function EmployeeDetails() {
                         style={{
                           fontWeight: "800",
                           margin: "0",
+                          padding: "0px 8px",
                         }}
                       >
                         --

@@ -18,13 +18,17 @@ import { IoMdAddCircle } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import AdminDashboardServices from "../../Service/AdminService/AdminDashboardServices";
 import { getSessionData } from "../../Service/SharedSessionData";
+import ImportPopup from "../Employee/ImportPopup";
+import userimage from "../../assets/Images/User.png";
+import deleteImage from "../../assets/Images/deleteicon.png";
 export function ViewProject() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
   const [show, setShow] = useState(false);
   const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [Employeeids, setIds] = useState([]);
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [ProjectValues, setProjectValues] = useState({});
@@ -43,16 +47,104 @@ export function ViewProject() {
   const [projectStartDate1, setprojectStartDate] = useState("");
   const [projectDeadline1, setprojectDeadline] = useState("");
   const [searchText, setSearchText] = useState("");
-  const id = localStorage.getItem("projectId");
+  const ProjectID = sessionStorage.getItem("id");
+  const [projectemp, setprojectemp] = useState([
+    {
+      employeeid: "IARC001",
+      name: "Nagaraju",
+      email: "nagaraju.boda@archents.com",
+      mobile: "9515858174",
+      role: "Project Manager",
+      projectTask: "Planning",
+      dateofjoining: "10/05/2023",
+    },
+    {
+      employeeid: "IARC002",
+      name: "Teja",
+      email: "teja.kumar@archents.com",
+      mobile: "9812345678",
+      role: "Software Engineer",
+      projectTask: "Development",
+      dateofjoining: "15/06/2022",
+    },
+    {
+      employeeid: "IARC003",
+      name: "Mohasina",
+      email: "mohasina.shaik@archents.com",
+      mobile: "9876543210",
+      role: "Team Lead",
+      projectTask: "Team Coordination",
+      dateofjoining: "20/03/2021",
+    },
+    {
+      employeeid: "IARC004",
+      name: "Ramesh",
+      email: "ramesh.varma@archents.com",
+      mobile: "9123456789",
+      role: "QA Engineer",
+      projectTask: "Testing",
+      dateofjoining: "12/09/2023",
+    },
+    {
+      employeeid: "IARC005",
+      name: "Sita",
+      email: "sita.das@archents.com",
+      mobile: "9523451234",
+      role: "UI/UX Designer",
+      projectTask: "Design",
+      dateofjoining: "01/01/2020",
+    },
+    {
+      employeeid: "IARC006",
+      name: "Rajesh",
+      email: "rajesh.patel@archents.com",
+      mobile: "9534567890",
+      role: "Business Analyst",
+      projectTask: "Requirement Gathering",
+      dateofjoining: "10/10/2022",
+    },
+    {
+      employeeid: "IARC007",
+      name: "Anjali",
+      email: "anjali.roy@archents.com",
+      mobile: "9456789123",
+      role: "Data Scientist",
+      projectTask: "Data Analysis",
+      dateofjoining: "20/07/2023",
+    },
+    {
+      employeeid: "IARC008",
+      name: "Arun",
+      email: "arun.kumar@archents.com",
+      mobile: "9123456780",
+      role: "System Administrator",
+      projectTask: "System Maintenance",
+      dateofjoining: "15/05/2021",
+    },
+    {
+      employeeid: "IARC009",
+      name: "Kiran",
+      email: "kiran.s@archents.com",
+      mobile: "9345678901",
+      role: "Network Engineer",
+      projectTask: "Network Configuration",
+      dateofjoining: "05/02/2022",
+    },
+    {
+      employeeid: "IARC010",
+      name: "Priya",
+      email: "priya.nair@archents.com",
+      mobile: "9456123789",
+      role: "DevOps Engineer",
+      projectTask: "CI/CD Pipeline",
+      dateofjoining: "25/11/2022",
+    },
+  ]);
+
   useEffect(() => {
     FetchData();
-  }, [id]);
-  useEffect(() => {}, []);
+  }, [ProjectID]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
-
-  const handleManagerChange = (event) => {
-    setSelectedManagerId(event.target.value);
-  };
   async function FetchData() {
     var projectManagerResponse =
       await AdminDashboardServices.GetProjectManager();
@@ -63,818 +155,421 @@ export function ViewProject() {
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
     var response = await axios.get(
-      `https://localhost:44305/api/Projects/GetProject?id=${id}`
+      `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
     );
     var result = response.data;
+    console.log(result, "result");
     if (result.isSuccess === true) {
-      setProjectEmployees(result.item.employeeProject);
-      setresponse(result.item.project);
+      // setProjectEmployees(result.item.employeeProject);
+      // setresponse(result.item.project);
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
-      setProjectMangerEmail(result.item.projectMangerEmail);
-      setStatus(result.item.project.status);
-      setSelectedManagerId(result.item.projectMangerEmail);
+      // setProjectMangerEmail(result.item.projectMangerEmail);
+      // //setStatus(result.item.project.status);
+      // setSelectedManagerId(result.item.projectMangerEmail);
       setProjectManagerName(result.item.projectMangerName);
-      setprojectStartDate(result.item.project.startDate);
-      setprojectDeadline(result.item.project.endDate);
-      setDataReady(true);
+      // setprojectStartDate(result.item.project.startDate);
+      // setprojectDeadline(result.item.project.endDate);
+      // setDataReady(true);
     }
   }
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProjectValues({
-      ...ProjectValues,
-      [name]: value,
-    });
+  const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
   };
-
-  const handleChange = (event) => {
-    const selectedStatus = event.target.value;
-    setStatus(selectedStatus);
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
-  useEffect(() => {
-    if (dataReady && projectEmployess.length > 0) {
-      const table = $("#example11").DataTable({
-        destroy: true,
-      });
-      return () => {
-        table.destroy();
-      };
-    }
-  }, [dataReady]);
-  useEffect(() => {
-    setProgressPercentage(calculateProgressPercentage());
-    console.log("percentage", calculateProgressPercentage());
-  }, [projectDeadline1]);
-
-  useEffect(() => {
-    if (showw) {
-      const table = $("#example1").DataTable({
-        paging: false,
-        searching: true,
-        ordering: false,
-        info: false,
-        destroy: true,
-      });
-    }
-  }, [showw]);
-
-  function backonclick(e) {
-    e.preventDefault();
-    navigate("/Dashboard/AllProjects");
-  }
-
-  function backtoprojects(e) {
-    FetchData();
-    e.preventDefault();
-    navigate("/Employee/Projects");
-  }
-  function backtofinance(e) {
-    e.preventDefault();
-    navigate("/Dashboard/AllProjects");
-  }
-  async function updateformsubmit(e) {
-    e.preventDefault();
-
-    const selectedManageridd = projectManagers.find(
-      (el) => el.email === selectedManagerId
-    );
-    ProjectValues.status = status;
-    ProjectValues.projectManager = selectedManageridd.id;
-    var response = await AdminDashboardServices.fcnUpdateProject(ProjectValues);
-    if (response.isSuccess) {
-      toast.success("Update Successfully done. ", {
-        position: "top-right",
-        autoClose: "4000",
-      });
-      handleClose();
-      FetchData();
-    }
-  }
-  async function AddEmployeeSubmit(e) {
-    e.preventDefault();
-    const requestBody = [
-      {
-        employeeids: Employeeids,
-        id: id,
-      },
-    ];
-    var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
-    if (response.isSuccess) {
-      setShoww(false);
-      setTimeout(() => {
-        toast.success("Successfully done.", {
-          position: "top-right",
-          autoClose: 6000,
-        });
-        FetchData();
-      }, 300);
-
-      FetchData();
-    }
-  }
-
-  const handleClick = () => {
-    setShoww(true);
-    GetAllemployees.map((el) => {
-      if (
-        projectEmployess.filter((proj) => proj.employee.id === el.employee.id)
-          .length > 0
-      ) {
-        el.employee.isAlreadyAdded = true;
-      } else {
-        el.employee.isAlreadyAdded = false;
-      }
-    });
-  };
-
-  const toggleIcon = (e, index, id) => {
-    setSelectedRowIds((prevSelectedRowIds) => {
-      let newSelectedRowIds;
-      if (id) {
-        if (!prevSelectedRowIds.includes(id)) {
-          newSelectedRowIds = [...prevSelectedRowIds, id];
-        } else {
-          newSelectedRowIds = prevSelectedRowIds.filter(
-            (selectedId) => selectedId !== id
-          );
-        }
-      } else {
-        const rowId = obj[index].id;
-        newSelectedRowIds = prevSelectedRowIds.filter(
-          (selectedId) => selectedId !== rowId
-        );
-      }
-
-      setIds(
-        newSelectedRowIds.map((selectedId) => ({ employeeid: selectedId }))
-      );
-
-      return newSelectedRowIds;
-    });
-  };
-
-  const currentDate = new Date();
-  const calculateProgressPercentage = () => {
-    debugger;
-    const projectStartDate = new Date(projectStartDate1);
-    const projectDeadline = new Date(projectDeadline1);
-
-    if (currentDate < projectStartDate) {
-      return 0;
-    } else if (currentDate > projectDeadline) {
-      return 100;
-    } else {
-      const totalDuration = projectDeadline - projectStartDate;
-      const remainingTime = projectDeadline - currentDate;
-      const progressPercentage =
-        ((totalDuration - remainingTime) / totalDuration) * 100;
-      return Math.min(Math.max(progressPercentage, 0), 100);
-    }
-  };
-
-  async function handleDelete(id, projectid) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      var response = await AdminDashboardServices.DeleteEmployeefcn(
-        id,
-        projectid
-      );
-      if (response.item.isAssinged == false) {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Employee has been successfully deleted.",
-            icon: "success",
-          }).then(async () => {
-            await FetchData();
-          });
-        }
-      }
-    });
-  }
-  const filteredEmployees = projectEmployess.filter((employeeObj) => {
-    const { employeeId, firstName, lastName, email } = employeeObj.employee;
-
-    const searchLower = searchText.toLowerCase();
-    const fullName = `${firstName} ${lastName}`.toLowerCase();
-
+  const filteredEmployees = projectemp.filter((project) => {
     return (
-      employeeId.toLowerCase().includes(searchLower) ||
-      fullName.includes(searchLower) ||
-      email.toLowerCase().includes(searchLower)
+      project.employeeid.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
 
   return (
-    <div>
-      <div>
-        <div className="d-flex" style={{ justifyContent: "space-between" }}>
-          <div className="d-flex">
-            {sessiondata !== "Admin" && sessiondata !== "Indian finace" ? (
-              <IoArrowBackCircle
-                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-                onClick={backtoprojects}
-              />
-            ) : sessiondata === "Indian finace" ? (
-              <IoArrowBackCircle
-                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-                onClick={backtofinance}
-              />
-            ) : (
-              <IoArrowBackCircle
-                style={{ cursor: "pointer", fontSize: "28px", color: "block" }}
-                onClick={backonclick}
-              />
-            )}
-            <p style={{ fontSize: "20px" }} className="ms-1 ">
-              Back
-            </p>
-          </div>
-          <div>
-            <Link
-              onClick={() => setShow(true)}
-              className="btn "
-              style={{
-                padding: "3px 7px",
-                backgroundColor: "#008CBA",
-                color: "white",
-              }}
-            >
-              Update
-            </Link>
+    <div className="viewProject-Main-div">
+      <div className="view-Project">Project Details</div>
+      <div className="view-project-div" style={{ paddingTop: "0" }}>
+        <div className="row update-button-row">
+          <div className="col-10"></div>
+          <div className="col-2 button-col">
+            <button className="update-button">Update</button>
           </div>
         </div>
-        <div className="headerCards">
-          <div className="card ProjectProgress" style={{ borderRadius: "0px" }}>
-            <div className="ProjectProgress">
-              <p
-                style={{
-                  color: "#196e8a",
-                  fontFamily: "Open Sans, sans-serif",
-                }}
-              >
-                Project Progress
-              </p>
-              <p
-                style={{
-                  color: "#196e8a",
-                  fontFamily: "Open Sans, sans-serif",
-                }}
-              >
-                In Progress
-              </p>
-            </div>
-            <div className="progressbaranddates">
-              <div className="circularProgressbar">
-                <div>
-                  <CircularProgressbar
-                    value={progressPercentage}
-                    text={`${progressPercentage.toFixed(2)}%`}
-                    styles={{
-                      path: {
-                        stroke: progressPercentage === 100 ? "green" : "orange",
-                        transition: "stroke-dashoffset 0.5s ease",
-                      },
-                      text: {
-                        fill: "#000",
-                        fontSize: "21px",
-                      },
-                      trail: {
-                        stroke: "#d6d6d6",
-                      },
-                    }}
-                  />
-                </div>
-                {/* <CircularProgressbar
-                  value={Projectresponse.progress}
-                  text={`${Projectresponse.progress}%`}
-                /> */}
-                <div />
-              </div>
-
-              <div className="startdatediv">
-                <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
-                  Start Date
-                </p>
-                <p style={{ marginBottom: "0px", fontWeight: "600" }}>
-                  {Projectresponse.startDate}
-                </p>
-              </div>
-              <div>
-                <p style={{ marginBottom: "0px", color: "#BFBFBF" }}>
-                  Deadline
-                </p>
-                <p
-                  style={{
-                    marginBottom: "0px",
-                    fontWeight: "600",
-                    fontFamily: "Open Sans, sans-serif",
-                  }}
-                >
-                  {Projectresponse.endDate}
-                </p>
-              </div>
-            </div>
+        <div className="row m-0  project-view-row">
+          <div className="col-4">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Porject outline
+            </p>
           </div>
-          <div className="card ms-3" style={{ borderRadius: "0px" }}>
-            <div>
-              <p
-                style={{
-                  color: "#196e8a",
-                  fontFamily: "Open Sans, sans-serif",
-                }}
-              >
-                Project Manager Info
-              </p>
-            </div>
-            <div className="ProjectMangerProfile d-flex">
-              <div className="d-flex">
-                <div>
-                  <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                    {projectManagername}
-                  </p>
-                  <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                    {projectManagerEmail}
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Start Date
+            </p>
           </div>
-          <div className="card ms-3" style={{ borderRadius: "0px" }}>
-            <div>
-              <p
-                style={{
-                  color: "#196e8a",
-                  fontFamily: "Open Sans, sans-serif",
-                }}
-              >
-                Client Info
-              </p>
-            </div>
-            <div className="d-flex">
-              <div>
-                <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                  {clientvalues.clientName}
-                </p>
-                <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-                  {clientvalues.clientEmailId}
-                </p>
-              </div>
-            </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              end Date
+            </p>
+          </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Project Manager
+            </p>
+          </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Project Lead
+            </p>
           </div>
         </div>
         <div
-          className="card Projectdescription mt-4"
-          style={{ borderRadius: "0px" }}
+          className="row m-0 p-0"
+          style={{ display: "flex", alignItems: "center" }}
         >
-          <div>
-            <p className="description">Project Details</p>
+          <div className="col-2 ">
+            <div class="progress" style={{ height: "10px", width: "150px" }}>
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style={{ width: "25%", fontSize: "10px" }}
+                aria-valuenow="25"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                25%
+              </div>
+            </div>
           </div>
-          <div className="descriptioncontent mt-3">
-            <p style={{ marginBottom: "0px", fontWeight: "400" }}>
-              {Projectresponse.description}
+          <div
+            className="col-2 projectPrpgress"
+            style={{ fontSize: "12px", margin: "0" }}
+          >
+            <p className="view-more">View more</p>
+          </div>
+          <div
+            className="col-2 projectPrpgress"
+            style={{ fontSize: "12px", margin: "0" }}
+          >
+            {ProjectValues.startDate}
+          </div>
+          <div
+            className="col-2 projectPrpgress"
+            style={{ fontSize: "12px", margin: "0" }}
+          >
+            {ProjectValues.endDate}
+          </div>
+          <div
+            className="col-2 projectPrpgress"
+            style={{ fontSize: "12px", margin: "0" }}
+          >
+            {projectManagername}
+          </div>
+          <div
+            className="col-2 projectPrpgress"
+            style={{ fontSize: "12px", margin: "0" }}
+          >
+            {projectManagername}
+          </div>
+        </div>
+        <div
+          className="row m-0 project-view-row"
+          style={{ paddingTop: "45px" }}
+        >
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Client
+            </p>
+          </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              client Email
+            </p>
+          </div>
+          <div className="col-2">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Project Name
+            </p>
+          </div>
+          <div className="col-6">
+            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+              Description
             </p>
           </div>
         </div>
-
-        <div
-          className="card my-3 mt-4 employeeDetails d-flex justify-content-between"
-          style={{ borderRadius: "0px" }}
-        >
-          <div className="mb-4 workingemployee">
-            <p
-              className="projectTeam"
+        <div className="row m-0 pt-3">
+          <div
+            className="col-2 "
+            style={{ fontWeight: "500", fontSize: "12px" }}
+          >
+            {clientvalues.clientName}
+          </div>
+          <div
+            className="col-2 "
+            style={{ fontWeight: "500", fontSize: "12px" }}
+          >
+            {clientvalues.clientEmailId}
+          </div>
+          <div
+            className="col-2 "
+            style={{ fontWeight: "500", fontSize: "12px" }}
+          >
+            {ProjectValues.projectName}
+          </div>
+          <div
+            className="col-6 "
+            style={{ fontWeight: "500", fontSize: "12px" }}
+          >
+            {ProjectValues.description}
+          </div>
+        </div>
+        <div className="row underline-button-row"></div>
+        <div className="row m-0" style={{ paddingTop: "15px" }}>
+          <div className="col-2">
+            <p className="projectPrpgress"> Project Team Members</p>
+          </div>
+          {/* <div className="col-3" style={{ position: "relative" }}>
+            <input
+              type="text"
+              // onChange={handleSearchChange}
+              // value={searchQuery}
+              className="searchinput "
+              placeholder="Search employee"
+              style={{ padding: "5px", fontSize: "12px" }}
+            />
+            <i
+              className="bi bi-search"
               style={{
-                color: "#196e8a",
-                fontFamily: "Open Sans, sans-serif",
-                marginBottom: "0px",
+                fontSize: "12px",
+                position: "absolute",
+                left: "235px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#888",
+                pointerEvents: "none",
+              }}
+            ></i>
+          </div> */}
+          <div className="col-3" style={{ position: "relative" }}>
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              Project Team
-            </p>
-            <Link onClick={handleClick}>
-              <p> Add Employee</p>
-            </Link>
-          </div>
-          <div>
-            <div className="search-container ">
               <input
                 type="text"
-                placeholder="Search by Id, Name, Email...."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                className="form-control mb-3 search-input"
-              />
-            </div>
-
-            <table className="table table-striped projectemployeetable">
-              <thead className="theadbackgroundcolor">
-                <tr>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Employee ID
-                  </th>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Name
-                  </th>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Email
-                  </th>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Assigned date
-                  </th>
-                  <th
-                    className="tbh"
-                    style={{ backgroundColor: "#196e8a", color: "white" }}
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredEmployees.length === 0 ? (
-                  <tr>
-                    <td colSpan="6" style={{ textAlign: "center" }}>
-                      No records in the table
-                    </td>
-                  </tr>
-                ) : (
-                  filteredEmployees.map((obj, index) => {
-                    const dateOfJoining =
-                      obj.employee.dateOfJoining.split("T")[0];
-                    return (
-                      <tr key={index}>
-                        <td className="data">
-                          <Link>{obj.employee.employeeId}</Link>
-                        </td>
-                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                        <td className="data">{obj.employee.email}</td>
-                        <td className="data">{dateOfJoining}</td>
-                        <td className="data">
-                          <div className="deleteicontd">
-                            <RiDeleteBin6Line
-                              className="deleteicon"
-                              onClick={() =>
-                                handleDelete(obj.employee.id, obj.project.id)
-                              }
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <Modal
-          size="lg"
-          show={show}
-          onHide={() => setShow(false)}
-          animation={false}
-          aria-labelledby="example-modal-sizes-title-lg"
-        >
-          <Modal.Header
-            closeButton
-            style={{ backgroundColor: "#196e8a", color: "white" }}
-          >
-            <Modal.Title id="example-modal-sizes-title-lg">
-              Update Project
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="modelbody">
-            <form onSubmit={updateformsubmit}>
-              <div className="row" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    ProjectID
-                  </span>
-                  <input
-                    type="text"
-                    name="projectID"
-                    value={ProjectValues.projectID}
-                    className="form-control"
-                    onChange={handleInputChange}
-                    readOnly
-                  />
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Project Name
-                  </span>
-                  <input
-                    type="text"
-                    name="projectName"
-                    value={ProjectValues.projectName}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Start Date
-                  </span>
-                  <input
-                    type="text"
-                    name="startDate"
-                    value={ProjectValues.startDate}
-                    className="form-control"
-                    onChange={handleInputChange}
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className="row" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Deadline
-                  </span>
-                  <input
-                    type="date"
-                    name="endDate"
-                    value={ProjectValues.endDate}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Project Ref ID
-                  </span>
-                  <input
-                    type="text"
-                    name="projectRefId"
-                    value={ProjectValues.projectRefId}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Client Email
-                  </span>
-                  <input
-                    type="text"
-                    name="clientEmail"
-                    value={clientvalues.clientEmailId}
-                    className="form-control"
-                    onChange={(e) =>
-                      setClientValues({ clientEmailId: e.target.value })
-                    }
-                    readOnly
-                  />
-                </div>
-              </div>
-              <div className="row" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Project Type
-                  </span>
-                  <input
-                    type="text"
-                    name="projectType"
-                    value={ProjectValues.projectType}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Status
-                  </span>
-                  <select
-                    name="status"
-                    value={status}
-                    onChange={handleChange}
-                    className="form-control"
-                  >
-                    <option value="0">Active</option>
-                    <option value="1">InActive</option>
-                  </select>
-                </div>
-                <div className="col-4">
-                  <span
-                    className="ms-1"
-                    style={{ color: "black", fontWeight: "600" }}
-                  >
-                    Progress
-                  </span>
-                  <input
-                    type="text"
-                    name="progress"
-                    value={ProjectValues.progress}
-                    className="form-control"
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="row" style={{ margin: "0", width: "100%" }}>
-                <div className="col-4">
-                  <span style={{ color: "black", fontWeight: "600" }}>
-                    Project Manager
-                  </span>
-                  <select
-                    id="manager"
-                    value={selectedManagerId} // Bound to selected manager email
-                    onChange={handleManagerChange} // Handle change
-                    className="form-control"
-                  >
-                    <option value="">--Select a Manager--</option>
-                    {projectManagers.map((manager) => (
-                      <option key={manager.id} value={manager.email}>
-                        {manager.firstName} {manager.lastName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-8">
-                  <span style={{ color: "black", fontWeight: "600" }}>
-                    Project Description
-                  </span>
-                  <textarea
-                    className="form-control textareas"
-                    name="description"
-                    value={ProjectValues.description}
-                    onChange={handleInputChange}
-                  ></textarea>
-                </div>
-              </div>
-              <div className="row mt-2" style={{ margin: "0", width: "100%" }}>
-                <div className="col-8"></div>
-                <div className="col-2">
-                  <button
-                    type="button"
-                    className="form-control closebutton"
-                    onClick={() => setShow(false)}
-                    style={{
-                      borderRadius: "8px",
-                      backgroundColor: "red",
-                      color: "white",
-                    }}
-                  >
-                    Close
-                  </button>
-                </div>
-                <div className="col-2">
-                  <button
-                    type="submit"
-                    className="form-control updatebtn"
-                    style={{
-                      borderRadius: "8px",
-                      backgroundColor: "rgb(25, 110, 138)",
-                      color: "white",
-                    }}
-                  >
-                    Update
-                  </button>
-                </div>
-              </div>
-            </form>
-          </Modal.Body>
-        </Modal>
-        <Modal
-          size="lg"
-          show={showw}
-          animation={false}
-          onHide={() => setShoww(false)}
-          aria-labelledby="example-modal-sizes-title-lg"
-        >
-          <Modal.Header
-            closeButton
-            style={{ backgroundColor: "#196e8a", color: "white" }}
-          >
-            <Modal.Title id="example-modal-sizes-title-lg">
-              Add Employees
-            </Modal.Title>
-          </Modal.Header>
-
-          <form onSubmit={AddEmployeeSubmit}>
-            <Modal.Body className=" econdmodel1 modelbodyyyy">
-              <table
-                id="example1"
-                className="table  tableclassss table table-borderless"
-                style={{ width: "100%" }}
-              >
-                <thead>
-                  <tr>
-                    <th>Employee ID</th>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th>Add</th>
-                  </tr>
-                </thead>
-                <tbody className="getallEmployee">
-                  {GetAllemployees.map((obj, index) =>
-                    !obj.employee.isAlreadyAdded ? (
-                      <tr
-                        key={obj.employee.id}
-                        className={
-                          selectedRowIds.includes(obj.employee.id)
-                            ? "selected-row"
-                            : ""
-                        }
-                        style={{ margin: "0px" }}
-                      >
-                        <td className="data">{obj.employee.employeeId}</td>
-                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                        <td className="data">{obj.role.name}</td>
-                        <td style={{ width: "20px" }} className="data">
-                          {selectedRowIds.includes(obj.employee.id) ? (
-                            <RxCross2
-                              onClick={(e) =>
-                                toggleIcon(e, index, obj.employee.id)
-                              }
-                              className="cancleemployee"
-                              style={{
-                                cursor: "pointer",
-                                color: "red",
-                              }}
-                            />
-                          ) : (
-                            <IoMdAddCircle
-                              onClick={(e) =>
-                                toggleIcon(e, index, obj.employee.id)
-                              }
-                              className="addemployeecircle "
-                            />
-                          )}
-                        </td>
-                      </tr>
-                    ) : null
-                  )}
-                </tbody>
-              </table>
-            </Modal.Body>
-            <Modal.Footer>
-              <button
-                className="form-control "
+                className="searchinput"
+                placeholder="Search employee"
+                onChange={handleSearchChange}
+                value={searchQuery}
                 style={{
-                  borderRadius: "10px",
-                  width: "80px",
-                  backgroundColor: "#196e8a",
-                  color: "white",
+                  width: "100%",
+                  padding: "5px 30px 5px 5px", // Extra padding on the right for the icon
+                  fontSize: "12px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <i
+                className="bi bi-search"
+                style={{
+                  fontSize: "12px", // Adjust size if necessary
+                  position: "absolute",
+                  right: "10px", // Place the icon 10px from the right edge
+                  color: "#888",
+                  pointerEvents: "none",
+                }}
+              ></i>
+            </div>
+          </div>
+          <div className="col-3"></div>
+          <div
+            className="col-1"
+            style={{ display: "flex", justifyContent: "end" }}
+          >
+            <button
+              style={{ fontSize: "12px", height: "30px" }}
+              className="btn btn-primary"
+              onClick={() => setIsPopupOpen(true)}
+            >
+              Import
+            </button>
+          </div>
+          <div
+            className="col-1"
+            style={{
+              display: "flex",
+
+              justifyContent: "space-between",
+            }}
+          >
+            <div className="importdropdown " style={{ width: "100px" }}>
+              <a
+                className="importdropwlist dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style={{ fontSize: "12px", height: "30px" }}
+              >
+                Export To
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="">
+                <li
+                  className=" ms-3"
+                  onClick={() => DownloadExcel("employees", "excel")}
+                >
+                  <p
+                    className=""
+                    style={{ fontSize: "12px", cursor: "pointer" }}
+                  >
+                    MS Excel
+                  </p>
+                </li>
+                <li style={{ cursor: "pointer" }} className="ms-3">
+                  <p
+                    style={{ fontSize: "12px" }}
+                    className=""
+                    onClick={() => DownloadExcel("employees", "pdf")}
+                  >
+                    Adobe PDF
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            className="col-2"
+            style={{
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <button
+              style={{
+                display: "flex",
+                width: "auto",
+                alignContent: "center",
+                padding: "4px",
+                height: "30px",
+              }}
+              className="add-new-project-button"
+              //onClick={Addemployeefuncton}
+            >
+              <span>
+                <img
+                  src={userimage}
+                  alt=""
+                  height="16px"
+                  width="16px"
+                  className="mb-2"
+                />
+              </span>
+              <span
+                className=" ms-1"
+                style={{
+                  fontSize: "12px",
+                  color: "#000000",
+                  fontWeight: "bold",
                 }}
               >
-                Save
-              </button>
-            </Modal.Footer>
-          </form>
-          {/* <button
-            onClick={() => setShow(false)}
-            className="form-control  btn btn-dengerr "
-            style={{ borderRadius: "10px", width: "80px" }}
+                Add Employee
+              </span>
+            </button>
+          </div>
+        </div>
+        <div style={{ padding: "10px" }}>
+          <table
+            id="example"
+            className="employeeTable m-0 p-0"
+            style={{ width: "100%" }}
           >
-            Close
-          </button> */}
-        </Modal>
+            <thead>
+              <tr className="tableheader">
+                <th>
+                  <input
+                    type="checkbox"
+                    //  onChange={handleSelectAll}
+                    className="userCheckbox"
+                  />
+                </th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                  Employee ID
+                </th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>Name</th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>Email</th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                  Mobile Number
+                </th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>Role</th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                  Project Tasks
+                </th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                  Date Of joining
+                </th>
+                <th style={{ fontSize: "12px", fontWeight: "500" }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredEmployees.length > 0 ? (
+                filteredEmployees.map((employee, index) => (
+                  <tr
+                    key={index}
+                    className="tablebody"
+                    style={{
+                      backgroundColor: "white",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <td style={{ textAlign: "start" }}>
+                      <input type="checkbox" className="row-checkbox " />
+                    </td>
+                    <td style={{ fontSize: "12px" }}>{employee.employeeid}</td>
+                    <td style={{ fontSize: "12px" }}>{employee.name}</td>
+                    <td style={{ fontSize: "12px" }}>{employee.email}</td>
+                    <td style={{ fontSize: "12px" }}>{employee.mobile}</td>
+                    <td style={{ fontSize: "12px" }}>{employee.role}</td>
+                    <td style={{ fontSize: "12px" }}>{employee.projectTask}</td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.dateofjoining}
+                    </td>
+                    <td>
+                      <img
+                        src={deleteImage}
+                        alt=""
+                        style={{
+                          width: "24px",
+                          height: "24px",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr style={{ width: "100%" }}>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>No Records Found</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
       </div>
-      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 }

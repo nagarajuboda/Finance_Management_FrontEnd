@@ -11,11 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import elipisimage from "../../../assets/Images/Ellipse.png";
 import checkimage from "../../../assets/Images/check.png";
+import { CoPresentOutlined } from "@mui/icons-material";
 
 export default function Projectss() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [Projects, setProjects] = useState([]);
+  const [disiblebuttons, setDisiblebuttons] = useState(true);
+  const [selectedProjectIds, setSelectedProjectIds] = useState([]);
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [open, setOpen] = useState(false);
@@ -35,7 +38,6 @@ export default function Projectss() {
     navigate("/Dashboard/AddProject");
   };
   const DeleteProject = async (e, index, projectid) => {
-    console.log(projectid, "project ID");
     var response = await axios.put(
       `https://localhost:44305/api/Projects/DeleteProject?id=${projectid}`
     );
@@ -89,6 +91,49 @@ export default function Projectss() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+  const ViewProject = (projectid) => {
+    console.log(projectid, "==========>");
+    sessionStorage.setItem("id", projectid);
+    navigate("/dashboard/ViewProject");
+  };
+  const handleCheckboxChange = (projectid, isChecked) => {
+    setSelectedProjectIds((prevSelected) => {
+      if (isChecked) {
+        setDisiblebuttons(false);
+        return [...prevSelected, projectid];
+      } else {
+        setDisiblebuttons(true);
+        return prevSelected.filter((id) => id !== projectid);
+      }
+    });
+  };
+  const DeleteSelectedRecords = async () => {
+    const response = await axios.put(
+      "https://localhost:44305/api/Projects/DeleteSelectedProjects",
+      selectedProjectIds
+    );
+    const result = response.data;
+    console.log(result, "==========>");
+    if (result.isSuccess) {
+      setOpen(true);
+      FetchData();
+    }
+  };
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      const allProjectIds = currentItems.map((project) => project.project.id);
+      setSelectedProjectIds(allProjectIds);
+      setDisiblebuttons(false);
+    } else {
+      setSelectedProjectIds([]);
+      setDisiblebuttons(true); // Disable buttons if none are selected
+    }
+    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+  };
+  console.log(selectedProjectIds, "====>selectedProjectIDs");
   return (
     <div className="">
       <p className="project-list-content">Projects</p>
@@ -103,7 +148,7 @@ export default function Projectss() {
           }}
         >
           <div className="col-2">
-            <p className="employeecontent">Project list</p>
+            <p className="Project-list-content">Project list</p>
           </div>
           <div className="col-1"></div>
           <div
@@ -142,10 +187,18 @@ export default function Projectss() {
                 onChange={handleItemsPerPageChange}
                 value={itemsPerPage}
               >
-                <option value="10">Show 10 Entities</option>
-                <option value="25">Show 25 Entities</option>
-                <option value="50">Show 50 Entities</option>
-                <option value="-1">Show All</option>
+                <option value="10" style={{ fontSize: "12px" }}>
+                  Show 10 Entities
+                </option>
+                <option value="25" style={{ fontSize: "12px" }}>
+                  Show 25 Entities
+                </option>
+                <option value="50" style={{ fontSize: "12px" }}>
+                  Show 50 Entities
+                </option>
+                <option value="-1" style={{ fontSize: "12px" }}>
+                  Show All
+                </option>
               </select>
             </div>
 
@@ -159,6 +212,8 @@ export default function Projectss() {
             >
               <button
                 className="btn btn-danger"
+                disabled={disiblebuttons}
+                onClick={DeleteSelectedRecords}
                 style={{ fontSize: "12px", height: "30px" }}
               >
                 Delete Selected
@@ -215,7 +270,7 @@ export default function Projectss() {
                 <th>
                   <input
                     type="checkbox"
-                    // onChange={handleSelectAll}
+                    onChange={handleSelectAll}
                     className="userCheckbox"
                   />
                 </th>
@@ -234,20 +289,21 @@ export default function Projectss() {
                   (project, index) =>
                     project.project.status == 1 && (
                       <tr
-                        key={project.project.id}
+                        key={index}
                         className="tablebody"
-                        style={{ backgroundColor: "white" }}
+                        style={{ backgroundColor: "white", cursor: "pointer" }}
+                        onClick={(e) => ViewProject(project.project.id)}
                       >
                         <td style={{ textAlign: "start" }}>
                           <input
                             type="checkbox"
                             className="row-checkbox "
-                            // onChange={(e) =>
-                            //   handleCheckboxChange(
-                            //     employee.employeeDetails.id,
-                            //     e.target.checked
-                            //   )
-                            // }
+                            onChange={(e) =>
+                              handleCheckboxChange(
+                                project.project.id,
+                                e.target.checked
+                              )
+                            }
                           />
                         </td>
                         <td style={{ fontSize: "12px" }}>
