@@ -429,11 +429,15 @@ export default function Employees() {
                 <th style={{ fontSize: "12px" }}>Email</th>
                 <th style={{ fontSize: "12px" }}>Mobile Number</th>
                 <th style={{ fontSize: "12px" }}>Date of Joining</th>
-                <th style={{ fontSize: "12px" }}>Status</th>
+                {!isDivVisible && <th style={{ fontSize: "12px" }}>Status</th>}
+
                 <th style={{ fontSize: "12px" }}>Role</th>
-                <th style={{ fontSize: "12px" }}>Manager</th>
-                <th></th>
-                <th></th>
+                <th style={{ fontSize: "12px" }}>Reporting Manager</th>
+                {isDivVisible && (
+                  <th style={{ fontSize: "12px" }}>Date of Relieving</th>
+                )}
+                {!isDivVisible && <th></th>}
+                {!isDivVisible && <th></th>}
               </tr>
             </thead>
             <tbody>
@@ -448,9 +452,9 @@ export default function Employees() {
                             backgroundColor: "white",
                             cursor: "pointer",
                           }}
-                          onClick={(e) =>
-                            ViewDetails(employee.employeeDetails.id)
-                          }
+                          // onClick={(e) =>
+                          //   ViewDetails(employee.employeeDetails.id)
+                          // }
                         >
                           <td style={{ textAlign: "start" }}>
                             <input
@@ -578,7 +582,7 @@ export default function Employees() {
                               employee.employeeDetails.dateOfJoining
                             ).toLocaleDateString("en-GB")}
                           </td>
-                          <td style={{ fontSize: "12px" }}>Inactive</td>
+                          {/* <td style={{ fontSize: "12px" }}>Inactive</td> */}
                           <td style={{ fontSize: "12px" }}>
                             {employee.roleDetails.roleName}
                           </td>
@@ -587,41 +591,12 @@ export default function Employees() {
                               ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
                               : "N/A"}
                           </td>
-                          <td>
-                            <img
-                              src={editicon}
-                              onClick={(e) =>
-                                EdittogglePopup(
-                                  e,
-                                  index,
-                                  employee.employeeDetails.id
-                                )
-                              }
-                              alt=""
-                              style={{
-                                width: "18px",
-                                height: "18px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </td>
-                          <td>
-                            <img
-                              src={deleteicon}
-                              onClick={(e) =>
-                                handleOpenPopup(
-                                  e,
-                                  index,
-                                  employee.employeeDetails.id
-                                )
-                              }
-                              alt=""
-                              style={{
-                                width: "24px",
-                                height: "24px",
-                                cursor: "pointer",
-                              }}
-                            />
+                          <td
+                            style={{
+                              fontSize: "12px",
+                            }}
+                          >
+                            {employee.employeeDetails.dateOfReliving}
                           </td>
                         </tr>
                       )

@@ -21,6 +21,9 @@ import { getSessionData } from "../../Service/SharedSessionData";
 import ImportPopup from "../Employee/ImportPopup";
 import userimage from "../../assets/Images/User.png";
 import deleteImage from "../../assets/Images/deleteicon.png";
+
+import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
+import TextField from "@mui/material/TextField";
 export function ViewProject() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [Projectresponse, setresponse] = useState({});
@@ -43,11 +46,17 @@ export function ViewProject() {
   const [projectManagername, setProjectManagerName] = useState("");
   const navigate = useNavigate();
   const [sessionData, setSessionDataState] = useState(null);
-  const [status, setStatus] = useState("InActive");
   const [projectStartDate1, setprojectStartDate] = useState("");
   const [projectDeadline1, setprojectDeadline] = useState("");
   const [searchText, setSearchText] = useState("");
   const ProjectID = sessionStorage.getItem("id");
+  const [isOpen, setisOpen] = useState(false);
+  const [Projects, setProjects] = useState([]);
+  const [status, setStatus] = useState("InActive");
+  const [ProjectProgress, setProjectprogress] = useState(0);
+  const [employeelist, setEmployeelist] = useState([]);
+  const [ReportingManagerId, setReportingManagerId] = useState("");
+  //const [status, setStatus] = useState(0);
   const [projectemp, setprojectemp] = useState([
     {
       employeeid: "IARC001",
@@ -146,6 +155,11 @@ export function ViewProject() {
   }, [ProjectID]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
   async function FetchData() {
+    const Projects = await axios.get(
+      "https://localhost:44305/api/Projects/GetAllProjects"
+    );
+    const Projectsresult = Projects.data;
+    setProjects(Projectsresult.item);
     var projectManagerResponse =
       await AdminDashboardServices.GetProjectManager();
     setProjectManagers(projectManagerResponse.item);
@@ -160,22 +174,33 @@ export function ViewProject() {
     var result = response.data;
     console.log(result, "result");
     if (result.isSuccess === true) {
-      // setProjectEmployees(result.item.employeeProject);
-      // setresponse(result.item.project);
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
-      // setProjectMangerEmail(result.item.projectMangerEmail);
-      // //setStatus(result.item.project.status);
-      // setSelectedManagerId(result.item.projectMangerEmail);
+      setStatus(result.item.project.status);
+      setProjectprogress(result.item.project.progress);
+      setReportingManagerId(result.item.project.projectManager);
+
       setProjectManagerName(result.item.projectMangerName);
-      // setprojectStartDate(result.item.project.startDate);
-      // setprojectDeadline(result.item.project.endDate);
-      // setDataReady(true);
     }
+    var response = await AdminDashboardServices.fcngetEmployees();
+    setEmployeelist(response.item);
   }
+  const handleManagerOnChange = (event) => {
+    const selectedManagerId = event.target.value;
+    setReportingManagerId(selectedManagerId);
+  };
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
+  const handleStatusChange = (event) => {
+    const selectedStatus = event.target.value;
+    setStatus(selectedStatus);
+  };
+  const handleProgressChange = (event) => {
+    const selectedProgress = event.target.value;
+    setProjectprogress(selectedProgress);
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -186,7 +211,19 @@ export function ViewProject() {
       project.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
-
+  const updateEmployee = () => {
+    setisOpen(true);
+  };
+  const handleEditClose = () => {
+    setisOpen(false);
+  };
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setProjectValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
   return (
     <div className="viewProject-Main-div">
       <div className="view-Project">Project Details</div>
@@ -194,7 +231,13 @@ export function ViewProject() {
         <div className="row update-button-row">
           <div className="col-10"></div>
           <div className="col-2 button-col">
-            <button className="update-button">Update</button>
+            <button
+              className="update-button"
+              //onClick={updateEmployee(ProjectValues.id)}
+              onClick={(e) => updateEmployee()}
+            >
+              Update
+            </button>
           </div>
         </div>
         <div className="row m-0  project-view-row">
@@ -445,7 +488,7 @@ export function ViewProject() {
             className="col-2"
             style={{
               display: "flex",
-              justifyContent: "end",
+              justifyContent: "center",
             }}
           >
             <button
@@ -570,6 +613,678 @@ export function ViewProject() {
         </div>
         <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
       </div>
+      {isOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modalheader">
+              <h2 className="employeeDetailsContent">Update Project Details</h2>
+              <span className="cancelicon1">
+                <i
+                  className="bi bi-x-lg"
+                  onClick={handleEditClose}
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </span>
+            </div>
+
+            <div
+              className="row  "
+              style={{
+                marginTop: "20px",
+                marginLeft: "7px",
+                marginRight: "12px",
+              }}
+            >
+              <div className="col-4">
+                <TextField
+                  label="Project ID"
+                  variant="outlined"
+                  name="projectID"
+                  onChange={handleOnChange}
+                  value={ProjectValues.projectID || ""}
+                  fullWidth
+                  select
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "1rem",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+                      fontSize: "0.85rem",
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                      fontSize: "1rem",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {Projects && Projects.length > 0 ? (
+                    Projects.map((project, index) => (
+                      <MenuItem key={index} value={project.project.projectID}>
+                        <span style={{ fontSize: "12px" }}>
+                          {project.project.projectID}
+                        </span>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No Employees Found</MenuItem>
+                  )}
+                </TextField>
+              </div>
+
+              <div className="col-4">
+                <TextField
+                  label="Start Date"
+                  variant="outlined"
+                  type="date"
+                  name="startDate"
+                  value={
+                    ProjectValues.startDate
+                      ? new Date(ProjectValues.startDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  //value={ProjectValues.startDate}
+                  onChange={handleOnChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="End Date"
+                  name="endDate"
+                  type="date"
+                  value={
+                    ProjectValues.endDate
+                      ? new Date(ProjectValues.endDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  //  value={employeeData.lastName || ""}
+                  onChange={handleOnChange}
+                  variant="outlined"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div
+              className="row  employeeUpdateSkills"
+              style={{
+                marginTop: "20px",
+                marginLeft: "7px",
+                marginRight: "12px",
+              }}
+            >
+              <div className="col-4">
+                <TextField
+                  label="ProjectName"
+                  value={ProjectValues.projectName || ""}
+                  onChange={handleOnChange}
+                  variant="outlined"
+                  name="projectName"
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Project Referance ID"
+                  variant="outlined"
+                  name="projectRefId"
+                  value={ProjectValues.projectRefId || ""}
+                  onChange={handleOnChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Client Email"
+                  variant="outlined"
+                  name="clientId"
+                  value={clientvalues.clientEmailId || ""}
+                  onChange={handleOnChange}
+                  fullWidth
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div
+              className="row  employeeUpdateSkills"
+              style={{
+                marginTop: "20px",
+                marginLeft: "7px",
+                marginRight: "12px",
+              }}
+            >
+              <div className="col-4">
+                <TextField
+                  label="Project Type"
+                  variant="outlined"
+                  // name="status"
+                  // value={status}
+                  className="row-checkbox "
+                  // onChange={handleStatusChange}
+                  fullWidth
+                  select
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value={1} style={{ fontSize: "12px" }}>
+                    Active
+                  </MenuItem>
+                  <MenuItem value={0} style={{ fontSize: "12px" }}>
+                    InActive
+                  </MenuItem>
+                </TextField>
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Status"
+                  variant="outlined"
+                  name="status"
+                  value={status}
+                  onChange={handleStatusChange} // Trigger handleStatusChange on change
+                  fullWidth
+                  select
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value={1} style={{ fontSize: "12px" }}>
+                    Active
+                  </MenuItem>
+                  <MenuItem value={0} style={{ fontSize: "12px" }}>
+                    InActive
+                  </MenuItem>
+                </TextField>
+              </div>
+              <div className="col-4">
+                <TextField
+                  label="Progress"
+                  variant="outlined"
+                  name="progress"
+                  value={ProjectProgress}
+                  onChange={handleProgressChange} // Trigger handleStatusChange on change
+                  fullWidth
+                  select
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value={10} style={{ fontSize: "12px" }}>
+                    10%
+                  </MenuItem>
+                  <MenuItem value={20} style={{ fontSize: "12px" }}>
+                    20%
+                  </MenuItem>
+                  <MenuItem value={30} style={{ fontSize: "12px" }}>
+                    30%
+                  </MenuItem>
+                  <MenuItem value={40} style={{ fontSize: "12px" }}>
+                    40%
+                  </MenuItem>
+                  <MenuItem value={50} style={{ fontSize: "12px" }}>
+                    50%
+                  </MenuItem>
+                  <MenuItem value={60} style={{ fontSize: "12px" }}>
+                    60%
+                  </MenuItem>
+                  <MenuItem value={70} style={{ fontSize: "12px" }}>
+                    70%
+                  </MenuItem>
+                  <MenuItem value={80} style={{ fontSize: "12px" }}>
+                    80%
+                  </MenuItem>
+                  <MenuItem value={90} style={{ fontSize: "12px" }}>
+                    90%
+                  </MenuItem>
+                  <MenuItem value={100} style={{ fontSize: "12px" }}>
+                    100%
+                  </MenuItem>
+                </TextField>
+              </div>
+            </div>
+            <div
+              className="row  employeeUpdateSkills"
+              style={{
+                marginTop: "20px",
+                marginLeft: "7px",
+                marginRight: "12px",
+              }}
+            >
+              <div
+                className="col-4"
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                <TextField
+                  label="Reporting Manager"
+                  variant="outlined"
+                  onChange={handleManagerOnChange}
+                  value={ReportingManagerId || ""}
+                  fullWidth
+                  select
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {employeelist && employeelist.length > 0 ? (
+                    employeelist.map((emp) => (
+                      <MenuItem key={emp.employee.id} value={emp.employee.id}>
+                        <span style={{ fontSize: "12px" }}>
+                          {emp.employee.firstName} {emp.employee.lastName}
+                        </span>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No Employees Found</MenuItem>
+                  )}
+                </TextField>
+              </div>
+              <div className="col-8">
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  name="description"
+                  value={ProjectValues.description || ""}
+                  onChange={handleOnChange}
+                  fullWidth
+                  multiline // Enables textarea behavior
+                  rows={2} // Adjusts the number of visible rows
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+                      fontWeight: "500",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      // padding: "10px", // Adjust padding for textarea content
+                      boxSizing: "border-box",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& textarea::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            <div
+              className=" row"
+              style={{
+                marginTop: "20px",
+                marginLeft: "7px",
+                marginRight: "12px",
+              }}
+            >
+              <div className="col-4">
+                <button
+                  className="EditformSubmit"
+                  // onClick={UpdateEmployeeDetails}
+                >
+                  <span className="editformspan">Save</span>
+                </button>
+                <button
+                  className="EditformCancel ms-2"
+                  onClick={handleEditClose}
+                >
+                  <span className="editformcacelspan">Cancel</span>
+                </button>
+              </div>
+              <div className="col-8"></div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
