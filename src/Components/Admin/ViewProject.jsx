@@ -21,17 +21,23 @@ import { getSessionData } from "../../Service/SharedSessionData";
 import ImportPopup from "../Employee/ImportPopup";
 import userimage from "../../assets/Images/User.png";
 import deleteImage from "../../assets/Images/deleteicon.png";
+import pulusimage from "../../assets/Images/plus.png";
+import chechimage from "../../assets/Images/check.png";
+import elipsimage from "../../assets/Images/Ellipse.png";
 
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import ImportProjectEmployees from "../Employee/ImportProjectEmployees";
 export function ViewProject() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isImportPopupOpen, setIsImportPopupOpen] = useState(false);
   const [Projectresponse, setresponse] = useState({});
   const [projectEmployess, setProjectEmployees] = useState([]);
   const [show, setShow] = useState(false);
   const [showw, setShoww] = useState(false);
   const handleClose = () => setShow(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery1, setSearchQuery1] = useState("");
   const [Employeeids, setIds] = useState([]);
   const [progressPercentage, setProgressPercentage] = useState(0);
   const [ProjectValues, setProjectValues] = useState({});
@@ -56,102 +62,13 @@ export function ViewProject() {
   const [ProjectProgress, setProjectprogress] = useState(0);
   const [employeelist, setEmployeelist] = useState([]);
   const [ReportingManagerId, setReportingManagerId] = useState("");
-  //const [status, setStatus] = useState(0);
-  const [projectemp, setprojectemp] = useState([
-    {
-      employeeid: "IARC001",
-      name: "Nagaraju",
-      email: "nagaraju.boda@archents.com",
-      mobile: "9515858174",
-      role: "Project Manager",
-      projectTask: "Planning",
-      dateofjoining: "10/05/2023",
-    },
-    {
-      employeeid: "IARC002",
-      name: "Teja",
-      email: "teja.kumar@archents.com",
-      mobile: "9812345678",
-      role: "Software Engineer",
-      projectTask: "Development",
-      dateofjoining: "15/06/2022",
-    },
-    {
-      employeeid: "IARC003",
-      name: "Mohasina",
-      email: "mohasina.shaik@archents.com",
-      mobile: "9876543210",
-      role: "Team Lead",
-      projectTask: "Team Coordination",
-      dateofjoining: "20/03/2021",
-    },
-    {
-      employeeid: "IARC004",
-      name: "Ramesh",
-      email: "ramesh.varma@archents.com",
-      mobile: "9123456789",
-      role: "QA Engineer",
-      projectTask: "Testing",
-      dateofjoining: "12/09/2023",
-    },
-    {
-      employeeid: "IARC005",
-      name: "Sita",
-      email: "sita.das@archents.com",
-      mobile: "9523451234",
-      role: "UI/UX Designer",
-      projectTask: "Design",
-      dateofjoining: "01/01/2020",
-    },
-    {
-      employeeid: "IARC006",
-      name: "Rajesh",
-      email: "rajesh.patel@archents.com",
-      mobile: "9534567890",
-      role: "Business Analyst",
-      projectTask: "Requirement Gathering",
-      dateofjoining: "10/10/2022",
-    },
-    {
-      employeeid: "IARC007",
-      name: "Anjali",
-      email: "anjali.roy@archents.com",
-      mobile: "9456789123",
-      role: "Data Scientist",
-      projectTask: "Data Analysis",
-      dateofjoining: "20/07/2023",
-    },
-    {
-      employeeid: "IARC008",
-      name: "Arun",
-      email: "arun.kumar@archents.com",
-      mobile: "9123456780",
-      role: "System Administrator",
-      projectTask: "System Maintenance",
-      dateofjoining: "15/05/2021",
-    },
-    {
-      employeeid: "IARC009",
-      name: "Kiran",
-      email: "kiran.s@archents.com",
-      mobile: "9345678901",
-      role: "Network Engineer",
-      projectTask: "Network Configuration",
-      dateofjoining: "05/02/2022",
-    },
-    {
-      employeeid: "IARC010",
-      name: "Priya",
-      email: "priya.nair@archents.com",
-      mobile: "9456123789",
-      role: "DevOps Engineer",
-      projectTask: "CI/CD Pipeline",
-      dateofjoining: "25/11/2022",
-    },
-  ]);
+  const [open, setopen] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
 
   useEffect(() => {
     FetchData();
+    filteredEmployees;
   }, [ProjectID]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
   async function FetchData() {
@@ -172,18 +89,20 @@ export function ViewProject() {
       `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
     );
     var result = response.data;
-    console.log(result, "result");
     if (result.isSuccess === true) {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
       setStatus(result.item.project.status);
       setProjectprogress(result.item.project.progress);
       setReportingManagerId(result.item.project.projectManager);
-
+      setProjectEmployees(result.item.employeeProject);
       setProjectManagerName(result.item.projectMangerName);
     }
     var response = await AdminDashboardServices.fcngetEmployees();
     setEmployeelist(response.item);
+    var response = await AdminDashboardServices.FcnGetAllClients();
+    var result = response.item;
+    setClients(result);
   }
   const handleManagerOnChange = (event) => {
     const selectedManagerId = event.target.value;
@@ -191,6 +110,9 @@ export function ViewProject() {
   };
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+  const setIsImportPopupOpenfunction = () => {
+    setIsImportPopupOpen(!ImportPopup);
   };
   const handleStatusChange = (event) => {
     const selectedStatus = event.target.value;
@@ -204,13 +126,22 @@ export function ViewProject() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-  const filteredEmployees = projectemp.filter((project) => {
+
+  const filteredEmployees = projectEmployess.filter((project) => {
     return (
-      project.employeeid.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.email.toLowerCase().includes(searchQuery.toLowerCase())
+      project.employee.employeeId
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      project.employee.firstName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      project.employee.lastName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      project.employee.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+
   const updateEmployee = () => {
     setisOpen(true);
   };
@@ -219,11 +150,176 @@ export function ViewProject() {
   };
   const handleOnChange = (e) => {
     const { name, value } = e.target;
+
     setProjectValues((prevValues) => ({
       ...prevValues,
       [name]: value,
     }));
   };
+  const UpdateProjectDetails = async () => {
+    var response = await AdminDashboardServices.fcnUpdateProject(ProjectValues);
+    if (response.isSuccess) {
+      setisOpen(false);
+      FetchData();
+    }
+  };
+
+  const handleClosePopup = () => {
+    setopen(false);
+  };
+  // const handleClick = () => {
+  //   setShoww(true);
+  //   GetAllemployees.map((el) => {
+  //     if (
+  //       projectEmployess.filter((proj) => proj.employee.id === el.employee.id)
+  //         .length > 0
+  //     ) {
+  //       el.employee.isAlreadyAdded = true;
+  //     } else {
+  //       el.employee.isAlreadyAdded = false;
+  //     }
+  //   });
+  // };
+  const toggleIcon = (e, index, id) => {
+    setSelectedRowIds((prevSelectedRowIds) => {
+      let newSelectedRowIds;
+      if (id) {
+        if (!prevSelectedRowIds.includes(id)) {
+          newSelectedRowIds = [...prevSelectedRowIds, id];
+        } else {
+          newSelectedRowIds = prevSelectedRowIds.filter(
+            (selectedId) => selectedId !== id
+          );
+        }
+      } else {
+        const rowId = obj[index].id;
+        newSelectedRowIds = prevSelectedRowIds.filter(
+          (selectedId) => selectedId !== rowId
+        );
+      }
+
+      setIds(
+        newSelectedRowIds.map((selectedId) => ({ employeeid: selectedId }))
+      );
+
+      return newSelectedRowIds;
+    });
+  };
+  // async function AddEmployeeSubmit(e) {
+  //   e.preventDefault();
+  //   const requestBody = [
+  //     {
+  //       employeeids: Employeeids,
+  //       id: ProjectValues.id,
+  //     },
+  //   ];
+  //   var response = await adminds.fcnAssignEmployee(requestBody);
+  //   console.log(response, "========>");
+  //   if (response.isSuccess) {
+  //     setopen(false);
+  //   }
+  // }
+  const addNewemployee = async () => {
+    const requestBody = [
+      {
+        employeeids: Employeeids,
+        id: ProjectValues.id,
+      },
+    ];
+    var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
+
+    if (response.isSuccess) {
+      FetchData();
+      setopen(false);
+    }
+  };
+  const filteredEmployees1 = GetAllemployees.filter(
+    (obj) =>
+      obj.employee &&
+      (obj.employee.firstName.toLowerCase().includes(searchQuery1) ||
+        obj.employee.lastName.toLowerCase().includes(searchQuery1) ||
+        obj.employee.employeeId.toString().includes(searchQuery1) ||
+        obj.role.name.toLowerCase().includes(searchQuery1))
+  );
+  const Addemployeefunction = () => {
+    setopen(true);
+    filteredEmployees1.filter((el) => {
+      if (
+        projectEmployess.filter((proj) => proj.employee.id === el.employee.id)
+          .length > 0
+      ) {
+        el.employee.isAlreadyAdded = true;
+      } else {
+        el.employee.isAlreadyAdded = false;
+      }
+    });
+  };
+  console.log(filteredEmployees1, "filter employees");
+  const handleSearchChange1 = (e) => {
+    setSearchQuery1(e.target.value.toLowerCase());
+  };
+  async function handleDelete(id, projectid) {
+    var response = await AdminDashboardServices.DeleteEmployeefcn(
+      id,
+      projectid
+    );
+    console.log(response, "=========>");
+    if (response.isSuccess) {
+      setdeleteEmployeepopup(true);
+    }
+  }
+  const closeDeletePopup = () => {
+    setdeleteEmployeepopup(false);
+    FetchData();
+  };
+  const InsertEmployeeBulkData = () => {
+    const formData = new FormData();
+    // formData.append("file", selectedFile);
+    // const response = await axios.post(
+    //   "https://localhost:44305/api/Employees/BulkInsert",
+    //   formData
+    // );
+    // var result = response.data;
+
+    if (!selectedFile) {
+      alert("Please select an Excel sheet.");
+      return;
+    }
+  };
+  const DownloadExcel = async (listtype, filetype, proID) => {
+    let response;
+    try {
+      response = await axios.get(
+        `https://localhost:44305/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
+        { responseType: "blob" }
+      );
+      // } else {
+      //   response = await axios.get(
+      //     `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
+      //     { responseType: "blob" }
+      //   );
+
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+
+      const fileName = `${listtype}_data.${
+        filetype === "pdf" ? "pdf" : "xlsx"
+      }`;
+      link.download = fileName;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+  // console.log(filteredEmployees1, "filter employees");
+  // console.log(projectEmployess, "project employees");
   return (
     <div className="viewProject-Main-div">
       <div className="view-Project">Project Details</div>
@@ -372,28 +468,7 @@ export function ViewProject() {
           <div className="col-2">
             <p className="projectPrpgress"> Project Team Members</p>
           </div>
-          {/* <div className="col-3" style={{ position: "relative" }}>
-            <input
-              type="text"
-              // onChange={handleSearchChange}
-              // value={searchQuery}
-              className="searchinput "
-              placeholder="Search employee"
-              style={{ padding: "5px", fontSize: "12px" }}
-            />
-            <i
-              className="bi bi-search"
-              style={{
-                fontSize: "12px",
-                position: "absolute",
-                left: "235px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "#888",
-                pointerEvents: "none",
-              }}
-            ></i>
-          </div> */}
+
           <div className="col-3" style={{ position: "relative" }}>
             <div
               style={{
@@ -435,7 +510,7 @@ export function ViewProject() {
             <button
               style={{ fontSize: "12px", height: "30px" }}
               className="btn btn-primary"
-              onClick={() => setIsPopupOpen(true)}
+              onClick={() => setIsImportPopupOpen(true)}
             >
               Import
             </button>
@@ -463,7 +538,7 @@ export function ViewProject() {
               <ul className="dropdown-menu" aria-labelledby="">
                 <li
                   className=" ms-3"
-                  onClick={() => DownloadExcel("employees", "excel")}
+                  onClick={() => DownloadExcel("employees", "excel", ProjectID)}
                 >
                   <p
                     className=""
@@ -476,7 +551,7 @@ export function ViewProject() {
                   <p
                     style={{ fontSize: "12px" }}
                     className=""
-                    onClick={() => DownloadExcel("employees", "pdf")}
+                    onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
                   >
                     Adobe PDF
                   </p>
@@ -500,7 +575,7 @@ export function ViewProject() {
                 height: "30px",
               }}
               className="add-new-project-button"
-              //onClick={Addemployeefuncton}
+              onClick={Addemployeefunction}
             >
               <span>
                 <img
@@ -532,13 +607,13 @@ export function ViewProject() {
           >
             <thead>
               <tr className="tableheader">
-                <th>
+                {/* <th>
                   <input
                     type="checkbox"
-                    //  onChange={handleSelectAll}
+                    //onChange={handleSelectAll}
                     className="userCheckbox"
                   />
-                </th>
+                </th> */}
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>
                   Employee ID
                 </th>
@@ -568,17 +643,25 @@ export function ViewProject() {
                       cursor: "pointer",
                     }}
                   >
-                    <td style={{ textAlign: "start" }}>
+                    {/* <td style={{ textAlign: "start" }}>
                       <input type="checkbox" className="row-checkbox " />
-                    </td>
-                    <td style={{ fontSize: "12px" }}>{employee.employeeid}</td>
-                    <td style={{ fontSize: "12px" }}>{employee.name}</td>
-                    <td style={{ fontSize: "12px" }}>{employee.email}</td>
-                    <td style={{ fontSize: "12px" }}>{employee.mobile}</td>
-                    <td style={{ fontSize: "12px" }}>{employee.role}</td>
-                    <td style={{ fontSize: "12px" }}>{employee.projectTask}</td>
+                    </td> */}
                     <td style={{ fontSize: "12px" }}>
-                      {employee.dateofjoining}
+                      {employee.employee.employeeId}
+                    </td>
+                    <td
+                      style={{ fontSize: "12px" }}
+                    >{`${employee.employee.firstName} ${employee.employee.lastName} `}</td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employee.email}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employee.mobileNo}
+                    </td>
+                    <td style={{ fontSize: "12px" }}>{employee.role}</td>
+                    <td style={{ fontSize: "12px" }}>{projectManagername}</td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employee.dateOfJoining}
                     </td>
                     <td>
                       <img
@@ -589,6 +672,12 @@ export function ViewProject() {
                           height: "24px",
                           cursor: "pointer",
                         }}
+                        onClick={() =>
+                          handleDelete(
+                            employee.employee.id,
+                            employee.project.id
+                          )
+                        }
                       />
                     </td>
                   </tr>
@@ -612,6 +701,10 @@ export function ViewProject() {
           </table>
         </div>
         <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
+        <ImportProjectEmployees
+          IsProjectOpen1={isImportPopupOpen}
+          handleClose1={setIsImportPopupOpenfunction}
+        />
       </div>
       {isOpen && (
         <div className="modal-overlay">
@@ -903,11 +996,74 @@ export function ViewProject() {
                   }}
                 />
               </div>
+
               <div className="col-4">
                 <TextField
                   label="Client Email"
                   variant="outlined"
                   name="clientId"
+                  value={ProjectValues.clientId}
+                  onChange={handleOnChange}
+                  fullWidth
+                  select
+                  sx={{
+                    // width: "85%",
+                    "& .MuiOutlinedInput-root": {
+                      fontSize: "12px",
+                      "& fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&:hover fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                      "&.Mui-focused fieldset": {
+                        border: "1px solid #DCDCDC",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#000000",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      transform: "translate(15px, 9px)",
+                      "&.Mui-focused": {
+                        color: "black",
+                      },
+                    },
+                    "& .MuiOutlinedInput-input": {
+                      height: "22px",
+                      padding: "8px 12px",
+                      fontSize: "1rem",
+                    },
+                    "& .MuiInputLabel-shrink": {
+                      fontSize: "1rem",
+                      transform: "translate(14px, -9px) scale(0.75)",
+                    },
+                    "& input::placeholder": {
+                      fontSize: "12px",
+                      color: "#AEAEAE",
+                    },
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>Select/Add Client</em>
+                  </MenuItem>
+                  {clients && clients.length > 0 ? (
+                    clients.map((client, index) => (
+                      <MenuItem key={client.id} value={client.id}>
+                        <span style={{ fontSize: "12px" }}>
+                          {" "}
+                          {client.clientEmailId}
+                        </span>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No Client Found</MenuItem>
+                  )}
+                </TextField>
+                {/* <TextField
+                  label="Client Email"
+                  variant="outlined"
+                  name="clientEmailId"
                   value={clientvalues.clientEmailId || ""}
                   onChange={handleOnChange}
                   fullWidth
@@ -946,7 +1102,7 @@ export function ViewProject() {
                       color: "#AEAEAE",
                     },
                   }}
-                />
+                /> */}
               </div>
             </div>
             <div
@@ -961,10 +1117,7 @@ export function ViewProject() {
                 <TextField
                   label="Project Type"
                   variant="outlined"
-                  // name="status"
-                  // value={status}
                   className="row-checkbox "
-                  // onChange={handleStatusChange}
                   fullWidth
                   select
                   sx={{
@@ -1016,8 +1169,8 @@ export function ViewProject() {
                   label="Status"
                   variant="outlined"
                   name="status"
-                  value={status}
-                  onChange={handleStatusChange} // Trigger handleStatusChange on change
+                  value={ProjectValues.status}
+                  onChange={handleOnChange} // Trigger handleStatusChange on change
                   fullWidth
                   select
                   sx={{
@@ -1068,8 +1221,8 @@ export function ViewProject() {
                   label="Progress"
                   variant="outlined"
                   name="progress"
-                  value={ProjectProgress}
-                  onChange={handleProgressChange} // Trigger handleStatusChange on change
+                  value={ProjectValues.progress}
+                  onChange={handleOnChange} // Trigger handleStatusChange on change
                   fullWidth
                   select
                   sx={{
@@ -1153,10 +1306,11 @@ export function ViewProject() {
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
                 <TextField
-                  label="Reporting Manager"
+                  label="Project Manager"
                   variant="outlined"
-                  onChange={handleManagerOnChange}
-                  value={ReportingManagerId || ""}
+                  name="projectManager"
+                  onChange={handleOnChange}
+                  value={ProjectValues.projectManager || ""}
                   fullWidth
                   select
                   sx={{
@@ -1269,7 +1423,7 @@ export function ViewProject() {
               <div className="col-4">
                 <button
                   className="EditformSubmit"
-                  // onClick={UpdateEmployeeDetails}
+                  onClick={UpdateProjectDetails}
                 >
                   <span className="editformspan">Save</span>
                 </button>
@@ -1282,6 +1436,192 @@ export function ViewProject() {
               </div>
               <div className="col-8"></div>
             </div>
+          </div>
+        </div>
+      )}
+      {open && (
+        <div className="dialog-overlay">
+          <div className="dialog-box">
+            <div className="dialog-header">
+              <h2 className="dialog-title">Add Employees</h2>
+              <span className="dialog-close">
+                <i
+                  className="bi bi-x-lg"
+                  onClick={handleClosePopup}
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </span>
+            </div>
+
+            <div className="row m-0 pb-3">
+              <div className="col-3"></div>
+              <div
+                className="col-6"
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  justifyContent: "end",
+                  paddingTop: "15px",
+                }}
+              >
+                <input
+                  type="text"
+                  className="searchinput"
+                  placeholder="Search employees"
+                  onChange={handleSearchChange1}
+                  value={searchQuery1}
+                  style={{
+                    fontSize: "12px",
+                    padding: "0px 10px",
+                    width: "100%",
+                    paddingRight: "30px",
+                    boxSizing: "border-box",
+                  }}
+                />
+                <i
+                  className="bi bi-search"
+                  style={{
+                    fontSize: "12px",
+                    position: "absolute",
+                    right: "20px",
+                    top: "68%",
+                    transform: "translateY(-50%)",
+                    color: "#888",
+                    pointerEvents: "none",
+                  }}
+                ></i>
+              </div>
+              <div className="col-3"></div>
+            </div>
+            <div
+              style={{
+                maxHeight: "300px",
+                overflowY: "auto",
+                overflowX: "hidden",
+                // border: "1px solid #DCDCDC",
+                //marginTop: "10px",
+                //margin: "8px",
+                padding: "0px 10px",
+              }}
+            >
+              <table
+                className="employeeTable1"
+                style={{
+                  width: "100%",
+
+                  position: "relative",
+                }}
+              >
+                <thead
+                  className="employee-Details-table"
+                  style={{
+                    position: "sticky",
+                    top: "0px",
+                    left: "0px",
+                    right: "0px",
+                  }}
+                >
+                  <tr>
+                    <th style={{ padding: "0px 8px" }}>Employee ID</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th className="">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="fixed_header tbody">
+                  {filteredEmployees1.map((obj, index) =>
+                    !obj.employee.isAlreadyAdded ? (
+                      <tr
+                        key={obj.employee.id}
+                        // className="tablebody"
+                        className={
+                          selectedRowIds.includes(obj.employee.id)
+                            ? "selected-row  tablebody"
+                            : ""
+                        }
+                      >
+                        <td className="data" style={{ padding: "0px 8px" }}>
+                          {obj.employee.employeeId}
+                        </td>
+                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td className="data">{obj.role.name}</td>
+                        <td style={{ width: "20px" }} className="data">
+                          {selectedRowIds.includes(obj.employee.id) ? (
+                            <RxCross2
+                              onClick={(e) =>
+                                toggleIcon(e, index, obj.employee.id)
+                              }
+                              className="cancleemployee"
+                              style={{
+                                cursor: "pointer",
+                                color: "red",
+                                width: "27px",
+                                height: "28px",
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={pulusimage}
+                              style={{ cursor: "pointer" }}
+                              onClick={(e) =>
+                                toggleIcon(e, index, obj.employee.id)
+                              }
+                              alt=""
+                              width="27px"
+                              height="28px"
+                            />
+                          )}
+                        </td>
+                      </tr>
+                    ) : null
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="dialog-actions" style={{ paddingTop: "0px" }}>
+              <div className="col-10"></div>
+              <div className="col-2">
+                <button className="dialog-submit-btn" onClick={addNewemployee}>
+                  <span style={{ fontSize: "12px" }}>Add</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <ToastContainer position="top-end" autoClose={5000} />
+        </div>
+      )}
+      {deleteemployeepopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Deleted Successfully</h2>
+            <p className="unique-popup-message">Click OK to see the results</p>
+            <button
+              className="unique-popup-button mt-5"
+              onClick={closeDeletePopup}
+              style={{ position: "fixed" }}
+            >
+              OK
+            </button>
           </div>
         </div>
       )}

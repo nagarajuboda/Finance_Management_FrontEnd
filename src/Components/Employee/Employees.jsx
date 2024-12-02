@@ -27,7 +27,7 @@ export default function Employees() {
 
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [selectedEmployeeIds]);
 
   const EdittogglePopup = (e, index, employeeid) => {
     sessionStorage.setItem("EmployeeID", employeeid);
@@ -61,11 +61,13 @@ export default function Employees() {
   };
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
-    if (isChecked) {
+    console.log(selectedEmployeeIds, "========>");
+    if (isChecked && selectedEmployeeIds.length > 0) {
       const allEmployeeIds = currentItems.map(
         (employee) => employee.employeeDetails.id
       );
       setSelectedEmployeeIds(allEmployeeIds);
+
       setDisiblebuttons(false);
     } else {
       setSelectedEmployeeIds([]);
@@ -75,6 +77,7 @@ export default function Employees() {
       checkbox.checked = isChecked;
     });
   };
+  // console.log(selectedEmployeeIds, "====>");
 
   const Addemployeefuncton = () => {
     navigate("/dashboard/AddEmployee");
@@ -140,6 +143,8 @@ export default function Employees() {
 
   const handleCheckboxChange = (employeeId, isChecked) => {
     setSelectedEmployeeIds((prevSelected) => {
+      console.log(isChecked, "============>");
+      console.log(selectedEmployeeIds, "========>");
       if (isChecked) {
         setDisiblebuttons(false);
         return [...prevSelected, employeeId];
@@ -441,6 +446,7 @@ export default function Employees() {
               </tr>
             </thead>
             <tbody>
+              {console.log(currentItems, "============> employee")}
               {currentItems.length > 0 ? (
                 currentItems.map((employee, index) =>
                   !isDivVisible
@@ -452,10 +458,11 @@ export default function Employees() {
                             backgroundColor: "white",
                             cursor: "pointer",
                           }}
-                          // onClick={(e) =>
-                          //   ViewDetails(employee.employeeDetails.id)
-                          // }
+                          onClick={(e) =>
+                            ViewDetails(employee.employeeDetails.id)
+                          }
                         >
+                          {console.log(currentItems, "============> employee")}
                           <td style={{ textAlign: "start" }}>
                             <input
                               type="checkbox"
@@ -550,6 +557,7 @@ export default function Employees() {
                             ViewDetails(employee.employeeDetails.id)
                           }
                         >
+                          {console.log(currentItems, "============> employee")}
                           <td style={{ textAlign: "start" }}>
                             <input
                               type="checkbox"

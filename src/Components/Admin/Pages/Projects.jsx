@@ -350,8 +350,8 @@ export default function Projectss() {
                             // }
                             alt=""
                             style={{
-                              width: "24px",
-                              height: "24px",
+                              width: "22px",
+                              height: "22px",
                               cursor: "pointer",
                             }}
                           />

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-const ImportPopup = ({ isOpen, handleClose }) => {
+const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
   const [AllEmployees, setAllEmployees] = useState([]);
   const [inactiveEmployees, setInactiveEmployees] = useState([]);
   const [employees, setEmployees] = useState([]);
@@ -15,14 +15,14 @@ const ImportPopup = ({ isOpen, handleClose }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile();
+      setSelectedFile(file);
     }
   };
   useEffect(() => {
-    if (!isOpen) {
+    if (!IsProjectOpen1) {
       removefile();
     }
-  }, [isOpen]);
+  }, [IsProjectOpen1]);
   const removefile = () => {
     setSelectedFile(null);
     if (fileInputRef.current) {
@@ -35,7 +35,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     const response = await axios.post(
-      "https://localhost:44305/api/Employees/BulkInsert",
+      "https://localhost:44305/api/Projects/AddBulkEmployees",
       formData
     );
     var result = response.data;
@@ -46,50 +46,44 @@ const ImportPopup = ({ isOpen, handleClose }) => {
     }
     if (result.isSuccess) {
       if (result.item.item2 == false) {
-        setAllEmployees(result.item.item1);
-        setEmployees(
-          result.item.item1.filter((emp) => emp.employeeStatus === 1)
-        );
-        setInactiveEmployees(
-          result.item.item1.filter((emp) => emp.employeeStatus === 0)
-        );
-        fetchEmployees();
+        // setAllEmployees(result.item.item1);
+        // setEmployees(
+        //   result.item.item1.filter((emp) => emp.employeeStatus === 1)
+        // );
+        // setInactiveEmployees(
+        //   result.item.item1.filter((emp) => emp.employeeStatus === 0)
+        // );
+        //  fetchEmployees();
         Swal.fire({
           title: "Good job!",
           text: "Data inserted successfully done ...",
           icon: "success",
           confirmButtonText: "OK",
+        }).then(() => {
+          setSelectedFile(null);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+          handleClose1(); // Call the parent component's close handler
         });
         setSelectedFile(null);
         fileInputRef.current.value = "";
+        if (!IsProjectOpen1) return null;
       } else {
-        let vlauesss = [];
         var emails = result.item.item1
-          .map((obj) => obj.email)
-          .filter((email) => email !== null && email !== undefined);
-        var ids = result.item.item1
           .map((obj) => obj.employeeId)
-          .filter((id) => id !== null && id !== undefined);
-        var empnumbers = result.item.item1
-          .map((obj) => obj.mobileNo)
-          .filter((mobileNo) => mobileNo !== null && mobileNo !== undefined);
-        // vlauesss.push(...emails);
-        // vlauesss.push(...ids);
-        // vlauesss.push(...empnumbers);
-        // let formattedText = vlauesss.join(",");
-        // const formatedData = formattedText;
-        let formattedEmails = `<span style:"color:"black">EmailIDs:</span><br>${emails.join(
+          .filter(
+            (employeeId) => employeeId !== null && employeeId !== undefined
+          );
+        console.log(emails, "=========>");
+        let formattedEmails = `<span style:"color:"black">Employees Already exsit:</span><br>${emails.join(
           "<br>"
         )}`;
-        let formattedIds = `EmployeeIds:<br>${ids.join("<br>")}`;
-        let formattedNumbers = `PhoneNumbers:<br>${empnumbers.join("<br>")}`;
 
-        // Combine all sections into a single formatted text
-        let formattedText = `${formattedEmails}<br><br>${formattedIds}<br><br>${formattedNumbers}`;
         Swal.fire({
           title: "Error!",
           html: `<div style="width: auto; max-height: 80px; overflow-y: auto; overflow-x: hidden;">
-          <span style="font-weight: 600; color: black;">${formattedText.replace(
+          <span style="font-weight: 600; color: black;">${formattedEmails.replace(
             /,/g,
             "<br>"
           )}</span>
@@ -117,7 +111,8 @@ const ImportPopup = ({ isOpen, handleClose }) => {
       });
     }
   };
-  if (!isOpen) return null;
+  if (!IsProjectOpen1) return null;
+
   return (
     <div className="popup-overlay">
       <form onSubmit={InsertbulkData}>
@@ -127,7 +122,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
             <sapn className="cancelicon1">
               <i
                 class="bi bi-x-lg"
-                onClick={handleClose}
+                onClick={handleClose1}
                 style={{ cursor: "pointer" }}
               ></i>
             </sapn>
@@ -178,7 +173,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
           </div>
           <div className="popup-actions">
             <button className="submit-btn">Submit</button>
-            <button className="cancel-btn" onClick={handleClose}>
+            <button className="cancel-btn" onClick={handleClose1}>
               Cancel
             </button>
           </div>
@@ -189,4 +184,4 @@ const ImportPopup = ({ isOpen, handleClose }) => {
   );
 };
 
-export default ImportPopup;
+export default ImportProjectEmployees;

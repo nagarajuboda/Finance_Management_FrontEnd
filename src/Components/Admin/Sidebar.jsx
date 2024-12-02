@@ -163,7 +163,6 @@ const Sidebar = ({ children }) => {
             key={index}
             className="menu-item tree"
             style={{ marginTop: "10px" }}
-            //style={{ marginTop: "10px", width: "215px" }}
           >
             <ul>
               <NavLink
@@ -171,55 +170,96 @@ const Sidebar = ({ children }) => {
                 className="link"
                 onClick={() => item.submenu && toggleDropdown(index)}
               >
-                <div className="icon">
-                  {typeof item.icon === "string" ? (
-                    index === 1 ? (
-                      <img
-                        className="indexicon"
-                        style={{ marginLeft: "15px" }}
-                        src={item.icon}
-                        alt={item.name}
-                      />
+                {isOpen ? (
+                  <div className="icon">
+                    {typeof item.icon === "string" ? (
+                      index === 1 ? (
+                        <img
+                          className="indexicon"
+                          style={{ marginLeft: "15px" }}
+                          src={item.icon}
+                          alt={item.name}
+                        />
+                      ) : (
+                        <img
+                          className="iconimages"
+                          src={item.icon}
+                          alt={item.name}
+                        />
+                      )
                     ) : (
-                      <img
-                        className="iconimages"
-                        src={item.icon}
-                        alt={item.name}
-                      />
-                    )
-                  ) : (
-                    item.icon
-                  )}
-
-                  <div
-                    style={{
-                      display: isOpen ? "" : "none",
-                    }}
-                    className="link_text"
-                  >
-                    {index === 0 ? (
-                      <div className="menuname1" style={{ fontSize: "12px" }}>
-                        {item.name}
-                      </div>
-                    ) : (
-                      <div className="menuname" style={{ fontSize: "12px" }}>
-                        {item.name}
-                      </div>
+                      item.icon
                     )}
 
-                    {item.submenu && index !== 0 && (
-                      <FaChevronRight
-                        className={`dropdown-icon ${
-                          openDropdowns.includes(index) ? "open" : ""
-                        }`}
-                        style={{ color: "#9f9f9f" }}
-                      />
-                    )}
+                    <div
+                      style={{
+                        display: isOpen ? "" : "none",
+                      }}
+                      className="link_text"
+                    >
+                      {index === 0 ? (
+                        <div className="menuname1" style={{ fontSize: "12px" }}>
+                          {item.name}
+                        </div>
+                      ) : (
+                        <div className="menuname" style={{ fontSize: "12px" }}>
+                          {item.name}
+                        </div>
+                      )}
+
+                      {item.submenu && index !== 0 && (
+                        <FaChevronRight
+                          className={`dropdown-icon ${
+                            openDropdowns.includes(index) ? "open" : ""
+                          }`}
+                          style={{ color: "#9f9f9f" }}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div class="dropdown">
+                    <div className="icon dropbtn">
+                      {typeof item.icon === "string" &&
+                        (index === 1 ? (
+                          <img
+                            className="indexicon"
+                            style={{ marginLeft: "15px" }}
+                            src={item.icon}
+                            alt={item.name}
+                          />
+                        ) : (
+                          <img
+                            className="iconimages"
+                            src={item.icon}
+                            alt={item.name}
+                          />
+                        ))}
+                    </div>
+                    <div class="dropdown-content" style={{ height: "auto" }}>
+                      {item.submenu && (
+                        <div>
+                          {item.submenu.map((subItem, subIndex) => (
+                            <NavLink
+                              to={subItem.path}
+                              key={subIndex}
+                              className=""
+                            >
+                              <div className="">
+                                <span style={{ fontSize: "12px" }}>
+                                  {subItem.name}
+                                </span>
+                              </div>
+                            </NavLink>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </NavLink>
-              <ul>
-                {item.submenu && (
+              <ul className="ulclass">
+                {isOpen && item.submenu && (
                   <div
                     className={`submenu ${
                       openDropdowns.includes(index) ? "open" : ""

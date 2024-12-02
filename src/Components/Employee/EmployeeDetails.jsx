@@ -61,20 +61,9 @@ export default function EmployeeDetails() {
                     color: "white",
                   }}
                 >
-                  <span class="dot"></span> Active
+                  <span class="dot"></span>
+                  {employee.employeeStatus ? "Active" : "Inactive"}
                 </button>
-                <ul class="dropdown-menu" style={{ width: "50px" }}>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Active
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      Inaction
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -196,7 +185,7 @@ export default function EmployeeDetails() {
                 <th>Project Manager</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                <th>Actions</th>
+                {/* <th>Actions</th> */}
               </tr>
             </thead>
             <tbody>
@@ -237,14 +226,15 @@ export default function EmployeeDetails() {
                   </tr>
                 ) : (
                   <tr key={index}>
-                    <td>{obj.project.projectName}</td>
+                    <td style={{ padding: "0px 8px" }}>
+                      {obj.project.projectName}
+                    </td>
                     <td>{obj.client.clientName}</td>
                     <td>
                       {obj.projectManager.firstName}{" "}
                       {obj.projectManager.lastName}
                     </td>
                     <td>{fromDate}</td>
-                    <td></td>
                     {toDate == "present" ? (
                       <td>
                         {
@@ -252,6 +242,9 @@ export default function EmployeeDetails() {
                             style={{
                               fontWeight: "800",
                               margin: "0",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
                             --
