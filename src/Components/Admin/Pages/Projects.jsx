@@ -22,10 +22,12 @@ export default function Projectss() {
 
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [selectedProjectIds]);
   const FetchData = async () => {
     const response = await axios.get(
       "https://localhost:44305/api/Projects/GetAllProjects"
@@ -42,7 +44,7 @@ export default function Projectss() {
       `https://localhost:44305/api/Projects/DeleteProject?id=${projectid}`
     );
     var result = response.data;
-    console.log(response);
+
     if (result.isSuccess) {
       FetchData();
       setOpen(true);
@@ -67,8 +69,6 @@ export default function Projectss() {
     //   .toLowerCase()
     //   .includes(searchQuery.toLowerCase())
   });
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -77,7 +77,7 @@ export default function Projectss() {
     indexOfLastItem
   );
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
-  //console.log(Projects, "projects");
+
   const DeleteMessageClose = async () => {
     setOpen(false);
   };
@@ -92,28 +92,36 @@ export default function Projectss() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
   const ViewProject = (projectid) => {
-    console.log(projectid, "==========>");
     sessionStorage.setItem("id", projectid);
     navigate("/dashboard/ViewProject");
   };
+
   const handleCheckboxChange = (projectid, isChecked) => {
     setSelectedProjectIds((prevSelected) => {
+      let updatedSelected;
       if (isChecked) {
-        setDisiblebuttons(false);
-        return [...prevSelected, projectid];
+        updatedSelected = [...prevSelected, projectid];
       } else {
-        setDisiblebuttons(true);
-        return prevSelected.filter((id) => id !== projectid);
+        updatedSelected = prevSelected.filter((id) => id !== projectid);
       }
+
+      if (updatedSelected.length === 0) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+
+      return updatedSelected;
     });
   };
+
   const DeleteSelectedRecords = async () => {
     const response = await axios.put(
       "https://localhost:44305/api/Projects/DeleteSelectedProjects",
       selectedProjectIds
     );
     const result = response.data;
-    console.log(result, "==========>");
+
     if (result.isSuccess) {
       setOpen(true);
       FetchData();
@@ -133,7 +141,7 @@ export default function Projectss() {
       checkbox.checked = isChecked;
     });
   };
-  console.log(selectedProjectIds, "====>selectedProjectIDs");
+
   return (
     <div className="">
       <p className="project-list-content">Projects</p>
@@ -280,7 +288,7 @@ export default function Projectss() {
                 <th style={{ fontSize: "12px" }}>Project Manager</th>
                 <th style={{ fontSize: "12px" }}>Start Date</th>
                 <th style={{ fontSize: "12px" }}>End Date</th>
-                <th style={{ fontSize: "12px" }}>Actions</th>
+                <th style={{ fontSize: "12px" }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -292,7 +300,7 @@ export default function Projectss() {
                         key={index}
                         className="tablebody"
                         style={{ backgroundColor: "white", cursor: "pointer" }}
-                        onClick={(e) => ViewProject(project.project.id)}
+                        // onClick={(e) => ViewProject(project.project.id)}
                       >
                         <td style={{ textAlign: "start" }}>
                           <input
@@ -306,27 +314,45 @@ export default function Projectss() {
                             }
                           />
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.projectID}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.projectName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.client.clientName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.employee.firstName}{" "}
                           {project.employee.lastName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.startDate}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.endDate}
                         </td>
                         <td>
-                          <img
+                          {/* <img
                             src={image}
                             // onClick={EdittogglePopup}
                             onClick={(e) =>
@@ -338,7 +364,7 @@ export default function Projectss() {
                               height: "18px",
                               cursor: "pointer",
                             }}
-                          />
+                          /> */}
                           <img
                             className="ms-3"
                             src={deleteimage}

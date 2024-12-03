@@ -1,6 +1,6 @@
 import "../../assets/Styles/EmployeePages/EmployeeDetails.css";
 import userProfile from "../../assets/Images/adminprofile.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, React } from "react";
 import axios from "axios";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function EmployeeDetails() {
@@ -11,6 +11,10 @@ export default function EmployeeDetails() {
   const [Skills, setSkills] = useState([]);
   const [role, setRole] = useState({});
   const [employeeTracking, setemployeeTracking] = useState([]);
+  const [isVisible, setisVisible] = useState(false);
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isTooltipVisible, setTooltipVisible] = useState(false);
+
   useEffect(() => {
     fetchData();
   }, [employeeID]);
@@ -28,7 +32,32 @@ export default function EmployeeDetails() {
     );
     setemployeeTracking(GetProjectsResponse.item);
   };
+  // function toggleDropdown() {
+  //   var dropdown = document.querySelector(".dropdown");
+  //   dropdown.classList.toggle("active");
+  // }
+  const moreskills = () => {
+    console.log("button cliked");
+    setisVisible(true);
+  };
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
 
+  const closeDropdown = (e) => {
+    if (!e.target.closest(".dropbtn")) {
+      setDropdownOpen(false);
+    }
+  };
+  const toggleTooltip = () => {
+    setTooltipVisible(!isTooltipVisible);
+  };
+  useEffect(() => {
+    document.addEventListener("click", closeDropdown);
+    return () => {
+      document.removeEventListener("click", closeDropdown);
+    };
+  }, []);
   return (
     <div className="">
       <div className="Employee-details-content">employee details</div>
@@ -146,29 +175,137 @@ export default function EmployeeDetails() {
             </div>
             <div
               className="col-8"
-              // style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
-              style={{
-                overflowY: "scroll",
-                resize: "none",
-                //width: "75%",
-                border: "1px solid #ccc",
-                padding: "5px",
-                gap: "5px",
-
-                height: "40px",
-                borderRadius: "4px",
-                display: "flex",
-                flexWrap: "wrap",
-                fontSize: "12px",
-                fontWeight: "600",
-                color: "#000000",
-              }}
+              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
             >
               {Skills.length > 0 ? (
-                Skills.map((empskill, index) => (
-                  <p key={index}>{`${empskill.skill} ${","}`}</p>
-                ))
+                <div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {Skills.slice(0, 3).map((empskill, index) => (
+                      <p
+                        key={index}
+                        style={{
+                          fontSize: "12px",
+                          display: "flex",
+                          marginRight: "5px",
+                        }}
+                      >
+                        {empskill.skill}
+                        {index < 2 && ","}
+                      </p>
+                    ))}
+
+                    {Skills.length > 3 && (
+                      <button
+                        className="tooltip-button "
+                        onClick={toggleTooltip}
+                        style={{
+                          fontSize: "12px",
+                          color: "#139BFF",
+                          paddingBottom: "15px",
+                        }}
+                        type="button"
+                      >
+                        ...more
+                      </button>
+                    )}
+                  </div>
+
+                  {isTooltipVisible && (
+                    <div className="tooltip-box">
+                      <div className="tooltip-header">
+                        <span style={{ fontSize: "12px", padding: "0px 7px" }}>
+                          Skill Sets
+                        </span>
+                      </div>
+                      <ul
+                        className="tooltip-list"
+                        style={{
+                          overflowY: "scroll",
+                          resize: "none",
+                          // gap: "5px",
+                          // height: "50x",
+                          borderRadius: "4px",
+                          height: "100px",
+                          flexWrap: "wrap",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          color: "#000000",
+                        }}
+                      >
+                        {Skills.slice(3).map((empskill, index) => (
+                          <li
+                            key={index}
+                            style={{
+                              fontSize: "12px",
+                              color: "white",
+                              padding: "0px 7px",
+                            }}
+                          >
+                            {empskill.skill}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               ) : (
+                // Skills.map(
+                //   (empskill, index) =>
+                //     // <p>{console.log(index)}</p>
+                //     index < 3 ? (
+                //       <div style={{ display: "flex" }}>
+                //         <p
+                //           key={index}
+                //           style={{ fontSize: "12px", display: "flex" }}
+                //         >
+                //           {empskill.skill} {index < 2 && <span>,</span>}{" "}
+                //           {index > 1 && <span>...</span>}
+                //         </p>
+                //         {console.log(empskill, index)}
+                //         <p>
+                //           {index === 2 && (
+                //             <button
+                //               //class="dropbtn"
+                //               // onClick={toggleDropdown}
+                //               //className="dropbtn"
+                //               className="tooltip-button"
+                //               onClick={toggleTooltip}
+                //               type="button"
+                //               style={{ fontSize: "12px", color: "#139BFF" }}
+                //               //onClick={moreskills}
+                //             >
+                //               more
+                //             </button>
+                //           )}
+                //         </p>
+                //       </div>
+                //     ) : (
+                //       <div>
+                //         {isTooltipVisible && (
+                //           <div className="tooltip-box">
+                //             <div className="tooltip-header">
+                //               <span className="ms-2 ">Skill Sets</span>
+                //             </div>
+                //             <ul
+                //               className="tooltip-list"
+                //               style={{ paddingBottom: "5px" }}
+                //             >
+                //               <li style={{ padding: "0px 7px" }}>
+                //                 {empskill.skill}
+                //               </li>
+                //             </ul>
+                //           </div>
+                //         )}
+                //       </div>
+                //       // // <p key={index}>{`${empskill.skill} ${","}`}</p>
+                //       // <div class="dropdown" onclick="toggleDropdown()">
+                //       //   <div class="dropdown-content">
+                //       //     <a href="#">{empskill.skill}</a>
+                //       //   </div>
+                //       // </div>
+                //     )
+                //   // <p key={index}>{`${empskill.skill} ${","}`}</p>
+                // )
                 <p style={{ margin: "0" }}>NA</p>
               )}
             </div>

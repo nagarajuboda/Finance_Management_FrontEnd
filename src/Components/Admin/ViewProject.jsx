@@ -1579,13 +1579,26 @@ export function ViewProject() {
               </table>
             </div>
 
-            <div className="dialog-actions" style={{ paddingTop: "0px" }}>
+            {/* <div className="dialog-actions" style={{ paddingTop: "0px" }}>
               <div className="col-10"></div>
               <div className="col-2">
                 <button className="dialog-submit-btn" onClick={addNewemployee}>
                   <span style={{ fontSize: "12px" }}>Add</span>
                 </button>
               </div>
+            </div> */}
+            <div
+              className="dialog-footer"
+              style={{
+                borderTop: "1px solid #ddd",
+                padding: "10px 20px",
+                textAlign: "right",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              <button className="dialog-submit-btn" onClick={addNewemployee}>
+                <span style={{ fontSize: "12px" }}>Add</span>
+              </button>
             </div>
           </div>
 
@@ -1613,17 +1626,48 @@ export function ViewProject() {
                 />
               </div>
             </div>
-            <h2 className="unique-popup-title">Deleted Successfully</h2>
-            <p className="unique-popup-message">Click OK to see the results</p>
-            <button
-              className="unique-popup-button mt-5"
-              onClick={closeDeletePopup}
-              style={{ position: "fixed" }}
-            >
+            <h2 className="unique-popup-title">
+              Delete Employee Successfully!
+            </h2>
+            <p className="unique-popup-message">
+              Click OK to view added project
+            </p>
+            <button className="unique-popup-button" onClick={closeDeletePopup}>
               OK
             </button>
           </div>
         </div>
+        // <div className="unique-popup-overlay">
+        //   <div className="unique-popup-container">
+        //     <div className="unique-popup-icon">
+        //       <div className="ellipse-container">
+        //         <img
+        //           src={chechimage}
+        //           alt="Check"
+        //           className="check-image"
+        //           height="40px"
+        //           width="40px"
+        //         />
+        //         <img
+        //           src={elipsimage}
+        //           alt="Ellipse"
+        //           className="ellipse-image"
+        //           height="65px"
+        //           width="65px"
+        //         />
+        //       </div>
+        //     </div>
+        //     <h2 className="unique-popup-title">Deleted Successfully</h2>
+        //     <p className="unique-popup-message">Click OK to see the results</p>
+        //     <button
+        //       className="unique-popup-button mt-5"
+        //       onClick={closeDeletePopup}
+        //       style={{ position: "fixed" }}
+        //     >
+        //       OK
+        //     </button>
+        //   </div>
+        // </div>
       )}
     </div>
   );

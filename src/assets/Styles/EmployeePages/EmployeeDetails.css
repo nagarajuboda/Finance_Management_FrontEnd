@@ -91,3 +91,57 @@
   background: #f8f8f9 0% 0% no-repeat padding-box;
   border-radius: 5px;
 }
+
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-button {
+  background: none;
+  border: none;
+  color: #139bff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tooltip-box {
+  position: absolute;
+  top: -300%;
+  left: 150px;
+  background-color: #2c3e50;
+  color: #fff;
+  /* padding: 10px; */
+  /* border-radius: 8px; */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  z-index: 1000;
+  height: auto;
+}
+
+.tooltip-header {
+  font-weight: bold;
+  margin-bottom: 10px;
+  height: 30px;
+  background-color: #232f49;
+}
+
+.tooltip-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tooltip-list li {
+  margin: 5px 0;
+}
+
+.tooltip-box::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 20px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #2c3e50 transparent;
+}
