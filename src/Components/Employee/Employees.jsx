@@ -383,7 +383,7 @@ export default function Employees() {
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>No records on the table</td>
+                  <td>No recordson the table</td>
                   <td></td>
                   <td></td>
                   <td></td>

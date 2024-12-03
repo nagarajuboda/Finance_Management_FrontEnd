@@ -1,168 +1,241 @@
-/* General Styles for the RolesPage */
-.data-table-container {
+/* RolesCSS */
+.Rolelist{
+  font-family: Arial, sans-serif;
   margin: 20px;
+  border-radius: 10px;
+  opacity: 0.9;
+  height: 100%;
 }
 
-.tableheader {
-  margin-bottom: 20px;
+.Rolelist:hover{
+  opacity: 1;
 }
 
-.searchinput {
-  width: 300px;
-  padding: 10px;
-  margin-right: 20px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+.RolesSubHeader{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
-.importbutton {
-  padding: 10px 15px;
-  background-color: #4CAF50;
+.RolesSubHeaderLeft{
+  float:left;
+  padding:10px 10px;
+}
+
+.RolesSubHeaderLeft h3{
+  color: #196e8a;
+  padding:13px;
+}
+
+.AddRoleBtn {
+  padding: 10px 20px;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.importbutton:hover {
-  background-color: #45a049;
-}
-
-/* Table styles */
-.employeeTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-.employeeTable th, .employeeTable td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-.employeeTable th {
-  background-color: #f4f4f4;
-  font-size: 14px;
-  color: #333;
-}
-
-.EmployeeListtablelistrow {
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
-.EmployeeListtablelistrow:hover {
+.AddRoleBtn:hover {
+  background-color: #0056b3;
+}
+
+.RolesSubHeaderRight{
+  float:right;
+  padding:21px 21px;
+}
+
+.RolesSubHeaderRight a{
+  padding: 10px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.RolesSubHeaderRight:hover a {
+  background-color: #0056b3; 
+  color: white;
+}
+
+.RolesTbl {
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.RolesTbl th, .RolesTbl td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.RolesTbl th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.RolesTbl tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.RolesTbl tr:hover {
   background-color: #f1f1f1;
 }
 
-/* Table cells */
-.tableheader th,
-.EmployeeListtablelistrow td {
-  font-size: 12px;
+.Rolesedit-btn, .Rolesdelete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  margin-right: 5px;
 }
 
-.userCheckbox {
-  width: 18px;
-  height: 18px;
+.Rolesedit-btn {
+  background-color: #28a745;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-.row-checkbox {
-  width: 18px;
-  height: 18px;
+.Rolesedit-btn:hover {
+  background-color: #218838;
 }
 
-.tableheader {
-  font-weight: bold;
+.Rolesdelete-btn {
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.3s ease;
 }
 
-.numberpagenation {
-  font-size: 14px;
-  margin-top: 20px;
-  text-align: right;
+.Rolesdelete-btn:hover {
+  background-color: #c82333;
 }
 
-/* Popup styles for editing and confirming actions */
-.popup-overlay {
+/* RolesModel */
+
+.RolesModelContainer {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background-color: #fff;
-  padding: 30px;
-  width: 400px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.popuheader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.headercontent {
-  font-size: 16px;
-  font-weight: bold;
-  color: #333;
-}
-
-.cancelicon1 {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: #ccc;
-}
-
-.file-input {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-.submit-btn {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.submit-btn:hover {
-  background-color: #45a049;
-}
-
-.cancel-btn {
-  padding: 10px 20px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background-color: #e53935;
-}
-
-.popup-actions {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
-.file-upload-section {
-  margin-top: 20px;
+.RolesModelContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 30%;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.RolesModelSubHeader{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.RolesModelSubHeaderLeft{
+  float:left;
+  padding:13px;
+}
+
+.RolesModelSubHeaderLeft h2{
+  color: #196e8a;
+}
+
+.RolesModelSubHeaderRight{
+  float:right;
+  padding:13px;
+  margin-top: -4px;
+}
+
+.RolesModelSubHeaderRightCloseBtn{
+  padding: 10px 13px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #dc3545;
+  color: white;
+}
+
+.RolesModelSubHeaderRightCloseBtn:hover{
+  background-color: #c82333;
+}
+
+.RolesContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 5%;
+}
+.RolesRow {
+  display: flex;
+}
+
+.Roleslabel {
+  margin-top: 15px;
+  width: 35%; 
+  margin-left: 8%;
+}
+
+.Rolesvalue {
+  margin-right: 8%;
+}
+
+input[type="Rolestext"] {
+  padding: 10px;
+  border: 1px solid #939191;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+}
+
+.RolesModelPriority {
+  padding: 10px;
+  border: 1px solid #939191;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  width:235%;
+  margin-left: -9px;
+}
+  
+input[type="Rolesnumber"].Priority {
+  width: 100%;
+} 
+
+.RolesModelSaveBtn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.RolesModelSaveBtn:hover {
+  background-color: #0056b3;
+}
+.RolesError {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
 }
