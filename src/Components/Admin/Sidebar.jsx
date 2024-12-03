@@ -69,7 +69,9 @@ const Sidebar = ({ children }) => {
       icon: hrManagement,
       submenu: [
         { path: "/dashboard/Employees", name: "Employees" },
-        { path: "/Dashboard/AllProjects", name: "Roles" },
+        // { path: "/Dashboard/AllProjects", name: "Roles" },
+        { path: "/dashboard/Roles", name: "Roles" }, // r
+
       ],
     },
     {

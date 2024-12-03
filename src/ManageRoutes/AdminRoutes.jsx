@@ -41,7 +41,7 @@ export default function AdminRoutes() {
         <Route path="/product" element={<Product />} />
         <Route path="/productList" element={<ProductList />} />
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
-        <Route path="/Roles" element={<Roles />} />
+        {/* <Route path="/Roles" element={<Roles />} /> */}
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
@@ -62,6 +62,8 @@ export default function AdminRoutes() {
         />
         {/* hrRoutes */}
         <Route path="/AllEmployees" element={<AllEmployees />} />
+        <Route path="/Roles" element={<Roles />} /> {/* Roles */}
+
       </Routes>
     </Sidebar>
   );
