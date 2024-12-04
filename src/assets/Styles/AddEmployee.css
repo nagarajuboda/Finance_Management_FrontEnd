@@ -43,7 +43,11 @@
 
 .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 0 !important;
-  height: 36px !important;
+  height: 30px !important;
+}
+
+.MuiOutlinedInput-root {
+  height: 35px !important;
 }
 .addEmployeeSubmitbutton {
   width: 105px;

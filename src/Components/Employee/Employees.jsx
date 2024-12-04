@@ -1082,41 +1082,6 @@ export default function Employees() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            {/* <div className="importdropdown ">
-              <a
-                className="importdropwlist dropdown-toggle"
-                href="#"
-                role="button"
-                id="dropdownMenuLink"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{ fontSize: "12px", height: "30px" }}
-              >
-                Export To
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="">
-                <li
-                  className=" ms-3"
-                  onClick={() => DownloadExcel("employees", "excel")}
-                >
-                  <p
-                    className=""
-                    style={{ fontSize: "12px", cursor: "pointer" }}
-                  >
-                    MS Excel
-                  </p>
-                </li>
-                <li style={{ cursor: "pointer" }} className="ms-3">
-                  <p
-                    style={{ fontSize: "12px" }}
-                    className=""
-                    onClick={() => DownloadExcel("employees", "pdf")}
-                  >
-                    Adobe PDF
-                  </p>
-                </li>
-              </ul>
-            </div> */}
           </div>
           {!isDivVisible && (
             <div className="col-2 ">
