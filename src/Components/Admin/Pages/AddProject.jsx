@@ -3,7 +3,7 @@ import "../../../assets/Styles/AddProject.css";
 import { Link, useNavigate } from "react-router-dom";
 import { IoAddCircle } from "react-icons/io5";
 import axios from "axios";
-
+import { Textarea } from "@material-tailwind/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import image from "../../../assets/Images/plus.png";
@@ -334,6 +334,7 @@ export default function AddProject() {
       }
     }
   }
+  const [message, setMessage] = useState("");
   return (
     <div className="addProjectMainDiv">
       <div>
@@ -508,7 +509,7 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div
               className="col-3 row m-0"
               style={{ display: "flex", justifyContent: "space-between" }}
@@ -549,6 +550,7 @@ export default function AddProject() {
                     padding: "8px 12px",
                     fontSize: "1rem",
                   },
+
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
                     transform: "translate(14px, -9px) scale(0.75)",
@@ -810,7 +812,7 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div className="col-3">
               <TextField
                 label="Currency"
@@ -880,17 +882,18 @@ export default function AddProject() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div className="col-12">
               <TextField
-                variant="outlined"
                 label="Description"
-                placeholder="Enter Description"
+                variant="outlined"
                 name="Description"
                 value={values.Description}
                 onChange={handleChange}
+                className="textareaclass"
+                fullWidth
                 multiline
-                height="100px"
+                rows={2}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -906,28 +909,26 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
-                    fontWeight: "600",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    boxSizing: "border-box",
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
                     transform: "translate(14px, -9px) scale(0.75)",
                   },
-                  "& input::placeholder": {
+                  "& textarea::placeholder": {
                     fontSize: "12px",
                     color: "#AEAEAE",
                   },
                 }}
               />
+
               {errorss.Description && (
                 <span
                   className="error ms-1"

@@ -1,7 +1,7 @@
 import axios from "axios";
 import "../../../assets/Styles/Projects.css";
 import { useEffect } from "react";
-
+import "../../../assets/Styles/Employee.css";
 import { useState } from "react";
 import { isPast } from "date-fns";
 import image from "../../../assets/Images/Editicon.png";
@@ -11,20 +11,23 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import elipisimage from "../../../assets/Images/Ellipse.png";
 import checkimage from "../../../assets/Images/check.png";
-// import imagees from "../../assets/Images/Ellipse.png";
-// import userimaeg from "../../assets/Images/check.png";
+import { CoPresentOutlined } from "@mui/icons-material";
+
 export default function Projectss() {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [Projects, setProjects] = useState([]);
-  const [tableInitialized, setTableInitialized] = useState(false);
+  const [disiblebuttons, setDisiblebuttons] = useState(true);
+  const [selectedProjectIds, setSelectedProjectIds] = useState([]);
+
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [open, setOpen] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const tableRef = useRef(null);
-  const searchInputRef = useRef(null);
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [selectedProjectIds]);
   const FetchData = async () => {
     const response = await axios.get(
       "https://localhost:44305/api/Projects/GetAllProjects"
@@ -32,81 +35,107 @@ export default function Projectss() {
     const result = response.data;
     setProjects(result.item);
   };
-  //   const handleOpenPopup = async (e, index, id) => {
-  //     debugger;
-  //     var response = await axios.put(
-  //       `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
-  //     );
-  //     var result = response.data;
-  //     if (result.isSuccess == true) {
-  //       console.log(result);
-  //       setOpen(true);
-  //     }
-  //   };
 
-  useEffect(() => {
-    if (Projects.length > 0 && !tableInitialized) {
-      const dataTable = $(tableRef.current).DataTable({
-        ordering: false,
-        lengthMenu: [
-          [10, 25, 50, -1],
-          [
-            "Show 10 Entities",
-            "Show 25 Entities",
-            "Show 50 Entities",
-            "Show All",
-          ],
-        ],
-        language: {
-          lengthMenu: "_MENU_",
-        },
-        columnDefs: [{ orderable: false, targets: 0 }],
-        pagingType: "simple_numbers",
-        info: false,
-      });
-
-      searchInputRef.current.addEventListener("keyup", function () {
-        dataTable.search(this.value).draw();
-      });
-
-      setTableInitialized(true);
-    }
-
-    return () => {
-      if (tableInitialized) {
-        $(tableRef.current).DataTable().destroy();
-        setTableInitialized(false);
-      }
-    };
-  }, [Projects, tableInitialized]);
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
-      checkbox.checked = isChecked;
-    });
-  };
   const AddNewProject = () => {
     navigate("/Dashboard/AddProject");
   };
   const DeleteProject = async (e, index, projectid) => {
-    debugger;
     var response = await axios.put(
       `https://localhost:44305/api/Projects/DeleteProject?id=${projectid}`
     );
     var result = response.data;
+
     if (result.isSuccess) {
-      debugger;
-      const updatedProjects = Projects.filter((pro) => {
-        pro.project.id !== projectid;
-      });
-      console.log(updatedProjects, "=======.");
-      await FetchData();
+      FetchData();
       setOpen(true);
     }
   };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const filteredEmployees = Projects.filter((project) => {
+    return (
+      project.project.projectName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      project.project.projectID
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredEmployees.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+
   const DeleteMessageClose = async () => {
     setOpen(false);
   };
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1);
+  };
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  const ViewProject = (projectid) => {
+    sessionStorage.setItem("id", projectid);
+    navigate("/dashboard/ViewProject");
+  };
+
+  const handleCheckboxChange = (projectid, isChecked) => {
+    setSelectedProjectIds((prevSelected) => {
+      let updatedSelected;
+      if (isChecked) {
+        updatedSelected = [...prevSelected, projectid];
+      } else {
+        updatedSelected = prevSelected.filter((id) => id !== projectid);
+      }
+
+      if (updatedSelected.length === 0) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+
+      return updatedSelected;
+    });
+  };
+
+  const DeleteSelectedRecords = async () => {
+    const response = await axios.put(
+      "https://localhost:44305/api/Projects/DeleteSelectedProjects",
+      selectedProjectIds
+    );
+    const result = response.data;
+
+    if (result.isSuccess) {
+      setOpen(true);
+      FetchData();
+    }
+  };
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      const allProjectIds = currentItems.map((project) => project.project.id);
+      setSelectedProjectIds(allProjectIds);
+      setDisiblebuttons(false);
+    } else {
+      setSelectedProjectIds([]);
+      setDisiblebuttons(true); // Disable buttons if none are selected
+    }
+    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+  };
+
   return (
     <div className="">
       <p className="project-list-content">Projects</p>
@@ -114,59 +143,97 @@ export default function Projectss() {
         <div
           className="row"
           style={{
-            paddingTop: "5px",
+            paddingTop: "12px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <div className="col-2">
-            <p className="employeecontent">Project list</p>
+            <p className="Project-list-content">Project list</p>
           </div>
+          <div className="col-1"></div>
           <div
-            className="col-4"
-            style={{ display: "flex", justifyContent: "end" }}
+            className="col-3"
+            style={{
+              position: "relative",
+            }}
           >
             <input
               type="text"
-              className="searchinput"
-              ref={searchInputRef}
+              onChange={handleSearchChange}
+              value={searchQuery}
+              className="searchinput "
               placeholder="Search Projects"
-              style={{ width: "300px", padding: "5px" }}
+              style={{ width: "280px", padding: "5px", fontSize: "12px" }}
             />
+            <i
+              className="bi bi-search"
+              style={{
+                fontSize: "12px",
+                position: "absolute",
+                left: "270px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#888",
+                pointerEvents: "none",
+              }}
+            ></i>
           </div>
           <div className="col-6 row">
-            <div className="col-4">
+            <div className="col-1"></div>
+            <div className="col-4 ">
               <select
                 className="numberpagenation"
-                onChange={(e) => {
-                  const length = e.target.value;
-                  $(tableRef.current).DataTable().page.len(length).draw();
-                }}
+                style={{ cursor: "pointer", height: "30px" }}
+                onChange={handleItemsPerPageChange}
+                value={itemsPerPage}
               >
-                <option value="10">Show 10 Entities</option>
-                <option value="25">Show 25 Entities</option>
-                <option value="50">Show 50 Entities</option>
-                <option value="-1">Show All</option>
+                <option value="10" style={{ fontSize: "12px" }}>
+                  Show 10 Entities
+                </option>
+                <option value="25" style={{ fontSize: "12px" }}>
+                  Show 25 Entities
+                </option>
+                <option value="50" style={{ fontSize: "12px" }}>
+                  Show 50 Entities
+                </option>
+                <option value="-1" style={{ fontSize: "12px" }}>
+                  Show All
+                </option>
               </select>
             </div>
 
-            <div className="col-3">
-              <button className="DeleteRecordbutton">
-                <span
-                  className="deleteSelectedSpan"
-                  style={{ fontSize: "13px" }}
-                >
-                  Delete Selected
-                </span>
+            <div
+              className="col-3 "
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "end",
+              }}
+            >
+              <button
+                className="btn btn-danger"
+                disabled={disiblebuttons}
+                onClick={DeleteSelectedRecords}
+                style={{ fontSize: "12px", height: "30px" }}
+              >
+                Delete Selected
               </button>
             </div>
             <div
               className="col-4"
-              style={{ display: "flex", justifyContent: "end" }}
+              style={{ display: "flex", justifyContent: "start" }}
             >
               <button
-                style={{ display: "flex" }}
+                style={{
+                  display: "flex",
+                  width: "auto",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  padding: "5px",
+                  height: "30px",
+                }}
                 className="add-new-project-button"
                 onClick={AddNewProject}
               >
@@ -174,24 +241,31 @@ export default function Projectss() {
                   <img
                     src={userimage}
                     alt=""
-                    height="18px"
-                    width="18px"
-                    className="ms-2"
+                    height="15px"
+                    width="15px"
+                    className="mb-3"
                   />
                 </span>
-                <span className="add-new-project-span ms-1 ">
+                <span
+                  className=" ms-1"
+                  style={{
+                    fontSize: "12px",
+                    color: "#000000",
+                    fontWeight: "bold",
+                  }}
+                >
                   Add New Project
                 </span>
               </button>
             </div>
           </div>
         </div>
-        <div>
+        <div style={{ padding: "10px" }}>
           <table
             id="example"
             className="employeeTable"
-            ref={tableRef}
-            style={{ width: "98.5%" }}
+            style={{ width: "100%" }}
+            // style={{ width: "100%" }}
           >
             <thead>
               <tr className="tableheader">
@@ -202,64 +276,76 @@ export default function Projectss() {
                     className="userCheckbox"
                   />
                 </th>
-                <th style={{ textAlign: "start" }}>Project ID</th>
-                <th>Project Name</th>
-                <th>Clients</th>
-                <th>Project Manager</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Action</th>
+                <th style={{ fontSize: "12px" }}>Project ID</th>
+                <th style={{ fontSize: "12px" }}>Project Name</th>
+                <th style={{ fontSize: "12px" }}>Clients</th>
+                <th style={{ fontSize: "12px" }}>Project Manager</th>
+                <th style={{ fontSize: "12px" }}>Start Date</th>
+                <th style={{ fontSize: "12px" }}>End Date</th>
+                <th style={{ fontSize: "12px" }}>Action</th>
               </tr>
             </thead>
             <tbody>
-              {Projects.length > 0 ? (
-                Projects.map(
+              {currentItems.length > 0 ? (
+                currentItems.map(
                   (project, index) =>
-                    project.project.status === 1 && (
+                    project.project.status == 1 && (
                       <tr
                         key={index}
                         className="tablebody"
-                        style={{ backgroundColor: "white" }}
+                        style={{ backgroundColor: "white", cursor: "pointer" }}
+                        // onClick={(e) => ViewProject(project.project.id)}
                       >
                         <td style={{ textAlign: "start" }}>
                           <input
                             type="checkbox"
-                            className="row-checkbox userCheckbox"
+                            className="row-checkbox "
+                            onChange={(e) =>
+                              handleCheckboxChange(
+                                project.project.id,
+                                e.target.checked
+                              )
+                            }
                           />
                         </td>
-                        <td style={{ textAlign: "start", fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.projectID}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.projectName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.client.clientName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.employee.firstName}{" "}
                           {project.employee.lastName}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.startDate}
                         </td>
-                        <td style={{ fontSize: "12px" }}>
+                        <td
+                          style={{ fontSize: "12px" }}
+                          onClick={(e) => ViewProject(project.project.id)}
+                        >
                           {project.project.endDate}
                         </td>
                         <td>
-                          <img
-                            src={image}
-                            // onClick={EdittogglePopup}
-                            onClick={(e) =>
-                              EdittogglePopup(e, index, employee.id)
-                            }
-                            alt=""
-                            style={{
-                              width: "18px",
-                              height: "18px",
-                              cursor: "pointer",
-                            }}
-                          />
                           <img
                             className="ms-3"
                             src={deleteimage}
@@ -268,8 +354,8 @@ export default function Projectss() {
                             }
                             alt=""
                             style={{
-                              width: "24px",
-                              height: "24px",
+                              width: "22px",
+                              height: "22px",
                               cursor: "pointer",
                             }}
                           />
@@ -278,15 +364,12 @@ export default function Projectss() {
                     )
                 )
               ) : (
-                <tr className="tablebody" style={{ backgroundColor: "white" }}>
+                <tr style={{ width: "100%" }}>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
-                  <td>No recordson the table</td>
-                  <td></td>
-                  <td></td>
+                  <td>No Records Found</td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -329,6 +412,36 @@ export default function Projectss() {
             </div>
           </div>
         )}
+        <div className="pagination">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            style={{ fontSize: "10px" }}
+          >
+            <span> Prev</span>
+          </button>
+
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (page) => (
+              <button
+                key={page}
+                style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+                onClick={() => setCurrentPage(page)}
+                className={currentPage === page ? "active-page" : ""}
+              >
+                {page}
+              </button>
+            )
+          )}
+
+          <button
+            style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

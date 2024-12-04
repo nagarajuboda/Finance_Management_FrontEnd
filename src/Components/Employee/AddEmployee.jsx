@@ -166,7 +166,6 @@ export default function AddEmployee() {
       [name]: value,
     });
 
-    // Validate the current input change
     setErrors({
       ...errors,
       [name]: addEmployeeFormValidation(name, value),
@@ -208,7 +207,7 @@ export default function AddEmployee() {
       color: "#AEAEAE",
     },
     "& .MuiSvgIcon-root": {
-      color: "#AEAEAE", // Color for the calendar icon
+      color: "#AEAEAE",
     },
   };
   const closeSuccessPopup = () => {
@@ -217,7 +216,7 @@ export default function AddEmployee() {
   };
   async function AddEmployeeForm(e) {
     e.preventDefault();
-    console.log(values);
+
     const newErrors = {
       employeeId: addEmployeeFormValidation("employeeId", values.employeeId),
       firstName: addEmployeeFormValidation("firstName", values.firstName),
@@ -239,7 +238,7 @@ export default function AddEmployee() {
       ),
     };
     setErrors(newErrors);
-    console.log(errors, "errors");
+
     const isValid = Object.values(newErrors).every((error) => error === "");
     if (isValid) {
       var obj = {
@@ -257,13 +256,12 @@ export default function AddEmployee() {
         },
         Skillsetlists: namesList,
       };
-      console.log(obj, "formData");
 
       var response = await axios.post(
         "https://localhost:44305/api/Employees/Add",
         obj
       );
-      console.log(response, "=======>response");
+
       if (response.data.isSuccess == true) {
         setIsOpen(true);
       } else {
@@ -276,9 +274,7 @@ export default function AddEmployee() {
   }
   const ClearValues = () => {
     setValues({});
-    console.log(values);
   };
-  console.log(values.role);
   return (
     <div className="addemployeemaindiv">
       <div className="addemployeecontent">Add new Employee</div>
@@ -293,42 +289,6 @@ export default function AddEmployee() {
                 name="employeeId"
                 onChange={Handleonchnage}
                 fullWidth
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "12px",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "12px",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -384,42 +344,6 @@ export default function AddEmployee() {
                 name="firstName"
                 onChange={Handleonchnage}
                 fullWidth
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -474,42 +398,6 @@ export default function AddEmployee() {
                 name="lastName"
                 onChange={Handleonchnage}
                 fullWidth
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -556,42 +444,6 @@ export default function AddEmployee() {
                 name="email"
                 onChange={Handleonchnage}
                 fullWidth
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -639,7 +491,7 @@ export default function AddEmployee() {
               )}
             </div>
           </div>
-          <div className="row  m-0" style={{ paddingTop: "50px" }}>
+          <div className="row  m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3">
               <TextField
                 label="Mobile Number"
@@ -648,42 +500,6 @@ export default function AddEmployee() {
                 onChange={Handleonchnage}
                 variant="outlined"
                 fullWidth
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -784,42 +600,6 @@ export default function AddEmployee() {
                           color: "#AEAEAE",
                         },
                       }}
-                      // sx={{
-                      //   "& .MuiOutlinedInput-root": {
-                      //     fontSize: "1rem",
-                      //     "& fieldset": {
-                      //       border: "1px solid #DCDCDC",
-                      //     },
-                      //     "&:hover fieldset": {
-                      //       border: "1px solid #DCDCDC",
-                      //     },
-                      //     "&.Mui-focused fieldset": {
-                      //       border: "1px solid #DCDCDC",
-                      //     },
-                      //   },
-                      //   "& .MuiInputLabel-root": {
-                      //     color: "#000000",
-                      //     fontSize: "0.85rem",
-                      //     fontWeight: "600",
-                      //     transform: "translate(15px, 9px)",
-                      //     "&.Mui-focused": {
-                      //       color: "black", // Desired color when focused
-                      //     },
-                      //   },
-                      //   "& .MuiOutlinedInput-input": {
-                      //     height: "22px",
-                      //     padding: "8px 12px",
-                      //     fontSize: "12px",
-                      //   },
-                      //   "& .MuiInputLabel-shrink": {
-                      //     fontSize: "1rem",
-                      //     transform: "translate(14px, -6px) scale(0.75)",
-                      //   },
-                      //   "& input::placeholder": {
-                      //     fontSize: "12px",
-                      //     color: "#AEAEAE",
-                      //   },
-                      // }}
                     />
                   )}
                 />
@@ -843,7 +623,7 @@ export default function AddEmployee() {
                 value={values.role}
                 onChange={Handleonchnage}
                 fullWidth
-                select // This prop turns the TextField into a dropdown
+                select
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -880,42 +660,6 @@ export default function AddEmployee() {
                     color: "#AEAEAE",
                   },
                 }}
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -985,42 +729,6 @@ export default function AddEmployee() {
                     color: "#AEAEAE",
                   },
                 }}
-                // sx={{
-                //   "& .MuiOutlinedInput-root": {
-                //     fontSize: "1rem",
-                //     "& fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&:hover fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //     "&.Mui-focused fieldset": {
-                //       border: "1px solid #DCDCDC",
-                //     },
-                //   },
-                //   "& .MuiInputLabel-root": {
-                //     color: "#000000",
-                //     fontSize: "0.85rem",
-                //     fontWeight: "600",
-                //     transform: "translate(15px, 9px)",
-                //     "&.Mui-focused": {
-                //       color: "black", // Desired color when focused
-                //     },
-                //   },
-                //   "& .MuiOutlinedInput-input": {
-                //     height: "22px",
-                //     padding: "8px 12px",
-                //     fontSize: "12px",
-                //   },
-                //   "& .MuiInputLabel-shrink": {
-                //     fontSize: "1rem",
-                //     transform: "translate(14px, -6px) scale(0.75)",
-                //   },
-                //   "& input::placeholder": {
-                //     fontSize: "12px",
-                //     color: "#AEAEAE",
-                //   },
-                // }}
               >
                 <MenuItem value="">
                   <em>None</em>
@@ -1047,7 +755,7 @@ export default function AddEmployee() {
               )}
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "50px" }}>
+          <div className="row m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3" style={{ display: "flex" }}>
               <div>
                 <TextField
@@ -1056,7 +764,7 @@ export default function AddEmployee() {
                   variant="outlined"
                   value={name}
                   onChange={handleInputChange}
-                  onKeyPress={handleKeyPress} // Detect Enter key press
+                  onKeyPress={handleKeyPress}
                   fullWidth
                   sx={{
                     width: "215px",
@@ -1096,42 +804,6 @@ export default function AddEmployee() {
                       color: "#AEAEAE",
                     },
                   }}
-                  // sx={{
-                  //   "& .MuiOutlinedInput-root": {
-                  //     fontSize: "1rem",
-                  //     "& fieldset": {
-                  //       border: "1px solid #DCDCDC",
-                  //     },
-                  //     "&:hover fieldset": {
-                  //       border: "1px solid #DCDCDC",
-                  //     },
-                  //     "&.Mui-focused fieldset": {
-                  //       border: "1px solid #DCDCDC",
-                  //     },
-                  //   },
-                  //   "& .MuiInputLabel-root": {
-                  //     color: "#000000",
-                  //     fontSize: "0.85rem",
-                  //     fontWeight: "600",
-                  //     transform: "translate(15px, 9px)",
-                  //     "&.Mui-focused": {
-                  //       color: "black", // Desired color when focused
-                  //     },
-                  //   },
-                  //   "& .MuiOutlinedInput-input": {
-                  //     height: "22px",
-                  //     padding: "8px 12px",
-                  //     fontSize: "12px",
-                  //   },
-                  //   "& .MuiInputLabel-shrink": {
-                  //     fontSize: "1rem",
-                  //     transform: "translate(14px, -6px) scale(0.75)",
-                  //   },
-                  //   "& input::placeholder": {
-                  //     fontSize: "12px",
-                  //     color: "#AEAEAE",
-                  //   },
-                  // }}
                 />
               </div>
               <div className=" col-1">
@@ -1153,7 +825,7 @@ export default function AddEmployee() {
           <div
             className="row m-0"
             style={{
-              paddingTop: "44px",
+              paddingTop: "30px",
             }}
           >
             <div className="col-12">
@@ -1203,91 +875,6 @@ export default function AddEmployee() {
                   </div>
                 ))}
               </div>
-              {/* <TextField
-                variant="outlined"
-                label="Skill Sets"
-                //placeholder="Add Skills"
-                multiline
-                // height="85px"
-                disabled
-                InputProps={{
-                  startAdornment: (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        //flexWrap: "wrap",
-                        gap: "10px", // Space between each name box
-                        marginTop: 2,
-                      }}
-                    >
-                      {namesList.map((name, index) => (
-                        <Box key={index} className="skillsetbox">
-                          <Typography
-                            className="skillsetitem "
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              //justifyContent: "space-between",
-                              padding: "0px 0px 0px 5px",
-                            }}
-                          >
-                            <p className="ms-2"> {name}</p>
-                            <p className="ms-2">
-                              <img
-                                src={checkimage1}
-                                alt=""
-                                className="me-2"
-                                height="20px"
-                                width="20px"
-                                style={{ cursor: "pointer" }}
-                                onClick={(e) => cancleSkill(e, index, name)}
-                              />
-                            </p>
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                  ),
-                }}
-                sx={{
-                  width: "100%",
-                  "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
-                    overflowY: "scroll",
-                    "& fieldset": {
-                      border: "1px solid #DCDCDC",
-                    },
-                    "&:hover fieldset": {
-                      border: "1px solid #DCDCDC",
-                    },
-                    "&.Mui-focused fieldset": {
-                      border: "1px solid #DCDCDC",
-                    },
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
-                    transform: "translate(15px, 9px)",
-                    "&.Mui-focused": {
-                      color: "black", // Desired color when focused
-                    },
-                  },
-                  "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
-                  },
-                  "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -6px) scale(0.75)",
-                  },
-                  "& input::placeholder": {
-                    fontSize: "12px",
-                    color: "#AEAEAE",
-                  },
-                }}
-              /> */}
             </div>
           </div>
           <div className="row m-0" style={{ paddingTop: "25px " }}>

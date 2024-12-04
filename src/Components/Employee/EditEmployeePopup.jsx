@@ -29,7 +29,6 @@ const EditEmployeePopup = () => {
   const [roleList, setRoleList] = useState([]);
   const [name, setName] = useState("");
   const employeeID = sessionStorage.getItem("EmployeeID");
-  console.log(employeeID, "=========>");
   useEffect(() => {
     FeatchData();
     //setopen(isEditOpen);
