@@ -11,7 +11,7 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
   const [employees, setEmployees] = useState([]);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  //   if (!isOpen) return null;
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -26,7 +26,7 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
   const removefile = () => {
     setSelectedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset the file input field
+      fileInputRef.current.value = "";
     }
   };
   const InsertbulkData = async (e) => {
@@ -46,14 +46,6 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
     }
     if (result.isSuccess) {
       if (result.item.item2 == false) {
-        // setAllEmployees(result.item.item1);
-        // setEmployees(
-        //   result.item.item1.filter((emp) => emp.employeeStatus === 1)
-        // );
-        // setInactiveEmployees(
-        //   result.item.item1.filter((emp) => emp.employeeStatus === 0)
-        // );
-        //  fetchEmployees();
         Swal.fire({
           title: "Good job!",
           text: "Data inserted successfully done ...",
@@ -64,7 +56,7 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
           if (fileInputRef.current) {
             fileInputRef.current.value = "";
           }
-          handleClose1(); // Call the parent component's close handler
+          handleClose1();
         });
         setSelectedFile(null);
         fileInputRef.current.value = "";
@@ -90,8 +82,6 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
         </div>`,
           icon: "error",
           confirmButtonText: "Cancel",
-          //footer:
-          //'<a href="#" style="color: red;">This value already exists</a>',
         });
       }
     } else {
@@ -130,13 +120,6 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
 
           <div className="file-upload-section">
             <div className="file-input">
-              {/* <input
-                type="file"
-                id="file"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-                ref={fileInputRef}
-              /> */}
               <input
                 type="file"
                 id="file"
@@ -157,18 +140,6 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
                   {selectedFile ? selectedFile.name : "No file chosen"}
                 </span>
               </label>
-              {/* <label htmlFor="file">
-                <img
-                  src={fileupload}
-                  alt="Upload"
-                  className="uploadfileimage"
-                />
-
-                <p className="choosefile">
-                  <span className="choosefilespan">Choose File</span>
-                </p>
-                <span className="cancelicon">No file chosen</span>
-              </label> */}
             </div>
           </div>
           <div className="popup-actions">

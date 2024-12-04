@@ -32,10 +32,7 @@ export default function EmployeeDetails() {
     );
     setemployeeTracking(GetProjectsResponse.item);
   };
-  // function toggleDropdown() {
-  //   var dropdown = document.querySelector(".dropdown");
-  //   dropdown.classList.toggle("active");
-  // }
+
   const moreskills = () => {
     console.log("button cliked");
     setisVisible(true);
@@ -249,63 +246,6 @@ export default function EmployeeDetails() {
                   )}
                 </div>
               ) : (
-                // Skills.map(
-                //   (empskill, index) =>
-                //     // <p>{console.log(index)}</p>
-                //     index < 3 ? (
-                //       <div style={{ display: "flex" }}>
-                //         <p
-                //           key={index}
-                //           style={{ fontSize: "12px", display: "flex" }}
-                //         >
-                //           {empskill.skill} {index < 2 && <span>,</span>}{" "}
-                //           {index > 1 && <span>...</span>}
-                //         </p>
-                //         {console.log(empskill, index)}
-                //         <p>
-                //           {index === 2 && (
-                //             <button
-                //               //class="dropbtn"
-                //               // onClick={toggleDropdown}
-                //               //className="dropbtn"
-                //               className="tooltip-button"
-                //               onClick={toggleTooltip}
-                //               type="button"
-                //               style={{ fontSize: "12px", color: "#139BFF" }}
-                //               //onClick={moreskills}
-                //             >
-                //               more
-                //             </button>
-                //           )}
-                //         </p>
-                //       </div>
-                //     ) : (
-                //       <div>
-                //         {isTooltipVisible && (
-                //           <div className="tooltip-box">
-                //             <div className="tooltip-header">
-                //               <span className="ms-2 ">Skill Sets</span>
-                //             </div>
-                //             <ul
-                //               className="tooltip-list"
-                //               style={{ paddingBottom: "5px" }}
-                //             >
-                //               <li style={{ padding: "0px 7px" }}>
-                //                 {empskill.skill}
-                //               </li>
-                //             </ul>
-                //           </div>
-                //         )}
-                //       </div>
-                //       // // <p key={index}>{`${empskill.skill} ${","}`}</p>
-                //       // <div class="dropdown" onclick="toggleDropdown()">
-                //       //   <div class="dropdown-content">
-                //       //     <a href="#">{empskill.skill}</a>
-                //       //   </div>
-                //       // </div>
-                //     )
-                //   // <p key={index}>{`${empskill.skill} ${","}`}</p>
-                // )
                 <p style={{ margin: "0" }}>NA</p>
               )}
             </div>
@@ -322,7 +262,6 @@ export default function EmployeeDetails() {
                 <th>Project Manager</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                {/* <th>Actions</th> */}
               </tr>
             </thead>
             <tbody>
