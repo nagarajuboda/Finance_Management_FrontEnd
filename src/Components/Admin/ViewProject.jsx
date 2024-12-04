@@ -167,19 +167,7 @@ export function ViewProject() {
   const handleClosePopup = () => {
     setopen(false);
   };
-  // const handleClick = () => {
-  //   setShoww(true);
-  //   GetAllemployees.map((el) => {
-  //     if (
-  //       projectEmployess.filter((proj) => proj.employee.id === el.employee.id)
-  //         .length > 0
-  //     ) {
-  //       el.employee.isAlreadyAdded = true;
-  //     } else {
-  //       el.employee.isAlreadyAdded = false;
-  //     }
-  //   });
-  // };
+
   const toggleIcon = (e, index, id) => {
     setSelectedRowIds((prevSelectedRowIds) => {
       let newSelectedRowIds;
@@ -205,20 +193,7 @@ export function ViewProject() {
       return newSelectedRowIds;
     });
   };
-  // async function AddEmployeeSubmit(e) {
-  //   e.preventDefault();
-  //   const requestBody = [
-  //     {
-  //       employeeids: Employeeids,
-  //       id: ProjectValues.id,
-  //     },
-  //   ];
-  //   var response = await adminds.fcnAssignEmployee(requestBody);
-  //   console.log(response, "========>");
-  //   if (response.isSuccess) {
-  //     setopen(false);
-  //   }
-  // }
+
   const addNewemployee = async () => {
     const requestBody = [
       {
@@ -254,7 +229,7 @@ export function ViewProject() {
       }
     });
   };
-  console.log(filteredEmployees1, "filter employees");
+
   const handleSearchChange1 = (e) => {
     setSearchQuery1(e.target.value.toLowerCase());
   };
@@ -263,7 +238,7 @@ export function ViewProject() {
       id,
       projectid
     );
-    console.log(response, "=========>");
+
     if (response.isSuccess) {
       setdeleteEmployeepopup(true);
     }
@@ -272,20 +247,6 @@ export function ViewProject() {
     setdeleteEmployeepopup(false);
     FetchData();
   };
-  const InsertEmployeeBulkData = () => {
-    const formData = new FormData();
-    // formData.append("file", selectedFile);
-    // const response = await axios.post(
-    //   "https://localhost:44305/api/Employees/BulkInsert",
-    //   formData
-    // );
-    // var result = response.data;
-
-    if (!selectedFile) {
-      alert("Please select an Excel sheet.");
-      return;
-    }
-  };
   const DownloadExcel = async (listtype, filetype, proID) => {
     let response;
     try {
@@ -293,11 +254,6 @@ export function ViewProject() {
         `https://localhost:44305/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
         { responseType: "blob" }
       );
-      // } else {
-      //   response = await axios.get(
-      //     `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
-      //     { responseType: "blob" }
-      //   );
 
       const blob = new Blob([response.data], {
         type: response.headers["content-type"],
@@ -318,8 +274,7 @@ export function ViewProject() {
       console.error("Error downloading file:", error);
     }
   };
-  // console.log(filteredEmployees1, "filter employees");
-  // console.log(projectEmployess, "project employees");
+
   return (
     <div className="viewProject-Main-div">
       <div className="view-Project">Project Details</div>
@@ -327,11 +282,7 @@ export function ViewProject() {
         <div className="row update-button-row">
           <div className="col-10"></div>
           <div className="col-2 button-col">
-            <button
-              className="update-button"
-              //onClick={updateEmployee(ProjectValues.id)}
-              onClick={(e) => updateEmployee()}
-            >
+            <button className="update-button" onClick={(e) => updateEmployee()}>
               Update
             </button>
           </div>
@@ -485,7 +436,7 @@ export function ViewProject() {
                 value={searchQuery}
                 style={{
                   width: "100%",
-                  padding: "5px 30px 5px 5px", // Extra padding on the right for the icon
+                  padding: "5px 30px 5px 5px",
                   fontSize: "12px",
                   boxSizing: "border-box",
                 }}
@@ -493,9 +444,9 @@ export function ViewProject() {
               <i
                 className="bi bi-search"
                 style={{
-                  fontSize: "12px", // Adjust size if necessary
+                  fontSize: "12px",
                   position: "absolute",
-                  right: "10px", // Place the icon 10px from the right edge
+                  right: "10px",
                   color: "#888",
                   pointerEvents: "none",
                 }}
@@ -525,7 +476,6 @@ export function ViewProject() {
           >
             <Dropdown>
               <Dropdown.Toggle
-                // variant="success"
                 id="dropdown-basic"
                 className="importdropdown btn btn-primary"
                 style={{ fontSize: "12px", height: "30px" }}
@@ -601,13 +551,6 @@ export function ViewProject() {
           >
             <thead>
               <tr className="tableheader">
-                {/* <th>
-                  <input
-                    type="checkbox"
-                    //onChange={handleSelectAll}
-                    className="userCheckbox"
-                  />
-                </th> */}
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>
                   Employee ID
                 </th>
@@ -637,9 +580,6 @@ export function ViewProject() {
                       cursor: "pointer",
                     }}
                   >
-                    {/* <td style={{ textAlign: "start" }}>
-                      <input type="checkbox" className="row-checkbox " />
-                    </td> */}
                     <td style={{ fontSize: "12px" }}>
                       {employee.employee.employeeId}
                     </td>
@@ -850,7 +790,6 @@ export function ViewProject() {
                           .split("T")[0]
                       : ""
                   }
-                  //  value={employeeData.lastName || ""}
                   onChange={handleOnChange}
                   variant="outlined"
                   fullWidth
@@ -1054,49 +993,6 @@ export function ViewProject() {
                     <MenuItem disabled>No Client Found</MenuItem>
                   )}
                 </TextField>
-                {/* <TextField
-                  label="Client Email"
-                  variant="outlined"
-                  name="clientEmailId"
-                  value={clientvalues.clientEmailId || ""}
-                  onChange={handleOnChange}
-                  fullWidth
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
-                      "& fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                      "&:hover fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                      "&.Mui-focused fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#000000",
-
-                      fontWeight: "500",
-                      transform: "translate(15px, 9px)",
-                      "&.Mui-focused": {
-                        color: "black",
-                      },
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
-                    },
-                    "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
-                    },
-                    "& input::placeholder": {
-                      fontSize: "12px",
-                      color: "#AEAEAE",
-                    },
-                  }}
-                /> */}
               </div>
             </div>
             <div
@@ -1109,9 +1005,11 @@ export function ViewProject() {
             >
               <div className="col-4">
                 <TextField
-                  label="Project Type"
+                  label="Project Manager"
                   variant="outlined"
-                  className="row-checkbox "
+                  name="projectManager"
+                  onChange={handleOnChange}
+                  value={ProjectValues.projectManager || ""}
                   fullWidth
                   select
                   sx={{
@@ -1150,12 +1048,20 @@ export function ViewProject() {
                     },
                   }}
                 >
-                  <MenuItem value={1} style={{ fontSize: "12px" }}>
-                    Active
+                  <MenuItem value="">
+                    <em>None</em>
                   </MenuItem>
-                  <MenuItem value={0} style={{ fontSize: "12px" }}>
-                    InActive
-                  </MenuItem>
+                  {employeelist && employeelist.length > 0 ? (
+                    employeelist.map((emp) => (
+                      <MenuItem key={emp.employee.id} value={emp.employee.id}>
+                        <span style={{ fontSize: "12px" }}>
+                          {emp.employee.firstName} {emp.employee.lastName}
+                        </span>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No Employees Found</MenuItem>
+                  )}
                 </TextField>
               </div>
               <div className="col-4">
@@ -1164,7 +1070,7 @@ export function ViewProject() {
                   variant="outlined"
                   name="status"
                   value={ProjectValues.status}
-                  onChange={handleOnChange} // Trigger handleStatusChange on change
+                  onChange={handleOnChange}
                   fullWidth
                   select
                   sx={{
@@ -1216,7 +1122,7 @@ export function ViewProject() {
                   variant="outlined"
                   name="progress"
                   value={ProjectValues.progress}
-                  onChange={handleOnChange} // Trigger handleStatusChange on change
+                  onChange={handleOnChange}
                   fullWidth
                   select
                   sx={{
@@ -1295,80 +1201,17 @@ export function ViewProject() {
                 marginRight: "12px",
               }}
             >
-              <div
-                className="col-4"
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <TextField
-                  label="Project Manager"
-                  variant="outlined"
-                  name="projectManager"
-                  onChange={handleOnChange}
-                  value={ProjectValues.projectManager || ""}
-                  fullWidth
-                  select
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
-                      "& fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                      "&:hover fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                      "&.Mui-focused fieldset": {
-                        border: "1px solid #DCDCDC",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#000000",
-
-                      fontWeight: "500",
-                      transform: "translate(15px, 9px)",
-                      "&.Mui-focused": {
-                        color: "black",
-                      },
-                    },
-                    "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
-                    },
-                    "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
-                    },
-                    "& input::placeholder": {
-                      fontSize: "12px",
-                      color: "#AEAEAE",
-                    },
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {employeelist && employeelist.length > 0 ? (
-                    employeelist.map((emp) => (
-                      <MenuItem key={emp.employee.id} value={emp.employee.id}>
-                        <span style={{ fontSize: "12px" }}>
-                          {emp.employee.firstName} {emp.employee.lastName}
-                        </span>
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>No Employees Found</MenuItem>
-                  )}
-                </TextField>
-              </div>
-              <div className="col-8">
+              <div className="col-12">
                 <TextField
                   label="Description"
                   variant="outlined"
                   name="description"
                   value={ProjectValues.description || ""}
                   onChange={handleOnChange}
+                  className="textareaclass"
                   fullWidth
-                  multiline // Enables textarea behavior
-                  rows={2} // Adjusts the number of visible rows
+                  multiline
+                  rows={2}
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       fontSize: "12px",
@@ -1391,7 +1234,6 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      // padding: "10px", // Adjust padding for textarea content
                       boxSizing: "border-box",
                     },
                     "& .MuiInputLabel-shrink": {
@@ -1492,9 +1334,7 @@ export function ViewProject() {
                 maxHeight: "300px",
                 overflowY: "auto",
                 overflowX: "hidden",
-                // border: "1px solid #DCDCDC",
-                //marginTop: "10px",
-                //margin: "8px",
+
                 padding: "0px 10px",
               }}
             >
@@ -1527,7 +1367,6 @@ export function ViewProject() {
                     !obj.employee.isAlreadyAdded ? (
                       <tr
                         key={obj.employee.id}
-                        // className="tablebody"
                         className={
                           selectedRowIds.includes(obj.employee.id)
                             ? "selected-row  tablebody"
@@ -1573,14 +1412,6 @@ export function ViewProject() {
               </table>
             </div>
 
-            {/* <div className="dialog-actions" style={{ paddingTop: "0px" }}>
-              <div className="col-10"></div>
-              <div className="col-2">
-                <button className="dialog-submit-btn" onClick={addNewemployee}>
-                  <span style={{ fontSize: "12px" }}>Add</span>
-                </button>
-              </div>
-            </div> */}
             <div
               className="dialog-footer"
               style={{
@@ -1631,37 +1462,6 @@ export function ViewProject() {
             </button>
           </div>
         </div>
-        // <div className="unique-popup-overlay">
-        //   <div className="unique-popup-container">
-        //     <div className="unique-popup-icon">
-        //       <div className="ellipse-container">
-        //         <img
-        //           src={chechimage}
-        //           alt="Check"
-        //           className="check-image"
-        //           height="40px"
-        //           width="40px"
-        //         />
-        //         <img
-        //           src={elipsimage}
-        //           alt="Ellipse"
-        //           className="ellipse-image"
-        //           height="65px"
-        //           width="65px"
-        //         />
-        //       </div>
-        //     </div>
-        //     <h2 className="unique-popup-title">Deleted Successfully</h2>
-        //     <p className="unique-popup-message">Click OK to see the results</p>
-        //     <button
-        //       className="unique-popup-button mt-5"
-        //       onClick={closeDeletePopup}
-        //       style={{ position: "fixed" }}
-        //     >
-        //       OK
-        //     </button>
-        //   </div>
-        // </div>
       )}
     </div>
   );

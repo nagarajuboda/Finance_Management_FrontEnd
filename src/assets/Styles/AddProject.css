@@ -259,3 +259,7 @@
   text-transform: uppercase;
   opacity: 1;
 }
+.textareaclass .MuiOutlinedInput-root {
+  min-height: 55px !important;
+  max-height: auto;
+}

@@ -62,12 +62,6 @@ export default function Projectss() {
         .toLowerCase()
         .includes(searchQuery.toLowerCase())
     );
-    // employee.employeeDetails.email
-    //   .toLowerCase()
-    //   .includes(searchQuery.toLowerCase()) ||
-    // employee.employeeDetails.employeeId
-    //   .toLowerCase()
-    //   .includes(searchQuery.toLowerCase())
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -352,28 +346,12 @@ export default function Projectss() {
                           {project.project.endDate}
                         </td>
                         <td>
-                          {/* <img
-                            src={image}
-                            // onClick={EdittogglePopup}
-                            onClick={(e) =>
-                              EdittogglePopup(e, index, employee.id)
-                            }
-                            alt=""
-                            style={{
-                              width: "18px",
-                              height: "18px",
-                              cursor: "pointer",
-                            }}
-                          /> */}
                           <img
                             className="ms-3"
                             src={deleteimage}
                             onClick={(e) =>
                               DeleteProject(e, index, project.project.id)
                             }
-                            // onClick={(e) =>
-                            //   DeleteProject(e, index, project.project.id)
-                            // }
                             alt=""
                             style={{
                               width: "22px",
