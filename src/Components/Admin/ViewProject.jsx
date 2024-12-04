@@ -24,7 +24,7 @@ import deleteImage from "../../assets/Images/deleteicon.png";
 import pulusimage from "../../assets/Images/plus.png";
 import chechimage from "../../assets/Images/check.png";
 import elipsimage from "../../assets/Images/Ellipse.png";
-
+import Dropdown from "react-bootstrap/Dropdown";
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ImportProjectEmployees from "../Employee/ImportProjectEmployees";
@@ -523,7 +523,36 @@ export function ViewProject() {
               justifyContent: "space-between",
             }}
           >
-            <div className="importdropdown " style={{ width: "100px" }}>
+            <Dropdown>
+              <Dropdown.Toggle
+                // variant="success"
+                id="dropdown-basic"
+                className="importdropdown btn btn-primary"
+                style={{ fontSize: "12px", height: "30px" }}
+              >
+                Export To
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                <Dropdown.Item
+                  onClick={() => DownloadExcel("employees", "excel", ProjectID)}
+                >
+                  <p
+                    className=""
+                    style={{ fontSize: "12px", cursor: "pointer" }}
+                  >
+                    MS Excel
+                  </p>
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ marginTop: "5px" }}
+                  onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
+                >
+                  Adobe PDF
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* <div className="importdropdown " style={{ width: "100px" }}>
               <a
                 className="importdropwlist dropdown-toggle"
                 href="#"
@@ -557,7 +586,7 @@ export function ViewProject() {
                   </p>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
           <div
             className="col-2"

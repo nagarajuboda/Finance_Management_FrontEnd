@@ -731,6 +731,7 @@ import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
 import EmployeeDetails from "./EmployeeDetails";
 import { useTheme } from "@emotion/react";
+import Dropdown from "react-bootstrap/Dropdown";
 export default function Employees() {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -1052,7 +1053,36 @@ export default function Employees() {
             </div>
           )}
           <div className="col-1" style={{ padding: "0px" }}>
-            <div className="importdropdown ">
+            <Dropdown>
+              <Dropdown.Toggle
+                // variant="success"
+                id="dropdown-basic"
+                className="importdropdown btn btn-primary"
+                style={{ fontSize: "12px", height: "30px" }}
+              >
+                Export To
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                <Dropdown.Item
+                  onClick={() => DownloadExcel("employees", "excel")}
+                >
+                  <p
+                    className=""
+                    style={{ fontSize: "12px", cursor: "pointer" }}
+                  >
+                    MS Excel
+                  </p>
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ marginTop: "5px" }}
+                  onClick={() => DownloadExcel("employees", "pdf")}
+                >
+                  Adobe PDF
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+            {/* <div className="importdropdown ">
               <a
                 className="importdropwlist dropdown-toggle"
                 href="#"
@@ -1086,7 +1116,7 @@ export default function Employees() {
                   </p>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
           {!isDivVisible && (
             <div className="col-2 ">
