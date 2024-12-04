@@ -72,7 +72,7 @@ export default function Employees() {
       setDisiblebuttons(false);
     } else {
       setSelectedEmployeeIds([]);
-      setDisiblebuttons(true); // Disable buttons if none are selected
+      setDisiblebuttons(true);
     }
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
       checkbox.checked = isChecked;
@@ -377,7 +377,7 @@ export default function Employees() {
                 style={{
                   display: "flex",
                   width: "auto",
-                  //justifyContent: "center",
+
                   alignContent: "center",
                   padding: "5px",
                   height: "30px",

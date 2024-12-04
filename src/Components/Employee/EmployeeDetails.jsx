@@ -219,8 +219,7 @@ export default function EmployeeDetails() {
                         style={{
                           overflowY: "scroll",
                           resize: "none",
-                          // gap: "5px",
-                          // height: "50x",
+
                           borderRadius: "4px",
                           height: "100px",
                           flexWrap: "wrap",

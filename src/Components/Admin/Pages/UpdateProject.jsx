@@ -11,10 +11,6 @@ export default function UpdateProject() {
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    // setEmployeeData((prevValues) => ({
-    //   ...prevValues,
-    //   [name]: value,
-    // }));
   };
   return <div></div>;
 }

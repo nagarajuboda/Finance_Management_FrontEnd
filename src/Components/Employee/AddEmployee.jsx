@@ -623,7 +623,7 @@ export default function AddEmployee() {
                 value={values.role}
                 onChange={Handleonchnage}
                 fullWidth
-                select // This prop turns the TextField into a dropdown
+                select
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "12px",
@@ -764,7 +764,7 @@ export default function AddEmployee() {
                   variant="outlined"
                   value={name}
                   onChange={handleInputChange}
-                  onKeyPress={handleKeyPress} // Detect Enter key press
+                  onKeyPress={handleKeyPress}
                   fullWidth
                   sx={{
                     width: "215px",
