@@ -563,7 +563,7 @@ export default function AddEmployee() {
                       {...params}
                       placeholder="MM/DD/YYYY"
                       variant="outlined"
-                      type="date"
+                      // type="date"
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {

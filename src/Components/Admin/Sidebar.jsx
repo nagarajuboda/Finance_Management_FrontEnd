@@ -63,6 +63,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Dashboard",
       icon: dashboardsidebarimage,
+      path: "/dashboard/AdminDashboard",
     },
     {
       name: "HR Management",
