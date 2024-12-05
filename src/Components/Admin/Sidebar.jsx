@@ -138,8 +138,8 @@ const Sidebar = ({ children }) => {
                   cursor: "pointer",
                   marginTop: "12px",
                   marginLeft: "13px",
-                  height: "32px",
-                  width: "32px",
+                  height: "27px",
+                  width: "27px",
                 }}
               />
             </div>
@@ -162,7 +162,7 @@ const Sidebar = ({ children }) => {
           <div
             key={index}
             className="menu-item tree"
-            style={{ marginTop: "20px", width: "215px" }}
+            style={{ marginTop: "10px", width: "215px" }}
           >
             <ul>
               <NavLink
@@ -197,9 +197,13 @@ const Sidebar = ({ children }) => {
                     className="link_text"
                   >
                     {index === 0 ? (
-                      <div className="menuname1">{item.name}</div>
+                      <div className="menuname1" style={{ fontSize: "12px" }}>
+                        {item.name}
+                      </div>
                     ) : (
-                      <div className="menuname">{item.name}</div>
+                      <div className="menuname" style={{ fontSize: "12px" }}>
+                        {item.name}
+                      </div>
                     )}
 
                     {item.submenu && index !== 0 && (

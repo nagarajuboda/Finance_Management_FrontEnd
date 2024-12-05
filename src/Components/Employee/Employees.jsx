@@ -11,25 +11,28 @@ import EditEmployeePopup from "./EditEmployeePopup";
 import ImportPopup from "./ImportPopup";
 import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
+import EmployeeDetails from "./EmployeeDetails";
+import { useTheme } from "@emotion/react";
+import Dropdown from "react-bootstrap/Dropdown";
 export default function Employees() {
   const navigate = useNavigate();
-  const [isSuccessPopupOpen, setIsSuccessPopupOpen] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [isEditPopupOpen, setEditIsPopupOpen] = useState(false);
+
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
+  const [DeleteEmployeesflog, SetDeletedEmployeeflog] = useState(false);
   const [open, setOpen] = useState(false);
-  const [id, setid] = useState("");
+  const [isDivVisible, setIsDivVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const searchInputRef = useRef(null);
+
   useEffect(() => {
     FetchData();
-  }, []);
+  }, [selectedEmployeeIds, isDivVisible]);
 
   const EdittogglePopup = (e, index, employeeid) => {
-    setid(employeeid);
-    setEditIsPopupOpen(!isEditPopupOpen);
+    sessionStorage.setItem("EmployeeID", employeeid);
+    navigate("/dashboard/EditEmployee");
   };
 
   const togglePopup = () => {
@@ -59,15 +62,17 @@ export default function Employees() {
   };
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
-    if (isChecked) {
+
+    if (isChecked && selectedEmployeeIds.length > 0) {
       const allEmployeeIds = currentItems.map(
         (employee) => employee.employeeDetails.id
       );
       setSelectedEmployeeIds(allEmployeeIds);
+
       setDisiblebuttons(false);
     } else {
       setSelectedEmployeeIds([]);
-      setDisiblebuttons(true); // Disable buttons if none are selected
+      setDisiblebuttons(true);
     }
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
       checkbox.checked = isChecked;
@@ -91,7 +96,7 @@ export default function Employees() {
   };
 
   const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value); // Update search query state
+    setSearchQuery(e.target.value);
   };
 
   const filteredEmployees = employees.filter((employee) => {
@@ -138,114 +143,245 @@ export default function Employees() {
 
   const handleCheckboxChange = (employeeId, isChecked) => {
     setSelectedEmployeeIds((prevSelected) => {
+      let updatedSelected;
       if (isChecked) {
-        setDisiblebuttons(false);
-        return [...prevSelected, employeeId];
+        updatedSelected = [...prevSelected, employeeId];
       } else {
-        setDisiblebuttons(true);
-        return prevSelected.filter((id) => id !== employeeId);
+        updatedSelected = prevSelected.filter((id) => id !== employeeId);
       }
+
+      if (updatedSelected.length === 0) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+
+      return updatedSelected;
     });
   };
-  console.log(selectedEmployeeIds, "selected ids");
+  const DownloadExcel = async (listtype, filetype) => {
+    let response;
+    try {
+      if (isDivVisible == false) {
+        response = await axios.get(
+          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
+          { responseType: "blob" }
+        );
+      } else {
+        response = await axios.get(
+          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
+          { responseType: "blob" }
+        );
+      }
 
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+
+      const fileName = `${listtype}_data.${
+        filetype === "pdf" ? "pdf" : "xlsx"
+      }`;
+      link.download = fileName;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+  const ViewDetails = (employeeid) => {
+    sessionStorage.setItem("id", employeeid);
+    navigate("/dashboard/EmployeeDetails");
+  };
+  const [deleteEmployeebuttondisible, setDeleteEmployeebuttonDisibled] =
+    useState(true);
+
+  const handleCheckboxChange1 = (e) => {
+    setIsDivVisible(e.target.checked);
+    setDeleteEmployeebuttonDisibled(false);
+  };
   return (
     <div className="Employeemaindiv">
       <div className="employeeheader">Employees</div>
       <div className="Employeelist">
-        <div
-          className="row"
-          style={{
-            paddingTop: "5px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <div className="col-2">
-            <p className="employeecontent">Employee list</p>
-          </div>
+        <div className="row" style={{ paddingTop: "15px" }}>
+          {isDivVisible ? (
+            <div
+              className="col-2"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <p className="employeecontent" style={{ fontSize: "12px" }}>
+                Employee's Deactivated
+              </p>
+            </div>
+          ) : (
+            <div
+              className="col-1"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <p className="employeecontent" style={{ fontSize: "9px" }}>
+                Employee list
+              </p>
+            </div>
+          )}
+          {isDivVisible && <div className="col-3"></div>}
+
           <div
-            className="col-4"
-            style={{ display: "flex", justifyContent: "end" }}
+            className="col-3"
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "end",
+            }}
           >
             <input
               type="text"
               className="searchinput"
               placeholder="Search employees"
-              style={{ width: "450px", padding: "5px", fontSize: "12px" }}
               onChange={handleSearchChange}
               value={searchQuery}
+              style={{
+                fontSize: "12px",
+                padding: "0px 8px",
+                width: "100%",
+                paddingRight: "30px",
+                boxSizing: "border-box",
+              }}
             />
+            <i
+              className="bi bi-search"
+              style={{
+                fontSize: "12px",
+                position: "absolute",
+                right: "20px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "#888",
+                pointerEvents: "none",
+              }}
+            ></i>
           </div>
-          <div className="col-6 row">
-            <div className="col-2" style={{ cursor: "pointer" }}>
-              <select
-                style={{ cursor: "pointer" }}
-                className="numberpagenation"
-                onChange={handleItemsPerPageChange}
-                value={itemsPerPage}
-              >
-                <option value="10">Show 10 Entities</option>
-                <option value="25">Show 25 Entities</option>
-                <option value="50">Show 50 Entities</option>
-                <option value="-1">Show All</option>
-              </select>
-            </div>
-            <div className="col-3">
+
+          <div
+            className="col-2"
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <input
+              type="checkbox"
+              onChange={handleCheckboxChange1}
+              className="DeleteCheckbox"
+              style={{ height: "16px", width: "16px" }}
+            />
+            {!isDivVisible ? (
               <button
-                className="importbutton import-btn ms-5"
+                disabled
+                style={{
+                  fontSize: "10px",
+                  color: "#9E9E9E",
+                }}
+                className="Show-Deleted-employee-button ms-1"
+              >
+                Show Deleted Employees
+              </button>
+            ) : (
+              <button
+                disabled={deleteEmployeebuttondisible}
+                style={{
+                  fontSize: "12px",
+                }}
+                className="Show-Deleted-employee-button ms-1"
+              >
+                <span className="deleteSelectedd"> Deleted Employees</span>
+              </button>
+            )}
+          </div>
+          {!isDivVisible && (
+            <div className="col-1">
+              <button
+                style={{ fontSize: "12px", height: "30px" }}
+                className="btn btn-primary"
                 onClick={() => setIsPopupOpen(true)}
               >
                 Import
               </button>
             </div>
-            <div className="col-2">
-              <div className="importdropdown">
-                <a
-                  className="importdropwlist dropdown-toggle"
-                  href="#"
-                  role="button"
-                  id="dropdownMenuLink"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
+          )}
+          <div className="col-1" style={{ padding: "0px" }}>
+            <Dropdown>
+              <Dropdown.Toggle
+                // variant="success"
+                id="dropdown-basic"
+                className="importdropdown btn btn-primary"
+                style={{ fontSize: "12px", height: "30px" }}
+              >
+                Export To
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                <Dropdown.Item
+                  onClick={() => DownloadExcel("employees", "excel")}
                 >
-                  <span> Export to</span>
-                </a>
-                <ul
-                  className="dropdown-menu"
-                  aria-labelledby="dropdownMenuLink"
+                  <p
+                    className=""
+                    style={{ fontSize: "12px", cursor: "pointer" }}
+                  >
+                    MS Excel
+                  </p>
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ marginTop: "5px" }}
+                  onClick={() => DownloadExcel("employees", "pdf")}
                 >
-                  <li className="dropdonwli">
-                    <a className="dropdown-item" href="#">
-                      MS Excel XLX
-                    </a>
-                  </li>
-                  <li className="dropdonwli">
-                    <a className="dropdown-item" href="#">
-                      MS Excel CSV
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Adobe PDF
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="col-2">
+                  Adobe PDF
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          {!isDivVisible && (
+            <div className="col-2 ">
               <button
-                className="DeleteRecordbutton"
+                className="btn btn-danger deleteSelected"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
+                style={{
+                  fontSize: "12px",
+                  height: "30px",
+                  display: "flex",
+                  justifyContent: "end",
+                }}
               >
-                <span className="deleteSelectedSpan">Delete Selected</span>
+                Delete Selected
               </button>
             </div>
+          )}
+          {!isDivVisible && (
             <div className="col-2">
               <button
-                style={{ display: "flex", width: "120px" }}
+                style={{
+                  display: "flex",
+                  width: "auto",
+
+                  alignContent: "center",
+                  padding: "5px",
+                  height: "30px",
+                }}
                 className="add-new-project-button"
                 onClick={Addemployeefuncton}
               >
@@ -253,15 +389,24 @@ export default function Employees() {
                   <img
                     src={images}
                     alt=""
-                    height="18px"
-                    width="18px"
-                    className="ms-2"
+                    height="15px"
+                    width="15px"
+                    className="mb-3"
                   />
                 </span>
-                <span className="add-new-project-span ms-1 ">Add Employee</span>
+                <span
+                  className=" ms-1"
+                  style={{
+                    fontSize: "12px",
+                    color: "#000000",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add Employee
+                </span>
               </button>
             </div>
-          </div>
+          )}
         </div>
 
         <div style={{ padding: "10px" }}>
@@ -269,7 +414,6 @@ export default function Employees() {
             id="example"
             className="employeeTable"
             style={{ width: "100%" }}
-            // style={{ width: "100%" }}
           >
             <thead>
               <tr className="tableheader">
@@ -286,104 +430,249 @@ export default function Employees() {
                 <th style={{ fontSize: "12px" }}>Email</th>
                 <th style={{ fontSize: "12px" }}>Mobile Number</th>
                 <th style={{ fontSize: "12px" }}>Date of Joining</th>
-                <th style={{ fontSize: "12px" }}>Status</th>
+                {!isDivVisible && <th style={{ fontSize: "12px" }}>Status</th>}
+
                 <th style={{ fontSize: "12px" }}>Role</th>
-                <th style={{ fontSize: "12px" }}>Manager</th>
-                <th></th>
-                <th></th>
+                <th style={{ fontSize: "12px" }}>Reporting Manager</th>
+                {isDivVisible && (
+                  <th style={{ fontSize: "12px" }}>Date of Relieving</th>
+                )}
+                {!isDivVisible && <th></th>}
+                {!isDivVisible && <th></th>}
               </tr>
             </thead>
             <tbody>
               {currentItems.length > 0 ? (
-                currentItems.map((employee, index) => (
-                  <tr
-                    key={employee.employeeDetails.id}
-                    className="tablebody"
-                    style={{ backgroundColor: "white" }}
-                  >
-                    <td style={{ textAlign: "start" }}>
-                      <input
-                        type="checkbox"
-                        className="row-checkbox "
-                        onChange={(e) =>
-                          handleCheckboxChange(
-                            employee.employeeDetails.id,
-                            e.target.checked
-                          )
-                        }
-                      />
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.employeeId}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.firstName}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.lastName}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.email}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.mobileNo}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {new Date(
-                        employee.employeeDetails.dateOfJoining
-                      ).toLocaleDateString("en-GB")}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.employeeDetails.employeeStatus === 1
-                        ? "Active"
-                        : "Inactive"}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.roleDetails.roleName}
-                    </td>
-                    <td style={{ fontSize: "12px" }}>
-                      {employee.reportingManagerDetails !== "N/A"
-                        ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
-                        : "N/A"}
-                    </td>
-                    <td>
-                      <img
-                        src={editicon}
-                        onClick={(e) =>
-                          EdittogglePopup(e, index, employee.employeeDetails.id)
-                        }
-                        alt=""
-                        style={{
-                          width: "18px",
-                          height: "18px",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </td>
-                    <td>
-                      <img
-                        src={deleteicon}
-                        onClick={(e) =>
-                          handleOpenPopup(e, index, employee.employeeDetails.id)
-                        }
-                        alt=""
-                        style={{
-                          width: "24px",
-                          height: "24px",
-                          cursor: "pointer",
-                        }}
-                      />
-                    </td>
-                  </tr>
-                ))
+                currentItems.map((employee, index) =>
+                  !isDivVisible
+                    ? employee.employeeDetails.employeeStatus === 1 && (
+                        <tr
+                          key={employee.employeeDetails.id}
+                          className="tablebody"
+                          style={{
+                            backgroundColor: "white",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <td style={{ textAlign: "start" }}>
+                            <input
+                              type="checkbox"
+                              className="row-checkbox "
+                              onChange={(e) =>
+                                handleCheckboxChange(
+                                  employee.employeeDetails.id,
+                                  e.target.checked
+                                )
+                              }
+                            />
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.employeeId}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.firstName}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.lastName}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.email}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.mobileNo}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {new Date(
+                              employee.employeeDetails.dateOfJoining
+                            ).toLocaleDateString("en-GB")}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            Active
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.roleDetails.roleName}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.reportingManagerDetails !== "N/A"
+                              ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
+                              : "N/A"}
+                          </td>
+                          <td>
+                            <img
+                              src={editicon}
+                              onClick={(e) =>
+                                EdittogglePopup(
+                                  e,
+                                  index,
+                                  employee.employeeDetails.id
+                                )
+                              }
+                              alt=""
+                              style={{
+                                width: "18px",
+                                height: "18px",
+                                cursor: "pointer",
+                              }}
+                            />
+                          </td>
+                          <td>
+                            <img
+                              src={deleteicon}
+                              onClick={(e) =>
+                                handleOpenPopup(
+                                  e,
+                                  index,
+                                  employee.employeeDetails.id
+                                )
+                              }
+                              alt=""
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                                cursor: "pointer",
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      )
+                    : employee.employeeDetails.employeeStatus === 0 && (
+                        <tr
+                          key={employee.employeeDetails.id}
+                          className="tablebody"
+                          style={{
+                            backgroundColor: "white",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <td style={{ textAlign: "start" }}>
+                            <input
+                              type="checkbox"
+                              className="row-checkbox "
+                              onChange={(e) =>
+                                handleCheckboxChange(
+                                  employee.employeeDetails.id,
+                                  e.target.checked
+                                )
+                              }
+                            />
+                          </td>
+                          <td
+                            style={{ fontSize: "12px ms-2" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.employeeId}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.firstName}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.lastName}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.email}
+                          </td>
+                          <td
+                            style={{ fontSize: "12px" }}
+                            onClick={(e) =>
+                              ViewDetails(employee.employeeDetails.id)
+                            }
+                          >
+                            {employee.employeeDetails.mobileNo}
+                          </td>
+                          <td style={{ fontSize: "12px" }}>
+                            {new Date(
+                              employee.employeeDetails.dateOfJoining
+                            ).toLocaleDateString("en-GB")}
+                          </td>
+
+                          <td style={{ fontSize: "12px" }}>
+                            {employee.roleDetails.roleName}
+                          </td>
+                          <td style={{ fontSize: "12px" }}>
+                            {employee.reportingManagerDetails !== "N/A"
+                              ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
+                              : "N/A"}
+                          </td>
+                          <td
+                            style={{
+                              fontSize: "12px",
+                            }}
+                          >
+                            {employee.employeeDetails.dateOfReliving}
+                          </td>
+                        </tr>
+                      )
+                )
               ) : (
-                <tr className="tablebody" style={{ backgroundColor: "white" }}>
+                <tr style={{ width: "100%" }}>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>No recordson the table</td>
+                  <td>No Records Found</td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -428,21 +717,62 @@ export default function Employees() {
             </div>
           </div>
         )}
-        <EditEmployeePopup
-          isEditOpen={isEditPopupOpen}
-          handleEditClose={EdittogglePopup}
-          employeeID={id}
-        />
-        <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
-      </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <select
+            style={{ cursor: "pointer", fontSize: "10px" }}
+            className="numberpagenation ms-2"
+            onChange={handleItemsPerPageChange}
+            value={itemsPerPage}
+          >
+            <option value="10" style={{ fontSize: "12px" }}>
+              Show 10 Entities
+            </option>
+            <option value="25" style={{ fontSize: "12px" }}>
+              Show 25 Entities
+            </option>
+            <option value="50" style={{ fontSize: "12px" }}>
+              Show 50 Entities
+            </option>
+            <option value="-1" style={{ fontSize: "12px" }}>
+              Show All
+            </option>
+          </select>
+          <div className="pagination">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              style={{ fontSize: "10px" }}
+            >
+              <span> Prev</span>
+            </button>
 
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Prev
-        </button>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+              (page) => (
+                <button
+                  key={page}
+                  style={{
+                    fontSize: "10px",
+                    color: "black",
+                    fontWeight: "600",
+                  }}
+                  onClick={() => setCurrentPage(page)}
+                  className={currentPage === page ? "active-page" : ""}
+                >
+                  {page}
+                </button>
+              )
+            )}
+
+            <button
+              style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+        <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
       </div>
     </div>
   );
