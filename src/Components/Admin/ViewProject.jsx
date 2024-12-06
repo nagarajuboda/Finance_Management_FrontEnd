@@ -1418,7 +1418,6 @@ export function ViewProject() {
                 borderTop: "1px solid #ddd",
                 padding: "10px 20px",
                 textAlign: "right",
-                backgroundColor: "#f9f9f9",
               }}
             >
               <button className="dialog-submit-btn" onClick={addNewemployee}>
