@@ -6,7 +6,16 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { CategoryScale, LinearScale, BarElement, Title } from "chart.js";
 import DatePicker from "react-datepicker";
+import AddEmployeeQuickAction from "../../../src/assets/Images/QuickActions1.png";
+import AddProjectQuickAction from "../../../src/assets/Images/QuickActions2.png";
+import ProjectUpdateImage from "../../../src/assets/Images/ProjectupdateImage.png";
+import Manageroles from "../../../src/assets/Images/QuickActions3.png";
 import "react-datepicker/dist/react-datepicker.css";
+import UpdateProjectImahe from "../../../src/assets/Images/ProjectUpdateBackUp.png";
+import RecentEmployeeImage from "../../../src/assets/Images/AddEmployeeimage.png";
+import TeamMemberAddedImage from "../../../src/assets/Images/TeamMemberAdded.png";
+import rupee from "../../../src/assets/Images/Rupee.png";
+import abcprojectimage from "../../../src/assets/Images/AbcProjectImage.png";
 
 // Register Chart.js components
 ChartJS.register(
@@ -22,6 +31,7 @@ ChartJS.register(
 ChartJS.register(ArcElement, Tooltip, Legend);
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function AdminDashboard() {
   const [TotalEmployees, setTotalEmployees] = useState(0);
   const [TotalbenchEmployees, setTotalBenchEmployees] = useState(0);
@@ -43,6 +53,7 @@ export default function AdminDashboard() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const navigate = useNavigate();
   useEffect(() => {
     FetchData();
   }, []);
@@ -226,7 +237,36 @@ export default function AdminDashboard() {
       },
     },
   };
+  const NavigateToAddEmployee = () => {
+    navigate("/dashboard/AddEmployee");
+  };
+  const NavigateToAddProject = () => {
+    navigate("/dashboard/AddProject");
+  };
+  const NavigateToAddManageRoles = () => {
+    navigate("/dashboard/roles");
+  };
+  const data11 = {
+    labels: ["Planning", "Designing", "Pre-Construction"],
+    datasets: [
+      {
+        data: [30, 40, 30], // Values for each section
+        backgroundColor: ["#000000", "#7FB3D5", "#E5E5E5"], // Section colors
+        borderWidth: 0, // Removes border between sections
+        cutout: "75%", // Inner circle size
+      },
+    ],
+  };
 
+  const options11 = {
+    plugins: {
+      tooltip: {
+        enabled: false, // Disable tooltips
+      },
+    },
+    rotation: 225, // Rotate the chart to align properly
+    circumference: 270, // Draws 3/4th of a circle
+  };
   return (
     <div className="DashboardMaindiv">
       <p className="employeeoveriew_content">Employee Overview</p>
@@ -289,8 +329,6 @@ export default function AdminDashboard() {
           <div
             style={{
               position: "absolute",
-              // top: "50%",
-              // left: "60%",
               top: "46%",
               left: "68%",
               transform: "translate(-50%, -50%)",
@@ -390,8 +428,6 @@ export default function AdminDashboard() {
               <div
                 style={{
                   position: "absolute",
-                  // top: "50%",
-                  // left: "39%",
                   top: "42%",
                   left: " 39%",
                   transform: "translate(-50%, -50%)",
@@ -501,7 +537,7 @@ export default function AdminDashboard() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                padding: "10px",
+                alignItems: "center",
               }}
             >
               <span className="Active_project_conetnt">Active Projects</span>
@@ -509,20 +545,21 @@ export default function AdminDashboard() {
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "16px",
+                  fontSize: "24px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
               ></i>
             </div>
-            {/* <p>Active Projectss</p> */}
+
             <div
               style={{
-                width: "160px",
+                width: "145px",
                 textAlign: "center",
                 margin: "0",
                 position: "relative",
-                marginLeft: "70px",
+                marginLeft: "79px",
+                marginTop: "17px",
                 justifyContent: "center",
               }}
             >
@@ -543,7 +580,7 @@ export default function AdminDashboard() {
               style={{
                 marginTop: "20px",
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "space-between",
                 gap: "10px",
               }}
             >
@@ -611,28 +648,29 @@ export default function AdminDashboard() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                width: "160px",
-                padding: "10px",
+                alignItems: "center",
               }}
             >
-              <p className="Active_project_conetnt">Pending Projects</p>
+              <span className="Active_project_conetnt">Pending Projects</span>
               <i
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "16px",
+                  fontSize: "24px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
               ></i>
             </div>
+
             <div
               style={{
-                width: "160px",
+                width: "145px",
                 textAlign: "center",
                 margin: "0",
                 position: "relative",
-                marginLeft: "70px",
+                marginLeft: "79px",
+                marginTop: "17px",
                 justifyContent: "center",
               }}
             >
@@ -649,6 +687,69 @@ export default function AdminDashboard() {
               </p>
               <Doughnut data={data} options={options} />
             </div>
+            <div
+              style={{
+                marginTop: "20px",
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#007BFF",
+                    borderRadius: "50%",
+                  }}
+                ></span>
+                <span
+                  style={{ fontSize: "12px" }}
+                  className="ActiveProject_Inprogress_notstated"
+                >
+                  Planning
+                </span>
+              </div>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#00CFFF",
+                    borderRadius: "50%",
+                  }}
+                ></span>
+                <span
+                  style={{ fontSize: "12px" }}
+                  className="ActiveProject_Inprogress_notstated"
+                >
+                  Designing
+                </span>
+              </div>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#E0E0E0",
+                    borderRadius: "50%",
+                  }}
+                ></span>
+                <span
+                  style={{ fontSize: "12px" }}
+                  className="ActiveProject_Inprogress_notstated"
+                >
+                  Pre Construction
+                </span>
+              </div>
+            </div>
           </div>
           <div
             className="Project_progress col-4"
@@ -658,15 +759,15 @@ export default function AdminDashboard() {
               style={{
                 display: "flex",
                 justifyContent: "space-between",
-                padding: "10px",
+                alignItems: "center",
               }}
             >
-              <p className="Active_project_conetnt">Completed Projects</p>
+              <span className="Active_project_conetnt">Completed Projects</span>
               <i
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "16px",
+                  fontSize: "24px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
@@ -674,11 +775,12 @@ export default function AdminDashboard() {
             </div>
             <div
               style={{
-                width: "160px",
+                width: "145px",
                 textAlign: "center",
                 margin: "0",
                 position: "relative",
-                marginLeft: "70px",
+                marginLeft: "79px",
+                marginTop: "17px",
                 justifyContent: "center",
               }}
             >
@@ -701,56 +803,309 @@ export default function AdminDashboard() {
       <div className="Profit_And_Loss_Summary">
         <div className="row ">
           <div className="col-8">
-            <span
-              className="projectOverview_content"
-              style={{ paddingBottom: "40px" }}
-            >
+            <span className="projectOverview_content">
               Profit And loss Summary
             </span>
 
-            <div>
+            <div className="Profit_and_loss_flowchat mt-3">
               <div
-                className="Profit_and_loss_flowchat"
-                style={{ paddingTop: "25px" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0px 20px",
+                }}
               >
-                <div
+                <span className="adminName">loreum lpsum</span>
+                <i
+                  class="bi bi-three-dots"
                   style={{
-                    width: "80%",
-                    margin: "auto",
-                    padding: "20px",
-                    border: "1px solid",
-                    paddingTop: "10px",
+                    color: "#989898",
+                    fontSize: "24px",
+                    fontWeight: "600",
+                    cursor: "pointer",
                   }}
-                >
-                  <div>
-                    <div
-                      style={{
-                        display: "inline-block",
-                        border: "1px solid #eaeaea",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                        backgroundColor: "#f9f9f9",
-                      }}
-                    >
-                      <DatePicker
-                        selected={selectedDate}
-                        onChange={(date) => setSelectedDate(date)}
-                        dateFormat="MMM dd"
-                        placeholderText="Select a date"
-                        style={{ border: "none !impartant" }}
-                      />
-                    </div>
+                ></i>
+              </div>
+              <div
+                style={{
+                  width: "80%",
+                  margin: "auto",
+                  padding: "20px",
+                  marginTop: "20px",
+                  border: "1px solid",
+                  paddingTop: "10px",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: "inline-block",
+                      border: "1px solid #eaeaea",
+                      padding: "5px 10px",
+                      borderRadius: "5px",
+                      backgroundColor: "#f9f9f9",
+                    }}
+                  >
+                    <DatePicker
+                      selected={selectedDate}
+                      onChange={(date) => setSelectedDate(date)}
+                      dateFormat="MMM dd"
+                      placeholderText="Select a date"
+                      style={{ border: "none !impartant" }}
+                    />
                   </div>
-                  <Bar data={data3} options={options3} />
                 </div>
+                <Bar data={data3} options={options3} />
               </div>
             </div>
           </div>
           <div className="col-4">
-            <span className="projectOverview_content">Recent Activities</span>
-
-            <div>
-              <div className="recentActivities">hello</div>
+            <span className="projectOverview_content ">Recent Activities</span>
+            <div className="recentActivities mt-3">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "0px 20px",
+                }}
+              >
+                <span className="adminName">Latest update</span>
+                <i
+                  class="bi bi-three-dots"
+                  style={{
+                    color: "#989898",
+                    fontSize: "24px",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                ></i>
+              </div>
+              <div
+                className="latest_updatesImage row"
+                //style={{ padding: "10px" }}
+              >
+                <div className="row m-0">
+                  <div className="col-2">
+                    <div
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        backgroundColor: " #875fc0",
+                        borderRadius: "100px",
+                        position: "relative",
+                      }}
+                    >
+                      <img
+                        src={UpdateProjectImahe}
+                        alt=""
+                        style={{
+                          position: "absolute",
+                          top: "25%",
+                          left: "25%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <span className="Project_Updated_Span">
+                      Project Updated
+                    </span>
+                    <div style={{ display: "flex" }}>
+                      <span className="project_updated_name">Naresh</span>
+                      <span className="updated_task_content ms-2">
+                        updated a task
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4 ">
+                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                      45 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="latest_updatesImage row mt-4"
+                //style={{ padding: "10px" }}
+              >
+                <div className="row m-0">
+                  <div className="col-2">
+                    <div
+                    // style={{
+                    //   height: "40px",
+                    //   width: "40px",
+                    //   backgroundColor: " #875fc0",
+                    //   borderRadius: "100px",
+                    //   position: "relative",
+                    // }}
+                    >
+                      <img
+                        src={RecentEmployeeImage}
+                        alt=""
+                        height="40px"
+                        width="40px"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <span className="Project_Updated_Span">
+                      Added new Employee
+                    </span>
+                    <div style={{ display: "flex" }}>
+                      <span className="project_updated_name">Nagaraju</span>
+                      <span className="updated_task_content ms-2">
+                        updated a task
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4 ">
+                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                      45 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="latest_updatesImage row mt-4"
+                //style={{ padding: "10px" }}
+              >
+                <div className="row m-0">
+                  <div className="col-2">
+                    <div
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        backgroundColor: "#45C4F4",
+                        borderRadius: "100px",
+                        position: "relative",
+                      }}
+                    >
+                      <img
+                        src={TeamMemberAddedImage}
+                        alt=""
+                        style={{
+                          position: "absolute",
+                          top: "25%",
+                          left: "25%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <span className="Project_Updated_Span">
+                      Team member added
+                    </span>
+                    <div style={{ display: "flex" }}>
+                      <span className="project_updated_name">Mohasina</span>
+                      <span className="updated_task_content ms-2">
+                        updated a task
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4 ">
+                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                      45 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="latest_updatesImage row mt-4"
+                //style={{ padding: "10px" }}
+              >
+                <div className="row m-0">
+                  <div className="col-2">
+                    <div
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        backgroundColor: "#FFB82C",
+                        borderRadius: "100px",
+                        position: "relative",
+                      }}
+                    >
+                      <img
+                        src={rupee}
+                        alt=""
+                        style={{
+                          position: "absolute",
+                          top: "25%",
+                          left: "25%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <span className="Project_Updated_Span">
+                      Payroll rolled out
+                    </span>
+                    <div style={{ display: "flex" }}>
+                      <span className="project_updated_name">Nagaraju</span>
+                      <span className="updated_task_content ms-2">
+                        updated a task
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4 ">
+                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                      45 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="latest_updatesImage row mt-4"
+                //style={{ padding: "10px" }}
+              >
+                <div className="row m-0">
+                  <div className="col-2">
+                    <div
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        backgroundColor: "#46F24B",
+                        borderRadius: "100px",
+                        position: "relative",
+                      }}
+                    >
+                      <img
+                        src={abcprojectimage}
+                        alt=""
+                        style={{
+                          position: "absolute",
+                          top: "25%",
+                          left: "25%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <span className="Project_Updated_Span">
+                      Abc project completed
+                    </span>
+                    <div style={{ display: "flex" }}>
+                      <span className="project_updated_name">Saiomkar</span>
+                      <span className="updated_task_content ms-2">
+                        updated a task
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4 ">
+                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                      45 minutes ago
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "85%",
+                }}
+                className="ms-4 mt-3"
+              ></div>
             </div>
           </div>
         </div>
@@ -769,11 +1124,145 @@ export default function AdminDashboard() {
             alignContent: "center",
           }}
         >
-          <div className="addEmployee_quick_action"></div>
-          <div className="addEmployee_quick_action"></div>
-          <div className="addEmployee_quick_action"></div>
-          <div className="addEmployee_quick_action"></div>
-          <div className="addEmployee_quick_action"></div>
+          <div
+            className="addEmployee_quick_action"
+            onClick={NavigateToAddEmployee}
+          >
+            <div className="Quick_Actions_image">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={AddEmployeeQuickAction}
+                  alt=""
+                  height="52px"
+                  width="52px"
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span className="Add_Employee_content">Add Employee</span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="addEmployee_quick_action"
+            onClick={NavigateToAddProject}
+          >
+            <div className="Quick_Actions_image">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={AddProjectQuickAction}
+                  alt=""
+                  height="52px"
+                  width="52px"
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span className="Add_Employee_content">Add Project</span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="addEmployee_quick_action"
+            onClick={NavigateToAddManageRoles}
+          >
+            <div className="Quick_Actions_image">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img src={Manageroles} alt="" height="52px" width="52px" />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span className="Add_Employee_content">Manage Roles</span>
+              </div>
+            </div>
+          </div>
+          <div className="addEmployee_quick_action">
+            <div className="Quick_Actions_image">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={AddEmployeeQuickAction}
+                  alt=""
+                  height="52px"
+                  width="52px"
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span className="Add_Employee_content">Add Employee</span>
+              </div>
+            </div>
+          </div>
+          <div className="addEmployee_quick_action">
+            <div className="Quick_Actions_image">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <img
+                  src={AddEmployeeQuickAction}
+                  alt=""
+                  height="52px"
+                  width="52px"
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span className="Add_Employee_content">Add Employee</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
