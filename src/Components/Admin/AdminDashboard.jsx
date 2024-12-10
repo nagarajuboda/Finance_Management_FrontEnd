@@ -16,6 +16,9 @@ import RecentEmployeeImage from "../../../src/assets/Images/AddEmployeeimage.png
 import TeamMemberAddedImage from "../../../src/assets/Images/TeamMemberAdded.png";
 import rupee from "../../../src/assets/Images/Rupee.png";
 import abcprojectimage from "../../../src/assets/Images/AbcProjectImage.png";
+// import Dropdown from "react-bootstrap/Dropdown";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 // Register Chart.js components
 ChartJS.register(
@@ -33,6 +36,11 @@ import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 export default function AdminDashboard() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const [TotalEmployees, setTotalEmployees] = useState(0);
   const [TotalbenchEmployees, setTotalBenchEmployees] = useState(0);
   const [BillaBleEmployees, setBillbleEmployees] = useState(0);
@@ -94,9 +102,9 @@ export default function AdminDashboard() {
     labels: ["Planning", "Designing", "Pre Construction"],
     datasets: [
       {
-        data: [30, 40, 30], // Example percentages
-        backgroundColor: ["#007BFF", "#8AB4F8", "#E0E0E0"], // Match colors in your design
-        hoverBackgroundColor: ["#0056b3", "#6a9ee0", "#c6c6c6"],
+        data: [20, 30, 40, 30], // Example percentages
+        backgroundColor: ["red", "#007BFF", "#8AB4F8", "#E0E0E0"], // Match colors in your design
+        hoverBackgroundColor: ["red", "#0056b3", "#6a9ee0", "#c6c6c6"],
         borderWidth: 0, // Remove border lines
       },
     ],
@@ -282,7 +290,6 @@ export default function AdminDashboard() {
                 stroke="#F5F5F5"
                 strokeWidth="8"
               />
-
               <path
                 d="M 10 50 A 40 40 0 0 1 90 50"
                 fill="none"
@@ -329,7 +336,7 @@ export default function AdminDashboard() {
           <div
             style={{
               position: "absolute",
-              top: "46%",
+              top: "50%",
               left: "68%",
               transform: "translate(-50%, -50%)",
               textAlign: "center",
@@ -345,11 +352,11 @@ export default function AdminDashboard() {
               >
                 <div
                   style={{
-                    width: "10px",
+                    width: "5px",
                     height: "19px",
                     backgroundColor: "#4A90E2",
                     marginRight: "5px",
-                    borderRadius: "50%",
+                    borderRadius: "5px",
                   }}
                 ></div>
                 <span className="billble_content">{billable} Billable</span>
@@ -357,11 +364,11 @@ export default function AdminDashboard() {
               <div style={{ display: "flex", alignItems: "center" }}>
                 <div
                   style={{
-                    width: "10px",
+                    width: "5px",
                     height: "19px",
                     backgroundColor: "#F5A623",
                     marginRight: "5px",
-                    borderRadius: "50%",
+                    borderRadius: "5px",
                   }}
                 ></div>
                 <span className="billble_content">
@@ -428,7 +435,7 @@ export default function AdminDashboard() {
               <div
                 style={{
                   position: "absolute",
-                  top: "42%",
+                  top: "26%",
                   left: " 39%",
                   transform: "translate(-50%, -50%)",
                   textAlign: "center",
@@ -437,16 +444,41 @@ export default function AdminDashboard() {
                 }}
               >
                 <small className="bench_Employee-Progress">{totalBench}</small>
-                <br />
-
-                <span className="total_employees_content">Bench Employees</span>
               </div>
+              <span
+                className="total_employees_content "
+                style={{
+                  position: "absolute",
+                  top: "40%",
+                  left: " 39%",
+                  transform: "translate(-50%, -50%)",
+                  textAlign: "center",
+                  // padding: "0",
+                  // margin: "0",
+                }}
+              >
+                Bench
+              </span>
+              <span
+                className="total_employees_content"
+                style={{
+                  position: "absolute",
+                  top: "52%",
+                  left: " 39%",
+                  transform: "translate(-50%, -50%)",
+                  textAlign: "center",
+                  // padding: "0",
+                  // margin: "0",
+                }}
+              >
+                Employees
+              </span>
             </div>
           </div>
           <div
             style={{
               position: "absolute",
-              top: "42%",
+              top: "50%",
               left: " 70%",
               transform: "translate(-50%, -50%)",
               textAlign: "center",
@@ -462,26 +494,27 @@ export default function AdminDashboard() {
             >
               <div
                 style={{
-                  width: "10px",
+                  width: "5px",
                   height: "19px",
                   backgroundColor: "#4A90E2",
                   marginRight: "5px",
-                  borderRadius: "50%",
+                  borderRadius: "5px",
                 }}
               ></div>
-              <span className="billble_content">{internal} Internal</span>
+              <span className="billble_content ms-2">{internal} Internal</span>
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
               <div
                 style={{
-                  width: "10px",
+                  width: "5px",
                   height: "19px",
                   backgroundColor: "#D3D3D3",
-                  marginRight: "5px",
-                  borderRadius: "50%",
+                  borderRadius: "5px",
                 }}
               ></div>
-              <span className="billble_content">{noProjects} No Projects</span>
+              <span className="billble_content ms-2">
+                {noProjects} No Projects
+              </span>
             </div>
           </div>
         </div>
@@ -685,7 +718,7 @@ export default function AdminDashboard() {
               >
                 Active Projects
               </p>
-              <Doughnut data={data} options={options} />
+              <Doughnut data={data1} options={options1} />
             </div>
             <div
               style={{
@@ -852,7 +885,7 @@ export default function AdminDashboard() {
                       onChange={(date) => setSelectedDate(date)}
                       dateFormat="MMM dd"
                       placeholderText="Select a date"
-                      style={{ border: "none !impartant" }}
+                      style={{ border: "none!impartant" }}
                     />
                   </div>
                 </div>
@@ -908,18 +941,18 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-7">
                     <span className="Project_Updated_Span">
                       Project Updated
                     </span>
                     <div style={{ display: "flex" }}>
                       <span className="project_updated_name">Naresh</span>
-                      <span className="updated_task_content ms-2">
+                      <span className="updated_task_content  ms-2">
                         updated a task
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 ">
+                  <div className="col-3  p-0">
                     <span className="updated_time" style={{ fontSize: "10px" }}>
                       45 minutes ago
                     </span>
@@ -949,18 +982,18 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-7">
                     <span className="Project_Updated_Span">
                       Added new Employee
                     </span>
                     <div style={{ display: "flex" }}>
                       <span className="project_updated_name">Nagaraju</span>
-                      <span className="updated_task_content ms-2">
+                      <span className="updated_task_content ms-2 ">
                         updated a task
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 ">
+                  <div className="col-3 p-0 ">
                     <span className="updated_time" style={{ fontSize: "10px" }}>
                       45 minutes ago
                     </span>
@@ -993,18 +1026,18 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-7">
                     <span className="Project_Updated_Span">
                       Team member added
                     </span>
                     <div style={{ display: "flex" }}>
                       <span className="project_updated_name">Mohasina</span>
-                      <span className="updated_task_content ms-2">
+                      <span className="updated_task_content  ms-2">
                         updated a task
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 ">
+                  <div className="col-3  p-0">
                     <span className="updated_time" style={{ fontSize: "10px" }}>
                       45 minutes ago
                     </span>
@@ -1037,18 +1070,18 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-7">
                     <span className="Project_Updated_Span">
                       Payroll rolled out
                     </span>
                     <div style={{ display: "flex" }}>
                       <span className="project_updated_name">Nagaraju</span>
-                      <span className="updated_task_content ms-2">
+                      <span className="updated_task_content ms-2 ">
                         updated a task
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 ">
+                  <div className="col-3 p-0 ">
                     <span className="updated_time" style={{ fontSize: "10px" }}>
                       45 minutes ago
                     </span>
@@ -1081,7 +1114,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-                  <div className="col-6">
+                  <div className="col-7">
                     <span className="Project_Updated_Span">
                       Abc project completed
                     </span>
@@ -1092,7 +1125,7 @@ export default function AdminDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="col-4 ">
+                  <div className="col-3 p-0">
                     <span className="updated_time" style={{ fontSize: "10px" }}>
                       45 minutes ago
                     </span>
@@ -1106,6 +1139,16 @@ export default function AdminDashboard() {
                 }}
                 className="ms-4 mt-3"
               ></div>
+              <div className="viewAlldiv">
+                <span className="ViewAll">
+                  View All
+                  <i
+                    class="bi bi-arrow-right ms-1"
+                    height="12px"
+                    width="12px"
+                  ></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>
