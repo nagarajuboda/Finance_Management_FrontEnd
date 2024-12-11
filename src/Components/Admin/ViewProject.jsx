@@ -65,7 +65,6 @@ export function ViewProject() {
   const [open, setopen] = useState(false);
   const [clients, setClients] = useState([]);
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
-
   useEffect(() => {
     FetchData();
     filteredEmployees;
@@ -336,7 +335,7 @@ export function ViewProject() {
             className="col-2 projectPrpgress"
             style={{ fontSize: "12px", margin: "0" }}
           >
-            <p className="view-more">View more</p>
+            {/* <p className="view-more">View more</p> */}
           </div>
           <div
             className="col-2 projectPrpgress"

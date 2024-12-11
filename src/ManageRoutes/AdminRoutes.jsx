@@ -26,6 +26,8 @@ import Projectss from "../Components/Admin/Pages/Projects";
 import EditEmployeePopup from "../Components/Employee/EditEmployeePopup";
 import UpdateProject from "../Components/Admin/Pages/UpdateProject";
 import AdminDashboard from "../Components/Admin/AdminDashboard";
+import Employeess from "../Components/Manager/Employees";
+import ManagerDashboard from "../Components/Manager/ManagerDashboard";
 
 export default function AdminRoutes() {
   return (
@@ -44,6 +46,8 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
+        <Route path="/UnderEmployees" element={<Employeess />} />
+        <Route path="/ManagerDasboard" element={<ManagerDashboard />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/EditEmployee" element={<EditEmployeePopup />} />

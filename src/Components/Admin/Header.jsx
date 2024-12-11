@@ -15,6 +15,12 @@ import {
 } from "react-icons/fa";
 // import { data } from "jquery";
 export default function Header({ isOpen }) {
+  const [isOpen1, setIsOpen1] = useState(false);
+
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    setIsOpen1(!isOpen1);
+  };
   //const [isOpen, setisopen] = useState(false);
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [sessionData, setSessionDataState] = useState(null);
@@ -79,28 +85,60 @@ export default function Header({ isOpen }) {
         marginLeft: isOpen ? "" : "",
       }}
     >
-      <div
-        className="profilediv"
-        style={{ display: "flex", cursor: "pointer" }}
-      >
-        <span className="vericalline"></span>
-        <div style={{ marginTop: "7px", marginLeft: "10px" }}>
-          <img src={profile} alt="" />
-        </div>
-        <div
-          style={{ textAlign: "center", justifyContent: "center" }}
-          className="mt-1 ms-2"
-        >
-          <div>
-            <span className="username">Shwetha mohan</span>
-            <div className="userrole">
-              <span className="me-3">Administator</span>
+      <div style={{ position: "relative", display: "inline-block" }}>
+        <button onClick={toggleDropdown} style={{ cursor: "pointer" }}>
+          <div
+            className="profilediv"
+            style={{ display: "flex", cursor: "pointer" }}
+          >
+            <span className="vericalline"></span>
+            <div style={{ marginTop: "7px", marginLeft: "10px" }}>
+              <img src={profile} alt="" />
+            </div>
+            <div
+              style={{ textAlign: "center", justifyContent: "center" }}
+              className="mt-1 ms-2"
+            >
+              <div>
+                <span className="username">Shwetha mohan</span>
+                <div className="userrole">
+                  <span className="me-3">Administator</span>
+                </div>
+              </div>
+            </div>
+            <div className="">
+              <img src={v} alt="" className="vimage" />
             </div>
           </div>
-        </div>
-        <div className="">
-          <img src={v} alt="" className="vimage" />
-        </div>
+        </button>
+
+        {isOpen1 && (
+          <div
+            style={{
+              position: "absolute",
+              top: "94%",
+              right: "20px",
+              background: "white",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+              zIndex: 1000,
+              width: "228px",
+            }}
+          >
+            <ul style={{ listStyle: "none", margin: 0, padding: "10px" }}>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                View Profile
+              </li>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>Settings</li>
+              <li
+                style={{ padding: "10px 0", cursor: "pointer", color: "red" }}
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

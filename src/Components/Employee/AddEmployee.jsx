@@ -817,9 +817,9 @@ export default function AddEmployee() {
                 />
               </div>
             </div>
+            {/* <div className="col-3"></div>
             <div className="col-3"></div>
-            <div className="col-3"></div>
-            <div className="col-3"></div>
+            <div className="col-3"></div> */}
           </div>
 
           <div

@@ -102,7 +102,17 @@ const Sidebar = ({ children }) => {
     {
       name: "Dashboard",
       icon: dashboardsidebarimage,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "- AddProjects" }],
+      path: "/Dashboard/ManagerDasboard",
+    },
+    {
+      name: "HR Management",
+      icon: hrManagement,
+      submenu: [{ path: "/dashboard/UnderEmployees", name: "Employees" }],
+    },
+    {
+      name: "Project Management",
+      icon: ProjectManagement,
+      submenu: [{ path: "/Dashboard/All/Projects", name: "Projects" }],
     },
   ];
 
