@@ -594,7 +594,9 @@ export function ViewProject() {
                     <td style={{ fontSize: "12px" }}>{employee.role}</td>
                     <td style={{ fontSize: "12px" }}>{projectManagername}</td>
                     <td style={{ fontSize: "12px" }}>
-                      {employee.employee.dateOfJoining}
+                      {new Date(
+                        employee.employee.dateOfJoining
+                      ).toLocaleDateString("en-GB")}
                     </td>
                     <td>
                       <img

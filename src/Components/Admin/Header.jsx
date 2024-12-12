@@ -5,6 +5,10 @@ import logo from "../../assets/Images/ArchentsLogo.png";
 import profile from "../../assets/Images/adminprofile.png";
 import v from "../../assets/Images/v.png";
 import { getSessionData } from "../../Service/SharedSessionData";
+import myprofile from "../../../src/assets/Images/myprofile.png";
+import support from "../../../src/assets/Images/support.png";
+import settings from "../../../src/assets/Images/settings.png";
+import logout from "../../../src/assets/Images/Logout.png";
 import {
   FaSearch,
   FaUserCircle,
@@ -16,11 +20,12 @@ import {
 // import { data } from "jquery";
 export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen1(!isOpen1);
-  };
+  // const toggleDropdown = () => {
+  //   setIsOpen1(!isOpen1);
+  // };
   //const [isOpen, setisopen] = useState(false);
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [sessionData, setSessionDataState] = useState(null);
@@ -71,7 +76,17 @@ export default function Header({ isOpen }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  const toggleDropdown = () => {
+    if (isOpen1) {
+      setIsClosing(true);
+      setTimeout(() => {
+        setIsOpen1(false);
+        setIsClosing(false);
+      }, 200); // Match the animation duration (0.2s)
+    } else {
+      setIsOpen1(true);
+    }
+  };
   function toggleProfileVisibility(e) {
     e.preventDefault();
     setIsVisibleProfile((prevVisibility) => !prevVisibility);
@@ -111,34 +126,130 @@ export default function Header({ isOpen }) {
             </div>
           </div>
         </button>
-
-        {isOpen1 && (
+        {(isOpen1 || isClosing) && (
           <div
+            className={`${isClosing ? "closeprofilediv" : "openprofilediv"}`}
             style={{
               position: "absolute",
               top: "94%",
               right: "20px",
               background: "white",
               border: "1px solid #ccc",
-              borderRadius: "5px",
               boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
               zIndex: 1000,
               width: "228px",
             }}
           >
-            <ul style={{ listStyle: "none", margin: 0, padding: "10px" }}>
+            <ul style={{ listStyle: "none", margin: 0, paddingLeft: "10px" }}>
               <li style={{ padding: "10px 0", cursor: "pointer" }}>
-                View Profile
+                <img src={myprofile} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  My Profile
+                </span>
               </li>
-              <li style={{ padding: "10px 0", cursor: "pointer" }}>Settings</li>
-              <li
-                style={{ padding: "10px 0", cursor: "pointer", color: "red" }}
-              >
-                Logout
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={support} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Support
+                </span>
+              </li>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={settings} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Settings
+                </span>
+              </li>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={logout} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Logout
+                </span>
               </li>
             </ul>
           </div>
         )}
+        {/* {isOpen1 && (
+          <div
+            className="openprofilediv"
+            style={{
+              position: "absolute",
+              top: "94%",
+              right: "20px",
+              background: "white",
+              border: "1px solid #ccc",
+              // borderRadius: "5px",
+              boxShadow: "0 2px 5px rgba(0,0,0,0.15)",
+              zIndex: 1000,
+              width: "228px",
+            }}
+          >
+            <ul style={{ listStyle: "none", margin: 0, paddingLeft: "10px" }}>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={myprofile} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  My profile
+                </span>
+              </li>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+                className=""
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={support} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Support
+                </span>
+              </li>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+                className=""
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={settings} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Settings
+                </span>
+              </li>
+              <div
+                style={{
+                  border: "1px solid #64646430",
+                  width: "100%",
+                }}
+                className=""
+              ></div>
+              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+                <img src={logout} alt="" width="20px" height="20px" />
+                <span style={{ fontSize: "12px" }} className="ms-2">
+                  Logout
+                </span>
+              </li>
+            </ul>
+          </div>
+        )} */}
       </div>
     </div>
   );
