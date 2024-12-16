@@ -175,12 +175,14 @@ export default function Employees() {
     try {
       if (isDivVisible == false) {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
+          //   `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
+          //   { responseType: "blob" }
+          `https://localhost:44305/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
           { responseType: "blob" }
         );
       } else {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
+          `https://localhost:44305/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}&ManagerId=${id}`,
           { responseType: "blob" }
         );
       }
@@ -234,14 +236,13 @@ export default function Employees() {
               </p>
             </div>
           ) : (
-            <div className="col-4">
+            <div className="col-5">
               <p className="employeecontent ms-3" style={{ fontSize: "12px" }}>
                 Employee list
               </p>
             </div>
           )}
           {isDivVisible && <div className="col-3"></div>}
-
           <div
             className="col-3"
             style={{
@@ -277,7 +278,6 @@ export default function Employees() {
               }}
             ></i>
           </div>
-
           <div
             className="col-2"
             style={{
@@ -317,17 +317,7 @@ export default function Employees() {
               </button>
             )}
           </div>
-          {!isDivVisible && (
-            <div className="col-1">
-              <button
-                style={{ fontSize: "12px", height: "30px" }}
-                className="btn btn-primary"
-                onClick={() => setIsPopupOpen(true)}
-              >
-                Import
-              </button>
-            </div>
-          )}
+
           <div className="col-1 " style={{ padding: "0px" }}>
             <Dropdown>
               <Dropdown.Toggle

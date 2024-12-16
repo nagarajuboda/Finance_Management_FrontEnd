@@ -28,6 +28,8 @@ import UpdateProject from "../Components/Admin/Pages/UpdateProject";
 import AdminDashboard from "../Components/Admin/AdminDashboard";
 import Employeess from "../Components/Manager/Employees";
 import ManagerDashboard from "../Components/Manager/ManagerDashboard";
+import ProjectManagerProjects from "../Components/Manager/ProjectManagerProjects";
+import TimeSheetModule from "../Components/Manager/TimeSheet";
 
 export default function AdminRoutes() {
   return (
@@ -47,11 +49,17 @@ export default function AdminRoutes() {
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/UnderEmployees" element={<Employeess />} />
+
+        <Route
+          path="/ProjectManagerProjects"
+          element={<ProjectManagerProjects />}
+        />
         <Route path="/ManagerDasboard" element={<ManagerDashboard />} />
         <Route path="/Employee/Projects" element={<Projects />} />
         <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
         <Route path="/EditEmployee" element={<EditEmployeePopup />} />
         <Route path="/UpdateProject" element={<UpdateProject />} />
+        <Route path="/TimeSheet" element={<TimeSheetModule />} />
 
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />

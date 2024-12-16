@@ -91,7 +91,9 @@ export default function Header({ isOpen }) {
     e.preventDefault();
     setIsVisibleProfile((prevVisibility) => !prevVisibility);
   }
-
+  const Logoutfunction = () => {
+    navigate("/user/Login");
+  };
   return (
     <div
       className="maindiv"
@@ -177,7 +179,10 @@ export default function Header({ isOpen }) {
                   width: "100%",
                 }}
               ></div>
-              <li style={{ padding: "10px 0", cursor: "pointer" }}>
+              <li
+                style={{ padding: "10px 0", cursor: "pointer" }}
+                onClick={Logoutfunction}
+              >
                 <img src={logout} alt="" width="20px" height="20px" />
                 <span style={{ fontSize: "12px" }} className="ms-2">
                   Logout

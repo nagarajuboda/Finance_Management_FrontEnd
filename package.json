@@ -52,6 +52,7 @@
     "react-icons": "^5.2.1",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.23.1",
+    "react-select": "^5.9.0",
     "react-sidebar": "^3.0.2",
     "react-table": "^7.8.0",
     "react-tabs": "^6.0.2",

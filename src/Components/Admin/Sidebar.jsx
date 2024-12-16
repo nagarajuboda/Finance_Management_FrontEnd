@@ -112,7 +112,14 @@ const Sidebar = ({ children }) => {
     {
       name: "Project Management",
       icon: ProjectManagement,
-      submenu: [{ path: "/Dashboard/All/Projects", name: "Projects" }],
+      submenu: [
+        { path: "/Dashboard/ProjectManagerProjects", name: "Projects" },
+      ],
+    },
+    {
+      name: "Billing",
+      icon: billing,
+      submenu: [{ path: "/Dashboard/TimeSheet", name: "TimeSheet" }],
     },
   ];
 
