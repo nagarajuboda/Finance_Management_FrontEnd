@@ -94,7 +94,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Logout",
       icon: Logout,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
+      path: "/user/Login",
     },
   ];
 

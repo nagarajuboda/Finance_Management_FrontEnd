@@ -204,8 +204,9 @@ export default function ProjectManagerProjects() {
                   <td></td>
                   <td></td>
                   <td></td>
+                  <td style={{ textAlign: "left" }}>No Records Found</td>
                   <td></td>
-                  <td>No Records Found</td>
+
                   <td></td>
                   <td></td>
                   <td></td>
