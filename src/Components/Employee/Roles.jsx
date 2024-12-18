@@ -7,7 +7,6 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import images from "../../assets/Images/User.png";
 import axios from "axios";
-import EditRolesPopup from "./EditRolesPopup";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
 
@@ -318,45 +317,7 @@ export default function Roles() {
          
         </div>
 
-        {isPopupOpen && (
-          <Popup open={isPopupOpen} closeOnDocumentClick onClose={togglePopup}>
-            <div
-              className="popup-content"
-              style={{
-                width: "100%",
-                maxWidth: "300px",
-                borderRadius: "8px",
-              }}
-            >
-              <div className="popup-title">
-                <h4>Are you sure?</h4>
-              </div>
-              <div className="popup-buttons">
-                <button
-                  className="popup-button"
-                  onClick={closeDeletePopup}
-                >
-                  Close
-                </button>
-                <button
-                  className="popup-button"
-                  onClick={handleOpenPopup}
-                >
-                  Confirm
-                </button>
-              </div>
-            </div>
-          </Popup>
-        )}
-        {open && (
-          <Popup open={open} closeOnDocumentClick onClose={closeDeletePopup}>
-            <div className="popup-content" style={{ padding: "10px" }}>
-              <div className="popup-title">
-                <h4>Role deleted successfully!</h4>
-              </div>
-            </div>
-          </Popup>
-        )}
+        
       </div>
     </div>
   );
