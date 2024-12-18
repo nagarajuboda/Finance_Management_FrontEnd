@@ -7,7 +7,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import images from "../../assets/Images/User.png";
 import axios from "axios";
-import EditEmployeePopup from "./EditEmployeePopup";
+import EditRolesPopup from "./EditRolesPopup";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
 
@@ -16,6 +16,8 @@ const priorityMap = {
   2: "Medium",
   3: "Low",
   4: "Low",
+  5: "Low",
+  6: "Low",
 };
 
 export default function Roles() {
@@ -33,11 +35,6 @@ export default function Roles() {
   useEffect(() => {
     fetchRoles();
   }, []);
-
-  const EdittogglePopup = (e, index, roleId) => {
-    setid(roleId);
-    setEditIsPopupOpen(!isEditPopupOpen);
-  };
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -58,6 +55,13 @@ export default function Roles() {
       console.error("Error fetching roles", error);
     }
   };
+
+  
+  const EdittogglePopup = (e, index, roleId) => {
+    sessionStorage.setItem("RoleID", roleId); // Save the Role ID in sessionStorage if needed
+    navigate("/dashboard/EditRoles"); // Navigate to the role edit page
+  };
+  
 
   const handleOpenPopup = async (e, index, id) => {
     var response = await axios.delete(
@@ -151,7 +155,7 @@ export default function Roles() {
   const handleToggle = async (roleId, currentStatus) => {
     try {
       const updatedStatus = !currentStatus;
-      await axios.put(`https://localhost:44305/api/Roles/ToggleStatus`, {
+      await axios.put(`https://localhost:44305/api/Roles/toggle-status/{roleId}`, {
         roleId,
         isEnabled: updatedStatus,
       });
@@ -162,9 +166,9 @@ export default function Roles() {
   };
 
   return (
-    <div className="Employeemaindiv">
-      <div className="employeeheader">Role and Access</div>
-      <div className="Employeelist">
+    <div className="Rolemaindiv">
+      <div className="roleheader">Role and Access</div>
+      <div className="Rolelist">
         <div
           className="row"
           style={{
@@ -175,7 +179,7 @@ export default function Roles() {
           }}
         >
           <div className="col-2">
-            <p className="employeecontent">Roles list</p>
+            <p className="rolecontent">Roles list</p>
           </div>
           <div
             className="col-4"
@@ -184,17 +188,17 @@ export default function Roles() {
           <div className="col-6 d-flex justify-content-end pe-3">
             <div className="me-2">
               <button
-                className="DeleteRecordbutton"
+                className="DelRecordbutton"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
               >
-                <span className="deleteSelectedSpan">Delete Selected</span>
+                <span className="delSelectedSpan">Delete Selected</span>
               </button>
             </div>
             <div>
               <button
                 style={{ display: "flex", width: "120px" }}
-                className="add-new-project-button"
+                className="add-new-role-button"
                 onClick={Addrolefuncton}
               >
                 <span>
@@ -206,7 +210,7 @@ export default function Roles() {
                     className="ms-2"
                   />
                 </span>
-                <span className="add-new-project-span ms-1">Add New Role</span>
+                <span className="add-new-role-span ms-1">Add New Role</span>
               </button>
             </div>
           </div>
@@ -215,11 +219,11 @@ export default function Roles() {
         <div style={{ padding: "10px" }}>
           <table
             id="example"
-            className="employeeTable"
+            className="roleTable"
             style={{ width: "100%" }}
           >
             <thead>
-              <tr className="tableheader">
+              <tr className="roleheader" style={{backgroundColor:"red important"}}>
                 <th>
                   <input
                     type="checkbox"
@@ -266,18 +270,17 @@ export default function Roles() {
                     </label>
                   </td>
                   <td>
-                    <img
-                      src={editicon}
-                      style={{
-                        marginRight: "15px",
-                        width: "25px",
+                   <img src={editicon}
+                       onClick={() => handleEdit(role)
+                       }
+                       alt="Edit Role"
+                       style={{
+                        width: "18px",
+                        height: "18px",
                         cursor: "pointer",
-                      }}
-                      onClick={(e) =>
-                        EdittogglePopup(e, index, role.id)
-                      }
-                      alt="Edit"
-                    />
+                       }}
+                   />
+
                     <img
                       src={deleteicon}
                       style={{ width: "25px", cursor: "pointer" }}
@@ -303,7 +306,7 @@ export default function Roles() {
             Previous
           </button>
           <span className="pagination-text">
-            Page {currentPage} of {totalPages}
+            {currentPage} 
           </span>
           <button
             onClick={handleNextPage}
@@ -344,14 +347,6 @@ export default function Roles() {
               </div>
             </div>
           </Popup>
-        )}
-        {isEditPopupOpen && (
-          <EditEmployeePopup
-            id={id}
-            setEditIsPopupOpen={setEditIsPopupOpen}
-            setRoles={setRoles}
-            fetchRoles={fetchRoles}
-          />
         )}
         {open && (
           <Popup open={open} closeOnDocumentClick onClose={closeDeletePopup}>
