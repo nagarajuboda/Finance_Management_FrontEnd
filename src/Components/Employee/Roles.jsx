@@ -14,9 +14,6 @@ const priorityMap = {
   1: "High",
   2: "Medium",
   3: "Low",
-  4: "Low",
-  5: "Low",
-  6: "Low",
 };
 
 export default function Roles() {
