@@ -169,19 +169,17 @@ export default function TimeSheet() {
               paddingTop: "20px",
             }}
           >
-            {!disiblebuttons && (
-              <div className="">
-                <Select
-                  options={projectOptions}
-                  placeholder="Select Project"
-                  onChange={handleProjectChange}
-                  value={selectedProject}
-                  className="drop_down_list"
-                  styles={customStyles}
-                  // isSearchable
-                />
-              </div>
-            )}
+            <div className="">
+              <Select
+                options={projectOptions}
+                placeholder="Select Project"
+                onChange={handleProjectChange}
+                value={selectedProject}
+                className="drop_down_list"
+                styles={customStyles}
+                // isSearchable
+              />
+            </div>
 
             <div>
               <DatePicker
@@ -248,7 +246,11 @@ export default function TimeSheet() {
                     </td>
                     <td>{employee.email}</td>
                     <td>{department}</td>
-                    <td>{employee.employeeStatus ? "Active" : "Inactive"}</td>
+                    <td>
+                      <span className="activeInactive">
+                        {employee.employeeStatus ? "Active" : "Inactive"}
+                      </span>
+                    </td>
                     <td style={{ textAlign: "center" }}>
                       {employee.role.name}
                     </td>
@@ -281,7 +283,7 @@ export default function TimeSheet() {
                                     className="timesheet_input form-control  "
                                     value={hours[employee.id] || ""}
                                     // value={filteredEmployee.workingHourse}
-                                    placeholder="00:00 Hrs"
+                                    placeholder="00:00  Hrs"
                                     onChange={(e) =>
                                       handleHoursChange(
                                         employee.id,
@@ -299,9 +301,9 @@ export default function TimeSheet() {
                         >
                           <input
                             type="text"
-                            className="timesheet_input form-control"
+                            className="timesheet_input form-control "
                             d
-                            placeholder="00:00 Hrs"
+                            placeholder="00:00  Hrs"
                             value={hours[employee.id] || ""}
                             onChange={(e) =>
                               handleHoursChange(employee.id, e.target.value)
@@ -326,31 +328,47 @@ export default function TimeSheet() {
             </tbody>
           </table>
         </div>
-        {!disiblebuttons && ProjectEmployees.length !== 0 && (
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          {!disiblebuttons && ProjectEmployees.length !== 0 && (
+            <div>
+              <button
+                type="button"
+                className="reset_button me-2"
+                onClick={Resetfunction}
+              >
+                <span className="make_a_request_span"> reset</span>
+              </button>
+
+              <button
+                type="button"
+                className="save_button me-2"
+                onClick={SaveForm}
+              >
+                <span className="make_a_request_span"> save</span>
+              </button>
+
+              <button
+                type="button"
+                className="submit_button me-2"
+                onClick={SubmitFormFunction}
+              >
+                <span className="make_a_request_span"> Submit</span>
+              </button>
+            </div>
+          )}
+        </div>
+        {disiblebuttons && (
           <div style={{ display: "flex", justifyContent: "end" }}>
             <button
               type="button"
-              className="reset_button me-2"
-              onClick={Resetfunction}
+              className="submitbutton "
+              style={{ marginRight: "10px" }}
             >
-              reset
+              <span className="make_a_request_span"> Make a request</span>
             </button>
-
-            <button
-              type="button"
-              className="save_button me-2"
-              onClick={SaveForm}
-            >
-              save
-            </button>
-
-            <button
-              type="button"
-              className="submit_button me-2"
-              onClick={SubmitFormFunction}
-            >
-              Submit
-            </button>
+            {/* <a href="#" className="" style={{ marginRight: "10px" }}>
+              <span className="make_a_request_span"> Make a request</span>
+            </a> */}
           </div>
         )}
       </div>
