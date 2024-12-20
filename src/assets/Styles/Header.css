@@ -44,8 +44,8 @@
 .vimage {
   width: 15px;
   /* margin: 22px; */
-  margin-top: 19px;
-  margin-left: 55px;
+  margin-top: 22px;
+  margin-left: 40px;
 }
 /* @keyframes example {
   0% {
@@ -60,16 +60,15 @@
     top: 200px;
   }
 } */
-.openprofilediv {
+/* .openprofilediv {
   position: relative;
   animation-name: example;
   animation-duration: 0.1s;
-  /* animation-name: slideUp; */
 }
 .closeprofilediv {
   position: relative;
-  animation-name: example;
-  animation-duration: 0.2s;
+  animation-name: slideUp;
+  animation-duration: 0.1s;
 }
 @keyframes example {
   0% {
@@ -83,11 +82,10 @@
 }
 
 .closeprofilediv {
-  animation: slideUp 0.2s forwards;
+  animation: slideUp 0.1s forwards;
 }
-
 @keyframes slideUp {
-  0% {
+  80% {
     left: 0px;
     top: 0px;
   }
@@ -95,5 +93,38 @@
   100% {
     left: 0px;
     top: 0px;
+  }
+} */
+.openprofilediv {
+  position: relative;
+  animation-name: slideDown;
+  animation-duration: 0.4s; /* Smooth transition */
+}
+
+.closeprofilediv {
+  position: relative;
+  animation-name: slideUp;
+  animation-duration: 0.4s;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px);
   }
 }

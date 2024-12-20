@@ -328,7 +328,13 @@ export default function TimeSheet() {
             </tbody>
           </table>
         </div>
-        <div style={{ display: "flex", justifyContent: "end" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            paddingBottom: "15px",
+          }}
+        >
           {!disiblebuttons && ProjectEmployees.length !== 0 && (
             <div>
               <button
@@ -358,7 +364,13 @@ export default function TimeSheet() {
           )}
         </div>
         {disiblebuttons && (
-          <div style={{ display: "flex", justifyContent: "end" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              paddingBottom: "15px",
+            }}
+          >
             <button
               type="button"
               className="submitbutton "
