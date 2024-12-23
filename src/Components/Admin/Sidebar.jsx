@@ -121,6 +121,11 @@ const Sidebar = ({ children }) => {
       icon: billing,
       submenu: [{ path: "/Dashboard/TimeSheet", name: "TimeSheet" }],
     },
+    {
+      name: "Logout",
+      icon: Logout,
+      path: "/user/Login",
+    },
   ];
 
   const menuItems =

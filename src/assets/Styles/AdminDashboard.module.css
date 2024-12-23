@@ -7,9 +7,7 @@ header {
   height: 70px;
   background: #fff;
 }
-/* header .row {
-  margin: 0 !important;
-} */
+
 header button.rounded-circle {
   min-width: 40px !important;
   width: 40px !important;

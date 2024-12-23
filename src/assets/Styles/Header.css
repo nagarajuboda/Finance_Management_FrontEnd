@@ -19,7 +19,6 @@
 .profilediv {
   width: 249px;
   height: 54px;
-  /* margin-left: auto; */
 }
 .vericalline {
   border-left: 2px solid #dcdcdc;
@@ -43,62 +42,14 @@
 }
 .vimage {
   width: 15px;
-  /* margin: 22px; */
   margin-top: 22px;
   margin-left: 40px;
 }
-/* @keyframes example {
-  0% {
-    background-color: red;
-    left: 0px;
-    top: 0px;
-  }
 
-  75% {
-    background-color: green;
-    left: 0px;
-    top: 200px;
-  }
-} */
-/* .openprofilediv {
-  position: relative;
-  animation-name: example;
-  animation-duration: 0.1s;
-}
-.closeprofilediv {
-  position: relative;
-  animation-name: slideUp;
-  animation-duration: 0.1s;
-}
-@keyframes example {
-  0% {
-    left: 0px;
-    top: 0px;
-  }
-
-  75% {
-    left: 0px;
-  }
-}
-
-.closeprofilediv {
-  animation: slideUp 0.1s forwards;
-}
-@keyframes slideUp {
-  80% {
-    left: 0px;
-    top: 0px;
-  }
-
-  100% {
-    left: 0px;
-    top: 0px;
-  }
-} */
 .openprofilediv {
   position: relative;
   animation-name: slideDown;
-  animation-duration: 0.4s; /* Smooth transition */
+  animation-duration: 0.4s;
 }
 
 .closeprofilediv {

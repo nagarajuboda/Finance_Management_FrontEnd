@@ -206,7 +206,6 @@ export default function ProjectManagerProjects() {
                   <td></td>
                   <td style={{ textAlign: "left" }}>No Records Found</td>
                   <td></td>
-
                   <td></td>
                   <td></td>
                   <td></td>
@@ -215,40 +214,7 @@ export default function ProjectManagerProjects() {
             </tbody>
           </table>
         </div>
-        {/* {open && (
-          <div className="unique-popup-overlay">
-            <div className="unique-popup-container">
-              <div className="unique-popup-icon">
-                <div className="ellipse-container">
-                  <img
-                    src={checkimage}
-                    alt="Check"
-                    className="check-image"
-                    height="40px"
-                    width="40px"
-                  />
-                  <img
-                    src={elipisimage}
-                    alt="Ellipse"
-                    className="ellipse-image"
-                    height="65px"
-                    width="65px"
-                  />
-                </div>
-              </div>
-              <h2 className="unique-popup-title">Deleted Successfully</h2>
-              <p className="unique-popup-message">
-                Click OK to see the results
-              </p>
-              <button
-                className="unique-popup-button"
-                onClick={DeleteMessageClose}
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        )} */}
+
         <div className="pagination">
           <button
             onClick={handlePreviousPage}

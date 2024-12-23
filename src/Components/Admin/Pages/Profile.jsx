@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 export default function Profile() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  //const userDetails = GetSessionData();
+
   const [loginUser, setLoginUser] = useState({});
 
   const handleShow = () => setShow(true);
@@ -87,9 +87,7 @@ export default function Profile() {
           </div>
           <div className="col-md-7">
             <h4 className="mb-2">{`${loginUser.firstName} ${loginUser.lastName}`}</h4>
-            <p className="text-muted mb-1">
-              {/* Designation: {loginUser.designation || "N/A"} */}
-            </p>
+            <p className="text-muted mb-1"></p>
             <p className="text-muted">Employee ID: {loginUser.employeeId}</p>
           </div>
           <div className="col-md-2 text-md-end">

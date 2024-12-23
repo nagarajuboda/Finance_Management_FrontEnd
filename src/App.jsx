@@ -9,7 +9,6 @@ function App() {
         <Route path="/user/*" element={<EmployeeRoutes />} />
         <Route path="/*" element={<EmployeeRoutes />} />
         <Route path="/dashboard/*" element={<AdminRoutes />} />
-        {/* <Route path="/Employee" element={<EmployeeRoutes />} /> */}
       </Routes>
     </Router>
   );

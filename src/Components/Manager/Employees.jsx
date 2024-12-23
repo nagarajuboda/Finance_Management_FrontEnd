@@ -17,7 +17,6 @@ import { getSessionData } from "../../Service/SharedSessionData";
 export default function Employees() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
-  console.log(userDetails.employee.id, "============>user Login Deatisl");
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -29,22 +28,6 @@ export default function Employees() {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [sessionData, setSessionDataState] = useState(null);
-
-  //   useEffect(() => {
-  //     const subscription = getSessionData().subscribe({
-  //       next: (data) => {
-  //         setSessionDataState(data);
-  //         console.log(data, "Updated sessionData");
-  //       },
-  //       error: (err) => {
-  //         console.error("Error fetching session data: ", err);
-  //       },
-  //     });
-
-  //     return () => {
-  //       subscription.unsubscribe();
-  //     };
-  //   }, []);
   useEffect(() => {
     FetchData();
   }, [selectedEmployeeIds, isDivVisible, id]);
@@ -62,11 +45,9 @@ export default function Employees() {
       `https://localhost:44305/api/Employees/GetEmployeesByManager?id=${id}`
     );
     var result = response.data.item;
-    //console.log(result, "managaer Employees");
+
     setEmployees(result);
   };
-  console.log(employees, "=========>emplouyees");
-
   const handleOpenPopup = async (e, index, id) => {
     var response = await axios.put(
       `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
@@ -175,8 +156,6 @@ export default function Employees() {
     try {
       if (isDivVisible == false) {
         response = await axios.get(
-          //   `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
-          //   { responseType: "blob" }
           `https://localhost:44305/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
           { responseType: "blob" }
         );
@@ -298,7 +277,7 @@ export default function Employees() {
                 disabled
                 style={{
                   fontSize: "10px",
-                  //color: "#9E9E9E",
+
                   color: "black",
                 }}
                 className="Show-Deleted-employee-button ms-1"
@@ -317,11 +296,9 @@ export default function Employees() {
               </button>
             )}
           </div>
-
           <div className="col-1 " style={{ padding: "0px" }}>
             <Dropdown>
               <Dropdown.Toggle
-                // variant="success"
                 id="dropdown-basic"
                 className="importdropdown btn btn-primary"
                 style={{ fontSize: "12px", height: "30px" }}
@@ -349,61 +326,7 @@ export default function Employees() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          {/* {!isDivVisible && (
-            <div className="col-2 ">
-              <button
-                className="btn btn-danger deleteSelected"
-                disabled={disiblebuttons}
-                onClick={DeleteSelectedRecords}
-                style={{
-                  fontSize: "12px",
-                  height: "30px",
-                  display: "flex",
-                  justifyContent: "end",
-                }}
-              >
-                Delete Selected
-              </button>
-            </div>
-          )} */}
-          {/* {!isDivVisible && (
-            <div className="col-2">
-              <button
-                style={{
-                  display: "flex",
-                  width: "auto",
-
-                  alignContent: "center",
-                  padding: "5px",
-                  height: "30px",
-                }}
-                className="add-new-project-button"
-                onClick={Addemployeefuncton}
-              >
-                <span>
-                  <img
-                    src={images}
-                    alt=""
-                    height="15px"
-                    width="15px"
-                    className="mb-3"
-                  />
-                </span>
-                <span
-                  className=" ms-1"
-                  style={{
-                    fontSize: "12px",
-                    color: "#000000",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Add Employee
-                </span>
-              </button>
-            </div>
-          )} */}
         </div>
-
         <div style={{ padding: "10px" }}>
           <table
             id="example"
@@ -412,13 +335,7 @@ export default function Employees() {
           >
             <thead>
               <tr className="tableheader">
-                <th>
-                  {/* <input
-                    type="checkbox"
-                    onChange={handleSelectAll}
-                    className="userCheckbox"
-                  /> */}
-                </th>
+                <th></th>
                 <th style={{ fontSize: "12px" }}>Employee ID</th>
                 <th style={{ fontSize: "12px" }}>First Name</th>
                 <th style={{ fontSize: "12px" }}>Last Name</th>
@@ -432,8 +349,6 @@ export default function Employees() {
                 {isDivVisible && (
                   <th style={{ fontSize: "12px" }}>Date of Relieving</th>
                 )}
-                {/* {!isDivVisible && <th></th>}
-                {!isDivVisible && <th></th>} */}
               </tr>
             </thead>
             <tbody>

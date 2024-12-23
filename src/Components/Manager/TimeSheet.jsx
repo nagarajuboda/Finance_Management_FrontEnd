@@ -13,7 +13,6 @@ import { format } from "date-fns";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
-
   const [selectedProject, setSelectedProject] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
@@ -145,7 +144,6 @@ export default function TimeSheet() {
       setIsOpen(true);
     }
   };
-  console.log(ProjectEmployees.length, "projectemployees");
   return (
     <div>
       <div className="timeSheet_content">TimeSheet</div>
@@ -177,7 +175,6 @@ export default function TimeSheet() {
                 value={selectedProject}
                 className="drop_down_list"
                 styles={customStyles}
-                // isSearchable
               />
             </div>
 
@@ -282,7 +279,6 @@ export default function TimeSheet() {
                                     type="text"
                                     className="timesheet_input form-control  "
                                     value={hours[employee.id] || ""}
-                                    // value={filteredEmployee.workingHourse}
                                     placeholder="00:00  Hrs"
                                     onChange={(e) =>
                                       handleHoursChange(
@@ -378,9 +374,6 @@ export default function TimeSheet() {
             >
               <span className="make_a_request_span"> Make a request</span>
             </button>
-            {/* <a href="#" className="" style={{ marginRight: "10px" }}>
-              <span className="make_a_request_span"> Make a request</span>
-            </a> */}
           </div>
         )}
       </div>

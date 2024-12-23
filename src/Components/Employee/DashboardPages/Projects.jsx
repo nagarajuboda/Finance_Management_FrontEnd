@@ -20,7 +20,7 @@ export default function Projects() {
     e.preventDefault();
     console.log(id, "id");
     localStorage.setItem("projectId", id);
-    // navigate("/Employee/ViewProject");
+
     navigate("/Dashboard/ViewProject");
   }
   console.log(projectDetails, "details");

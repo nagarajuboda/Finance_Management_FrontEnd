@@ -21,16 +21,11 @@ table.dataTable {
   margin-top: -15px !important;
 }
 .employeecontent {
-  /* font-style: normal; */
-  /* font-variant: normal; */
   font-weight: bold;
-  /* font-size: 5px; */
-  /* line-height: 17px; */
+
   font-family: Segoe UI;
-  /* letter-spacing: 0px; */
+
   color: #000000;
-  /* margin-left: 15px; */
-  /* margin-top: 29px; */
 }
 .numberpagenation {
   background: #f7fafc 0% 0% no-repeat padding-box;
@@ -70,7 +65,6 @@ table.dataTable {
 .importbutton {
   width: 84px;
   height: 36px;
-  /* UI Properties */
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
   text-align: center;
@@ -112,7 +106,6 @@ table.dataTable {
 .DeleteRecordbutton {
   width: 109px;
   height: 36px;
-  /* UI Properties */
   background: #f04242 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -197,24 +190,22 @@ table.dataTable {
 }
 .employeeTable tbody td {
   height: 10px !important;
-  text-align: left; /* Aligns the text to the left */
-  font-family: "Segoe UI"; /* Specifies the font family */
-  font-weight: normal; /* Specifies the font weight */
-  font-style: normal; /* Specifies the font style */
-  font-variant: normal; /* Specifies the font variant */
-  font-size: 13px; /* Specifies the font size */
-  line-height: 24px; /* Specifies the line height */
-  letter-spacing: 0px; /* Specifies letter spacing */
-  color: #464646; /* Sets the text color */
+  text-align: left;
+  font-family: "Segoe UI";
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-size: 13px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #464646;
   opacity: 1;
 }
 
-/* DataTable Row Style */
 .rdt_TableRow {
   height: 49px;
 }
 
-/* Custom button styles for actions */
 button {
   border: none;
   background: none;
@@ -231,18 +222,7 @@ button:focus {
 .dt-search {
   display: none;
 }
-/* .row-checkbox {
-  width: 15px;
-  height: 12px;
-  background: #ffffff 0% 0% padding-box;
-  border: 1px solid #b7b7b7;
-}
-.userCheckbox {
-  width: 13px;
-  height: 12px;
-  background: #ffffff 0% 0% padding-box;
-  border: 1px solid #b7b7b7;
-} */
+
 thead tr th {
   text-align: left;
   font-weight: 700;
@@ -256,7 +236,6 @@ thead tr th {
 }
 .userCheckbox {
   width: 15px;
-  /* height: 15px; */
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #b7b7b7;
   border-radius: 3px;
@@ -324,20 +303,19 @@ thead tr th {
   width: 85px;
   height: 36px;
   margin-left: 14px;
-  /* color: #139BFF; */
   color: white;
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
-  text-align: center; /* Aligns text to the center */
-  font-style: normal; /* Normal font style (not italic) */
-  font-variant: normal; /* Normal font variant */
-  font-weight: bold; /* Bold font weight */
-  font-size: 12px; /* Font size */
-  line-height: 30px; /* Line height */
-  font-family: Raleway; /* Font family */
-  letter-spacing: 0px; /* No additional spacing between letters */
-  color: #ffffff; /* White text color */
-  text-transform: uppercase; /* Converts text to uppercase */
+  text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: Raleway;
+  letter-spacing: 0px;
+  color: #ffffff;
+  text-transform: uppercase;
 }
 
 .cancel-btn {
@@ -346,22 +324,20 @@ thead tr th {
   background: #e5e5e5 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
-  text-align: center; /* Aligns text to the center */
-  font-style: normal; /* Normal font style (not italic) */
-  font-variant: normal; /* Normal font variant */
-  font-weight: 500; /* Medium font weight (500 is the numerical value for 'medium') */
-  font-size: 12px; /* Font size */
-  line-height: 29px; /* Line height */
-  font-family: Raleway; /* Font family */
-  letter-spacing: 0px; /* No additional spacing between letters */
-  color: #000000; /* Black text color */
-  text-transform: uppercase; /* Converts text to uppercase */
+  text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 29px;
+  font-family: Raleway;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
   opacity: 1;
   margin-left: 16px;
 }
-/* table.dataTable tbody td {
-  padding: 0px 0px !important;
-} */
+
 table.dataTable tbody tr {
   height: 43px;
 }
@@ -536,7 +512,7 @@ table.dataTable thead th {
   font-weight: medium;
   font-size: 12px;
   line-height: 30px;
-  font-family: "Raleway", sans-serif; /* Use quotes for custom font names */
+  font-family: "Raleway", sans-serif;
   width: 167px;
   height: 30px;
   background: 0% 0% no-repeat padding-box padding-box rgb(255, 255, 255);

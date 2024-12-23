@@ -17,27 +17,22 @@ import {
   FaEnvelope,
   FaSignOutAlt,
 } from "react-icons/fa";
-// import { data } from "jquery";
+
 export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const dropdownRef = useRef(null);
-  // Toggle dropdown visibility
-  // const toggleDropdown = () => {
-  //   setIsOpen1(!isOpen1);
-  // };
-  //const [isOpen, setisopen] = useState(false);
+
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [sessionData, setSessionDataState] = useState(null);
   const [user, setUser] = useState({});
   const [userRole, setUserRole] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  // setUser(userDetails.employee);
-  // setUserRole(userDetails.employee);
+
   console.log(userDetails.employee, "user Deatis");
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen1(false); // Close the dropdown
+      setIsOpen1(false);
     }
   };
 
@@ -98,7 +93,7 @@ export default function Header({ isOpen }) {
       setTimeout(() => {
         setIsOpen1(false);
         setIsClosing(false);
-      }, 200); // Match the animation duration (0.2s)
+      }, 200);
     } else {
       setIsOpen1(true);
     }

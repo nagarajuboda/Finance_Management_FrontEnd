@@ -70,35 +70,12 @@ export function ViewProject() {
     filteredEmployees;
   }, [ProjectID]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
-
-  // useEffect(() => {
-  //   setProgressPercentage(calculateProgressPercentage());
-  //   console.log("percentage", calculateProgressPercentage());
-  // }, [projectDeadline1]);
-  // const currentDate = new Date();
-  // const calculateProgressPercentage = () => {
-  //   const projectStartDate = new Date(projectStartDate1);
-  //   const projectDeadline = new Date(projectDeadline1);
-  //   console.log(projectStartDate, "=========>");
-  //   if (currentDate < projectStartDate) {
-  //     return 0;
-  //   } else if (currentDate > projectDeadline) {
-  //     return 100;
-  //   } else {
-  //     const totalDuration = projectDeadline - projectStartDate;
-  //     const remainingTime = projectDeadline - currentDate;
-  //     const progressPercentage =
-  //       ((totalDuration - remainingTime) / totalDuration) * 100;
-  //     return Math.min(Math.max(progressPercentage, 0), 100);
-  //   }
-  // };
   useEffect(() => {
     setProgressPercentage(calculateProgressPercentage());
     console.log("percentage", calculateProgressPercentage());
   }, [projectDeadline1]);
   const currentDate = new Date();
   const calculateProgressPercentage = () => {
-    // debugger;
     const projectStartDate = new Date(projectStartDate1);
     const projectDeadline = new Date(projectDeadline1);
 
@@ -807,7 +784,6 @@ export function ViewProject() {
                           .split("T")[0]
                       : ""
                   }
-                  //value={ProjectValues.startDate}
                   onChange={handleOnChange}
                   fullWidth
                   sx={{
@@ -1009,7 +985,6 @@ export function ViewProject() {
                   fullWidth
                   select
                   sx={{
-                    // width: "85%",
                     "& .MuiOutlinedInput-root": {
                       fontSize: "12px",
                       "& fieldset": {

@@ -2,15 +2,12 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const createAxiosInstance = (baseURL, loaderContext) => {
-  debugger;
   const api = axios.create({
     baseURL: baseURL,
   });
 
   api.interceptors.request.use(
     (config) => {
-      debugger;
-      //const token = sessionStorage.getItem("token");
       const token = localStorage.getItem("token");
 
       if (token) {
@@ -29,7 +26,6 @@ const createAxiosInstance = (baseURL, loaderContext) => {
       return response;
     },
     (error) => {
-      // debugger;
       if (error.response.data.code) {
         return toast.error(error.response.data.errors);
       } else {

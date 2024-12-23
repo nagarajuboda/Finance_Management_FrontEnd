@@ -1,7 +1,4 @@
 export default function AllEmployees() {
-  // function fetch(){
-  //     await
-  // }
   return (
     <div className="hrmaindiv">
       <div className="card" style={{ borderRadius: "0px" }}>

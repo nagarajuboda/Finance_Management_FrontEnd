@@ -16,11 +16,9 @@ import RecentEmployeeImage from "../../../src/assets/Images/AddEmployeeimage.png
 import TeamMemberAddedImage from "../../../src/assets/Images/TeamMemberAdded.png";
 import rupee from "../../../src/assets/Images/Rupee.png";
 import abcprojectimage from "../../../src/assets/Images/AbcProjectImage.png";
-// import Dropdown from "react-bootstrap/Dropdown";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,7 +28,6 @@ ChartJS.register(
   Legend
 );
 
-// Register required components
 ChartJS.register(ArcElement, Tooltip, Legend);
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useState } from "react";
@@ -49,8 +46,7 @@ export default function AdminDashboard() {
   const billable = BillaBleEmployees;
   const nonBillable = TotalbenchEmployees;
   const total = billable + nonBillable;
-  // const billablePercentage = total > 0 ? (billable / total) * 100 : 0;
-  // const nonBillablePercentage = total > 0 ? (nonBillable / total) * 100 : 0;
+
   const billablePercentage = (billable / totalEmployees) * 100;
   const nonBillablePercentage = (nonBillable / totalEmployees) * 100;
   const totalBench = TotalbenchEmployees;
@@ -81,44 +77,44 @@ export default function AdminDashboard() {
     labels: ["In Progress", "Completed", "Not Started"],
     datasets: [
       {
-        data: [40, 30, 30], // Example percentages
-        backgroundColor: ["#007BFF", "#00CFFF", "#E0E0E0"], // Colors matching the design
-        hoverBackgroundColor: ["#0056b3", "#0099cc", "#c6c6c6"], // Hover colors
-        borderWidth: 0, // Removes border lines
+        data: [40, 30, 30],
+        backgroundColor: ["#007BFF", "#00CFFF", "#E0E0E0"],
+        hoverBackgroundColor: ["#0056b3", "#0099cc", "#c6c6c6"],
+        borderWidth: 0,
       },
     ],
   };
 
   const options = {
-    cutout: "70%", // Controls the thickness of the doughnut
+    cutout: "70%",
     plugins: {
       legend: {
-        display: false, // Hides default legend
+        display: false,
       },
     },
   };
-  // ================Pending Projects
+
   const data1 = {
     labels: ["Planning", "Designing", "Pre Construction"],
     datasets: [
       {
-        data: [20, 30, 40, 30], // Example percentages
-        backgroundColor: ["red", "#007BFF", "#8AB4F8", "#E0E0E0"], // Match colors in your design
+        data: [20, 30, 40, 30],
+        backgroundColor: ["red", "#007BFF", "#8AB4F8", "#E0E0E0"],
         hoverBackgroundColor: ["red", "#0056b3", "#6a9ee0", "#c6c6c6"],
-        borderWidth: 0, // Remove border lines
+        borderWidth: 0,
       },
     ],
   };
 
   const options1 = {
-    cutout: "70%", // Controls the thickness of the chart
+    cutout: "70%",
     plugins: {
       legend: {
-        display: false, // Hide default legend
+        display: false,
       },
     },
   };
-  // ================profitandlossgraphs
+
   const data2 = {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
@@ -172,7 +168,7 @@ export default function AdminDashboard() {
       },
     },
   };
-  // ====================graph
+
   const data3 = {
     labels: [
       "Jan",
@@ -228,11 +224,11 @@ export default function AdminDashboard() {
     responsive: true,
     plugins: {
       legend: {
-        display: false, // Hide the legend
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.raw}%`, // Show only the value in the tooltip
+          label: (context) => `${context.raw}%`,
         },
       },
     },
@@ -240,7 +236,7 @@ export default function AdminDashboard() {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => `${value}%`, // Add '%' to Y-axis values
+          callback: (value) => `${value}%`,
         },
       },
     },
@@ -258,10 +254,10 @@ export default function AdminDashboard() {
     labels: ["Planning", "Designing", "Pre-Construction"],
     datasets: [
       {
-        data: [30, 40, 30], // Values for each section
-        backgroundColor: ["#000000", "#7FB3D5", "#E5E5E5"], // Section colors
-        borderWidth: 0, // Removes border between sections
-        cutout: "75%", // Inner circle size
+        data: [30, 40, 30],
+        backgroundColor: ["#000000", "#7FB3D5", "#E5E5E5"],
+        borderWidth: 0,
+        cutout: "75%",
       },
     ],
   };
@@ -269,11 +265,11 @@ export default function AdminDashboard() {
   const options11 = {
     plugins: {
       tooltip: {
-        enabled: false, // Disable tooltips
+        enabled: false,
       },
     },
-    rotation: 225, // Rotate the chart to align properly
-    circumference: 270, // Draws 3/4th of a circle
+    rotation: 225,
+    circumference: 270,
   };
   return (
     <div className="DashboardMaindiv">
@@ -453,8 +449,6 @@ export default function AdminDashboard() {
                   left: " 39%",
                   transform: "translate(-50%, -50%)",
                   textAlign: "center",
-                  // padding: "0",
-                  // margin: "0",
                 }}
               >
                 Bench
@@ -467,8 +461,6 @@ export default function AdminDashboard() {
                   left: " 39%",
                   transform: "translate(-50%, -50%)",
                   textAlign: "center",
-                  // padding: "0",
-                  // margin: "0",
                 }}
               >
                 Employees
@@ -915,10 +907,7 @@ export default function AdminDashboard() {
                   }}
                 ></i>
               </div>
-              <div
-                className="latest_updatesImage row"
-                //style={{ padding: "10px" }}
-              >
+              <div className="latest_updatesImage row">
                 <div className="row m-0">
                   <div className="col-2">
                     <div
@@ -959,21 +948,10 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="latest_updatesImage row mt-4"
-                //style={{ padding: "10px" }}
-              >
+              <div className="latest_updatesImage row mt-4">
                 <div className="row m-0">
                   <div className="col-2">
-                    <div
-                    // style={{
-                    //   height: "40px",
-                    //   width: "40px",
-                    //   backgroundColor: " #875fc0",
-                    //   borderRadius: "100px",
-                    //   position: "relative",
-                    // }}
-                    >
+                    <div>
                       <img
                         src={RecentEmployeeImage}
                         alt=""
@@ -1000,10 +978,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="latest_updatesImage row mt-4"
-                //style={{ padding: "10px" }}
-              >
+              <div className="latest_updatesImage row mt-4">
                 <div className="row m-0">
                   <div className="col-2">
                     <div
@@ -1044,10 +1019,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="latest_updatesImage row mt-4"
-                //style={{ padding: "10px" }}
-              >
+              <div className="latest_updatesImage row mt-4">
                 <div className="row m-0">
                   <div className="col-2">
                     <div
@@ -1088,10 +1060,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
-              <div
-                className="latest_updatesImage row mt-4"
-                //style={{ padding: "10px" }}
-              >
+              <div className="latest_updatesImage row mt-4">
                 <div className="row m-0">
                   <div className="col-2">
                     <div

@@ -86,7 +86,6 @@ export default function TimeSheet() {
   };
 
   const SaveForm = async () => {
-    // const data = submitFunction();
     const currentProject = projectDetails[selectedTabIndex].project.id;
 
     const employeeData = ProjectEmployees.map((employee) => ({

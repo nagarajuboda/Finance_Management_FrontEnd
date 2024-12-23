@@ -129,7 +129,7 @@ export default function Projectss() {
       setDisiblebuttons(false);
     } else {
       setSelectedProjectIds([]);
-      setDisiblebuttons(true); // Disable buttons if none are selected
+      setDisiblebuttons(true);
     }
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
       checkbox.checked = isChecked;
@@ -265,7 +265,6 @@ export default function Projectss() {
             id="example"
             className="employeeTable"
             style={{ width: "100%" }}
-            // style={{ width: "100%" }}
           >
             <thead>
               <tr className="tableheader">
@@ -294,7 +293,6 @@ export default function Projectss() {
                         key={index}
                         className="tablebody"
                         style={{ backgroundColor: "white", cursor: "pointer" }}
-                        // onClick={(e) => ViewProject(project.project.id)}
                       >
                         <td style={{ textAlign: "start" }}>
                           <input

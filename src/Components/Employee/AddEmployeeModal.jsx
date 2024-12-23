@@ -99,27 +99,6 @@ const AddEmployeeModal = ({
     }
   };
 
-  // const fetchProjectManagers = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://localhost:44305/api/Employees/AllEmployees"
-  //     );
-  //     const rolesResponse = await axios.get(
-  //       "https://localhost:44305/api/Roles/AllRoles"
-  //     );
-  //     const projectManagerRole = rolesResponse.data.find(
-  //       (role) => role.name === "Reporting Manager"
-  //     );
-  //     if (projectManagerRole) {
-  //       const projectManagers = response.data.filter(
-  //         (emp) => emp.roleId === projectManagerRole.id
-  //       );
-  //       setProjectManagers(projectManagers);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching project managers", error);
-  //   }
-  // };
   const fetchProjectManagers = async () => {
     try {
       const response = await axios.get(
@@ -167,7 +146,7 @@ const AddEmployeeModal = ({
         break;
       case "email":
         if (!value) return "Email is required";
-        // if (!/\S+@\S+\.\S+/.test(value)) return "Email address is invalid";
+
         if (!/^[a-zA-Z]+\.[a-zA-Z]+@archents\.com$/.test(value)) {
           return "Email must be in the format name.surname@archents.com";
         }
@@ -321,10 +300,9 @@ const AddEmployeeModal = ({
 
   const handleOptionSelect = (id) => {
     setFormData({ ...formData, projectManagerId: id });
-    setIsOpen(false); // Close the dropdown after selection
+    setIsOpen(false);
   };
 
-  // Filter project managers based on the filter query
   const filteredManagers = projectManagers.filter((pm) =>
     `${pm.firstName} ${pm.lastName}`
       .toLowerCase()
@@ -527,7 +505,6 @@ const AddEmployeeModal = ({
             </div>
           </div>
           <div className="row">
-            {/* <div className="col-6"></div> */}
             <div className="col-12 mb-3">
               <span style={{ fontWeight: "550" }}>Skill Sets:</span>
               <textarea

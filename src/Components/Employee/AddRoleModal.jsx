@@ -57,7 +57,7 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (error) {
-      return; // Prevent form submission if there is an error
+      return;
     }
 
     try {

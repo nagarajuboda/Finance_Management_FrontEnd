@@ -42,7 +42,7 @@ export default function ForgotPassword() {
       var obj = {
         Email: emailvalues.email,
       };
-      console.log(obj, "======>");
+
       var responses = await axios.post(
         "https://localhost:44305/api/Auth/get-otp",
         obj

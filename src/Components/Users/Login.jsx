@@ -6,7 +6,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the icons
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { setSessionData } from "../../Service/SharedSessionData";
 import { ControlCameraSharp } from "@mui/icons-material";
 import { LoginFormValidation } from "../Admin/Pages/LoginFormValidation";
@@ -18,12 +18,12 @@ const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [view, setView] = useState("login"); // 'login', 'resetPassword', 'verifyOtp', 'setNewPassword'
+  const [view, setView] = useState("login");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [emailvalues, setEmialValuess] = useState({
     email: "",
@@ -67,7 +67,7 @@ const Home = () => {
       );
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
-      setLoggedIn(true); // Update logged-in state
+      setLoggedIn(true);
       if (result.isSuccess === true) {
         setLoggedIn(true);
         setSessionData(result.item);
@@ -85,9 +85,7 @@ const Home = () => {
         } else if (result.item.employee.role.name === "Hr") {
           navigate("/EmployeeDashboard");
         }
-        //navigate("/AdminDashboard"); // Navigate to dashboard or another page
       } else {
-        // Handle specific error codes
         if (result.error.code === "AUTH001") {
           toast.error("Email not found. Please check your email address.", {
             position: "top-right",
@@ -99,7 +97,6 @@ const Home = () => {
             { position: "top-right", autoClose: 4000 }
           );
         } else {
-          // Generic error message for other cases
           toast.error("Check your email and password.", {
             position: "top-right",
             autoClose: 4000,
@@ -202,7 +199,6 @@ const Home = () => {
     }
   }
 
-  // New password validation and handlers
   const [passwordValues, setPasswordValues] = useState({
     NewPassword: "",
     ConfirmPassword: "",
@@ -290,7 +286,6 @@ const Home = () => {
         });
         setView("login");
       } else {
-        // Handle specific error codes
         if (result.error.code === "AUTH003") {
           toast.error(
             "New password cannot be the same as the existing password.",
@@ -371,7 +366,6 @@ const Home = () => {
                 </label>
               </div>
               <input
-                //type="password"
                 type={showPassword ? "text" : "password"}
                 className="emailandpassword"
                 placeholder="enter your username"
