@@ -79,20 +79,11 @@
   cursor: pointer;
 }
 .adminName {
-  /* text-align: left; */
   font: normal normal bold 12px/24px Segoe UI;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
-  /* padding: 0px 50px; */
 }
-/* .latest_updatesImage {
-  width: 34px;
-  height: 34px;
-  background-color: #875fc0;
-  border-radius: 100px;
-  opacity: 1;
-} */
 
 .Project_Updated_Span {
   text-align: left;
@@ -123,11 +114,11 @@
 }
 .ViewAll {
   text-align: center;
-  font-style: normal; /* Style: normal, italic, oblique */
-  font-variant: normal; /* Variant: normal, small-caps */
-  font-weight: normal; /* Weight: normal, bold, etc. */
-  font-size: 14px; /* Font size */
-  line-height: 19px; /* Line height */
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 19px;
   font-family: "Segoe UI";
   letter-spacing: 0px;
   color: #000000;
@@ -139,21 +130,3 @@
   justify-content: center;
   margin-top: 10px;
 }
-
-/* .dropdown-menu {
-  animation: slideDown 0.3s ease-in-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ===========
- */

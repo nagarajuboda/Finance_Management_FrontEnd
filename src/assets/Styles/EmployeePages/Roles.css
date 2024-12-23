@@ -1,5 +1,4 @@
-/* RolesCSS */
-.Rolelist{
+.Rolelist {
   font-family: Arial, sans-serif;
   margin: 20px;
   border-radius: 10px;
@@ -7,24 +6,24 @@
   height: 100%;
 }
 
-.Rolelist:hover{
+.Rolelist:hover {
   opacity: 1;
 }
 
-.RolesSubHeader{
+.RolesSubHeader {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
 
-.RolesSubHeaderLeft{
-  float:left;
-  padding:10px 10px;
+.RolesSubHeaderLeft {
+  float: left;
+  padding: 10px 10px;
 }
 
-.RolesSubHeaderLeft h3{
+.RolesSubHeaderLeft h3 {
   color: #196e8a;
-  padding:13px;
+  padding: 13px;
 }
 
 .AddRoleBtn {
@@ -42,12 +41,12 @@
   background-color: #0056b3;
 }
 
-.RolesSubHeaderRight{
-  float:right;
-  padding:21px 21px;
+.RolesSubHeaderRight {
+  float: right;
+  padding: 21px 21px;
 }
 
-.RolesSubHeaderRight a{
+.RolesSubHeaderRight a {
   padding: 10px 10px;
   background-color: #007bff;
   color: white;
@@ -60,7 +59,7 @@
 }
 
 .RolesSubHeaderRight:hover a {
-  background-color: #0056b3; 
+  background-color: #0056b3;
   color: white;
 }
 
@@ -73,7 +72,8 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.RolesTbl th, .RolesTbl td {
+.RolesTbl th,
+.RolesTbl td {
   padding: 12px;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -93,7 +93,8 @@
   background-color: #f1f1f1;
 }
 
-.Rolesedit-btn, .Rolesdelete-btn {
+.Rolesedit-btn,
+.Rolesdelete-btn {
   padding: 6px 12px;
   border: none;
   border-radius: 3px;
@@ -122,8 +123,6 @@
   background-color: #c82333;
 }
 
-/* RolesModel */
-
 .RolesModelContainer {
   position: fixed;
   top: 0;
@@ -145,28 +144,28 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.RolesModelSubHeader{
+.RolesModelSubHeader {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
 
-.RolesModelSubHeaderLeft{
-  float:left;
-  padding:13px;
+.RolesModelSubHeaderLeft {
+  float: left;
+  padding: 13px;
 }
 
-.RolesModelSubHeaderLeft h2{
+.RolesModelSubHeaderLeft h2 {
   color: #196e8a;
 }
 
-.RolesModelSubHeaderRight{
-  float:right;
-  padding:13px;
+.RolesModelSubHeaderRight {
+  float: right;
+  padding: 13px;
   margin-top: -4px;
 }
 
-.RolesModelSubHeaderRightCloseBtn{
+.RolesModelSubHeaderRightCloseBtn {
   padding: 10px 13px;
   border: none;
   border-radius: 4px;
@@ -175,11 +174,11 @@
   color: white;
 }
 
-.RolesModelSubHeaderRightCloseBtn:hover{
+.RolesModelSubHeaderRightCloseBtn:hover {
   background-color: #c82333;
 }
 
-.RolesContainer{
+.RolesContainer {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -191,7 +190,7 @@
 
 .Roleslabel {
   margin-top: 15px;
-  width: 35%; 
+  width: 35%;
   margin-left: 8%;
 }
 
@@ -213,13 +212,13 @@ input[type="Rolestext"] {
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 1em;
-  width:235%;
+  width: 235%;
   margin-left: -9px;
 }
-  
+
 input[type="Rolesnumber"].Priority {
   width: 100%;
-} 
+}
 
 .RolesModelSaveBtn {
   padding: 8px 16px;
