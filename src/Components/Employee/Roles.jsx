@@ -53,8 +53,8 @@ export default function Roles() {
   };
 
   const EdittogglePopup = (e, index, roleId) => {
-    sessionStorage.setItem("RoleID", roleId); // Save the Role ID in sessionStorage if needed
-    navigate("/dashboard/EditRoles"); // Navigate to the role edit page
+    sessionStorage.setItem("RoleID", roleId);
+    navigate("/dashboard/EditRoles");
   };
 
   const handleOpenPopup = async (e, index, id) => {
@@ -97,7 +97,6 @@ export default function Roles() {
       selectedRoleIds
     );
     const result = response.data;
-
     if (result.isSuccess) {
       setOpen(true);
       fetchRoles();
