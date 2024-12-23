@@ -327,7 +327,6 @@ export default function Employees() {
           <div className="col-1" style={{ padding: "0px" }}>
             <Dropdown>
               <Dropdown.Toggle
-                // variant="success"
                 id="dropdown-basic"
                 className="importdropdown btn btn-primary"
                 style={{ fontSize: "12px", height: "30px" }}
