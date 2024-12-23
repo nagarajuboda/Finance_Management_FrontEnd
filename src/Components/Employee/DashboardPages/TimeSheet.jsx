@@ -86,7 +86,6 @@ export default function TimeSheet() {
   };
 
   const SaveForm = async () => {
-    // const data = submitFunction();
     const currentProject = projectDetails[selectedTabIndex].project.id;
 
     const employeeData = ProjectEmployees.map((employee) => ({
@@ -167,7 +166,6 @@ export default function TimeSheet() {
     setProjectEmployees(ProjectEmployees.data.item.item1);
     setEmployees(response.item);
     setProjectDepartment(ProjectEmployees.data.item.item2);
-    console.log(ProjectDepartment, "========>");
     if (response.item.length > 0) {
       if (response.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);

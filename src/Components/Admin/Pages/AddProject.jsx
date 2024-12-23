@@ -89,7 +89,6 @@ export default function AddProject() {
     EndDate: "",
     StartDate: "",
   });
-  // const [startdate, setstartdate] = useState("");
   const handleSelectedDate = (newDate) => {
     console.log(newDate);
     setValues({
@@ -228,7 +227,7 @@ export default function AddProject() {
           Progress: values.Progress,
         },
         clientemail: values.ClientEmail,
-        // ProjectManager: selectedProjectManager,
+
         ProjectManager: values.ProjectManager,
         DepartmentTeam: values.departmentTeam,
         Department: values.Department,
@@ -630,7 +629,7 @@ export default function AddProject() {
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
-                      color: "black", // Desired color when focused
+                      color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {

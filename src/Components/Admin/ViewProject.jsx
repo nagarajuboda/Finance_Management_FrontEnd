@@ -65,12 +65,33 @@ export function ViewProject() {
   const [open, setopen] = useState(false);
   const [clients, setClients] = useState([]);
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
-
   useEffect(() => {
     FetchData();
     filteredEmployees;
   }, [ProjectID]);
   const [selectedManagerId, setSelectedManagerId] = useState("");
+  useEffect(() => {
+    setProgressPercentage(calculateProgressPercentage());
+    console.log("percentage", calculateProgressPercentage());
+  }, [projectDeadline1]);
+  const currentDate = new Date();
+  const calculateProgressPercentage = () => {
+    const projectStartDate = new Date(projectStartDate1);
+    const projectDeadline = new Date(projectDeadline1);
+
+    if (currentDate < projectStartDate) {
+      return 0;
+    } else if (currentDate > projectDeadline) {
+      return 100;
+    } else {
+      const totalDuration = projectDeadline - projectStartDate;
+      const remainingTime = projectDeadline - currentDate;
+      const progressPercentage =
+        ((totalDuration - remainingTime) / totalDuration) * 100;
+      return Math.min(Math.max(progressPercentage, 0), 100);
+    }
+  };
+
   async function FetchData() {
     const Projects = await axios.get(
       "https://localhost:44305/api/Projects/GetAllProjects"
@@ -97,6 +118,8 @@ export function ViewProject() {
       setReportingManagerId(result.item.project.projectManager);
       setProjectEmployees(result.item.employeeProject);
       setProjectManagerName(result.item.projectMangerName);
+      setprojectStartDate(result.item.project.startDate);
+      setprojectDeadline(result.item.project.endDate);
     }
     var response = await AdminDashboardServices.fcngetEmployees();
     setEmployeelist(response.item);
@@ -104,6 +127,7 @@ export function ViewProject() {
     var result = response.item;
     setClients(result);
   }
+  console.log(progressPercentage, "project percentage");
   const handleManagerOnChange = (event) => {
     const selectedManagerId = event.target.value;
     setReportingManagerId(selectedManagerId);
@@ -319,25 +343,45 @@ export function ViewProject() {
           style={{ display: "flex", alignItems: "center" }}
         >
           <div className="col-2 ">
-            <div class="progress" style={{ height: "10px", width: "150px" }}>
-              <div
-                class="progress-bar"
-                role="progressbar"
-                style={{ width: "25%", fontSize: "10px" }}
-                aria-valuenow="25"
-                aria-valuemin="0"
-                aria-valuemax="100"
+            <div
+              style={{ position: "relative", width: "100%", height: "30px" }}
+            >
+              <span
+                className="Progress_percentage"
+                style={{
+                  position: "absolute",
+                  left: `${Math.round(progressPercentage)}%`,
+                  top: "-6px",
+
+                  transform: "translateX(-50%)",
+                  color: progressPercentage === 100 ? "white" : "black",
+                  fontWeight: "bold",
+                  fontSize: "12px",
+                  marginLeft: "18px",
+                }}
               >
-                25%
-              </div>
+                {Math.round(progressPercentage)}%
+              </span>
+              <input
+                style={{
+                  width: "100%",
+                  marginTop: "10px",
+                  pointerEvents: "none",
+                  backgroundColor: "#00CC1B",
+                }}
+                type="range"
+                id="disabledRange"
+                value={progressPercentage}
+                readOnly
+                max="100"
+                min="0"
+              />
             </div>
           </div>
           <div
             className="col-2 projectPrpgress"
             style={{ fontSize: "12px", margin: "0" }}
-          >
-            <p className="view-more">View more</p>
-          </div>
+          ></div>
           <div
             className="col-2 projectPrpgress"
             style={{ fontSize: "12px", margin: "0" }}
@@ -595,7 +639,9 @@ export function ViewProject() {
                     <td style={{ fontSize: "12px" }}>{employee.role}</td>
                     <td style={{ fontSize: "12px" }}>{projectManagername}</td>
                     <td style={{ fontSize: "12px" }}>
-                      {employee.employee.dateOfJoining}
+                      {new Date(
+                        employee.employee.dateOfJoining
+                      ).toLocaleDateString("en-GB")}
                     </td>
                     <td>
                       <img
@@ -738,7 +784,6 @@ export function ViewProject() {
                           .split("T")[0]
                       : ""
                   }
-                  //value={ProjectValues.startDate}
                   onChange={handleOnChange}
                   fullWidth
                   sx={{
@@ -940,7 +985,6 @@ export function ViewProject() {
                   fullWidth
                   select
                   sx={{
-                    // width: "85%",
                     "& .MuiOutlinedInput-root": {
                       fontSize: "12px",
                       "& fieldset": {
@@ -1418,7 +1462,6 @@ export function ViewProject() {
                 borderTop: "1px solid #ddd",
                 padding: "10px 20px",
                 textAlign: "right",
-                backgroundColor: "#f9f9f9",
               }}
             >
               <button className="dialog-submit-btn" onClick={addNewemployee}>

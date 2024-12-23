@@ -3,7 +3,6 @@ import ManagerService from "../../Service/ManagerService/ManagerService";
 import "../../../src/assets/Styles/UnderManagerEmployees.css";
 import { Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 export default function UnderManagerEmployees() {
   const navigate = useNavigate();
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
@@ -13,12 +12,11 @@ export default function UnderManagerEmployees() {
   }, []);
   async function FetchData() {
     var id = userDetails.employee.id;
-    var response = await ManagerService.FcnUnderManagerEmployees(id);
-
+    var response = await ManagerService.FcnUn;
+    derManagerEmployees(id);
     setEmployees(response.item);
   }
   function employeeDetaails(id) {
-    console.log(id, "------------->");
     localStorage.setItem("empId", id);
     navigate("/ViewEmployee");
   }

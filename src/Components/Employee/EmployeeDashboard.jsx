@@ -212,7 +212,7 @@ const EmployeeDashboard = () => {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
-  // for insert employee bulk data logic
+
   const InsertbulkDate = async (e) => {
     e.preventDefault();
     if (!selectedfile) {
@@ -254,18 +254,13 @@ const EmployeeDashboard = () => {
         var empnumbers = result.item.item1
           .map((obj) => obj.mobileNo)
           .filter((mobileNo) => mobileNo !== null && mobileNo !== undefined);
-        // vlauesss.push(...emails);
-        // vlauesss.push(...ids);
-        // vlauesss.push(...empnumbers);
-        // let formattedText = vlauesss.join(",");
-        // const formatedData = formattedText;
+
         let formattedEmails = `<span style:"color:"black">EmailIDs:</span><br>${emails.join(
           "<br>"
         )}`;
         let formattedIds = `EmployeeIds:<br>${ids.join("<br>")}`;
         let formattedNumbers = `PhoneNumbers:<br>${empnumbers.join("<br>")}`;
 
-        // Combine all sections into a single formatted text
         let formattedText = `${formattedEmails}<br><br>${formattedIds}<br><br>${formattedNumbers}`;
         Swal.fire({
           title: "Error!",
@@ -277,8 +272,6 @@ const EmployeeDashboard = () => {
       </div>`,
           icon: "error",
           confirmButtonText: "Cancel",
-          //footer:
-          //'<a href="#" style="color: red;">This value already exists</a>',
         });
       }
     } else {
@@ -439,17 +432,6 @@ const EmployeeDashboard = () => {
             />
           </div>
         )}
-
-        {/* {showModal && (
-          <div>
-            <EmployeeModal
-              className="addemployeeComponent"
-              employee={currentEmployee}
-              onClose={() => setShowModal(false)}
-              onRefresh={fetchEmployees}
-            />
-          </div>
-        )} */}
 
         {showConfirmModal && (
           <ConfirmationModal

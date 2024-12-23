@@ -61,7 +61,6 @@ export default function GetAllRevenue() {
     )
   );
 
-  // Define columns
   const columns = [
     { name: "ID", selector: (row) => row.employeeId, sortable: true },
     { name: "Name", selector: (row) => row.employeeName, sortable: true },
@@ -99,7 +98,7 @@ export default function GetAllRevenue() {
       cell: (row) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           <FaDollarSign style={{ fontSize: "0.90rem" }} />
-          {/* Add the dollar icon */}
+
           {row.revenueSubmitted}
         </div>
       ),

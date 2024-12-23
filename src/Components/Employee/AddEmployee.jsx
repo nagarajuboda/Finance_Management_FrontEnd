@@ -81,7 +81,7 @@ export default function AddEmployee() {
       },
     },
     "& .MuiOutlinedInput-input": {
-      height: "1.4375em", // Adjust to align with label properly
+      height: "1.4375em",
       padding: "8px 12px",
       fontSize: "12px",
     },
@@ -563,7 +563,7 @@ export default function AddEmployee() {
                       {...params}
                       placeholder="MM/DD/YYYY"
                       variant="outlined"
-                      type="date"
+                      // type="date"
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {
@@ -817,9 +817,6 @@ export default function AddEmployee() {
                 />
               </div>
             </div>
-            <div className="col-3"></div>
-            <div className="col-3"></div>
-            <div className="col-3"></div>
           </div>
 
           <div

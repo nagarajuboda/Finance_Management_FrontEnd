@@ -52,12 +52,10 @@ export default function Roles() {
     }
   };
 
-  
   const EdittogglePopup = (e, index, roleId) => {
-    sessionStorage.setItem("RoleID", roleId); // Save the Role ID in sessionStorage if needed
-    navigate("/dashboard/EditRoles"); // Navigate to the role edit page
+    sessionStorage.setItem("RoleID", roleId);
+    navigate("/dashboard/EditRoles");
   };
-  
 
   const handleOpenPopup = async (e, index, id) => {
     var response = await axios.delete(
@@ -99,7 +97,6 @@ export default function Roles() {
       selectedRoleIds
     );
     const result = response.data;
-
     if (result.isSuccess) {
       setOpen(true);
       fetchRoles();
@@ -126,8 +123,6 @@ export default function Roles() {
 
   const totalPages = Math.ceil(filteredRoles.length / itemsPerPage);
 
-  
-
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -151,10 +146,13 @@ export default function Roles() {
   const handleToggle = async (roleId, currentStatus) => {
     try {
       const updatedStatus = !currentStatus;
-      await axios.put(`https://localhost:44305/api/Roles/toggle-status/{roleId}`, {
-        roleId,
-        isEnabled: updatedStatus,
-      });
+      await axios.put(
+        `https://localhost:44305/api/Roles/toggle-status/{roleId}`,
+        {
+          roleId,
+          isEnabled: updatedStatus,
+        }
+      );
       fetchRoles();
     } catch (error) {
       console.error("Error updating role status", error);
@@ -213,13 +211,12 @@ export default function Roles() {
         </div>
 
         <div style={{ padding: "10px" }}>
-          <table
-            id="example"
-            className="roleTable"
-            style={{ width: "100%" }}
-          >
+          <table id="example" className="roleTable" style={{ width: "100%" }}>
             <thead>
-              <tr className="roleheader" style={{backgroundColor:"red important"}}>
+              <tr
+                className="roleheader"
+                style={{ backgroundColor: "red important" }}
+              >
                 <th>
                   <input
                     type="checkbox"
@@ -236,18 +233,12 @@ export default function Roles() {
             </thead>
             <tbody>
               {currentItems.map((role, index) => (
-                <tr
-                  className="EmployeeListtablelistrow"
-                  key={role.id}
-                >
+                <tr className="EmployeeListtablelistrow" key={role.id}>
                   <td>
                     <input
                       type="checkbox"
                       onChange={(e) =>
-                        handleCheckboxChange(
-                          role.id,
-                          e.target.checked
-                        )
+                        handleCheckboxChange(role.id, e.target.checked)
                       }
                       className="row-checkbox"
                     />
@@ -266,16 +257,16 @@ export default function Roles() {
                     </label>
                   </td>
                   <td>
-                   <img src={editicon}
-                       onClick={() => handleEdit(role)
-                       }
-                       alt="Edit Role"
-                       style={{
+                    <img
+                      src={editicon}
+                      onClick={() => handleEdit(role)}
+                      alt="Edit Role"
+                      style={{
                         width: "18px",
                         height: "18px",
                         cursor: "pointer",
-                       }}
-                   />
+                      }}
+                    />
 
                     <img
                       src={deleteicon}
@@ -301,9 +292,7 @@ export default function Roles() {
           >
             Previous
           </button>
-          <span className="pagination-text">
-            {currentPage} 
-          </span>
+          <span className="pagination-text">{currentPage}</span>
           <button
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
@@ -311,10 +300,7 @@ export default function Roles() {
           >
             Next
           </button>
-         
         </div>
-
-        
       </div>
     </div>
   );

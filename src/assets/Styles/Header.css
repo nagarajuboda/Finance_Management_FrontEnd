@@ -5,7 +5,9 @@
 .maindiv {
   background: #ffffff 0% 0% no-repeat padding-box;
   top: 0px;
-
+  display: flex;
+  align-items: center;
+  justify-content: end;
   height: 55px;
   box-shadow: 0px 3px 6px #00000029;
 }
@@ -17,12 +19,12 @@
 .profilediv {
   width: 249px;
   height: 54px;
-  margin-left: auto;
 }
 .vericalline {
   border-left: 2px solid #dcdcdc;
   height: 55px;
 }
+
 .username {
   font-style: normal;
   font-variant: normal;
@@ -40,7 +42,40 @@
 }
 .vimage {
   width: 15px;
-  /* margin: 22px; */
-  margin-top: 19px;
-  margin-left: 55px;
+  margin-top: 22px;
+  margin-left: 40px;
+}
+
+.openprofilediv {
+  position: relative;
+  animation-name: slideDown;
+  animation-duration: 0.4s;
+}
+
+.closeprofilediv {
+  position: relative;
+  animation-name: slideUp;
+  animation-duration: 0.4s;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-70px);
+  }
 }

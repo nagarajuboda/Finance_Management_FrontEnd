@@ -56,7 +56,6 @@
   padding: 0;
 }
 .projectPrpgress {
-  /* margin: 0px; */
   text-align: left;
   font: normal normal 600 14px Segoe UI;
   letter-spacing: 0px;
@@ -72,8 +71,7 @@
   margin: 0;
   padding-top: 15px;
 }
-/* ================ */
-/* Overlay */
+
 .dialog-overlay {
   position: fixed;
   top: 0;
@@ -87,18 +85,14 @@
   z-index: 1000;
 }
 
-/* Dialog Box */
 .dialog-box {
   background-color: #fff;
   width: 600px;
   height: 465px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  /* padding: 20px; */
-  /* animation: fadeIn 0.3s ease-in-out; */
 }
 
-/* Dialog Header */
 .dialog-header {
   display: flex;
   justify-content: space-between;
@@ -123,7 +117,6 @@
   cursor: pointer;
 }
 
-/* File Upload Section */
 .file-upload-wrapper {
   margin-bottom: 20px;
   text-align: center;
@@ -161,8 +154,6 @@
   margin-top: 10px;
   display: block;
 }
-
-/* Actions */
 .dialog-actions {
   display: flex;
   justify-content: space-between;
@@ -171,7 +162,6 @@
 .dialog-submit-btn,
 .dialog-cancel-btn {
   height: 30px;
-  /* UI Properties */
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -196,7 +186,6 @@
   background-color: #e0e0e0;
 }
 
-/* Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -259,14 +248,25 @@
 }
 .employeeTable1 tbody td {
   height: 10px !important;
-  text-align: left; /* Aligns the text to the left */
-  font-family: "Segoe UI"; /* Specifies the font family */
-  font-weight: normal; /* Specifies the font weight */
-  font-style: normal; /* Specifies the font style */
-  font-variant: normal; /* Specifies the font variant */
-  font-size: 13px; /* Specifies the font size */
-  line-height: 24px; /* Specifies the line height */
-  letter-spacing: 0px; /* Specifies letter spacing */
-  color: #464646; /* Sets the text color */
+  text-align: left;
+  font-family: "Segoe UI";
+  font-weight: normal;
+  font-style: normal;
+  font-variant: normal;
+  font-size: 13px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: #464646;
+  opacity: 1;
+}
+
+.Progress_percentage {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: "Segoe UI";
+  color: #000000;
   opacity: 1;
 }

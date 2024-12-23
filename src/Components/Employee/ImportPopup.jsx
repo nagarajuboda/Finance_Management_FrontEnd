@@ -11,7 +11,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
   const [employees, setEmployees] = useState([]);
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  //   if (!isOpen) return null;
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -26,7 +26,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
   const removefile = () => {
     setSelectedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Reset the file input field
+      fileInputRef.current.value = "";
     }
   };
   const InsertbulkData = async (e) => {
@@ -73,18 +73,13 @@ const ImportPopup = ({ isOpen, handleClose }) => {
         var empnumbers = result.item.item1
           .map((obj) => obj.mobileNo)
           .filter((mobileNo) => mobileNo !== null && mobileNo !== undefined);
-        // vlauesss.push(...emails);
-        // vlauesss.push(...ids);
-        // vlauesss.push(...empnumbers);
-        // let formattedText = vlauesss.join(",");
-        // const formatedData = formattedText;
+
         let formattedEmails = `<span style:"color:"black">EmailIDs:</span><br>${emails.join(
           "<br>"
         )}`;
         let formattedIds = `EmployeeIds:<br>${ids.join("<br>")}`;
         let formattedNumbers = `PhoneNumbers:<br>${empnumbers.join("<br>")}`;
 
-        // Combine all sections into a single formatted text
         let formattedText = `${formattedEmails}<br><br>${formattedIds}<br><br>${formattedNumbers}`;
         Swal.fire({
           title: "Error!",
@@ -96,14 +91,11 @@ const ImportPopup = ({ isOpen, handleClose }) => {
         </div>`,
           icon: "error",
           confirmButtonText: "Cancel",
-          //footer:
-          //'<a href="#" style="color: red;">This value already exists</a>',
         });
       }
     } else {
       var errorresponse = result.item.map((obj) => obj);
       let formattedErrors = errorresponse.join(", ");
-      console.log(formattedErrors);
       Swal.fire({
         title: "Error!",
         html: `<div style="width: auto; max-height: 80px; overflow-y: auto; overflow-x: hidden;">

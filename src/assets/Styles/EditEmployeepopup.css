@@ -1,5 +1,5 @@
 .modal-overlay {
-  display: block; /* Display the modal */
+  display: block;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -10,25 +10,17 @@
 }
 
 .modal-content {
-  /* background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border-radius: 10px;
-  width: 40%;
-  position: relative;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
   top: 75px;
   left: 160px;
   width: 925px;
   height: 445px;
-  /* UI Properties */
+
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #cecece;
   border-radius: 3px;
   opacity: 1;
 }
 
-/* File Upload Section */
 .file-upload-container {
   margin: 20px 0;
 }
@@ -55,7 +47,6 @@
   color: #888;
 }
 
-/* Action Buttons */
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -65,17 +56,6 @@
   height: 28px !important;
   margin: 0px 5px;
 }
-/* .skillsetdiv {
-  overflow-y: "scroll";
-  height: "70px";
-  resize: "none";
-  width: "100%";
-  border: "1px solid #ccc";
-  padding: "5px";
-  background-color: white;
-  border-radius: "4px";
-  display: "flex";
-} */
 .btn-submit {
   background-color: #28a745;
   color: white;
@@ -134,10 +114,10 @@
   font-size: 10px;
 }
 .custom-label {
-  font-size: 0.75rem; /* Adjust font size */
-  color: #757575; /* Label color */
-  transform: translate(0, -5px) scale(1); /* Adjust label positioning */
-  font-weight: 500; /* Adjust font weight if needed */
+  font-size: 0.75rem;
+  color: #757575;
+  transform: translate(0, -5px) scale(1);
+  font-weight: 500;
 }
 .css-1yj38qv-MuiFormControl-root-MuiTextField-root {
   background: #ffffff 0% 0% no-repeat padding-box !important;
@@ -147,7 +127,7 @@
 .EditformSubmit {
   width: 85px;
   height: 36px;
-  /* UI Properties */
+
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -155,13 +135,13 @@
 .editformspan {
   width: 30px;
   height: 14px;
-  /* UI Properties */
+
   text-align: center;
-  font-family: Raleway; /* Specifies the font family */
-  font-weight: bold; /* Specifies the font weight */
-  font-size: 12px; /* Specifies the font size */
-  line-height: 30px; /* Specifies the line height */
-  font-style: normal; /* Specifies the font style */
+  font-family: Raleway;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 30px;
+  font-style: normal;
   letter-spacing: 0px;
   color: #ffffff;
   text-transform: uppercase;
@@ -170,7 +150,7 @@
 .EditformCancel {
   width: 85px;
   height: 36px;
-  /* UI Properties */
+
   background: #e5e5e5 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -180,10 +160,10 @@
   height: 14px;
 
   text-align: center;
-  font-family: Raleway; /* Specifies the font family */
-  font-weight: 500; /* Specifies the font weight (medium) */
-  font-size: 12px; /* Specifies the font size */
-  line-height: 29px; /* Specifies the line height */
+  font-family: Raleway;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 29px;
   font-style: normal;
   letter-spacing: 0px;
   color: #000000;
