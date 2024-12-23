@@ -364,18 +364,7 @@ export default function Employees() {
                             cursor: "pointer",
                           }}
                         >
-                          <td style={{ textAlign: "start" }}>
-                            {/* <input
-                              type="checkbox"
-                              className="row-checkbox "
-                              onChange={(e) =>
-                                handleCheckboxChange(
-                                  employee.id,
-                                  e.target.checked
-                                )
-                              }
-                            /> */}
-                          </td>
+                          <td style={{ textAlign: "start" }}></td>
                           <td
                             style={{ fontSize: "12px" }}
                             onClick={(e) => ViewDetails(employee.id)}
@@ -413,9 +402,6 @@ export default function Employees() {
                             {new Date(
                               employee.dateOfJoining
                             ).toLocaleDateString("en-GB")}
-                            {/* {new Date(
-                              employee.dateOfJoining
-                            ).toLocaleDateString("en-GB")} */}
                           </td>
                           <td
                             style={{ fontSize: "12px" }}
@@ -437,34 +423,6 @@ export default function Employees() {
                               ? `${employee.projectManager.firstName} ${employee.projectManager.lastName}`
                               : "N/A"}
                           </td>
-                          {/* <td>
-                            <img
-                              src={editicon}
-                              onClick={(e) =>
-                                EdittogglePopup(e, index, employee.id)
-                              }
-                              alt=""
-                              style={{
-                                width: "18px",
-                                height: "18px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </td> */}
-                          {/* <td>
-                            <img
-                              src={deleteicon}
-                              onClick={(e) =>
-                                handleOpenPopup(e, index, employee.id)
-                              }
-                              alt=""
-                              style={{
-                                width: "24px",
-                                height: "24px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </td> */}
                         </tr>
                       )
                     : employee.employeeStatus === 0 && (
@@ -476,18 +434,7 @@ export default function Employees() {
                             cursor: "pointer",
                           }}
                         >
-                          <td style={{ textAlign: "start" }}>
-                            {/* <input
-                              type="checkbox"
-                              className="row-checkbox "
-                              onChange={(e) =>
-                                handleCheckboxChange(
-                                  employee.id,
-                                  e.target.checked
-                                )
-                              }
-                            /> */}
-                          </td>
+                          <td style={{ textAlign: "start" }}></td>
                           <td
                             style={{ fontSize: "12px ms-2" }}
                             onClick={(e) => ViewDetails(employee.id)}
@@ -522,9 +469,6 @@ export default function Employees() {
                             {new Date(
                               employee.dateOfJoining
                             ).toLocaleDateString("en-GB")}
-                            {/* {new Date(
-                              employee.dateOfJoining
-                            ).toLocaleDateString("en-GB")} */}
                           </td>
                           <td style={{ fontSize: "12px" }}>
                             {employee.role.name}
