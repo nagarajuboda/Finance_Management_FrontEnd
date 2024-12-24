@@ -9,6 +9,7 @@ import myprofile from "../../../src/assets/Images/myprofile.png";
 import support from "../../../src/assets/Images/support.png";
 import settings from "../../../src/assets/Images/settings.png";
 import logout from "../../../src/assets/Images/Logout.png";
+import NotificationImage from "../../../src/assets/Images/Notification.png";
 import {
   FaSearch,
   FaUserCircle,
@@ -113,6 +114,16 @@ export default function Header({ isOpen }) {
         marginLeft: isOpen ? "" : "",
       }}
     >
+      <div
+        className="me-3"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <img src={NotificationImage} alt="" height="20px" width="20px" />
+      </div>
       <div
         style={{ position: "relative", display: "inline-block" }}
         ref={dropdownRef}

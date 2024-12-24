@@ -1497,9 +1497,7 @@ export function ViewProject() {
             <h2 className="unique-popup-title">
               Delete Employee Successfully!
             </h2>
-            <p className="unique-popup-message">
-              Click OK to view added project
-            </p>
+            <p className="unique-popup-message">Click OK to view result</p>
             <button className="unique-popup-button" onClick={closeDeletePopup}>
               OK
             </button>

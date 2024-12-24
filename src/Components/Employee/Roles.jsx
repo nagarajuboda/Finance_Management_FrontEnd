@@ -9,11 +9,19 @@ import images from "../../assets/Images/User.png";
 import axios from "axios";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
-
+import {
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  TextField,
+  Button,
+} from "@mui/material";
+import { AddRoleFormValidation } from "./AddRoleformValidatons";
 const priorityMap = {
   1: "High",
   2: "Medium",
-  3: "Low",
+  0: "Low",
 };
 
 export default function Roles() {
@@ -24,14 +32,25 @@ export default function Roles() {
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [roles, setRoles] = useState([]);
   const [selectedRoleIds, setSelectedRoleIds] = useState([]);
+  const [isUpdateopen, setIsUpdateOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [id, setid] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isopen, setisOpen] = useState(false);
+  const [RoleName, setRoleName] = useState("");
+  const [role, setRole] = useState({});
 
   useEffect(() => {
     fetchRoles();
   }, []);
-
+  const [values, setValues] = useState({
+    RoleName: "",
+    Priority: "",
+  });
+  const [errors, setErrors] = useState({
+    RoleName: "",
+    Priority: "",
+  });
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
@@ -71,7 +90,24 @@ export default function Roles() {
   const closeDeletePopup = () => {
     setOpen(false);
   };
+  const [priority, setPriority] = useState(0);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: AddRoleFormValidation(name, value),
+    });
+  };
+  // const handleChange1 = (e) => {
+  //   const { name, value } = e.target;
+  //   setRoleName(value);
+  // };
+  console.log(values, "values");
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
@@ -87,10 +123,6 @@ export default function Roles() {
     });
   };
 
-  const Addrolefuncton = () => {
-    navigate("/dashboard/AddRoleModal");
-  };
-
   const DeleteSelectedRecords = async () => {
     const response = await axios.put(
       "https://localhost:44305/api/Roles/DeleteSelectedRoles",
@@ -101,10 +133,6 @@ export default function Roles() {
       setOpen(true);
       fetchRoles();
     }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
   };
 
   const filteredRoles = roles.filter((role) => {
@@ -122,14 +150,6 @@ export default function Roles() {
   const currentItems = filteredRoles.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(filteredRoles.length / itemsPerPage);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
 
   const handleCheckboxChange = (roleId, isChecked) => {
     setSelectedRoleIds((prevSelected) => {
@@ -158,7 +178,66 @@ export default function Roles() {
       console.error("Error updating role status", error);
     }
   };
-
+  const AddNewRolePopup = () => {
+    setValues({
+      RoleName: "",
+      Priority: "",
+    });
+    setErrors({
+      RoleName: "",
+      Priority: "",
+    });
+    setisOpen(true);
+  };
+  const CloseAddNewRolePopup = () => {
+    setValues({
+      RoleName: "",
+      Priority: "",
+    });
+    setErrors({
+      RoleName: "",
+      Priority: "",
+    });
+    setisOpen(false);
+  };
+  const UpdatePopup = async (roleId) => {
+    console.log(roleId, "=========>");
+    var getRoleResponse = await axios.get(
+      `https://localhost:44305/api/Roles/getRole?id=${roleId} `
+    );
+    setIsUpdateOpen(true);
+    var result = getRoleResponse.data;
+    setRole(result);
+    console.log(result, "===============>");
+  };
+  const CloseUpdateRolePopup = () => {
+    setIsUpdateOpen(false);
+  };
+  const AddRole = async () => {
+    const newErrors = {
+      RoleName: AddRoleFormValidation("RoleName", values.RoleName),
+      Priority: AddRoleFormValidation("Priority", values.Priority),
+    };
+    setErrors(newErrors);
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    console.log(errors, "errors");
+    if (isValid) {
+      var obj = {
+        name: values.RoleName,
+        priority: values.priority,
+      };
+      var response = await axios.post(
+        "https://localhost:44305/api/Roles/CreateRole",
+        obj
+      );
+      var result = response.data;
+      if (result.isSuccess) {
+        setisOpen(false);
+        fetchRoles();
+      }
+      console.log(response, "role");
+    }
+  };
   return (
     <div className="Rolemaindiv">
       <div className="roleheader">Role and Access</div>
@@ -172,17 +251,17 @@ export default function Roles() {
             justifyContent: "center",
           }}
         >
-          <div className="col-2">
-            <p className="rolecontent">Roles list</p>
+          <div className="col-4 ">
+            <p className="rolecontent ms-2">Roles list</p>
           </div>
           <div
-            className="col-4"
+            className="col-2 "
             style={{ display: "flex", justifyContent: "end" }}
           ></div>
           <div className="col-6 d-flex justify-content-end pe-3">
             <div className="me-2">
               <button
-                className="DelRecordbutton"
+                className="DelRecordbutton me-2"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
               >
@@ -191,9 +270,9 @@ export default function Roles() {
             </div>
             <div>
               <button
-                style={{ display: "flex", width: "120px" }}
-                className="add-new-role-button"
-                onClick={Addrolefuncton}
+                className="add-new-role-button me-2"
+                // onClick={Addrolefuncton}
+                onClick={AddNewRolePopup}
               >
                 <span>
                   <img
@@ -201,13 +280,22 @@ export default function Roles() {
                     alt=""
                     height="18px"
                     width="18px"
-                    className="ms-2"
+                    className=""
                   />
                 </span>
                 <span className="add-new-role-span ms-1">Add New Role</span>
               </button>
             </div>
           </div>
+        </div>
+        <div>
+          <div
+            style={{
+              border: "1px solid #64646430",
+              width: "100%",
+            }}
+            className=" mt-2"
+          ></div>
         </div>
 
         <div style={{ padding: "10px" }}>
@@ -224,11 +312,11 @@ export default function Roles() {
                     className="userCheckbox"
                   />
                 </th>
-                <th style={{ fontSize: "12px" }}>Role Name</th>
-                <th style={{ fontSize: "12px" }}>Priority</th>
-                <th style={{ fontSize: "12px" }}>Priority Number</th>
-                <th style={{ fontSize: "12px" }}>Enable/Disable</th>
-                <th style={{ fontSize: "12px" }}>Actions</th>
+                <th className="rolethclass">Role Name</th>
+                <th className="rolethclass">Priority level</th>
+                <th className="rolethclass">Priority Number</th>
+                <th className="rolethclass">Enable/Disable</th>
+                <th className="rolethclass">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -259,7 +347,11 @@ export default function Roles() {
                   <td>
                     <img
                       src={editicon}
-                      onClick={() => handleEdit(role)}
+                      // onClick={UpdatePopup}
+                      onClick={(e) => {
+                        UpdatePopup(role.id);
+                      }}
+                      // onClick={() => handleEdit(role)}
                       alt="Edit Role"
                       style={{
                         width: "18px",
@@ -283,25 +375,215 @@ export default function Roles() {
             </tbody>
           </table>
         </div>
-
-        <div className="pagination">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="pagination-button"
-          >
-            Previous
-          </button>
-          <span className="pagination-text">{currentPage}</span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="pagination-button"
-          >
-            Next
-          </button>
-        </div>
       </div>
+
+      {isopen && (
+        <div className="overlay-backdrop">
+          <div className="overlay-box">
+            <div
+              className="overlay-header"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <h2 className="overlay-heading">
+                <span className="Add_New-role_span">Add New Role</span>
+              </h2>
+              <span className="overlay-close-btn">
+                <i
+                  className="bi bi-x-lg"
+                  onClick={CloseAddNewRolePopup}
+                  style={{ cursor: "pointer", color: "white" }}
+                ></i>
+              </span>
+            </div>
+            <div style={{ padding: "20px" }}>
+              <TextField
+                label="Role Name"
+                placeholder="Enter RoleName"
+                variant="outlined"
+                name="RoleName"
+                value={values.RoleName}
+                onChange={handleChange}
+                fullWidth
+                className="custom-text-field"
+              />
+              {errors.RoleName && (
+                <span
+                  className="error ms-1"
+                  style={{ fontSize: "13px", color: "red" }}
+                >
+                  {errors.RoleName}
+                </span>
+              )}
+            </div>
+            <div
+              style={{
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                paddingTop: "10px",
+              }}
+            >
+              <TextField
+                label="Priority"
+                variant="outlined"
+                name="Priority"
+                value={values.Priority}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="" style={{ fontSize: "12px" }}>
+                  <em>Select</em>
+                </MenuItem>
+
+                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                  Low
+                </MenuItem>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  Medium
+                </MenuItem>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                  High
+                </MenuItem>
+              </TextField>
+              {errors.Priority && (
+                <span
+                  className="error ms-1"
+                  style={{ fontSize: "13px", color: "red" }}
+                >
+                  {errors.Priority}
+                </span>
+              )}
+            </div>
+            <div
+              className="overlay-content "
+              style={{ paddingTop: "20px", display: "flex" }}
+            >
+              <div className="">
+                <button className="overlaysavebtn ms-1" onClick={AddRole}>
+                  <span className="overlay-save-label">Save</span>
+                </button>
+              </div>
+              <div className="">
+                <button
+                  style={{ cursor: "pointer" }}
+                  className="ms-3 overlay-cancel-button"
+                  onClick={CloseAddNewRolePopup}
+                >
+                  <span className="overlay-cancel-span">Cancel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isUpdateopen && (
+        <div className="overlay-backdrop">
+          <div className="overlay-box">
+            <div
+              className="overlay-header"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <h2 className="overlay-heading">
+                <span className="Add_New-role_span">Add New Role</span>
+              </h2>
+              <span className="overlay-close-btn">
+                <i
+                  className="bi bi-x-lg"
+                  onClick={CloseUpdateRolePopup}
+                  style={{ cursor: "pointer", color: "white" }}
+                ></i>
+              </span>
+            </div>
+            <div style={{ padding: "20px" }}>
+              <TextField
+                label="Role Name"
+                placeholder="Enter RoleName"
+                variant="outlined"
+                name="RoleName"
+                value={role.name}
+                onChange={handleChange}
+                fullWidth
+                className="custom-text-field"
+              />
+            </div>
+            <div
+              style={{
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                paddingTop: "10px",
+              }}
+            >
+              <TextField
+                label="Priority"
+                variant="outlined"
+                name="Priority"
+                value={role.priority}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="" style={{ fontSize: "12px" }}>
+                  <em>Select</em>
+                </MenuItem>
+
+                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                  Low
+                </MenuItem>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  Medium
+                </MenuItem>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                  High
+                </MenuItem>
+              </TextField>
+            </div>
+            <div className="overlay-content row" style={{ paddingTop: "20px" }}>
+              <div className=" col-2">
+                <button className="overlaysavebtn ms-1">
+                  <span className="overlay-save-label">Save</span>
+                </button>
+              </div>
+              <div className="col-2">
+                <button
+                  style={{ cursor: "pointer" }}
+                  className="ms-4 overlay-cancel-button"
+                  onClick={CloseUpdateRolePopup}
+                >
+                  <span className="overlay-cancel-span">Cancel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
