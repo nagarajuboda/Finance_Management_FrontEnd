@@ -9,6 +9,8 @@ import images from "../../assets/Images/User.png";
 import axios from "axios";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
+import chechimage from "../../assets/Images/check.png";
+import elipsimage from "../../assets/Images/Ellipse.png";
 import {
   MenuItem,
   FormControl,
@@ -38,12 +40,17 @@ export default function Roles() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isopen, setisOpen] = useState(false);
   const [RoleName, setRoleName] = useState("");
-  const [role, setRole] = useState({});
+  const [Deleterolepopup, setDeleterolepopup] = useState(false);
+  //const [role, setRole] = useState({});
 
   useEffect(() => {
     fetchRoles();
   }, []);
   const [values, setValues] = useState({
+    RoleName: "",
+    Priority: "",
+  });
+  const [Updatevalues, setUpdateValues] = useState({
     RoleName: "",
     Priority: "",
   });
@@ -88,7 +95,7 @@ export default function Roles() {
   };
 
   const closeDeletePopup = () => {
-    setOpen(false);
+    setDeleterolepopup(false);
   };
   const [priority, setPriority] = useState(0);
   const handleChange = (e) => {
@@ -103,11 +110,28 @@ export default function Roles() {
       [name]: AddRoleFormValidation(name, value),
     });
   };
-  // const handleChange1 = (e) => {
-  //   const { name, value } = e.target;
-  //   setRoleName(value);
-  // };
-  console.log(values, "values");
+  const [role, setRole] = useState({
+    name: "",
+    priority: "",
+  });
+  const handleChange1 = (e) => {
+    const { name, value } = e.target;
+    setRole((prevRole) => ({
+      ...prevRole,
+      [name]: value,
+    }));
+  };
+  const UpdateRole = async () => {
+    var UpdateRoleResponse = await axios.put(
+      "https://localhost:44305/api/Roles/UpdateRole",
+      role
+    );
+    var result = UpdateRoleResponse.data;
+    if (result.message != null) {
+      setIsUpdateOpen(false);
+      fetchRoles();
+    }
+  };
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
@@ -201,14 +225,12 @@ export default function Roles() {
     setisOpen(false);
   };
   const UpdatePopup = async (roleId) => {
-    console.log(roleId, "=========>");
     var getRoleResponse = await axios.get(
       `https://localhost:44305/api/Roles/getRole?id=${roleId} `
     );
     setIsUpdateOpen(true);
     var result = getRoleResponse.data;
     setRole(result);
-    console.log(result, "===============>");
   };
   const CloseUpdateRolePopup = () => {
     setIsUpdateOpen(false);
@@ -220,7 +242,6 @@ export default function Roles() {
     };
     setErrors(newErrors);
     const isValid = Object.values(newErrors).every((error) => error === "");
-    console.log(errors, "errors");
     if (isValid) {
       var obj = {
         name: values.RoleName,
@@ -235,7 +256,16 @@ export default function Roles() {
         setisOpen(false);
         fetchRoles();
       }
-      console.log(response, "role");
+    }
+  };
+  const DeleteRoleFunction = async (roleId) => {
+    var response = await axios.delete(
+      `https://localhost:44305/api/Roles/${roleId}`
+    );
+    var result = response.data;
+    if (result.message != null) {
+      fetchRoles();
+      setDeleterolepopup(true);
     }
   };
   return (
@@ -305,7 +335,7 @@ export default function Roles() {
                 className="roleheader"
                 style={{ backgroundColor: "red important" }}
               >
-                <th>
+                <th style={{ margin: "0", padding: "0px 10px" }}>
                   <input
                     type="checkbox"
                     onChange={handleSelectAll}
@@ -322,7 +352,7 @@ export default function Roles() {
             <tbody>
               {currentItems.map((role, index) => (
                 <tr className="EmployeeListtablelistrow" key={role.id}>
-                  <td>
+                  <td style={{ margin: "0", padding: "0px 10px" }}>
                     <input
                       type="checkbox"
                       onChange={(e) =>
@@ -345,30 +375,37 @@ export default function Roles() {
                     </label>
                   </td>
                   <td>
-                    <img
-                      src={editicon}
-                      // onClick={UpdatePopup}
-                      onClick={(e) => {
-                        UpdatePopup(role.id);
-                      }}
-                      // onClick={() => handleEdit(role)}
-                      alt="Edit Role"
+                    <div
                       style={{
-                        width: "18px",
-                        height: "18px",
-                        cursor: "pointer",
+                        display: "flex",
+                        alignContent: "center",
                       }}
-                    />
-
-                    <img
-                      src={deleteicon}
-                      style={{ width: "25px", cursor: "pointer" }}
-                      onClick={(e) => {
-                        setid(role.id);
-                        setIsPopupOpen(true);
-                      }}
-                      alt="Delete"
-                    />
+                    >
+                      <div>
+                        <img
+                          src={editicon}
+                          onClick={(e) => {
+                            UpdatePopup(role.id);
+                          }}
+                          alt="Edit Role"
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            cursor: "pointer",
+                          }}
+                        />
+                      </div>
+                      <div className="ms-3">
+                        <img
+                          src={deleteicon}
+                          style={{ width: "25px", cursor: "pointer" }}
+                          onClick={(e) => {
+                            DeleteRoleFunction(role.id);
+                          }}
+                          alt="Delete"
+                        />
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -385,11 +422,11 @@ export default function Roles() {
               style={{ display: "flex", alignItems: "center" }}
             >
               <h2 className="overlay-heading">
-                <span className="Add_New-role_span">Add New Role</span>
+                <span className="Add_New-role_span ms-1">Add New Role</span>
               </h2>
               <span className="overlay-close-btn">
                 <i
-                  className="bi bi-x-lg"
+                  className="bi bi-x-lg me-1"
                   onClick={CloseAddNewRolePopup}
                   style={{ cursor: "pointer", color: "white" }}
                 ></i>
@@ -498,11 +535,11 @@ export default function Roles() {
               style={{ display: "flex", alignItems: "center" }}
             >
               <h2 className="overlay-heading">
-                <span className="Add_New-role_span">Add New Role</span>
+                <span className="Add_New-role_span ms-1">Update Role</span>
               </h2>
               <span className="overlay-close-btn">
                 <i
-                  className="bi bi-x-lg"
+                  className="bi bi-x-lg me-1"
                   onClick={CloseUpdateRolePopup}
                   style={{ cursor: "pointer", color: "white" }}
                 ></i>
@@ -513,9 +550,9 @@ export default function Roles() {
                 label="Role Name"
                 placeholder="Enter RoleName"
                 variant="outlined"
-                name="RoleName"
+                name="name"
                 value={role.name}
-                onChange={handleChange}
+                onChange={handleChange1}
                 fullWidth
                 className="custom-text-field"
               />
@@ -530,9 +567,9 @@ export default function Roles() {
               <TextField
                 label="Priority"
                 variant="outlined"
-                name="Priority"
+                name="priority"
                 value={role.priority}
-                onChange={handleChange}
+                onChange={handleChange1}
                 fullWidth
                 select
                 sx={{
@@ -557,18 +594,18 @@ export default function Roles() {
                 <MenuItem value={0} style={{ fontSize: "12px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
                   High
                 </MenuItem>
               </TextField>
             </div>
             <div className="overlay-content row" style={{ paddingTop: "20px" }}>
               <div className=" col-2">
-                <button className="overlaysavebtn ms-1">
-                  <span className="overlay-save-label">Save</span>
+                <button className="overlaysavebtn ms-1" onClick={UpdateRole}>
+                  <span className="overlay-save-label">Update</span>
                 </button>
               </div>
               <div className="col-2">
@@ -581,6 +618,35 @@ export default function Roles() {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {Deleterolepopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Role Delete Successfully!</h2>
+            <p className="unique-popup-message">Click OK to view result</p>
+            <button className="unique-popup-button" onClick={closeDeletePopup}>
+              OK
+            </button>
           </div>
         </div>
       )}
