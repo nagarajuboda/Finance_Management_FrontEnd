@@ -22,9 +22,9 @@ import {
 import { AddRoleFormValidation } from "./AddRoleformValidatons";
 import { actions } from "react-table";
 const priorityMap = {
-  2: "High",
-  1: "Medium",
-  0: "Low",
+  1: "High",
+  2: "Medium",
+  3: "Low",
 };
 
 export default function Roles() {
@@ -45,10 +45,13 @@ export default function Roles() {
   const [selectedRolesIds, setSelectedRolesIds] = useState([]);
   const [SelectedRolesPopup, setSelectedRolesPopup] = useState(false);
   const [roleToggleState, setRoleToggleState] = useState({});
-
+  const [role, setRole] = useState({
+    name: "",
+    priority: "",
+  });
   useEffect(() => {
     fetchRoles();
-  }, [roleToggleState]);
+  }, []);
   const [values, setValues] = useState({
     RoleName: "",
     Priority: "",
@@ -69,7 +72,6 @@ export default function Roles() {
     var activityRoleResponse = await axios.get(
       "https://localhost:44305/api/ActivityLog"
     );
-    console.log(activityRoleResponse, "response");
     try {
       const response = await axios.get(
         "https://localhost:44305/api/Roles/AllRoles"
@@ -103,10 +105,8 @@ export default function Roles() {
   const closeDeletePopup = () => {
     setDeleterolepopup(false);
   };
-  const [priority, setPriority] = useState(0);
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setValues({
       ...values,
       [name]: value,
@@ -116,10 +116,7 @@ export default function Roles() {
       [name]: AddRoleFormValidation(name, value),
     });
   };
-  const [role, setRole] = useState({
-    name: "",
-    priority: "",
-  });
+
   const handleChange1 = (e) => {
     const { name, value } = e.target;
     setRole((prevRole) => ({
@@ -141,15 +138,21 @@ export default function Roles() {
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
-      const AllRolesIDs = roles.map((role) => role.id);
+      const AllRolesIDs = roles
+        .filter((role) => role.status === "Active")
+        .map((role) => role.id);
+
       setSelectedRolesIds(AllRolesIDs);
       setDisiblebuttons(false);
     } else {
       setSelectedRolesIds([]);
       setDisiblebuttons(true);
     }
+
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
-      checkbox.checked = isChecked;
+      if (!checkbox.disabled) {
+        checkbox.checked = isChecked;
+      }
     });
   };
   const DeleteSelectedRecords = async () => {
@@ -244,7 +247,7 @@ export default function Roles() {
     if (isValid) {
       var obj = {
         name: values.RoleName,
-        priority: values.priority,
+        priority: values.Priority,
       };
       var response = await axios.post(
         "https://localhost:44305/api/Roles/CreateRole",
@@ -267,30 +270,44 @@ export default function Roles() {
       setDeleterolepopup(true);
     }
   };
+
   const selectedRolesPopup = () => {
     setSelectedRolesPopup(false);
   };
-
-  const handleToggle = (checked, roleId) => {
-    setRoleToggleState((prevState) => {
-      return {
-        ...prevState,
-        [roleId]: checked ? "Active" : "Inactive",
-      };
+  const [StatusRoleId, setStatusRoleId] = useState("");
+  const [StatusRole, setStatusRole] = useState("");
+  useEffect(() => {
+    const initialState = {};
+    roles.forEach((role) => {
+      initialState[role.id] = role.status === "Active";
     });
-  };
-  if (roleToggleState && Object.keys(roleToggleState).length > 0) {
-    const [key, value] = Object.entries(roleToggleState)[0];
+    setRoleToggleState(initialState);
+  }, [roles]);
+  const handleToggle = async (checked, roleId, name, priority) => {
+    const newStatus = checked ? "Active" : "Inactive";
+    setRoleToggleState((prevState) => ({
+      ...prevState,
+      [roleId]: checked,
+    }));
+    setStatusRoleId(roleId);
+    setStatusRole(newStatus);
+
     var obj = {
-      roleid: key,
-      status: value,
+      id: roleId,
+      name: name,
+      priority: priority,
+      status: newStatus,
     };
-  } else {
-    console.error("roleToggleState is undefined, null, or empty.");
-  }
 
-  console.log(obj);
-
+    var response = await axios.put(
+      "https://localhost:44305/api/Roles/TemporaryUpdate",
+      obj
+    );
+    var result = response.data;
+    if (result.isSuccess) {
+      fetchRoles();
+    }
+  };
   return (
     <div className="Rolemaindiv">
       <div className="roleheader">Role and Access</div>
@@ -305,7 +322,7 @@ export default function Roles() {
           }}
         >
           <div className="col-4 ">
-            <p className="rolecontent ms-2">Roles list</p>
+            <p className="rolecontent ms-3">Roles list</p>
           </div>
           <div
             className="col-2 "
@@ -381,68 +398,100 @@ export default function Roles() {
                         handleCheckboxChange(role.id, e.target.checked)
                       }
                       className="row-checkbox"
+                      disabled={role.status === "Inactive"}
                     />
                   </td>
-                  <td>{role.name}</td>
-                  <td>{priorityMap[role.priority]}</td>
-                  <td>{role.priority}</td>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {role.name}
+                  </td>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {priorityMap[role.priority]}
+                  </td>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {role.priority}
+                  </td>
                   <td>
-                    <div>
-                      <div
-                        style={{ display: "flex", alignItems: "center" }}
-                        className="ms-3"
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "start",
+                      }}
+                      className="ms-3 mt-2"
+                    >
+                      <label
+                        style={{
+                          position: "relative",
+                          display: "inline-block",
+                          width: "40px",
+                          height: "20px",
+                        }}
                       >
-                        <label
+                        <input
+                          type="checkbox"
+                          checked={!!roleToggleState[role.id]}
+                          onChange={(e) =>
+                            handleToggle(
+                              e.target.checked,
+                              role.id,
+                              role.name,
+                              role.priority
+                            )
+                          }
+                          style={{ display: "none" }}
+                        />
+                        <span
                           style={{
-                            position: "relative",
-                            display: "inline-block",
-                            width: "50px",
-                            height: "25px",
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: roleToggleState[role.id]
+                              ? "#4CAF50"
+                              : "#ccc",
+                            borderRadius: "25px",
+                            cursor: "pointer",
+                            transition: "background-color 0.3s",
                           }}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={roleToggleState[role.id] === "Active"}
-                            onChange={(e) =>
-                              handleToggle(e.target.checked, role.id)
-                            }
-                            style={{ display: "none" }}
-                          />
-                          <span
-                            style={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              backgroundColor:
-                                roleToggleState[role.id] === "Active"
-                                  ? "#4CAF50"
-                                  : "#ccc",
-                              borderRadius: "25px",
-                              cursor: "pointer",
-                              transition: "background-color 0.3s",
-                            }}
-                          ></span>
-                          <span
-                            style={{
-                              position: "absolute",
-                              top: "2px",
-                              left:
-                                roleToggleState[role.id] === "Active"
-                                  ? "26px"
-                                  : "2px",
-                              width: "21px",
-                              height: "21px",
-                              backgroundColor: "white",
-                              borderRadius: "50%",
-                              transition: "left 0.3s",
-                            }}
-                          ></span>
-                        </label>
-                      </div>
+                        ></span>
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "1px",
+                            left: roleToggleState[role.id] ? "21px" : "1px",
+                            width: "18px",
+                            height: "18px",
+                            backgroundColor: "white",
+                            borderRadius: "50%",
+                            transition: "left 0.3s",
+                          }}
+                        ></span>
+                      </label>
                     </div>
                   </td>
+
                   <td>
                     <div
                       style={{
@@ -454,22 +503,37 @@ export default function Roles() {
                         <img
                           src={editicon}
                           onClick={(e) => {
-                            UpdatePopup(role.id);
+                            if (role.status !== "Inactive") {
+                              UpdatePopup(role.id);
+                            }
                           }}
                           alt="Edit Role"
                           style={{
                             width: "18px",
                             height: "18px",
-                            cursor: "pointer",
+                            cursor:
+                              role.status === "Inactive"
+                                ? "not-allowed"
+                                : "pointer",
+                            opacity: role.status === "Inactive" ? 0.5 : 1,
                           }}
                         />
                       </div>
-                      <div className="ms-3">
+                      <div
+                        className="ms-3"
+                        style={{
+                          pointerEvents:
+                            role.status === "Inactive" ? "none" : "auto",
+                          opacity: role.status === "Inactive" ? 0.5 : 1,
+                        }}
+                      >
                         <img
                           src={deleteicon}
                           style={{ width: "25px", cursor: "pointer" }}
                           onClick={(e) => {
-                            DeleteRoleFunction(role.id);
+                            if (role.status !== "Inactive") {
+                              DeleteRoleFunction(role.id);
+                            }
                           }}
                           alt="Delete"
                         />
@@ -555,13 +619,13 @@ export default function Roles() {
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "12px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
                   High
                 </MenuItem>
               </TextField>
@@ -660,13 +724,13 @@ export default function Roles() {
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "12px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
                   High
                 </MenuItem>
               </TextField>

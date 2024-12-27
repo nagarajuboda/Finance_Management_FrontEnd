@@ -1,5 +1,4 @@
 export const AddRoleFormValidation = (name, value) => {
-  console.log(name);
   if (name === "RoleName") {
     if (!value) return "Role is required";
   }
