@@ -185,7 +185,7 @@ const Sidebar = ({ children }) => {
           <div
             key={index}
             className="menu-item tree"
-            style={{ marginTop: "10px", width: "215px" }}
+            style={{ marginTop: "10px" }}
           >
             <ul>
               <NavLink

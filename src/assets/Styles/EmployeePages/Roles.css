@@ -21,11 +21,16 @@ table.dataTable {
   margin-top: -15px !important;
 }
 .rolecontent {
-  font-weight: bold;
-
-  font-family: Segoe UI;
-
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 750;
+  font-size: 13px;
+  line-height: 30px;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0px;
   color: #000000;
+  opacity: 1;
 }
 .numberpagenation {
   background: #f7fafc 0% 0% no-repeat padding-box;
@@ -65,25 +70,25 @@ table.dataTable {
 
 .DelRecordbutton {
   width: 109px;
-  height: 36px;
+  height: 30px;
 
   background: #f04242 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
 }
 .delSelectedSpan {
-  width: 98px;
-  height: 15px;
   text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: medium;
+  font-size: 13px;
+  line-height: 30px;
+  font-family: "Raleway", sans-serif;
   letter-spacing: 0px;
   color: #ffffff;
   opacity: 1;
-  font-family: Raleway;
-  font-weight: medium;
-  font-style: normal;
-  font-size: 13px;
-  line-height: 30px;
 }
+
 .addrolebutton {
   color: black;
   width: 133px;
@@ -104,10 +109,46 @@ table.dataTable {
   align-items: center;
   justify-content: center;
 }
-
-.roleheader {
+.rolethclass {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 22px;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+.add-new-role-button {
+  width: 115px;
+  height: 30px;
+  /* UI Properties */
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #e5e5e5;
   border-radius: 5px;
-  height: 42px;
+  opacity: 1;
+}
+.add-new-role-span {
+  text-align: left;
+  font: normal normal bold 12px/30px Raleway;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+.roleheader {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 750;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
 }
 .roleheader {
   height: 42px;
@@ -478,4 +519,121 @@ input:checked + .slider:before {
 
 .roleheader {
   background-color: #f8f8f9 !important;
+}
+
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-box {
+  background: #fff;
+  width: 330px;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  height: auto;
+}
+
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  background-color: #139bff;
+}
+.Add_New-role_span {
+  text-align: left;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 19px;
+  font-family: "Segoe UI", sans-serif;
+  letter-spacing: 0px;
+  color: #ffffff;
+  opacity: 1;
+}
+.overlay-heading {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.overlay-close-btn {
+  font-size: 16px;
+  color: #666;
+  cursor: pointer;
+}
+
+.overlay-close-btn:hover {
+  color: #ff4d4f;
+}
+
+.overlay-content {
+  padding: 16px;
+}
+
+.overlay-actions {
+  display: flex;
+  gap: 8px;
+}
+.overlaysavebtn {
+  width: 65px;
+  height: 30px;
+  background: #139bff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
+}
+
+.overlay-cancel-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.overlay-cancel-button {
+  width: 65px;
+  height: 30px;
+  /* UI Properties */
+  background: #e5e5e5 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
+}
+.overlay-cancel-span {
+  text-align: center;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 29px;
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.overlay-save-label {
+  text-align: center;
+  letter-spacing: 0px;
+  color: #ffffff;
+  text-transform: uppercase;
+  opacity: 1;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 30px;
+  font-family: "Raleway", sans-serif;
 }

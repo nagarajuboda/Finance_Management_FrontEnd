@@ -12,6 +12,7 @@ import { ControlCameraSharp } from "@mui/icons-material";
 import { LoginFormValidation } from "../Admin/Pages/LoginFormValidation";
 import { getotpValidation } from "./getotpValidation";
 import loginLogo from "../../../src/assets/Images/loginbg1.png";
+import Login2 from "../../../src/assets/Images/Login2.png";
 import archetslogo from "../../../src/assets/Images/primary-logo.png";
 import rememeberme from "../../assets/Images/checkbox.svg";
 const Home = () => {
@@ -323,7 +324,7 @@ const Home = () => {
   return (
     <div className="maindiv" style={{ display: "flex" }}>
       <div className="imagediv">
-        <img src={loginLogo} alt="" className="Loginimagelogo" />
+        <img src={Login2} alt="" className="Loginimagelogo" />
       </div>
       <div className="formdiv">
         <div className="formdiv1">

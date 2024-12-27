@@ -335,7 +335,7 @@ export default function TimeSheet() {
             <div>
               <button
                 type="button"
-                className="reset_button me-2"
+                className="MakeARequestbutton me-2"
                 onClick={Resetfunction}
               >
                 <span className="make_a_request_span"> reset</span>

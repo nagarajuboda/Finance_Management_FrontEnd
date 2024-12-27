@@ -9,7 +9,18 @@ import images from "../../assets/Images/User.png";
 import axios from "axios";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
-
+import chechimage from "../../assets/Images/check.png";
+import elipsimage from "../../assets/Images/Ellipse.png";
+import {
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  TextField,
+  Button,
+} from "@mui/material";
+import { AddRoleFormValidation } from "./AddRoleformValidatons";
+import { actions } from "react-table";
 const priorityMap = {
   1: "High",
   2: "Medium",
@@ -24,19 +35,43 @@ export default function Roles() {
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [roles, setRoles] = useState([]);
   const [selectedRoleIds, setSelectedRoleIds] = useState([]);
+  const [isUpdateopen, setIsUpdateOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [id, setid] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [isopen, setisOpen] = useState(false);
+  const [RoleName, setRoleName] = useState("");
+  const [Deleterolepopup, setDeleterolepopup] = useState(false);
+  const [selectedRolesIds, setSelectedRolesIds] = useState([]);
+  const [SelectedRolesPopup, setSelectedRolesPopup] = useState(false);
+  const [roleToggleState, setRoleToggleState] = useState({});
+  const [role, setRole] = useState({
+    name: "",
+    priority: "",
+  });
   useEffect(() => {
     fetchRoles();
   }, []);
-
+  const [values, setValues] = useState({
+    RoleName: "",
+    Priority: "",
+  });
+  const [Updatevalues, setUpdateValues] = useState({
+    RoleName: "",
+    Priority: "",
+  });
+  const [errors, setErrors] = useState({
+    RoleName: "",
+    Priority: "",
+  });
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
 
   const fetchRoles = async () => {
+    var activityRoleResponse = await axios.get(
+      "https://localhost:44305/api/ActivityLog"
+    );
     try {
       const response = await axios.get(
         "https://localhost:44305/api/Roles/AllRoles"
@@ -67,44 +102,72 @@ export default function Roles() {
       setOpen(true);
     }
   };
-
   const closeDeletePopup = () => {
-    setOpen(false);
+    setDeleterolepopup(false);
   };
-
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      const allRoleIds = currentItems.map((role) => role.id);
-      setSelectedRoleIds(allRoleIds);
-      setDisiblebuttons(false);
-    } else {
-      setSelectedRoleIds([]);
-      setDisiblebuttons(true);
-    }
-    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
-      checkbox.checked = isChecked;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: AddRoleFormValidation(name, value),
     });
   };
 
-  const Addrolefuncton = () => {
-    navigate("/dashboard/AddRoleModal");
+  const handleChange1 = (e) => {
+    const { name, value } = e.target;
+    setRole((prevRole) => ({
+      ...prevRole,
+      [name]: value,
+    }));
   };
-
-  const DeleteSelectedRecords = async () => {
-    const response = await axios.put(
-      "https://localhost:44305/api/Roles/DeleteSelectedRoles",
-      selectedRoleIds
+  const UpdateRole = async () => {
+    var UpdateRoleResponse = await axios.put(
+      "https://localhost:44305/api/Roles/UpdateRole",
+      role
     );
-    const result = response.data;
-    if (result.isSuccess) {
-      setOpen(true);
+    var result = UpdateRoleResponse.data;
+    if (result.message != null) {
+      setIsUpdateOpen(false);
       fetchRoles();
     }
   };
+  const handleSelectAll = (e) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      const AllRolesIDs = roles
+        .filter((role) => role.status === "Active")
+        .map((role) => role.id);
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+      setSelectedRolesIds(AllRolesIDs);
+      setDisiblebuttons(false);
+    } else {
+      setSelectedRolesIds([]);
+      setDisiblebuttons(true);
+    }
+
+    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
+      if (!checkbox.disabled) {
+        checkbox.checked = isChecked;
+      }
+    });
+  };
+  const DeleteSelectedRecords = async () => {
+    const response = await axios.post(
+      "https://localhost:44305/api/Roles/DeleteSelectedRoles",
+      selectedRolesIds
+    );
+
+    const result = response.data;
+
+    if (result.isSuccess) {
+      setSelectedRolesPopup(true);
+      setDisiblebuttons(true);
+      fetchRoles();
+    }
   };
 
   const filteredRoles = roles.filter((role) => {
@@ -123,42 +186,128 @@ export default function Roles() {
 
   const totalPages = Math.ceil(filteredRoles.length / itemsPerPage);
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
   const handleCheckboxChange = (roleId, isChecked) => {
-    setSelectedRoleIds((prevSelected) => {
+    setSelectedRolesIds((prevSelected) => {
+      let updatedSelected;
       if (isChecked) {
-        setDisiblebuttons(false);
-        return [...prevSelected, roleId];
+        updatedSelected = [...prevSelected, roleId];
       } else {
-        setDisiblebuttons(true);
-        return prevSelected.filter((id) => id !== roleId);
+        updatedSelected = prevSelected.filter((id) => id !== roleId);
       }
+
+      if (updatedSelected.length === 0) {
+        setDisiblebuttons(true);
+      } else {
+        setDisiblebuttons(false);
+      }
+
+      return updatedSelected;
     });
   };
-
-  const handleToggle = async (roleId, currentStatus) => {
-    try {
-      const updatedStatus = !currentStatus;
-      await axios.put(
-        `https://localhost:44305/api/Roles/toggle-status/{roleId}`,
-        {
-          roleId,
-          isEnabled: updatedStatus,
-        }
+  const AddNewRolePopup = () => {
+    setValues({
+      RoleName: "",
+      Priority: "",
+    });
+    setErrors({
+      RoleName: "",
+      Priority: "",
+    });
+    setisOpen(true);
+  };
+  const CloseAddNewRolePopup = () => {
+    setValues({
+      RoleName: "",
+      Priority: "",
+    });
+    setErrors({
+      RoleName: "",
+      Priority: "",
+    });
+    setisOpen(false);
+  };
+  const UpdatePopup = async (roleId) => {
+    var getRoleResponse = await axios.get(
+      `https://localhost:44305/api/Roles/getRole?id=${roleId} `
+    );
+    setIsUpdateOpen(true);
+    var result = getRoleResponse.data;
+    setRole(result);
+  };
+  const CloseUpdateRolePopup = () => {
+    setIsUpdateOpen(false);
+  };
+  const AddRole = async () => {
+    const newErrors = {
+      RoleName: AddRoleFormValidation("RoleName", values.RoleName),
+      Priority: AddRoleFormValidation("Priority", values.Priority),
+    };
+    setErrors(newErrors);
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    if (isValid) {
+      var obj = {
+        name: values.RoleName,
+        priority: values.Priority,
+      };
+      var response = await axios.post(
+        "https://localhost:44305/api/Roles/CreateRole",
+        obj
       );
+      var result = response.data;
+      if (result.isSuccess) {
+        setisOpen(false);
+        fetchRoles();
+      }
+    }
+  };
+  const DeleteRoleFunction = async (roleId) => {
+    var response = await axios.delete(
+      `https://localhost:44305/api/Roles/${roleId}`
+    );
+    var result = response.data;
+    if (result.message != null) {
       fetchRoles();
-    } catch (error) {
-      console.error("Error updating role status", error);
+      setDeleterolepopup(true);
     }
   };
 
+  const selectedRolesPopup = () => {
+    setSelectedRolesPopup(false);
+  };
+  const [StatusRoleId, setStatusRoleId] = useState("");
+  const [StatusRole, setStatusRole] = useState("");
+  useEffect(() => {
+    const initialState = {};
+    roles.forEach((role) => {
+      initialState[role.id] = role.status === "Active";
+    });
+    setRoleToggleState(initialState);
+  }, [roles]);
+  const handleToggle = async (checked, roleId, name, priority) => {
+    const newStatus = checked ? "Active" : "Inactive";
+    setRoleToggleState((prevState) => ({
+      ...prevState,
+      [roleId]: checked,
+    }));
+    setStatusRoleId(roleId);
+    setStatusRole(newStatus);
+
+    var obj = {
+      id: roleId,
+      name: name,
+      priority: priority,
+      status: newStatus,
+    };
+
+    var response = await axios.put(
+      "https://localhost:44305/api/Roles/TemporaryUpdate",
+      obj
+    );
+    var result = response.data;
+    if (result.isSuccess) {
+      fetchRoles();
+    }
+  };
   return (
     <div className="Rolemaindiv">
       <div className="roleheader">Role and Access</div>
@@ -172,17 +321,17 @@ export default function Roles() {
             justifyContent: "center",
           }}
         >
-          <div className="col-2">
-            <p className="rolecontent">Roles list</p>
+          <div className="col-4 ">
+            <p className="rolecontent ms-3">Roles list</p>
           </div>
           <div
-            className="col-4"
+            className="col-2 "
             style={{ display: "flex", justifyContent: "end" }}
           ></div>
           <div className="col-6 d-flex justify-content-end pe-3">
             <div className="me-2">
               <button
-                className="DelRecordbutton"
+                className="DelRecordbutton me-2"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
               >
@@ -191,9 +340,8 @@ export default function Roles() {
             </div>
             <div>
               <button
-                style={{ display: "flex", width: "120px" }}
-                className="add-new-role-button"
-                onClick={Addrolefuncton}
+                className="add-new-role-button me-2"
+                onClick={AddNewRolePopup}
               >
                 <span>
                   <img
@@ -201,13 +349,22 @@ export default function Roles() {
                     alt=""
                     height="18px"
                     width="18px"
-                    className="ms-2"
+                    className=""
                   />
                 </span>
                 <span className="add-new-role-span ms-1">Add New Role</span>
               </button>
             </div>
           </div>
+        </div>
+        <div>
+          <div
+            style={{
+              border: "1px solid #64646430",
+              width: "100%",
+            }}
+            className=" mt-2"
+          ></div>
         </div>
 
         <div style={{ padding: "10px" }}>
@@ -217,91 +374,447 @@ export default function Roles() {
                 className="roleheader"
                 style={{ backgroundColor: "red important" }}
               >
-                <th>
+                <th style={{ margin: "0", padding: "0px 10px" }}>
                   <input
                     type="checkbox"
                     onChange={handleSelectAll}
                     className="userCheckbox"
                   />
                 </th>
-                <th style={{ fontSize: "12px" }}>Role Name</th>
-                <th style={{ fontSize: "12px" }}>Priority</th>
-                <th style={{ fontSize: "12px" }}>Priority Number</th>
-                <th style={{ fontSize: "12px" }}>Enable/Disable</th>
-                <th style={{ fontSize: "12px" }}>Actions</th>
+                <th className="rolethclass">Role Name</th>
+                <th className="rolethclass">Priority level</th>
+                <th className="rolethclass">Priority Number</th>
+                <th className="rolethclass">Enable/Disable</th>
+                <th className="rolethclass">Actions</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((role, index) => (
                 <tr className="EmployeeListtablelistrow" key={role.id}>
-                  <td>
+                  <td style={{ margin: "0", padding: "0px 10px" }}>
                     <input
                       type="checkbox"
                       onChange={(e) =>
                         handleCheckboxChange(role.id, e.target.checked)
                       }
                       className="row-checkbox"
+                      disabled={role.status === "Inactive"}
                     />
                   </td>
-                  <td>{role.name}</td>
-                  <td>{priorityMap[role.priority]}</td>
-                  <td>{role.priority}</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={role.isEnabled}
-                        onChange={() => handleToggle(role.id, role.isEnabled)}
-                      />
-                      <span className="slider round"></span>
-                    </label>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {role.name}
+                  </td>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {priorityMap[role.priority]}
+                  </td>
+                  <td
+                    style={{
+                      pointerEvents:
+                        role.status === "Inactive" ? "none" : "auto",
+                      opacity: role.status === "Inactive" ? 0.5 : 1,
+                      color: role.status === "Inactive" ? "#aaa" : "inherit",
+                    }}
+                  >
+                    {role.priority}
                   </td>
                   <td>
-                    <img
-                      src={editicon}
-                      onClick={() => handleEdit(role)}
-                      alt="Edit Role"
+                    <div
                       style={{
-                        width: "18px",
-                        height: "18px",
-                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "start",
                       }}
-                    />
+                      className="ms-3 mt-2"
+                    >
+                      <label
+                        style={{
+                          position: "relative",
+                          display: "inline-block",
+                          width: "40px",
+                          height: "20px",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={!!roleToggleState[role.id]}
+                          onChange={(e) =>
+                            handleToggle(
+                              e.target.checked,
+                              role.id,
+                              role.name,
+                              role.priority
+                            )
+                          }
+                          style={{ display: "none" }}
+                        />
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: roleToggleState[role.id]
+                              ? "#4CAF50"
+                              : "#ccc",
+                            borderRadius: "25px",
+                            cursor: "pointer",
+                            transition: "background-color 0.3s",
+                          }}
+                        ></span>
+                        <span
+                          style={{
+                            position: "absolute",
+                            top: "1px",
+                            left: roleToggleState[role.id] ? "21px" : "1px",
+                            width: "18px",
+                            height: "18px",
+                            backgroundColor: "white",
+                            borderRadius: "50%",
+                            transition: "left 0.3s",
+                          }}
+                        ></span>
+                      </label>
+                    </div>
+                  </td>
 
-                    <img
-                      src={deleteicon}
-                      style={{ width: "25px", cursor: "pointer" }}
-                      onClick={(e) => {
-                        setid(role.id);
-                        setIsPopupOpen(true);
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignContent: "center",
                       }}
-                      alt="Delete"
-                    />
+                    >
+                      <div>
+                        <img
+                          src={editicon}
+                          onClick={(e) => {
+                            if (role.status !== "Inactive") {
+                              UpdatePopup(role.id);
+                            }
+                          }}
+                          alt="Edit Role"
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            cursor:
+                              role.status === "Inactive"
+                                ? "not-allowed"
+                                : "pointer",
+                            opacity: role.status === "Inactive" ? 0.5 : 1,
+                          }}
+                        />
+                      </div>
+                      <div
+                        className="ms-3"
+                        style={{
+                          pointerEvents:
+                            role.status === "Inactive" ? "none" : "auto",
+                          opacity: role.status === "Inactive" ? 0.5 : 1,
+                        }}
+                      >
+                        <img
+                          src={deleteicon}
+                          style={{ width: "25px", cursor: "pointer" }}
+                          onClick={(e) => {
+                            if (role.status !== "Inactive") {
+                              DeleteRoleFunction(role.id);
+                            }
+                          }}
+                          alt="Delete"
+                        />
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <div className="pagination">
-          <button
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-            className="pagination-button"
-          >
-            Previous
-          </button>
-          <span className="pagination-text">{currentPage}</span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            className="pagination-button"
-          >
-            Next
-          </button>
-        </div>
       </div>
+
+      {isopen && (
+        <div className="overlay-backdrop">
+          <div className="overlay-box">
+            <div
+              className="overlay-header"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <h2 className="overlay-heading">
+                <span className="Add_New-role_span ms-1">Add New Role</span>
+              </h2>
+              <span className="overlay-close-btn">
+                <i
+                  className="bi bi-x-lg me-1"
+                  onClick={CloseAddNewRolePopup}
+                  style={{ cursor: "pointer", color: "white" }}
+                ></i>
+              </span>
+            </div>
+            <div style={{ padding: "20px" }}>
+              <TextField
+                label="Role Name"
+                placeholder="Enter RoleName"
+                variant="outlined"
+                name="RoleName"
+                value={values.RoleName}
+                onChange={handleChange}
+                fullWidth
+                className="custom-text-field"
+              />
+              {errors.RoleName && (
+                <span
+                  className="error ms-1"
+                  style={{ fontSize: "13px", color: "red" }}
+                >
+                  {errors.RoleName}
+                </span>
+              )}
+            </div>
+            <div
+              style={{
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                paddingTop: "10px",
+              }}
+            >
+              <TextField
+                label="Priority"
+                variant="outlined"
+                name="Priority"
+                value={values.Priority}
+                onChange={handleChange}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="" style={{ fontSize: "12px" }}>
+                  <em>Select</em>
+                </MenuItem>
+
+                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                  Low
+                </MenuItem>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                  Medium
+                </MenuItem>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  High
+                </MenuItem>
+              </TextField>
+              {errors.Priority && (
+                <span
+                  className="error ms-1"
+                  style={{ fontSize: "13px", color: "red" }}
+                >
+                  {errors.Priority}
+                </span>
+              )}
+            </div>
+            <div
+              className="overlay-content "
+              style={{ paddingTop: "20px", display: "flex" }}
+            >
+              <div className="">
+                <button className="overlaysavebtn ms-1" onClick={AddRole}>
+                  <span className="overlay-save-label">Save</span>
+                </button>
+              </div>
+              <div className="">
+                <button
+                  style={{ cursor: "pointer" }}
+                  className="ms-3 overlay-cancel-button"
+                  onClick={CloseAddNewRolePopup}
+                >
+                  <span className="overlay-cancel-span">Cancel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isUpdateopen && (
+        <div className="overlay-backdrop">
+          <div className="overlay-box">
+            <div
+              className="overlay-header"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <h2 className="overlay-heading">
+                <span className="Add_New-role_span ms-1">Update Role</span>
+              </h2>
+              <span className="overlay-close-btn">
+                <i
+                  className="bi bi-x-lg me-1"
+                  onClick={CloseUpdateRolePopup}
+                  style={{ cursor: "pointer", color: "white" }}
+                ></i>
+              </span>
+            </div>
+            <div style={{ padding: "20px" }}>
+              <TextField
+                label="Role Name"
+                placeholder="Enter RoleName"
+                variant="outlined"
+                name="name"
+                value={role.name}
+                onChange={handleChange1}
+                fullWidth
+                className="custom-text-field"
+              />
+            </div>
+            <div
+              style={{
+                paddingRight: "20px",
+                paddingLeft: "20px",
+                paddingTop: "10px",
+              }}
+            >
+              <TextField
+                label="Priority"
+                variant="outlined"
+                name="priority"
+                value={role.priority}
+                onChange={handleChange1}
+                fullWidth
+                select
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="" style={{ fontSize: "12px" }}>
+                  <em>Select</em>
+                </MenuItem>
+
+                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                  Low
+                </MenuItem>
+                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                  Medium
+                </MenuItem>
+                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  High
+                </MenuItem>
+              </TextField>
+            </div>
+            <div className="overlay-content row" style={{ paddingTop: "20px" }}>
+              <div className=" col-2">
+                <button className="overlaysavebtn ms-1" onClick={UpdateRole}>
+                  <span className="overlay-save-label">Update</span>
+                </button>
+              </div>
+              <div className="col-2">
+                <button
+                  style={{ cursor: "pointer" }}
+                  className="ms-4 overlay-cancel-button"
+                  onClick={CloseUpdateRolePopup}
+                >
+                  <span className="overlay-cancel-span">Cancel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {Deleterolepopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Role Delete Successfully!</h2>
+            <p className="unique-popup-message">Click OK to view result</p>
+            <button className="unique-popup-button" onClick={closeDeletePopup}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {SelectedRolesPopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">Roles Delete Successfully!</h2>
+            <p className="unique-popup-message">Click OK to view result</p>
+            <button
+              className="unique-popup-button"
+              onClick={selectedRolesPopup}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
