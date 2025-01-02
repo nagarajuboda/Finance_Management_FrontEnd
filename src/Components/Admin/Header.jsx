@@ -23,12 +23,15 @@ export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const dropdownRef = useRef(null);
+  const popupRef = useRef(null);
 
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [sessionData, setSessionDataState] = useState(null);
   const [user, setUser] = useState({});
   const [userRole, setUserRole] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  // const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   console.log(userDetails.employee, "user Deatis");
   const handleClickOutside = (event) => {
@@ -106,9 +109,48 @@ export default function Header({ isOpen }) {
   const Logoutfunction = () => {
     navigate("/user/Login");
   };
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [notifications, setNotifications] = useState([
+    {
+      id: "1",
+      message: "Timesheet change request approved",
+      isRead: false,
+      createdAt: "2025-01-01T12:00:00Z",
+    },
+    {
+      id: "2",
+      message: "Employee submitted timesheet",
+      isRead: false,
+      createdAt: "2025-01-01T10:00:00Z",
+    },
+  ]);
+
+  const togglePopup = () => {
+    setIsPopupOpen((prev) => !prev);
+  };
+
+  const markAsRead = (id) => {
+    setNotifications((prev) =>
+      prev.map((notif) =>
+        notif.id === id ? { ...notif, isRead: true } : notif
+      )
+    );
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setIsPopupOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <div
-      className="maindiv"
+      className="Headermaindiv"
       style={{
         width: "100%",
         marginLeft: isOpen ? "" : "",
@@ -122,8 +164,27 @@ export default function Header({ isOpen }) {
           justifyContent: "center",
         }}
       >
-        <img src={NotificationImage} alt="" height="20px" width="20px" />
+        <div className="notification-wrapper">
+          <div
+            className="notification-icon"
+            style={{ cursor: "pointer" }}
+            onClick={togglePopup}
+          >
+            <img
+              src={NotificationImage}
+              alt="Notifications"
+              height="20"
+              width="20"
+            />
+            {notifications.filter((notif) => !notif.isRead).length > 0 && (
+              <span className="badge">
+                {notifications.filter((notif) => !notif.isRead).length}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
+
       <div
         style={{ position: "relative", display: "inline-block" }}
         ref={dropdownRef}
@@ -232,6 +293,54 @@ export default function Header({ isOpen }) {
           )}
         </div>
       </div>
+
+      {isPopupOpen && (
+        <div ref={popupRef} className="notifications-popup">
+          <div class="dropdown-arrow"></div>
+          <div
+            className="RecentNotificationContent ms-3"
+            style={{ paddingTop: "20px" }}
+          >
+            Recent Notifications
+          </div>
+          {notifications.length === 0 ? (
+            <p>No notifications</p>
+          ) : (
+            notifications.map((notif) => (
+              <div key={notif.id} className="notification-item">
+                <div className="notification-content">
+                  <div style={{ display: "flex" }}>
+                    <div className="boxshowdow"></div>
+                    <div className="ms-3">
+                      <span className="forwhatrequest">
+                        TimeSheet change request approved
+                      </span>
+                      <p className="meta-info">
+                        #RefID0345 |
+                        {!notif.isRead ? (
+                          <span
+                            className="action-link"
+                            onClick={() => markAsRead(notif.id)}
+                          >
+                            {/* Mark as Read */}
+                            Accept
+                          </span>
+                        ) : (
+                          "Accepted"
+                        )}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* <p className="time-info">
+                    {new Date(notif.createdAt).toLocaleString()}
+                  </p> */}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }

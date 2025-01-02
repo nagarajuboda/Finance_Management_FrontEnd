@@ -93,15 +93,15 @@ export default function ForgotPassword() {
             <div className="forgotform">
               <div className="mb-1">
                 <label className="inputlable">Email ID</label>
-                <input
-                  type="text"
-                  placeholder="enter your username"
-                  className="emailinput"
-                  onChange={handleChange22}
-                  name="email"
-                  value={emailvalues.email}
-                />
               </div>
+              <input
+                type="text"
+                placeholder="enter your username"
+                className="emailinput"
+                onChange={handleChange22}
+                name="email"
+                value={emailvalues.email}
+              />
               <div className="backtologin mt-2">
                 <div>
                   {emailerror.email && (

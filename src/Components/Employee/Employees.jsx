@@ -62,13 +62,9 @@ export default function Employees() {
   };
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
-
-    if (isChecked && selectedEmployeeIds.length > 0) {
-      const allEmployeeIds = currentItems.map(
-        (employee) => employee.employeeDetails.id
-      );
+    if (isChecked) {
+      const allEmployeeIds = currentItems.map((emp) => emp.employeeDetails.id);
       setSelectedEmployeeIds(allEmployeeIds);
-
       setDisiblebuttons(false);
     } else {
       setSelectedEmployeeIds([]);

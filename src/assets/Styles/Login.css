@@ -1,38 +1,33 @@
-.maindiv {
-  display: flex;
+* {
+  margin: 0;
+  padding: 0;
 }
 .imagediv {
-  width: 44.3%;
+  height: 100vh;
   background-color: #b7e2e8;
-  height: 100vh !important;
 }
-.Loginimagelogo {
-  height: 500px;
-  width: 700px;
+.formdiv1 {
+  margin-left: 100px;
 }
 .formdiv {
   background-color: #fafffb;
-  width: 55.7%;
+
   height: 100vh !important;
 }
-.formdiv1 {
-  margin: 70px 180px;
-  left: 765px;
-  width: 450px;
+.Loginimagelogo {
+  height: 100vh !important;
+  width: 620px;
 }
-
 .archentslogo {
-  top: 90px;
   left: 799px;
   width: 137px;
   height: 31px;
   background: transparent url("img/primary-logo.png") 0% 0% no-repeat
     padding-box;
   opacity: 1;
+  margin-top: 20px;
 }
 .logincontent {
-  margin-top: 50px;
-  /* = */
   text-align: left;
   font-family: "Exo", sans-serif;
   font-weight: bold;
@@ -41,9 +36,9 @@
   letter-spacing: 0px;
   color: #000000;
   opacity: 1;
+  margin-top: 30px;
 }
 .financecontent {
-  width: 330px;
   margin-top: 17px;
   height: 19px;
   text-align: left;
@@ -61,7 +56,7 @@
   line-height: 18px;
 }
 .inputdiv {
-  margin-top: 32px;
+  margin-top: 20px;
 }
 label {
   text-align: left;
@@ -77,13 +72,10 @@ label {
   font-family: "Raleway", sans-serif;
 }
 .emailandpassword {
-  border-radius: 5px;
-  opacity: 1;
-  text-align: left;
-  width: 100%;
-  padding: 7px;
-  border: none;
+  height: 30px;
+  background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #e6e6e6;
+  border-radius: 5px;
 }
 .emailandpassword::placeholder {
   color: #c5c5c5;
@@ -102,7 +94,7 @@ label {
   opacity: 0.8;
 }
 .forgotpasswordatag {
-  text-align: right;
+  text-align: start;
   font-family: "Raleway", sans-serif;
   font-weight: 500;
   font-size: 13px;
@@ -111,34 +103,39 @@ label {
   letter-spacing: 0px;
   color: #0071ff;
   opacity: 1;
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  margin-right: 120px;
 }
 .buttonlogin {
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
-  width: 100%;
+  width: 75%;
   letter-spacing: 0px;
   color: #ffffff;
   border: none;
-  margin-top: 32px;
   font-weight: bold;
-  padding: 7px;
+  height: 30px;
   cursor: pointer;
+  margin-top: 10px;
 }
 .forcontect {
   font: normal normal 600 15px/17px Raleway;
   letter-spacing: 0px;
-  margin-top: 55px;
+  margin-top: 40px;
   text-align: center;
   font-style: normal;
   font-variant: normal;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 15px;
   font-family: "Raleway", sans-serif;
   letter-spacing: 0;
   color: #5a5a5a;
   opacity: 1;
+  margin-right: 100px;
 }
 .mt-4 {
   position: relative;
@@ -152,12 +149,32 @@ label {
   box-sizing: border-box;
   padding-right: 40px;
 }
+
+.password-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.emailandpassword {
+  width: 75%;
+  padding-right: 40px;
+  padding-left: 8px;
+  height: 30px;
+  box-sizing: border-box;
+}
+
 .eyeIcon {
   position: absolute;
-  top: 69%;
-  right: 10px;
+  top: 50%;
+  right: 130px;
   transform: translateY(-50%);
+  font-size: 18px;
+  color: #555;
   cursor: pointer;
-  font-size: 20px;
-  color: #888;
 }
