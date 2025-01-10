@@ -1121,7 +1121,7 @@ export default function AdminDashboard() {
                 className="ms-4 mt-3"
               ></div>
               <div className="viewAlldiv">
-                <span className="ViewAll">
+                <span className="ViewAll" style={{ cursor: "pointer" }}>
                   View All
                   <i
                     class="bi bi-arrow-right ms-1"

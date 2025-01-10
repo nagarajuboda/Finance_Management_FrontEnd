@@ -73,8 +73,8 @@ const Home = () => {
         setLoggedIn(true);
         setSessionData(result.item);
         debugger;
-        if (result.item.employee.role.name === "US-Finance") {
-          navigate("/USFinance/UsFinaceALlProjects");
+        if (result.item.employee.role.name === "US-finance") {
+          navigate("/Dashboard/FinanceDashboard");
         } else if (result.item.employee.role.name === "Admin") {
           navigate("/dashboard/AdminDashboard");
         } else if (result.item.employee.role.name === "Indian finace") {

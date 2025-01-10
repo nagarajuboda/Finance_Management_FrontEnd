@@ -82,16 +82,6 @@ const Sidebar = ({ children }) => {
       ],
     },
     {
-      name: "Billing",
-      icon: billing,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
-    },
-    {
-      name: "Accounts & Reports",
-      icon: report,
-      submenu: [{ path: "/Dashboard/AllProjects", name: "All Projects" }],
-    },
-    {
       name: "Logout",
       icon: Logout,
       path: "/user/Login",
@@ -128,9 +118,44 @@ const Sidebar = ({ children }) => {
     },
   ];
 
+  const usFinanceTeamMenuItems = [
+    {
+      name: "Dashboard",
+      icon: dashboardsidebarimage,
+      path: "/Dashboard/FinanceDashboard",
+    },
+    // {
+    //   name: "HR Management",
+    //   icon: hrManagement,
+    //   submenu: [{ path: "/dashboard/UnderEmployees", name: "Employees" }],
+    // },
+    // {
+    //   name: "Project Management",
+    //   icon: ProjectManagement,
+    //   submenu: [
+    //     { path: "/Dashboard/ProjectManagerProjects", name: "Projects" },
+    //   ],
+    // },
+    // {
+    //   name: "Billing",
+    //   icon: billing,
+    //   submenu: [{ path: "/Dashboard/TimeSheet", name: "TimeSheet" }],
+    // },
+    // {
+    //   name: "Logout",
+    //   icon: Logout,
+    //   path: "/user/Login",
+    // },
+  ];
+  // const menuItems =
+  //   sessionData?.employee?.role?.name === "Admin"
+  //     ? adminMenuItems
+  //     : ProjectManagerMenuItems;
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
+      : sessionData?.employee?.role?.name === "US-finance"
+      ? usFinanceTeamMenuItems
       : ProjectManagerMenuItems;
 
   return (

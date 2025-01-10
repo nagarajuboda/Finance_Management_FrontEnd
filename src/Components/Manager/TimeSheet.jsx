@@ -9,6 +9,7 @@ import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 import TimeSheetService from "../../Service/TimeSheetService";
 import ellips from "../../../src/assets/Images/Ellipse.png";
 import checkimage from "../../../src/assets/Images/check.png";
+import calenderImage from "../../assets/Images/calendar_11919171.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
@@ -206,7 +207,15 @@ export default function TimeSheet() {
                       backgroundColor: "#fff",
                     }}
                   >
-                    <span style={{ marginRight: "10px" }}>📅</span>
+                    <span style={{ marginRight: "10px" }}>
+                      <img
+                        src={calenderImage}
+                        alt=""
+                        height="20px"
+                        width="20px"
+                      />
+                    </span>
+                    {/* <span style={{ marginRight: "10px" }}>📅</span> */}
                     <span>
                       {selectedDate.toLocaleString("default", {
                         month: "long",
