@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import GetAllRevenue from "../IndianFinance/Revenue";
+import "../../../src/assets/Styles/Revenue.css";
 export default function AddRevenue() {
   var projectID = sessionStorage.getItem("id");
   const [Project, setProject] = useState({});
@@ -19,7 +20,15 @@ export default function AddRevenue() {
   console.log(Project);
   return (
     <div>
-      <div className="Project_destils_content">Project Details</div>
+      <div className="Project_destils_content" style={{ display: "flex" }}>
+        <span>
+          <i
+            class="bi bi-arrow-left"
+            style={{ height: "12px", wid: "25px" }}
+          ></i>
+        </span>
+        Project Details
+      </div>
       <div className="addRevenueMaindiv">{Project.projectName}</div>
     </div>
   );
