@@ -633,7 +633,7 @@ input:checked + .slider:before {
   font-style: normal;
   font-variant: normal;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 12px !important;
   line-height: 30px;
   font-family: "Raleway", sans-serif;
 }

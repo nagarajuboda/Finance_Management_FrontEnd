@@ -57,6 +57,9 @@ export default function AdminDashboard() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [InProgress, setInprogress] = useState(0);
+  const [NotStatedProgress, SetNotStatedProgress] = useState(0);
+  const [completed, setCompleted] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
     FetchData();
@@ -65,7 +68,15 @@ export default function AdminDashboard() {
     var response = await axios.get(
       "https://localhost:44305/api/Employees/TotalEmployees"
     );
+    var InActiveProjectProgressResponse = await axios.get(
+      "https://localhost:44305/api/Projects/ProjectProgressPercentage"
+    );
+    var ActiveProjectResult = InActiveProjectProgressResponse.data;
+    SetNotStatedProgress(ActiveProjectResult.item.percentage.notStarted);
+    setInprogress(ActiveProjectResult.item.percentage.inProgress);
+    setCompleted(ActiveProjectResult.item.percentage.completed);
     var resuult = response.data;
+
     if (resuult.isSuccess) {
       setTotalEmployees(resuult.item.item1);
       setTotalBenchEmployees(resuult.item.item2);
@@ -73,11 +84,12 @@ export default function AdminDashboard() {
       setTotalProjects(resuult.item.item4);
     }
   };
+
   const data = {
     labels: ["In Progress", "Completed", "Not Started"],
     datasets: [
       {
-        data: [40, 30, 30],
+        data: [InProgress, completed, NotStatedProgress],
         backgroundColor: ["#007BFF", "#00CFFF", "#E0E0E0"],
         hoverBackgroundColor: ["#0056b3", "#0099cc", "#c6c6c6"],
         borderWidth: 0,
@@ -186,7 +198,7 @@ export default function AdminDashboard() {
     ],
     datasets: [
       {
-        data: [5, 10, 15, 10, 20, 25, 8, 20, 15, 10, 5, 2], // No label
+        data: [5, 10, 15, 10, 20, 25, 8, 20, 15, 10, 5, 2],
         backgroundColor: [
           "rgba(75, 192, 192, 0.2)",
           "rgba(54, 162, 235, 0.2)",
@@ -1109,7 +1121,7 @@ export default function AdminDashboard() {
                 className="ms-4 mt-3"
               ></div>
               <div className="viewAlldiv">
-                <span className="ViewAll">
+                <span className="ViewAll" style={{ cursor: "pointer" }}>
                   View All
                   <i
                     class="bi bi-arrow-right ms-1"

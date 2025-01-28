@@ -9,6 +9,10 @@ import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 import TimeSheetService from "../../Service/TimeSheetService";
 import ellips from "../../../src/assets/Images/Ellipse.png";
 import checkimage from "../../../src/assets/Images/check.png";
+import calenderImage from "../../assets/Images/calendar_11919171.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "react-tabs/style/react-tabs.css";
 import { format } from "date-fns";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
@@ -142,6 +146,11 @@ export default function TimeSheet() {
     const response = await TimeSheetService.AddNewTimeSheet(data, id, false);
     if (response.isSuccess) {
       setIsOpen(true);
+    } else {
+      toast.error(response.error.message, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
   };
   return (
@@ -198,7 +207,15 @@ export default function TimeSheet() {
                       backgroundColor: "#fff",
                     }}
                   >
-                    <span style={{ marginRight: "10px" }}>📅</span>
+                    <span style={{ marginRight: "10px" }}>
+                      <img
+                        src={calenderImage}
+                        alt=""
+                        height="20px"
+                        width="20px"
+                      />
+                    </span>
+                    {/* <span style={{ marginRight: "10px" }}>📅</span> */}
                     <span>
                       {selectedDate.toLocaleString("default", {
                         month: "long",
@@ -445,6 +462,7 @@ export default function TimeSheet() {
           </div>
         </div>
       )}
+      <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
 }

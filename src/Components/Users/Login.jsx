@@ -73,8 +73,8 @@ const Home = () => {
         setLoggedIn(true);
         setSessionData(result.item);
         debugger;
-        if (result.item.employee.role.name === "US-Finance") {
-          navigate("/USFinance/UsFinaceALlProjects");
+        if (result.item.employee.role.name === "US-finance") {
+          navigate("/Dashboard/FinanceDashboard");
         } else if (result.item.employee.role.name === "Admin") {
           navigate("/dashboard/AdminDashboard");
         } else if (result.item.employee.role.name === "Indian finace") {
@@ -322,13 +322,13 @@ const Home = () => {
   }
 
   return (
-    <div className="maindiv" style={{ display: "flex" }}>
-      <div className="imagediv">
+    <div className="row m-0">
+      <div className="imagediv col-6">
         <img src={Login2} alt="" className="Loginimagelogo" />
       </div>
-      <div className="formdiv">
+      <div className="formdiv col-6">
         <div className="formdiv1">
-          <div className="" style={{ marginTop: "39px" }}>
+          <div className="">
             <img src={archetslogo} alt="" className="archentslogo" />
           </div>
           <div className="logincontent">Login</div>
@@ -360,25 +360,28 @@ const Home = () => {
                 </span>
               )}
             </div>
-            <div className="mt-4">
-              <div>
+            <div className="mt-2">
+              <div className="password-container">
                 <label>
                   Password <span style={{ color: "red" }}>*</span>
                 </label>
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                className="emailandpassword"
-                placeholder="enter your username"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-              />
-              <div
-                className="eyeIcon"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="emailandpassword"
+                    placeholder="Enter your password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                  />
+                  <div
+                    className="eyeIcon"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{ cursor: "pointer", marginLeft: "-35px" }}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </div>
+                </div>
               </div>
             </div>
             {error.password && (

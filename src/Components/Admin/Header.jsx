@@ -3,6 +3,7 @@ import "../../assets/Styles/Header.css";
 import { json, Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/Images/ArchentsLogo.png";
 import profile from "../../assets/Images/adminprofile.png";
+import Swal from "sweetalert2";
 import v from "../../assets/Images/v.png";
 import { getSessionData } from "../../Service/SharedSessionData";
 import myprofile from "../../../src/assets/Images/myprofile.png";
@@ -10,6 +11,8 @@ import support from "../../../src/assets/Images/support.png";
 import settings from "../../../src/assets/Images/settings.png";
 import logout from "../../../src/assets/Images/Logout.png";
 import NotificationImage from "../../../src/assets/Images/Notification.png";
+import checkimgae1 from "../../assets/Images/check.png";
+import elllips1 from "../../assets/Images/Ellipse.png";
 import {
   FaSearch,
   FaUserCircle,
@@ -18,31 +21,48 @@ import {
   FaEnvelope,
   FaSignOutAlt,
 } from "react-icons/fa";
+import axios from "axios";
 
 export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const dropdownRef = useRef(null);
+  const popupRef = useRef(null);
 
   const [isVisibleProfile, setIsVisibleProfile] = useState(false);
   const [sessionData, setSessionDataState] = useState(null);
   const [user, setUser] = useState({});
   const [userRole, setUserRole] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-
-  console.log(userDetails.employee, "user Deatis");
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [AcceptSuccessMessage, setAcceptSuccessMessage] = useState(false);
+  const [singleNotification, setSingleNotification] = useState({});
+  const [notifications, setNotifications] = useState([]);
+  const [DeclinedPopup, setDeclinedPopup] = useState(false);
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen1(false);
     }
   };
-
+  console.log(userDetails, "userDetails");
   useEffect(() => {
+    fetchdata();
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [userDetails]);
+  }, []);
+  const fetchdata = async () => {
+    // var response = await axios.get(
+    //   "https://localhost:44305/api/Notifications/all"
+    // );
+    var response = await axios.get(
+      `https://localhost:44305/api/Notifications/${userDetails.employee.id}`
+    );
+    var result = response.data;
+    console.log(result, "result");
+    setNotifications(result);
+  };
   useEffect(() => {
     const subscription = getSessionData().subscribe({
       next: (data) => {
@@ -61,16 +81,6 @@ export default function Header({ isOpen }) {
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
-  function logoutonclick() {
-    console.log("logout clicked");
-    var res = localStorage.removeItem("sessionData");
-    navigate("");
-  }
-  function NavigateProfile(e) {
-    e.preventDefault();
-    setIsVisibleProfile(false);
-    navigate("/Dashboard/Profile");
-  }
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -99,16 +109,73 @@ export default function Header({ isOpen }) {
       setIsOpen1(true);
     }
   };
-  function toggleProfileVisibility(e) {
-    e.preventDefault();
-    setIsVisibleProfile((prevVisibility) => !prevVisibility);
-  }
+
   const Logoutfunction = () => {
     navigate("/user/Login");
   };
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const togglePopup = () => {
+    setIsPopupOpen((prev) => !prev);
+  };
+  const [issuccess1, setissuccess1] = useState(false);
+  const [NotificationPopup, setNotificationPopup] = useState(false);
+  const markAsRead = async (id) => {
+    setNotificationPopup(true);
+    setIsPopupOpen(false);
+    const getsingleRecord = notifications.find((record) => record.id === id);
+    setSingleNotification(getsingleRecord);
+    var response = await axios.put(
+      `https://localhost:44305/api/Notifications/mark-as-read/${id}`
+    );
+    var resultmessage = response.data;
+    if (resultmessage.message) {
+      fetchdata();
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setIsPopupOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const CloseTimeSheetPopup = () => {
+    setNotificationPopup(false);
+    setIsClosing(false);
+  };
+  const AcceptNotificaton = async (accept) => {
+    const valuesss = "43819553-25a5-442c-8d34-b093b143854d";
+    var response = await axios.post(
+      `https://localhost:44305/api/Timesheets/UpdatedTimeSheetForNotification?TimeSheetID=${valuesss}`
+    );
+    var result = response.data;
+    setissuccess1(result.isSuccess);
+    if (issuccess1) {
+      if (accept == "Accepted") {
+        setNotificationPopup(false);
+        setAcceptSuccessMessage(true);
+      } else {
+        setDeclinedPopup(true);
+      }
+    }
+  };
+  const closeAcceptedorRejectedPopup = () => {
+    setAcceptSuccessMessage(false);
+  };
+  const DelciedClosePopup = () => {
+    setDeclinedPopup(false);
+    setNotificationPopup(false);
+  };
   return (
     <div
-      className="maindiv"
+      className="Headermaindiv"
       style={{
         width: "100%",
         marginLeft: isOpen ? "" : "",
@@ -122,8 +189,27 @@ export default function Header({ isOpen }) {
           justifyContent: "center",
         }}
       >
-        <img src={NotificationImage} alt="" height="20px" width="20px" />
+        <div className="notification-wrapper">
+          <div
+            className="notification-icon"
+            style={{ cursor: "pointer" }}
+            onClick={togglePopup}
+          >
+            <img
+              src={NotificationImage}
+              alt="Notifications"
+              height="20"
+              width="20"
+            />
+            {notifications.filter((notif) => !notif.isRead).length > 0 && (
+              <span className="badge">
+                {notifications.filter((notif) => !notif.isRead).length}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
+
       <div
         style={{ position: "relative", display: "inline-block" }}
         ref={dropdownRef}
@@ -231,6 +317,237 @@ export default function Header({ isOpen }) {
             </div>
           )}
         </div>
+      </div>
+      <div>
+        {DeclinedPopup && (
+          <div className="unique-popup-overlay">
+            <div className="unique-popup-container">
+              <div className="unique-popup-icon">
+                <div className="ellipse-container">
+                  <img
+                    src={checkimgae1}
+                    alt="Check"
+                    className="check-image"
+                    height="40px"
+                    width="40px"
+                  />
+                  <img
+                    src={elllips1}
+                    alt="Ellipse"
+                    className="ellipse-image"
+                    height="65px"
+                    width="65px"
+                  />
+                </div>
+              </div>
+              <h2 className="unique-popup-title">
+                TimeSheet Declined Successfully!
+              </h2>
+              <p className="unique-popup-message">Click OK to view result</p>
+              <button
+                className="unique-popup-button"
+                onClick={DelciedClosePopup}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {isPopupOpen && (
+        <div ref={popupRef} className="notifications-popup">
+          <div class="dropdown-arrow"></div>
+          <div
+            className="RecentNotificationContent ms-3"
+            style={{ paddingTop: "5px" }}
+          >
+            Recent Notification
+          </div>
+          {notifications.length === 0 ? (
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                fontSize: "12px",
+              }}
+            >
+              No notifications
+            </span>
+          ) : (
+            notifications.map((notif) =>
+              notif.isRead ? (
+                <div key={notif.id} className="notification-item mt-2 ">
+                  <div className="notification-content ">
+                    <div style={{ display: "flex" }}>
+                      <div className="boxshowdow mt-2"></div>
+                      <div className="ms-3">
+                        <span className="forwhatrequest">
+                          TimeSheet change request approved
+                        </span>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <p className="meta-info" style={{ display: "flex" }}>
+                            {"14/05/2024"} |
+                            <div>
+                              <span
+                                className="action-link ms-2"
+                                style={{ color: "black", fontWeight: "600" }}
+                                onClick={() => markAsRead(notif.id)}
+                              >
+                                View Info
+                              </span>
+                            </div>
+                          </p>
+                          <span className="ms-5 meta-info">5 minutes ago</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <p className="time-info">
+                  {new Date(notif.createdAt).toLocaleString()}
+                </p> */}
+                  </div>
+                </div>
+              ) : (
+                <div
+                  key={notif.id}
+                  className="notification-item mt-2 pb-2"
+                  style={{
+                    backgroundColor: "rgb(245 242 242)",
+                    marginBottom: "15px",
+                  }}
+                >
+                  <div className="notification-content">
+                    <div style={{ display: "flex" }}>
+                      <div className="boxshowdow"></div>
+                      <div className="ms-3">
+                        <span className="forwhatrequest">
+                          TimeSheet change request approved
+                        </span>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <p className="meta-info" style={{ display: "flex" }}>
+                            {"14/05/2024"} |
+                            <div>
+                              <span
+                                className="action-link ms-2"
+                                onClick={() => markAsRead(notif.id)}
+                              >
+                                View Info
+                              </span>
+                            </div>
+                          </p>
+                          <span className="ms-5 meta-info">5 minutes ago</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* <p className="time-info">
+                    {new Date(notif.createdAt).toLocaleString()}
+                  </p> */}
+                  </div>
+                </div>
+              )
+            )
+          )}
+        </div>
+      )}
+      {NotificationPopup && (
+        <div className="alert-overlay">
+          <div className="alert-box">
+            <div className="alert-header">
+              <h2 className="alert-title ms-2">TimeSheet Notificaton</h2>
+              <span className="alert-close-icon me-2">
+                <i
+                  className="bi bi-x-lg"
+                  onClick={CloseTimeSheetPopup}
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </span>
+            </div>
+            <div className="alert-body">
+              <div className="alert-icon">
+                <div className="icon-container">
+                  <span style={{ fontSize: "12px" }}>
+                    Please fill in your monthly hours worked and per-hour rate
+                    by the end of this month.
+                  </span>
+                </div>
+              </div>
+              {userDetails.employee.role.name == "Admin" && (
+                <div
+                  style={{ display: "flex", paddingBottom: "15px" }}
+                  className="ms-2 mt-3"
+                >
+                  <button
+                    className="Accept_button "
+                    onClick={() => AcceptNotificaton("Accepted")}
+                  >
+                    <span className="Accept_button_span"> Accept</span>
+                  </button>
+                  <button
+                    className="Decline_button ms-2"
+                    onClick={() => AcceptNotificaton("Rejected")}
+                  >
+                    <span className="Decline_button_span"> Decline</span>
+                  </button>
+                  <button
+                    className="cancel_button ms-2"
+                    onClick={CloseTimeSheetPopup}
+                  >
+                    <span className="cancel_button_span"> Cancel</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      <div>
+        {" "}
+        {AcceptSuccessMessage && (
+          <div className="unique-popup-overlay">
+            <div className="unique-popup-container">
+              <div className="unique-popup-icon">
+                <div className="ellipse-container">
+                  <img
+                    src={checkimgae1}
+                    alt="Check"
+                    className="check-image"
+                    height="40px"
+                    width="40px"
+                  />
+                  <img
+                    src={elllips1}
+                    alt="Ellipse"
+                    className="ellipse-image"
+                    height="65px"
+                    width="65px"
+                  />
+                </div>
+              </div>
+              <h2 className="unique-popup-title">
+                TimeSheet Accepted Successfully!
+              </h2>
+              <p className="unique-popup-message">Click OK to view result</p>
+              <button
+                className="unique-popup-button"
+                onClick={closeAcceptedorRejectedPopup}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -738,7 +738,12 @@ export default function Roles() {
             <div className="overlay-content row" style={{ paddingTop: "20px" }}>
               <div className=" col-2">
                 <button className="overlaysavebtn ms-1" onClick={UpdateRole}>
-                  <span className="overlay-save-label">Update</span>
+                  <span
+                    className="overlay-save-label"
+                    style={{ fontSize: "12px" }}
+                  >
+                    Update
+                  </span>
                 </button>
               </div>
               <div className="col-2">
