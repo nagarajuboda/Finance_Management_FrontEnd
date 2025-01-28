@@ -29,17 +29,14 @@
   width: 150px;
   height: 100px;
 }
-/* .recharts-surface {
-  width: 65px !important;
-  height: 100px !important;
-} */
+
 .recharts-surface {
   width: 17% !important;
   height: 18% !important;
 }
 
 .recharts-tooltip-wrapper {
-  pointer-events: none; /* Ensure no interference with hover behavior */
+  pointer-events: none;
 }
 .circle {
   background-color: #64bb6a;

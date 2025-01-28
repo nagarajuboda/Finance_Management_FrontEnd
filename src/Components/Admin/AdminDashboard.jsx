@@ -198,7 +198,7 @@ export default function AdminDashboard() {
     ],
     datasets: [
       {
-        data: [5, 10, 15, 10, 20, 25, 8, 20, 15, 10, 5, 2], // No label
+        data: [5, 10, 15, 10, 20, 25, 8, 20, 15, 10, 5, 2],
         backgroundColor: [
           "rgba(75, 192, 192, 0.2)",
           "rgba(54, 162, 235, 0.2)",

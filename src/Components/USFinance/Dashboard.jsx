@@ -1,13 +1,10 @@
 import "../../../src/assets/Styles/USfinanceDashboard.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// import calenderImage from "../../assets/Images/";
+
 import calenderImage from "../../assets/Images/calendar_11919171.png";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
-
-// import { PieChart } from "@mui/x-charts";
 import { Chart } from "react-google-charts";
-// import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { useState } from "react";
 import React from "react";
 export default function UsFinanceTeamDashboard() {
@@ -52,7 +49,6 @@ export default function UsFinanceTeamDashboard() {
             onChange={handleDateChange}
             dateFormat="MMMM yyyy"
             showMonthYearPicker
-            // maxDate={new Date()}
             className="timesheet-datepicker"
             customInput={
               <div
@@ -101,7 +97,7 @@ export default function UsFinanceTeamDashboard() {
               outerRadius={250}
               fill="green"
               onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }} // Ensure no outline on focus
+              style={{ cursor: "pointer", outline: "none" }}
             >
               {data.map((entry, index) => (
                 <Cell
@@ -125,7 +121,7 @@ export default function UsFinanceTeamDashboard() {
               outerRadius={250}
               fill="green"
               onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }} // Ensure no outline on focus
+              style={{ cursor: "pointer", outline: "none" }}
             >
               {data.map((entry, index) => (
                 <Cell
@@ -149,7 +145,7 @@ export default function UsFinanceTeamDashboard() {
               outerRadius={250}
               fill="green"
               onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }} // Ensure no outline on focus
+              style={{ cursor: "pointer", outline: "none" }}
             >
               {data.map((entry, index) => (
                 <Cell

@@ -11,8 +11,6 @@ import support from "../../../src/assets/Images/support.png";
 import settings from "../../../src/assets/Images/settings.png";
 import logout from "../../../src/assets/Images/Logout.png";
 import NotificationImage from "../../../src/assets/Images/Notification.png";
-// import ellips from "../../../assets/Images/Ellipse.png";
-// import checkimage from "../../../assets/Images/check.png";
 import checkimgae1 from "../../assets/Images/check.png";
 import elllips1 from "../../assets/Images/Ellipse.png";
 import {
