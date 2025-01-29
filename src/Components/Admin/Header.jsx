@@ -44,7 +44,6 @@ export default function Header({ isOpen }) {
       setIsOpen1(false);
     }
   };
-  console.log(userDetails, "userDetails");
   useEffect(() => {
     fetchdata();
     document.addEventListener("mousedown", handleClickOutside);

@@ -62,3 +62,61 @@
   border-radius: 10px;
   opacity: 1;
 }
+
+.chart-container {
+  position: relative;
+  text-align: center;
+  width: 280px;
+  margin: auto;
+}
+
+/* Centering the text inside the donut chart */
+.chart-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.chart-center-text h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chart-center-text h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #666;
+  gap: 20px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.submitted {
+  background-color: #2d9cdb;
+}
+
+.not-submitted {
+  background-color: #f57241;
+}

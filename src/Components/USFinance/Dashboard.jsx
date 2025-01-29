@@ -1,10 +1,10 @@
 import "../../../src/assets/Styles/USfinanceDashboard.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
 import calenderImage from "../../assets/Images/calendar_11919171.png";
-import { PieChart, Pie, Tooltip, Cell } from "recharts";
-import { Chart } from "react-google-charts";
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
+// import { PieChart, Pie, Tooltip, Cell } from "recharts";
+// import { Chart } from "react-google-charts";
 import { useState } from "react";
 import React from "react";
 export default function UsFinanceTeamDashboard() {
@@ -22,17 +22,46 @@ export default function UsFinanceTeamDashboard() {
 
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const data = [
-    { name: "Completed", students: 20 },
-    { name: "Remaining", students: 80 },
-  ];
+  // const data = [
+  //   { name: "Completed", students: 20 },
+  //   { name: "Remaining", students: 80 },
+  // ];
 
-  const COLORS = ["yellow", "#DFDFDF"];
+  // const COLORS = ["yellow", "#DFDFDF"];
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
   };
+  const data1 = {
+    labels: ["Submitted Timesheet", "Timesheet Not Submitted"],
+    datasets: [
+      {
+        data: [70, 30], // 70% submitted, 30% not submitted
+        backgroundColor: ["#2d9cdb", "#f2994a"], // Blue & Orange
+        hoverBackgroundColor: ["#1d7cb3", "#e0873e"],
+        borderWidth: 0,
+      },
+    ],
+  };
 
+  const options1 = {
+    cutout: "70%", // Makes it a donut chart
+    plugins: {
+      legend: {
+        display: false, // Hide default legend
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+  };
+
+  const data = [
+    { name: "Submitted Timesheet", value: 70 },
+    { name: "Timesheet Not Submitted", value: 30 },
+  ];
+
+  const COLORS = ["#2D9CDB", "#F57241"];
   return (
     <div>
       <div>
@@ -88,7 +117,7 @@ export default function UsFinanceTeamDashboard() {
           paddingTop: "10px",
         }}
       >
-        <div className="Project_progress1 " style={{ width: "22%" }}>
+        {/* <div className="Project_progress1 " style={{ width: "22%" }}>
           <PieChart width={700} height={700}>
             <Pie
               activeIndex={activeIndex}
@@ -183,14 +212,48 @@ export default function UsFinanceTeamDashboard() {
               100
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div>
         <div style={{ marginTop: "50px" }}>
           <span className="upcommingtimesheet">upcoming timesheet</span>
           <div style={{ marginTop: "10px" }} className="upcomingtimesheetdiv">
-            hello
+            <div className="chart-container">
+              <PieChart width={300} height={250}>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60} // Creates the donut effect
+                  outerRadius={80}
+                  fill="#8884d8"
+                  paddingAngle={3}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+
+              <div className="chart-center-text">
+                <h3>WEEKLY</h3>
+                <h4>TIMESHEET</h4>
+              </div>
+
+              <div className="chart-legend">
+                <div className="legend-item">
+                  <span className="legend-color submitted"></span>
+                  Submitted Timesheet
+                </div>
+                <div className="legend-item">
+                  <span className="legend-color not-submitted"></span>
+                  Timesheet Not Submitted
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
