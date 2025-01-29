@@ -44,15 +44,6 @@ export default function AddRevenue() {
     );
     var result = ProjectResponse.data;
     setProject(result.item.project);
-    // var loader = true;
-    // var response = await axios.get(
-    //   `https://localhost:44305/api/Timesheets/GetTimesheetsByMonthAndYear?projectId=${projectID}&month=${monthNumber}&year=${year}`
-    // );
-    // var result = response.data;
-
-    // if (result.isSuccess) {
-    //   setTimeSheet(response.data.item);
-    // }
   }
   const handleHoursChange = (timesheetId, value) => {
     setRate((prev) => ({
@@ -108,7 +99,6 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-    console.log(employeeData, "==========>");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false
@@ -180,7 +170,7 @@ export default function AddRevenue() {
               dateFormat="MMMM yyyy"
               showMonthYearPicker
               maxDate={new Date()}
-              className="timesheet-datepicker"
+              className="timesheet-datepicker me-2"
               customInput={
                 <div
                   style={{
@@ -188,7 +178,7 @@ export default function AddRevenue() {
                     alignItems: "center",
                     cursor: "pointer",
                     border: "1px solid #ccc",
-                    padding: "5px 10px",
+                    padding: "0px 10px",
                     borderRadius: "5px",
                     backgroundColor: "#fff",
                   }}
@@ -272,12 +262,17 @@ export default function AddRevenue() {
                             (obj.isSubmited === true ? (
                               <div
                                 key={obj.timesheetId}
-                                style={{ display: "flex", textAlign: "center" }}
+                                style={{
+                                  display: "flex",
+                                  textAlign: "center",
+                                  justifyContent: "center",
+                                }}
                               >
                                 <FaDollarSign
-                                  className="mt-1"
+                                  className="mt-2 ms-1"
                                   style={{
-                                    fontSize: "0.90rem",
+                                    fontSize: "0.70rem",
+                                    textAlign: "center",
                                   }}
                                 />
                                 <p style={{ textAlign: "center" }}>
@@ -315,7 +310,6 @@ export default function AddRevenue() {
                                       handleHoursChange(obj.timesheetId, rate);
                                     }
                                   }}
-                                  // style={{ width: "150px" }}
                                 />
                               </div>
                             ))
@@ -352,9 +346,9 @@ export default function AddRevenue() {
                               {obj.isSubmited === true ? (
                                 <div style={{ display: "flex" }}>
                                   <FaDollarSign
-                                    className="mt-1"
+                                    className="mt-2 ms-1"
                                     style={{
-                                      fontSize: "0.90rem",
+                                      fontSize: "0.70rem",
                                     }}
                                   />
                                   <p>{obj.totalRevenue}</p>
@@ -382,13 +376,6 @@ export default function AddRevenue() {
                           <p>
                             {"$"} {emp.hoursWorked * rate[emp.id] || "0"}
                           </p>
-                          {/* <input
-                            type="number"
-                            placeholder="Total Revenue"
-                            value={emp.hoursWorked * rate[emp.id] || "0"}
-                            disabled={true}
-                            style={{ textAlign: "center" }}
-                          /> */}
                         </div>
                       )}
                     </td>
@@ -397,30 +384,32 @@ export default function AddRevenue() {
               )}
             </tbody>
           </table>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              paddingBottom: "15px",
-            }}
-          >
-            <button
-              type="button"
-              className="AddRevneueSaveButton me-3"
-              onClick={SaveForm}
-              disabled={disiblebuttons}
+          {!disiblebuttons && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "end",
+                paddingBottom: "15px",
+              }}
             >
-              <span className="AddRevneueSaveButtonSpan"> Save</span>
-            </button>
-            <button
-              type="button"
-              className="AddRevneueSubmitButton"
-              onClick={SubmitFormFunction}
-              disabled={disiblebuttons}
-            >
-              <span className="AddRevneueSubmitButtonSpan"> Submit</span>
-            </button>
-          </div>
+              <button
+                type="button"
+                className="AddRevneueSaveButton me-3"
+                onClick={SaveForm}
+                disabled={disiblebuttons}
+              >
+                <span className="AddRevneueSaveButtonSpan"> Save</span>
+              </button>
+              <button
+                type="button"
+                className="AddRevneueSubmitButton"
+                onClick={SubmitFormFunction}
+                disabled={disiblebuttons}
+              >
+                <span className="AddRevneueSubmitButtonSpan"> Submit</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <ToastContainer />
