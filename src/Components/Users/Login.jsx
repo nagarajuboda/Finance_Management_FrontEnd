@@ -195,7 +195,6 @@ const Home = () => {
   function validateOtp(name, value) {
     if (name === "Otp") {
       if (!value) return "OTP is required";
-      // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
     }
   }
 

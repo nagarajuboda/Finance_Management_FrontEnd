@@ -12,8 +12,6 @@ export default function VerifyOtp() {
   var email1 = localStorage.getItem("Email");
   var otp = localStorage.getItem("OTP");
 
-  console.log(email1, "=========>");
-  console.log(otp, "==========>");
   const [emailvalues, setEmialValuess] = useState({
     email: "",
   });
@@ -53,7 +51,6 @@ export default function VerifyOtp() {
           autoClose: 1000,
           onClose: () => navigate("/user/CreateNewPassword"),
         });
-        // navigate("/user/CreateNewPassword");
       } else {
         toast.error("Invalid OTP. Please try again.", {
           position: "top-right",
@@ -65,7 +62,6 @@ export default function VerifyOtp() {
   function validateOtp(name, value) {
     if (name === "Otp") {
       if (!value) return "OTP is required";
-      // if (!/^\d{6}$/.test(value)) return "OTP is invalid";
     }
   }
   const handleOtpChange = (e) => {

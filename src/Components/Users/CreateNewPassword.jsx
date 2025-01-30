@@ -84,7 +84,6 @@ export default function CreateNewPassword() {
           autoClose: 1000,
           onClose: () => navigate("/"),
         });
-        // navigate("/");
       } else {
         if (result.error.code === "AUTH003") {
           toast.error(
@@ -155,7 +154,6 @@ export default function CreateNewPassword() {
                   <label className="inputlable">New Password</label>
                 </div>
                 <input
-                  //   type="text"
                   type={showPassword ? "text" : "password"}
                   placeholder="New Password"
                   className="emailinput form-control"
