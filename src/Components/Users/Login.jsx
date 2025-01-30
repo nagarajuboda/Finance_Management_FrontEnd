@@ -41,7 +41,6 @@ const Home = () => {
     password: "",
   });
   const navigatetoforgotpasswordpage = async () => {
-    debugger;
     navigate("/user/forgotpassword");
   };
   const onLoginButtonClick = async (e) => {
