@@ -880,7 +880,10 @@ export default function AddEmployee() {
               className="col-2"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <button className=" addEmployeeSubmitbutton me-1 ">
+              <button
+                className=" addEmployeeSubmitbutton me-1 "
+                onSubmit={AddEmployeeForm}
+              >
                 <span className="addemployeespan ">submit</span>
               </button>
               <button
@@ -914,7 +917,7 @@ export default function AddEmployee() {
                 />
               </div>
             </div>
-            <h2 className="unique-popup-title">Deleted Successfully</h2>
+            <h2 className="unique-popup-title">Employee Added Successfully</h2>
             <p className="unique-popup-message">Click OK to see the results</p>
             <button className="unique-popup-button" onClick={closeSuccessPopup}>
               OK

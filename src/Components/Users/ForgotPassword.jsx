@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { getotpValidation } from "./getotpValidation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 export default function ForgotPassword() {
   const [emailvalues, setEmialValuess] = useState({
     email: "",
@@ -48,12 +50,15 @@ export default function ForgotPassword() {
         obj
       );
       var result = await responses.data;
+      console.log(result, "result");
       if (result.isSuccess) {
+        localStorage.setItem("Email", emailvalues.email);
+        localStorage.setItem("OTP", result.item.otp);
         toast.success("OTP sent successfully to Your Email.", {
           position: "top-right",
-          autoClose: 4000,
+          autoClose: 1000,
+          onClose: () => navigate("/user/VerifyOtp"),
         });
-        setView("verifyOtp");
       } else {
         toast.error("Please enter a valid email.", {
           position: "top-right",
@@ -78,57 +83,63 @@ export default function ForgotPassword() {
         className="formdiv3"
         style={{ backgroundColor: "#FAFFFB", width: "50%" }}
       >
-        <div
-          className="formdiv2"
-          style={{ margin: "70px 180px", width: "450px" }}
-        >
-          <div>
+        <div className="formdiv2">
+          <div className="" style={{ margin: "80px" }}>
             <img src={archetslogo} alt="" />
           </div>
-          <div className="forgotpasswordcontent">Forgot your password?</div>
-          <div className="enetremailid">
-            Enter your email id, we will reset your passward.
-          </div>
-          <form onSubmit={getotpfunction}>
-            <div className="forgotform">
-              <div className="mb-1">
-                <label className="inputlable">Email ID</label>
-              </div>
-              <input
-                type="text"
-                placeholder="enter your username"
-                className="emailinput"
-                onChange={handleChange22}
-                name="email"
-                value={emailvalues.email}
-              />
-              <div className="backtologin mt-2">
-                <div>
-                  {emailerror.email && (
-                    <span className=" ms-1 emailrequirederrormessage">
-                      {emailerror.email}
-                    </span>
-                  )}
+          <div style={{ marginLeft: "80px " }}>
+            <div
+              className="forgotpasswordcontent"
+              style={{ marginTop: " 60px " }}
+            >
+              Forgot your password?
+            </div>
+            <div className="enetremailid">
+              Enter your email id, we will reset your passward.
+            </div>
+            <form onSubmit={getotpfunction}>
+              <div className="forgotform">
+                <div className="mb-1">
+                  <label className="inputlable">Email ID</label>
+                </div>
+                <input
+                  type="text"
+                  placeholder="enter your email "
+                  className="emailinput form-control"
+                  onChange={handleChange22}
+                  name="email"
+                  value={emailvalues.email}
+                />
+                <div className="backtologin mt-2">
+                  <div>
+                    {emailerror.email && (
+                      <span className=" ms-1 emailrequirederrormessage">
+                        {emailerror.email}
+                      </span>
+                    )}
+                  </div>
+
+                  <a
+                    style={{ color: "#0071FF", cursor: "pointer" }}
+                    onClick={backtoLogin}
+                    className="me-4"
+                  >
+                    Back to login
+                  </a>
                 </div>
 
-                <a
-                  style={{ color: "#0071FF", cursor: "pointer" }}
-                  onClick={backtoLogin}
-                >
-                  Back to login
-                </a>
+                <div className="loginbutton">
+                  <button className="buttonlogin">Submit</button>
+                </div>
+                <div className="forcontect1">
+                  if you are a new user, please contact archents support team.
+                </div>
               </div>
-
-              <div className="loginbutton">
-                <button className="buttonlogin">Submit</button>
-              </div>
-              <div className="forcontect1">
-                if you are a new user, please contact archents support team.
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

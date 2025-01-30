@@ -2,11 +2,13 @@ import "../../../src/assets/Styles/USfinanceDashboard.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import calenderImage from "../../assets/Images/calendar_11919171.png";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
+// import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { PieChart } from "@mui/x-charts/PieChart";
 // import { PieChart, Pie, Tooltip, Cell } from "recharts";
 // import { Chart } from "react-google-charts";
 import { useState } from "react";
 import React from "react";
+import { Doughnut } from "react-chartjs-2";
 export default function UsFinanceTeamDashboard() {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -61,6 +63,26 @@ export default function UsFinanceTeamDashboard() {
     { name: "Timesheet Not Submitted", value: 30 },
   ];
 
+  const data2 = {
+    labels: ["In Progress", "Completed", "Not Started"],
+    datasets: [
+      {
+        data: [30, 70],
+        backgroundColor: ["#007BFF", "#00CFFF"],
+        hoverBackgroundColor: ["#0056b3", "#0099cc"],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const options2 = {
+    cutout: "60%",
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
   const COLORS = ["#2D9CDB", "#F57241"];
   return (
     <div>
@@ -117,74 +139,151 @@ export default function UsFinanceTeamDashboard() {
           paddingTop: "10px",
         }}
       >
-        {/* <div className="Project_progress1 " style={{ width: "22%" }}>
-          <PieChart width={700} height={700}>
-            <Pie
-              activeIndex={activeIndex}
-              data={data}
-              dataKey="students"
-              outerRadius={250}
-              fill="green"
-              onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+        <div className="Project_progress1 " style={{ width: "22%" }}>
+          <div style={{ display: "flex" }}>
+            <div>
+              <PieChart
+                className="mt-2"
+                series={[
+                  {
+                    data: [
+                      { id: 0, value: 20, color: "yellow" },
+                      { id: 1, value: 80, color: "#00000029" },
+                    ],
+                  },
+                ]}
+                width={190}
+                height={95}
+              />
+            </div>
+            <div>
+              <div class="dropdown">
+                <button
+                  class=" dropdown-toggle this_month_content"
+                  type="button"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  this month
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      yearly
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      monthly
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#">
+                      weekly
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <span className="total_projects_content ">Total Projects</span>
+            </div>
+          </div>
         </div>
         <div
           className="Project_progress1 "
           style={{ width: "22%", marginLeft: "50px" }}
         >
-          <PieChart width={700} height={700}>
-            <Pie
-              activeIndex={activeIndex}
-              data={data}
-              dataKey="students"
-              outerRadius={250}
-              fill="green"
-              onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          <div style={{ display: "flex" }}>
+            <PieChart
+              className="mt-2"
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 20, color: "#00000029" },
+                    { id: 1, value: 80, color: "#64bb6a" },
+                  ],
+                },
+              ]}
+              width={250}
+              height={125}
+            />
+            <div class="dropdown">
+              <button
+                class=" dropdown-toggle this_month_content"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                this month
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    yearly
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    monthly
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    weekly
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div
           className="Project_progress1 "
           style={{ width: "22%", marginLeft: "50px" }}
         >
-          <PieChart width={700} height={700}>
-            <Pie
-              activeIndex={activeIndex}
-              data={data}
-              dataKey="students"
-              outerRadius={250}
-              fill="green"
-              onMouseEnter={onPieEnter}
-              style={{ cursor: "pointer", outline: "none" }}
-            >
-              {data.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
+          <div style={{ display: "flex" }}>
+            <PieChart
+              className="mt-2"
+              series={[
+                {
+                  data: [
+                    { id: 0, value: 20, color: "red" },
+                    { id: 1, value: 80, color: "#1F51FF" },
+                  ],
+                },
+              ]}
+              width={250}
+              height={125}
+            />
+            <div class="dropdown">
+              <button
+                class=" dropdown-toggle this_month_content"
+                type="button"
+                id="dropdownMenuButton1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                this month
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    yearly
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    monthly
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    weekly
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div
           className="Project_progress1"
@@ -212,47 +311,25 @@ export default function UsFinanceTeamDashboard() {
               100
             </span>
           </div>
-        </div> */}
+        </div>
       </div>
 
       <div>
         <div style={{ marginTop: "50px" }}>
           <span className="upcommingtimesheet">upcoming timesheet</span>
-          <div style={{ marginTop: "10px" }} className="upcomingtimesheetdiv">
-            <div className="chart-container">
-              <PieChart width={300} height={250}>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60} // Creates the donut effect
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-
-              <div className="chart-center-text">
-                <h3>WEEKLY</h3>
-                <h4>TIMESHEET</h4>
-              </div>
-
-              <div className="chart-legend">
-                <div className="legend-item">
-                  <span className="legend-color submitted"></span>
-                  Submitted Timesheet
-                </div>
-                <div className="legend-item">
-                  <span className="legend-color not-submitted"></span>
-                  Timesheet Not Submitted
-                </div>
-              </div>
+          <div
+            style={{
+              marginTop: "10px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="upcomingtimesheetdiv"
+          >
+            <div style={{ height: "250px" }}>
+              <Doughnut data={data2} options={options2} height="250px" />
+            </div>
+            <div style={{ height: "250px" }}>
+              <Doughnut data={data2} options={options2} height="300px" />
             </div>
           </div>
         </div>
