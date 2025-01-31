@@ -96,6 +96,11 @@ const Home = () => {
             "Incorrect password. Please check your password and try again.",
             { position: "top-right", autoClose: 4000 }
           );
+        } else if (result.error.code === "AUTH003") {
+          toast.error("Employee has no access to login.", {
+            position: "top-right",
+            autoClose: 4000,
+          });
         } else {
           toast.error("Check your email and password.", {
             position: "top-right",
@@ -177,6 +182,7 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
+      console.log(result, "result");
       if (result.isSuccess) {
         toast.success("OTP verified successfully.", {
           position: "top-right",
