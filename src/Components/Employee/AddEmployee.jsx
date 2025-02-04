@@ -240,6 +240,7 @@ export default function AddEmployee() {
     setErrors(newErrors);
 
     const isValid = Object.values(newErrors).every((error) => error === "");
+
     if (isValid) {
       var obj = {
         Employee: {
@@ -256,11 +257,12 @@ export default function AddEmployee() {
         },
         Skillsetlists: namesList,
       };
-
+      console.log(obj, "obj");
       var response = await axios.post(
         "https://localhost:44305/api/Employees/Add",
         obj
       );
+      console.log(response, "reponse============>");
 
       if (response.data.isSuccess == true) {
         setIsOpen(true);

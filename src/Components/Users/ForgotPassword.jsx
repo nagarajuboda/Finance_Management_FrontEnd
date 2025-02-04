@@ -50,7 +50,6 @@ export default function ForgotPassword() {
         obj
       );
       var result = await responses.data;
-      console.log(result, "result");
       if (result.isSuccess) {
         localStorage.setItem("Email", emailvalues.email);
         localStorage.setItem("OTP", result.item.otp);

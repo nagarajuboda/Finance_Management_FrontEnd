@@ -12,13 +12,11 @@ import axios from "axios";
 export default function CreateNewPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword11, setShowPassword11] = useState(false);
   const [confirmPassword1, setShowConfirmPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [password, setPassword] = useState("");
-  var OTP1 = localStorage.getItem("ValueOTP");
   var email1 = localStorage.getItem("Email");
-  console.log(OTP1, "otpvalue");
-  console.log(email1, "emailvalues");
   const navigate = useNavigate();
   const backtoLogin = async () => {
     navigate("/");
@@ -69,7 +67,7 @@ export default function CreateNewPassword() {
     if (!isValid) {
       var obj = {
         Email: email1,
-        Otp: OTP1,
+
         NewPassword: passwordValues.NewPassword,
       };
 
@@ -88,6 +86,15 @@ export default function CreateNewPassword() {
         if (result.error.code === "AUTH003") {
           toast.error(
             "New password cannot be the same as the existing password.",
+            {
+              position: "top-right",
+              autoClose: 4000,
+            }
+          );
+        }
+        if (result.error.code === "AUTH005") {
+          toast.error(
+            "Please do the otp verification to update the password.",
             {
               position: "top-right",
               autoClose: 4000,
@@ -183,27 +190,23 @@ export default function CreateNewPassword() {
                 <div className="mb-1">
                   <label className="inputlable">Confirm Password</label>
                 </div>
-
-                <input
-                  type="text"
-                  placeholder="Confirm Password"
-                  className="emailinput form-control"
-                  name="ConfirmPassword"
-                  value={passwordValues.ConfirmPassword}
-                  onChange={handlePasswordChange}
-                />
-                <div
-                  className="eyeIcon"
-                  onClick={() => setShowConfirmPassword(!confirmPassword1)}
-                  style={{
-                    cursor: "pointer",
-                    right: "145px",
-                    top: "350px",
-                  }}
-                >
-                  {confirmPassword1 ? <FaEyeSlash /> : <FaEye />}
+                <div className="password-field">
+                  <input
+                    type={showPassword11 ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    className="emailinput form-control"
+                    name="ConfirmPassword"
+                    value={passwordValues.ConfirmPassword}
+                    onChange={handlePasswordChange}
+                  />
+                  <div
+                    className="eyeIcon"
+                    onClick={() => setShowPassword11(!showPassword11)}
+                    style={{ cursor: "pointer", marginRight: "15px" }}
+                  >
+                    {showPassword11 ? <FaEyeSlash /> : <FaEye />}
+                  </div>
                 </div>
-
                 <div className="backtologin mt-2">
                   <div>
                     {passwordErrors.ConfirmPassword && (
