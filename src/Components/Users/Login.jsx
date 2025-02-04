@@ -23,6 +23,7 @@ const Home = () => {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [disibleloginbuttons, setDisibleloginbuttons] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -71,19 +72,23 @@ const Home = () => {
       if (result.isSuccess === true) {
         setLoggedIn(true);
         setSessionData(result.item);
-        debugger;
-        if (result.item.employee.role.name === "US-finance") {
-          navigate("/Dashboard/FinanceDashboard");
-        } else if (result.item.employee.role.name === "Admin") {
-          navigate("/dashboard/AdminDashboard");
-        } else if (result.item.employee.role.name === "Indian finace") {
-          navigate("/EmployeeDashboard");
-        } else if (result.item.employee.role.name === "Project Manager") {
-          navigate("/dashboard/ManagerDasboard");
-        } else if (result.item.employee.role.name === "Reporting Manager") {
-          navigate("/UnderManagerEmployees");
-        } else if (result.item.employee.role.name === "Hr") {
-          navigate("/EmployeeDashboard");
+        if (result.item.employee.isFirstTimeLogin === true) {
+          localStorage.setItem("Email", valuess.email);
+          navigate("/user/CreateNewPassword");
+        } else {
+          if (result.item.employee.role.name === "US-finance") {
+            navigate("/Dashboard/FinanceDashboard");
+          } else if (result.item.employee.role.name === "Admin") {
+            navigate("/dashboard/AdminDashboard");
+          } else if (result.item.employee.role.name === "Indian finace") {
+            navigate("/EmployeeDashboard");
+          } else if (result.item.employee.role.name === "Project Manager") {
+            navigate("/dashboard/ManagerDasboard");
+          } else if (result.item.employee.role.name === "Reporting Manager") {
+            navigate("/UnderManagerEmployees");
+          } else if (result.item.employee.role.name === "Hr") {
+            navigate("/EmployeeDashboard");
+          }
         }
       } else {
         if (result.error.code === "AUTH001") {
@@ -182,7 +187,6 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
-      console.log(result, "result");
       if (result.isSuccess) {
         toast.success("OTP verified successfully.", {
           position: "top-right",
@@ -402,7 +406,12 @@ const Home = () => {
             style={{ display: "flex", justifyContent: "space-between" }}
           >
             <div style={{ display: "flex" }}>
-              <img src={rememeberme} alt="" />
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                style={{ fontSize: "20px" }}
+              />
               <p className="remembermecontent m-2">Remember me</p>
             </div>
             <div className="mt-2">
