@@ -383,7 +383,7 @@ const Home = () => {
                     onChange={handleChange}
                   />
                   <div
-                    className="eyeIcon"
+                    className="eyeIcon LogineyeIcon"
                     onClick={() => setShowPassword(!showPassword)}
                     style={{ cursor: "pointer", marginLeft: "-35px" }}
                   >
