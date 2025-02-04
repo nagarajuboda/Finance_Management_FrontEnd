@@ -91,6 +91,15 @@ export default function CreateNewPassword() {
               autoClose: 4000,
             }
           );
+        }
+        if (result.error.code === "AUTH005") {
+          toast.error(
+            "Please do the otp verification to update the password.",
+            {
+              position: "top-right",
+              autoClose: 4000,
+            }
+          );
         } else {
           toast.error("Failed to update password. Please try again.", {
             position: "top-right",
