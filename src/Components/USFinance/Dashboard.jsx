@@ -2,8 +2,9 @@ import "../../../src/assets/Styles/USfinanceDashboard.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import calenderImage from "../../assets/Images/calendar_11919171.png";
+import { PieChart, Pie, Cell, Legend, Tooltip } from "recharts";
 // import { PieChart, Pie, Cell, Tooltip } from "recharts";
-import { PieChart } from "@mui/x-charts/PieChart";
+// import { PieChart } from "@mui/x-charts/PieChart";
 // import { PieChart, Pie, Tooltip, Cell } from "recharts";
 // import { Chart } from "react-google-charts";
 import { useState } from "react";
@@ -12,6 +13,8 @@ import { Doughnut } from "react-chartjs-2";
 export default function UsFinanceTeamDashboard() {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [submitedTimesheet, setsubmitedTimesheet] = useState("70%");
+  const [NotsubmitedTimesheet, setNotsubmitedTimesheet] = useState("30%");
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
     year: "numeric",
@@ -59,31 +62,10 @@ export default function UsFinanceTeamDashboard() {
   };
 
   const data = [
-    { name: "Submitted Timesheet", value: 70 },
-    { name: "Timesheet Not Submitted", value: 30 },
+    { name: "Submitted Timesheet", value: 70, color: "#1E73DC" },
+    { name: "Timesheet Not Submitted", value: 30, color: "#F67D3B" },
   ];
 
-  const data2 = {
-    labels: ["In Progress", "Completed", "Not Started"],
-    datasets: [
-      {
-        data: [30, 70],
-        backgroundColor: ["#007BFF", "#00CFFF"],
-        hoverBackgroundColor: ["#0056b3", "#0099cc"],
-        borderWidth: 0,
-      },
-    ],
-  };
-
-  const options2 = {
-    cutout: "60%",
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
-  };
-  const COLORS = ["#2D9CDB", "#F57241"];
   return (
     <div>
       <div>
@@ -194,7 +176,7 @@ export default function UsFinanceTeamDashboard() {
           style={{ width: "22%", marginLeft: "50px" }}
         >
           <div style={{ display: "flex" }}>
-            <PieChart
+            {/* <PieChart
               className="mt-2"
               series={[
                 {
@@ -206,7 +188,7 @@ export default function UsFinanceTeamDashboard() {
               ]}
               width={250}
               height={125}
-            />
+            /> */}
             <div class="dropdown">
               <button
                 class=" dropdown-toggle this_month_content"
@@ -242,7 +224,7 @@ export default function UsFinanceTeamDashboard() {
           style={{ width: "22%", marginLeft: "50px" }}
         >
           <div style={{ display: "flex" }}>
-            <PieChart
+            {/* <PieChart
               className="mt-2"
               series={[
                 {
@@ -254,7 +236,7 @@ export default function UsFinanceTeamDashboard() {
               ]}
               width={250}
               height={125}
-            />
+            /> */}
             <div class="dropdown">
               <button
                 class=" dropdown-toggle this_month_content"
@@ -325,11 +307,104 @@ export default function UsFinanceTeamDashboard() {
             }}
             className="upcomingtimesheetdiv"
           >
-            <div style={{ height: "250px" }}>
-              <Doughnut data={data2} options={options2} height="250px" />
-            </div>
-            <div style={{ height: "250px" }}>
-              <Doughnut data={data2} options={options2} height="300px" />
+            <div className="flex justify-center items-center">
+              <PieChart width={400} height={300}>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={80} // For donut effect
+                  outerRadius={115}
+                  fill="#8884d8"
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+
+                <Tooltip />
+                <svg width="400" height="300">
+                  <defs>
+                    <filter
+                      id="shadow"
+                      x="-50%"
+                      y="-50%"
+                      width="200%"
+                      height="200%"
+                    >
+                      <feDropShadow
+                        dx="2"
+                        dy="2"
+                        stdDeviation="4"
+                        floodColor="rgba(0,0,0,0.3)"
+                      />
+                    </filter>
+                  </defs>
+
+                  <circle
+                    cx="200"
+                    cy="150"
+                    r="60"
+                    fill="white"
+                    filter="url(#shadow)"
+                  />
+
+                  <text
+                    x="50%"
+                    y="45%"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="14px"
+                    fontWeight="bold"
+                    fill="#555"
+                  >
+                    WEEKLY
+                  </text>
+                  <line
+                    x1="280"
+                    y1="200"
+                    x2="430"
+                    y2="160"
+                    stroke="#ccc"
+                    strokeWidth="2"
+                    fill="#596365"
+                  />
+                  <text
+                    x="50%"
+                    y="55%"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize="14px"
+                    fontWeight="bold"
+                    fill="#555"
+                    className="kjasdsakj"
+                  >
+                    TIMESHEET
+                  </text>
+                  <line
+                    x1="200"
+                    y1="10"
+                    x2="150"
+                    y2="-6"
+                    stroke="#ccc"
+                    strokeWidth="2"
+                    fill="block"
+                  />
+                  <line
+                    x1="200"
+                    y1="10"
+                    x2="230"
+                    y2="60"
+                    stroke="#ccc"
+                    strokeWidth="2"
+                    fill="block"
+                  />
+                </svg>
+
+                {/* <Legend /> */}
+              </PieChart>
             </div>
           </div>
         </div>
