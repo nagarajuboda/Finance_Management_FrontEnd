@@ -65,7 +65,10 @@ export default function UsFinanceTeamDashboard() {
     { name: "Submitted Timesheet", value: 70, color: "#1E73DC" },
     { name: "Timesheet Not Submitted", value: 30, color: "#F67D3B" },
   ];
-
+  const data11 = [
+    { name: "Billable Employees", value: 70, color: "#F5F5F5" }, // Light gray
+    { name: "Non Billable Employees", value: 30, color: "#1E73DC" }, // Blue
+  ];
   return (
     <div>
       <div>
@@ -139,7 +142,7 @@ export default function UsFinanceTeamDashboard() {
               />
             </div>
             <div>
-              <div class="dropdown">
+              {/* <div class="dropdown">
                 <button
                   class=" dropdown-toggle this_month_content"
                   type="button"
@@ -166,8 +169,8 @@ export default function UsFinanceTeamDashboard() {
                     </a>
                   </li>
                 </ul>
-              </div>
-              <span className="total_projects_content ">Total Projects</span>
+              </div> */}
+              {/* <span className="total_projects_content ">Total Projects</span> */}
             </div>
           </div>
         </div>
@@ -189,7 +192,7 @@ export default function UsFinanceTeamDashboard() {
               width={250}
               height={125}
             /> */}
-            <div class="dropdown">
+            {/* <div class="dropdown">
               <button
                 class=" dropdown-toggle this_month_content"
                 type="button"
@@ -216,7 +219,7 @@ export default function UsFinanceTeamDashboard() {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
         <div
@@ -237,7 +240,7 @@ export default function UsFinanceTeamDashboard() {
               width={250}
               height={125}
             /> */}
-            <div class="dropdown">
+            {/* <div class="dropdown">
               <button
                 class=" dropdown-toggle this_month_content"
                 type="button"
@@ -264,7 +267,7 @@ export default function UsFinanceTeamDashboard() {
                   </a>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
         <div
@@ -308,103 +311,173 @@ export default function UsFinanceTeamDashboard() {
             className="upcomingtimesheetdiv"
           >
             <div className="flex justify-center items-center">
-              <PieChart width={400} height={300}>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={80} // For donut effect
-                  outerRadius={115}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-
-                <Tooltip />
-                <svg width="400" height="300">
-                  <defs>
-                    <filter
-                      id="shadow"
-                      x="-50%"
-                      y="-50%"
-                      width="200%"
-                      height="200%"
+              <span style={{ fontSize: "12px" }} className="m-4">
+                Submitted Timesheet
+              </span>
+              <div className="row" style={{ width: "100vw" }}>
+                <div className="col-6">
+                  <PieChart width={400} height={300} className="ms-4">
+                    <Pie
+                      data={data}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={80} // For donut effect
+                      outerRadius={115}
+                      fill="#8884d8"
+                      paddingAngle={5}
+                      dataKey="value"
                     >
-                      <feDropShadow
-                        dx="2"
-                        dy="2"
-                        stdDeviation="4"
-                        floodColor="rgba(0,0,0,0.3)"
+                      {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+
+                    <Tooltip />
+                    <svg width="400" height="300">
+                      <defs>
+                        <filter
+                          id="shadow"
+                          x="-50%"
+                          y="-50%"
+                          width="200%"
+                          height="200%"
+                        >
+                          <feDropShadow
+                            dx="2"
+                            dy="2"
+                            stdDeviation="4"
+                            floodColor="rgba(0,0,0,0.3)"
+                          />
+                        </filter>
+                      </defs>
+
+                      <circle
+                        cx="200"
+                        cy="150"
+                        r="60"
+                        fill="white"
+                        filter="url(#shadow)"
                       />
-                    </filter>
-                  </defs>
 
-                  <circle
-                    cx="200"
-                    cy="150"
-                    r="60"
-                    fill="white"
-                    filter="url(#shadow)"
-                  />
+                      <text
+                        x="50%"
+                        y="45%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize="14px"
+                        fontWeight="bold"
+                        fill="#555"
+                      >
+                        WEEKLY
+                      </text>
+                      <line
+                        x1="280"
+                        y1="200"
+                        x2="430"
+                        y2="160"
+                        stroke="#ccc"
+                        strokeWidth="2"
+                        fill="#596365"
+                      />
+                      <text
+                        x="50%"
+                        y="55%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize="14px"
+                        fontWeight="bold"
+                        fill="#555"
+                        className="kjasdsakj"
+                      >
+                        TIMESHEET
+                      </text>
+                      <line
+                        x1="200"
+                        y1="10"
+                        x2="150"
+                        y2="-6"
+                        stroke="#ccc"
+                        strokeWidth="2"
+                        fill="block"
+                      />
+                      <line
+                        x1="200"
+                        y1="10"
+                        x2="230"
+                        y2="60"
+                        stroke="#ccc"
+                        strokeWidth="2"
+                        fill="block"
+                      />
+                    </svg>
 
-                  <text
-                    x="50%"
-                    y="45%"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize="14px"
-                    fontWeight="bold"
-                    fill="#555"
-                  >
-                    WEEKLY
-                  </text>
-                  <line
-                    x1="280"
-                    y1="200"
-                    x2="430"
-                    y2="160"
-                    stroke="#ccc"
-                    strokeWidth="2"
-                    fill="#596365"
-                  />
-                  <text
-                    x="50%"
-                    y="55%"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize="14px"
-                    fontWeight="bold"
-                    fill="#555"
-                    className="kjasdsakj"
-                  >
-                    TIMESHEET
-                  </text>
-                  <line
-                    x1="200"
-                    y1="10"
-                    x2="150"
-                    y2="-6"
-                    stroke="#ccc"
-                    strokeWidth="2"
-                    fill="block"
-                  />
-                  <line
-                    x1="200"
-                    y1="10"
-                    x2="230"
-                    y2="60"
-                    stroke="#ccc"
-                    strokeWidth="2"
-                    fill="block"
-                  />
-                </svg>
+                    {/* <Legend /> */}
+                  </PieChart>
+                </div>
 
-                {/* <Legend /> */}
-              </PieChart>
+                <div className="col-6">
+                  <PieChart width={400} height={300} className="">
+                    <Pie
+                      data={data11}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={80}
+                      outerRadius={100}
+                      dataKey="value"
+                      stroke="none"
+                    >
+                      {data11.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+
+                    <Tooltip />
+
+                    <svg width="300" height="300">
+                      <text
+                        x="65%"
+                        y="50%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize="12px"
+                        fontWeight="bold"
+                        fill="#777"
+                      >
+                        BILLING
+                      </text>
+                      <text
+                        x="66%"
+                        y="58%"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize="12px"
+                        fontWeight="bold"
+                        fill="#777"
+                      >
+                        PERFORMANCE
+                      </text>
+                    </svg>
+                  </PieChart>
+                  <div className="absolute text-sm">
+                    <div
+                      style={{ position: "absolute", left: "10px", top: "50%" }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>70%</span> Billable
+                      Employees
+                    </div>
+                    <div
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "20%",
+                      }}
+                    >
+                      <span style={{ fontWeight: "bold" }}>30%</span> Non
+                      Billable Employees
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -74,7 +74,6 @@ export function ViewProject() {
   const [selectedManagerId, setSelectedManagerId] = useState("");
   useEffect(() => {
     setProgressPercentage(calculateProgressPercentage());
-    console.log("percentage", calculateProgressPercentage());
   }, [projectDeadline1]);
   const currentDate = new Date();
   const calculateProgressPercentage = () => {
@@ -112,7 +111,7 @@ export function ViewProject() {
       `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
     );
     var result = response.data;
-    console.log(result, "result");
+
     if (result.isSuccess === true) {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
@@ -130,7 +129,7 @@ export function ViewProject() {
     var result = response.item;
     setClients(result);
   }
-  console.log(progressPercentage, "project percentage");
+
   const handleManagerOnChange = (event) => {
     const selectedManagerId = event.target.value;
     setReportingManagerId(selectedManagerId);

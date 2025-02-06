@@ -62,12 +62,10 @@ const AddRoleModal = ({ role, onClose, onRefresh }) => {
 
     try {
       if (role == null) {
-        debugger;
         var response = await axios.post(
           "https://localhost:44305/api/Roles/CreateRole",
           formData
         );
-        console.log(response, "===========>");
       } else {
         await axios.put(
           "https://localhost:44305/api/Roles/UpdateRole",

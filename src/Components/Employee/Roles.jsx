@@ -256,7 +256,6 @@ export default function Roles() {
         obj
       );
       var result = response.data;
-      console.log(result.error.message, "========>");
       if (result.isSuccess) {
         setisOpen(false);
         fetchRoles();
