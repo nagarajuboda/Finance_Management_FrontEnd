@@ -171,10 +171,137 @@ label {
 
 .eyeIcon {
   position: absolute;
-  top: 50%;
+  top: 43%;
   right: 130px;
   transform: translateY(-50%);
   font-size: 18px;
   color: #555;
   cursor: pointer;
 }
+
+/* Centering the login form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full screen height */
+  width: 100vw;
+  background: #f4f4f4;
+}
+
+/* Login card */
+.login-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* Maximum width */
+  width: 90%; /* Responsive width */
+  text-align: center;
+}
+
+/* Input fields */
+.login-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Login button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+/* @media (max-width: 768px) {
+  .login-card {
+    max-width: 90%;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    max-width: 95%;
+    padding: 1rem;
+  }
+} */
+@media (max-width: 768px) {
+  .eyeIcon {
+    right: 74px;
+  }
+}
+@media (min-width: 769px) and (max-width: 854px) {
+  .eyeIcon {
+    right: 80px;
+  }
+}
+@media (min-width: 854px) and (max-width: 900px) {
+  .eyeIcon {
+    right: 85px;
+  }
+}
+@media (min-width: 900px) and (max-width: 953px) {
+  .eyeIcon {
+    right: 90px;
+  }
+}
+@media (min-width: 953px) and (max-width: 978px) {
+  .eyeIcon {
+    right: 95px;
+  }
+}
+@media (min-width: 978px) and (max-width: 1030px) {
+  .eyeIcon {
+    right: 100px;
+  }
+}
+@media (min-width: 1030px) and (max-width: 1070px) {
+  .eyeIcon {
+    right: 105px;
+  }
+}
+@media (min-width: 1070px) and (max-width: 1113px) {
+  .eyeIcon {
+    right: 110px;
+  }
+}
+@media (min-width: 1113px) and (max-width: 1149px) {
+  .eyeIcon {
+    right: 115px;
+  }
+}
+@media (min-width: 1149px) and (max-width: 1189px) {
+  .eyeIcon {
+    right: 120px;
+  }
+}
+@media (min-width: 1189px) and (max-width: 1223px) {
+  .eyeIcon {
+    right: 125px;
+  }
+}
+@media (min-width: 1223px) and (max-width: 1264px) {
+  .eyeIcon {
+    right: 130px;
+  }
+}
+/* @media (min-width: 1265px) and (max-width: 1295px) {
+  .eyeIcon {
+    right: 135px;
+  }
+} */

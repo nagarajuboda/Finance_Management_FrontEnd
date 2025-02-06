@@ -65,6 +65,8 @@ export function ViewProject() {
   const [open, setopen] = useState(false);
   const [clients, setClients] = useState([]);
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
+  const [assignedNewEmployeePopup, setassignedNewEmployeePopup] =
+    useState(false);
   useEffect(() => {
     FetchData();
     filteredEmployees;
@@ -72,7 +74,6 @@ export function ViewProject() {
   const [selectedManagerId, setSelectedManagerId] = useState("");
   useEffect(() => {
     setProgressPercentage(calculateProgressPercentage());
-    console.log("percentage", calculateProgressPercentage());
   }, [projectDeadline1]);
   const currentDate = new Date();
   const calculateProgressPercentage = () => {
@@ -110,6 +111,7 @@ export function ViewProject() {
       `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
     );
     var result = response.data;
+
     if (result.isSuccess === true) {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
@@ -127,7 +129,7 @@ export function ViewProject() {
     var result = response.item;
     setClients(result);
   }
-  console.log(progressPercentage, "project percentage");
+
   const handleManagerOnChange = (event) => {
     const selectedManagerId = event.target.value;
     setReportingManagerId(selectedManagerId);
@@ -228,7 +230,9 @@ export function ViewProject() {
     var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
 
     if (response.isSuccess) {
+      setassignedNewEmployeePopup(true);
       FetchData();
+
       setopen(false);
     }
   };
@@ -270,6 +274,9 @@ export function ViewProject() {
   const closeDeletePopup = () => {
     setdeleteEmployeepopup(false);
     FetchData();
+  };
+  const closeAssignedPopup = () => {
+    setassignedNewEmployeePopup(false);
   };
   const DownloadExcel = async (listtype, filetype, proID) => {
     let response;
@@ -605,10 +612,10 @@ export function ViewProject() {
                 </th>
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>Role</th>
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>
-                  Project Tasks
+                  Project Manager
                 </th>
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>
-                  Date Of joining
+                  Assigned Date
                 </th>
                 <th style={{ fontSize: "12px", fontWeight: "500" }}>Action</th>
               </tr>
@@ -636,12 +643,14 @@ export function ViewProject() {
                     <td style={{ fontSize: "12px" }}>
                       {employee.employee.mobileNo}
                     </td>
-                    <td style={{ fontSize: "12px" }}>{employee.role}</td>
+                    <td style={{ fontSize: "12px" }}>
+                      {employee.employee.role.name}
+                    </td>
                     <td style={{ fontSize: "12px" }}>{projectManagername}</td>
                     <td style={{ fontSize: "12px" }}>
-                      {new Date(
-                        employee.employee.dateOfJoining
-                      ).toLocaleDateString("en-GB")}
+                      {new Date(employee.assignedDate).toLocaleDateString(
+                        "en-GB"
+                      )}
                     </td>
                     <td>
                       <img
@@ -1495,10 +1504,44 @@ export function ViewProject() {
               </div>
             </div>
             <h2 className="unique-popup-title">
-              Delete Employee Successfully!
+              Employee has been successfully deleted!
             </h2>
             <p className="unique-popup-message">Click OK to view result</p>
             <button className="unique-popup-button" onClick={closeDeletePopup}>
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {assignedNewEmployeePopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">
+              Employee has been successfully assigned to the project!
+            </h2>
+            <p className="unique-popup-message">Click OK to view result</p>
+            <button
+              className="unique-popup-button"
+              onClick={closeAssignedPopup}
+            >
               OK
             </button>
           </div>

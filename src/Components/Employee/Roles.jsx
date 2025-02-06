@@ -6,6 +6,8 @@ import deleteicon from "../../assets/Images/deleteicon.png";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import images from "../../assets/Images/User.png";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import ImportPopup from "./ImportPopup";
 import checkimage from "../../assets/Images/check.png";
@@ -257,6 +259,11 @@ export default function Roles() {
       if (result.isSuccess) {
         setisOpen(false);
         fetchRoles();
+      } else {
+        toast.error(result.error.message, {
+          position: "top-right",
+          autoClose: 4000,
+        });
       }
     }
   };
@@ -546,7 +553,6 @@ export default function Roles() {
           </table>
         </div>
       </div>
-
       {isopen && (
         <div className="overlay-backdrop">
           <div className="overlay-box">
@@ -759,6 +765,7 @@ export default function Roles() {
           </div>
         </div>
       )}
+      <ToastContainer />
       {Deleterolepopup && (
         <div className="unique-popup-overlay">
           <div className="unique-popup-container">
