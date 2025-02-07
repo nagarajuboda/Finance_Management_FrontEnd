@@ -93,7 +93,7 @@ export default function ForgotPassword() {
             >
               Forgot your password?
             </div>
-            <div className="enetremailid">
+            <div className="enetremailid mt-2">
               Enter your email id, we will reset your passward.
             </div>
             <form onSubmit={getotpfunction}>
