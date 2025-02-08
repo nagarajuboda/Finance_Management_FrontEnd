@@ -227,7 +227,7 @@ export default function Employees() {
                 justifyContent: "center",
               }}
             >
-              <p className="employeecontent" style={{ fontSize: "9px" }}>
+              <p className="employeecontent" style={{ fontSize: "13px" }}>
                 Employee list
               </p>
             </div>
@@ -249,9 +249,10 @@ export default function Employees() {
               onChange={handleSearchChange}
               value={searchQuery}
               style={{
-                fontSize: "12px",
+                fontSize: "14px",
                 padding: "0px 8px",
                 width: "100%",
+                height: "36px",
                 paddingRight: "30px",
                 boxSizing: "border-box",
               }}
@@ -259,7 +260,7 @@ export default function Employees() {
             <i
               className="bi bi-search"
               style={{
-                fontSize: "12px",
+                fontSize: "18px",
                 position: "absolute",
                 right: "20px",
                 top: "50%",
@@ -289,7 +290,7 @@ export default function Employees() {
               <button
                 disabled
                 style={{
-                  fontSize: "10px",
+                  fontSize: "13px",
 
                   color: "black",
                 }}
@@ -312,7 +313,7 @@ export default function Employees() {
           {!isDivVisible && (
             <div className="col-1">
               <button
-                style={{ fontSize: "12px", height: "30px" }}
+                style={{ fontSize: "14px", height: "36px" }}
                 className="btn btn-primary"
                 onClick={() => setIsPopupOpen(true)}
               >
@@ -325,7 +326,7 @@ export default function Employees() {
               <Dropdown.Toggle
                 id="dropdown-basic"
                 className="importdropdown btn btn-primary"
-                style={{ fontSize: "12px", height: "30px" }}
+                style={{ fontSize: "14px", height: "36px" }}
               >
                 Export To
               </Dropdown.Toggle>
@@ -336,7 +337,7 @@ export default function Employees() {
                 >
                   <p
                     className=""
-                    style={{ fontSize: "12px", cursor: "pointer" }}
+                    style={{ fontSize: "14px", cursor: "pointer" }}
                   >
                     MS Excel
                   </p>
@@ -357,8 +358,8 @@ export default function Employees() {
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{
-                  fontSize: "12px",
-                  height: "30px",
+                  fontSize: "14px",
+                  height: "36px",
                   display: "flex",
                   justifyContent: "end",
                 }}
@@ -376,7 +377,7 @@ export default function Employees() {
 
                   alignContent: "center",
                   padding: "5px",
-                  height: "30px",
+                  height: "36px",
                 }}
                 className="add-new-project-button"
                 onClick={Addemployeefuncton}
@@ -385,15 +386,16 @@ export default function Employees() {
                   <img
                     src={images}
                     alt=""
-                    height="15px"
-                    width="15px"
-                    className="mb-3"
+                    height="18px"
+                    width="18px"
+                    className="mb-2"
                   />
                 </span>
                 <span
                   className=" ms-1"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "14px",
+                    height: "36px",
                     color: "#000000",
                     fontWeight: "bold",
                   }}
@@ -417,21 +419,21 @@ export default function Employees() {
                   <input
                     type="checkbox"
                     onChange={handleSelectAll}
-                    className="userCheckbox"
+                    className="userCheckbox row-checkbox"
                   />
                 </th>
-                <th style={{ fontSize: "12px" }}>Employee ID</th>
-                <th style={{ fontSize: "12px" }}>First Name</th>
-                <th style={{ fontSize: "12px" }}>Last Name</th>
-                <th style={{ fontSize: "12px" }}>Email</th>
-                <th style={{ fontSize: "12px" }}>Mobile Number</th>
-                <th style={{ fontSize: "12px" }}>Date of Joining</th>
-                {!isDivVisible && <th style={{ fontSize: "12px" }}>Status</th>}
+                <th style={{ fontSize: "14px" }}>Employee ID</th>
+                <th style={{ fontSize: "14px" }}>First Name</th>
+                <th style={{ fontSize: "14px" }}>Last Name</th>
+                <th style={{ fontSize: "14px" }}>Email</th>
+                <th style={{ fontSize: "14px" }}>Mobile Number</th>
+                <th style={{ fontSize: "14px" }}>Date of Joining</th>
+                {!isDivVisible && <th style={{ fontSize: "14px" }}>Status</th>}
 
-                <th style={{ fontSize: "12px" }}>Role</th>
-                <th style={{ fontSize: "12px" }}>Reporting Manager</th>
+                <th style={{ fontSize: "14px" }}>Role</th>
+                <th style={{ fontSize: "14px" }}>Reporting Manager</th>
                 {isDivVisible && (
-                  <th style={{ fontSize: "12px" }}>Date of Relieving</th>
+                  <th style={{ fontSize: "14px" }}>Date of Relieving</th>
                 )}
                 {!isDivVisible && <th></th>}
                 {!isDivVisible && <th></th>}
@@ -453,7 +455,7 @@ export default function Employees() {
                           <td style={{ textAlign: "start" }}>
                             <input
                               type="checkbox"
-                              className="row-checkbox "
+                              className="row-checkbox"
                               onChange={(e) =>
                                 handleCheckboxChange(
                                   employee.employeeDetails.id,
@@ -463,15 +465,18 @@ export default function Employees() {
                             />
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
                           >
-                            {employee.employeeDetails.employeeId}
+                            <span className="ms-2">
+                              {" "}
+                              {employee.employeeDetails.employeeId}
+                            </span>
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -479,7 +484,7 @@ export default function Employees() {
                             {employee.employeeDetails.firstName}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -487,7 +492,7 @@ export default function Employees() {
                             {employee.employeeDetails.lastName}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -495,7 +500,7 @@ export default function Employees() {
                             {employee.employeeDetails.email}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -503,7 +508,7 @@ export default function Employees() {
                             {employee.employeeDetails.mobileNo}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -513,7 +518,7 @@ export default function Employees() {
                             ).toLocaleDateString("en-GB")}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -521,7 +526,7 @@ export default function Employees() {
                             Active
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -529,7 +534,7 @@ export default function Employees() {
                             {employee.roleDetails.roleName}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -550,8 +555,8 @@ export default function Employees() {
                               }
                               alt=""
                               style={{
-                                width: "18px",
-                                height: "18px",
+                                width: "24px",
+                                height: "24px",
                                 cursor: "pointer",
                               }}
                             />
@@ -568,8 +573,8 @@ export default function Employees() {
                               }
                               alt=""
                               style={{
-                                width: "24px",
-                                height: "24px",
+                                width: "28px",
+                                height: "28px",
                                 cursor: "pointer",
                               }}
                             />
@@ -598,7 +603,7 @@ export default function Employees() {
                             />
                           </td>
                           <td
-                            style={{ fontSize: "12px ms-2" }}
+                            style={{ fontSize: "14px ms-2" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -606,7 +611,7 @@ export default function Employees() {
                             {employee.employeeDetails.employeeId}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -614,7 +619,7 @@ export default function Employees() {
                             {employee.employeeDetails.firstName}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -622,7 +627,7 @@ export default function Employees() {
                             {employee.employeeDetails.lastName}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
@@ -630,30 +635,30 @@ export default function Employees() {
                             {employee.employeeDetails.email}
                           </td>
                           <td
-                            style={{ fontSize: "12px" }}
+                            style={{ fontSize: "14px" }}
                             onClick={(e) =>
                               ViewDetails(employee.employeeDetails.id)
                             }
                           >
                             {employee.employeeDetails.mobileNo}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {new Date(
                               employee.employeeDetails.dateOfJoining
                             ).toLocaleDateString("en-GB")}
                           </td>
 
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {employee.roleDetails.roleName}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {employee.reportingManagerDetails !== "N/A"
                               ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
                               : "N/A"}
                           </td>
                           <td
                             style={{
-                              fontSize: "12px",
+                              fontSize: "14px",
                             }}
                           >
                             {employee.employeeDetails.dateOfReliving}
@@ -715,21 +720,21 @@ export default function Employees() {
         )}
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <select
-            style={{ cursor: "pointer", fontSize: "10px" }}
+            style={{ cursor: "pointer", fontSize: "14px" }}
             className="numberpagenation ms-2"
             onChange={handleItemsPerPageChange}
             value={itemsPerPage}
           >
-            <option value="10" style={{ fontSize: "12px" }}>
+            <option value="10" style={{ fontSize: "14px" }}>
               Show 10 Entities
             </option>
-            <option value="25" style={{ fontSize: "12px" }}>
+            <option value="25" style={{ fontSize: "14px" }}>
               Show 25 Entities
             </option>
-            <option value="50" style={{ fontSize: "12px" }}>
+            <option value="50" style={{ fontSize: "14px" }}>
               Show 50 Entities
             </option>
-            <option value="-1" style={{ fontSize: "12px" }}>
+            <option value="-1" style={{ fontSize: "14px" }}>
               Show All
             </option>
           </select>
@@ -737,7 +742,7 @@ export default function Employees() {
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              style={{ fontSize: "10px" }}
+              style={{ fontSize: "14px" }}
             >
               <span> Prev</span>
             </button>
@@ -747,7 +752,7 @@ export default function Employees() {
                 <button
                   key={page}
                   style={{
-                    fontSize: "10px",
+                    fontSize: "14px",
                     color: "black",
                     fontWeight: "600",
                   }}
@@ -760,7 +765,7 @@ export default function Employees() {
             )}
 
             <button
-              style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+              style={{ fontSize: "14px", color: "black", fontWeight: "600" }}
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
             >

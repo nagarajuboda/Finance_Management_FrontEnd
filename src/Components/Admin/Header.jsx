@@ -197,8 +197,8 @@ export default function Header({ isOpen }) {
             <img
               src={NotificationImage}
               alt="Notifications"
-              height="20"
-              width="20"
+              height="24"
+              width="24"
             />
             {notifications.filter((notif) => !notif.isRead).length > 0 && (
               <span className="badge">
@@ -268,8 +268,8 @@ export default function Header({ isOpen }) {
             >
               <ul style={{ listStyle: "none", margin: 0, paddingLeft: "10px" }}>
                 <li style={{ padding: "10px 0", cursor: "pointer" }}>
-                  <img src={myprofile} alt="" width="20px" height="20px" />
-                  <span style={{ fontSize: "12px" }} className="ms-2">
+                  <img src={myprofile} alt="" width="24px" height="24px" />
+                  <span style={{ fontSize: "14px" }} className="ms-3">
                     My Profile
                   </span>
                 </li>
@@ -280,8 +280,8 @@ export default function Header({ isOpen }) {
                   }}
                 ></div>
                 <li style={{ padding: "10px 0", cursor: "pointer" }}>
-                  <img src={support} alt="" width="20px" height="20px" />
-                  <span style={{ fontSize: "12px" }} className="ms-2">
+                  <img src={support} alt="" width="24px" height="24px" />
+                  <span style={{ fontSize: "12px" }} className="ms-3">
                     Support
                   </span>
                 </li>
@@ -292,8 +292,8 @@ export default function Header({ isOpen }) {
                   }}
                 ></div>
                 <li style={{ padding: "10px 0", cursor: "pointer" }}>
-                  <img src={settings} alt="" width="20px" height="20px" />
-                  <span style={{ fontSize: "12px" }} className="ms-2">
+                  <img src={settings} alt="" width="24px" height="24px" />
+                  <span style={{ fontSize: "14px" }} className="ms-3">
                     Settings
                   </span>
                 </li>
@@ -307,8 +307,8 @@ export default function Header({ isOpen }) {
                   style={{ padding: "10px 0", cursor: "pointer" }}
                   onClick={Logoutfunction}
                 >
-                  <img src={logout} alt="" width="20px" height="20px" />
-                  <span style={{ fontSize: "12px" }} className="ms-2">
+                  <img src={logout} alt="" width="24px" height="24px" />
+                  <span style={{ fontSize: "14px" }} className="ms-3">
                     Logout
                   </span>
                 </li>

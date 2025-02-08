@@ -335,7 +335,7 @@ export default function Roles() {
             className="col-2 "
             style={{ display: "flex", justifyContent: "end" }}
           ></div>
-          <div className="col-6 d-flex justify-content-end pe-3">
+          <div className="col-6 d-flex justify-content-end">
             <div className="me-2">
               <button
                 className="DelRecordbutton me-2"
@@ -347,7 +347,7 @@ export default function Roles() {
             </div>
             <div>
               <button
-                className="add-new-role-button me-2"
+                className="add-new-role-button me-2 "
                 onClick={AddNewRolePopup}
               >
                 <span>
@@ -386,6 +386,7 @@ export default function Roles() {
                     type="checkbox"
                     onChange={handleSelectAll}
                     className="userCheckbox"
+                    style={{ height: "15px", width: "15px" }}
                   />
                 </th>
                 <th className="rolethclass">Role Name</th>
@@ -414,6 +415,7 @@ export default function Roles() {
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
+                      fontSize: "14px",
                     }}
                   >
                     {role.name}
@@ -423,6 +425,7 @@ export default function Roles() {
                       pointerEvents:
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
+                      fontSize: "14px",
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
                     }}
                   >
@@ -434,6 +437,7 @@ export default function Roles() {
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
+                      fontSize: "14px",
                     }}
                   >
                     {role.priority}
@@ -452,7 +456,7 @@ export default function Roles() {
                           position: "relative",
                           display: "inline-block",
                           width: "40px",
-                          height: "20px",
+                          height: "20px !important",
                         }}
                       >
                         <input
@@ -516,8 +520,8 @@ export default function Roles() {
                           }}
                           alt="Edit Role"
                           style={{
-                            width: "18px",
-                            height: "18px",
+                            width: "24px",
+                            height: "24px",
                             cursor:
                               role.status === "Inactive"
                                 ? "not-allowed"
@@ -536,7 +540,11 @@ export default function Roles() {
                       >
                         <img
                           src={deleteicon}
-                          style={{ width: "25px", cursor: "pointer" }}
+                          style={{
+                            width: "28px",
+                            cursor: "pointer",
+                            height: "28px",
+                          }}
                           onClick={(e) => {
                             if (role.status !== "Inactive") {
                               DeleteRoleFunction(role.id);
@@ -621,17 +629,17 @@ export default function Roles() {
                   },
                 }}
               >
-                <MenuItem value="" style={{ fontSize: "12px" }}>
+                <MenuItem value="" style={{ fontSize: "14px" }}>
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "14px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "14px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "14px" }}>
                   High
                 </MenuItem>
               </TextField>

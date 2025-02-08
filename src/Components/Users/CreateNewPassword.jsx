@@ -126,7 +126,7 @@ export default function CreateNewPassword() {
     }
   }
   return (
-    <div className="fogotpasswordpagemaindiv  row m-0">
+    <div className="fogotpasswordpagemaindiv  row ">
       <div className="col-6">
         <img src={forgotpasswordsideImaage} alt="" className="Loginimagelogo" />
       </div>

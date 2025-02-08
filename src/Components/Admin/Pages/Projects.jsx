@@ -138,7 +138,9 @@ export default function Projectss() {
 
   return (
     <div className="">
-      <p className="project-list-content">Projects</p>
+      <p className="project-list-content" style={{ fontSize: "16px" }}>
+        Projects
+      </p>
       <div className="AllProject-maindiv">
         <div
           className="row"
@@ -150,7 +152,9 @@ export default function Projectss() {
           }}
         >
           <div className="col-2">
-            <p className="Project-list-content">Project list</p>
+            <p className="Project-list-content" style={{ fontSize: "14px" }}>
+              Project list
+            </p>
           </div>
           <div className="col-1"></div>
           <div
@@ -165,12 +169,12 @@ export default function Projectss() {
               value={searchQuery}
               className="searchinput "
               placeholder="Search Projects"
-              style={{ width: "280px", padding: "5px", fontSize: "12px" }}
+              style={{ width: "280px", padding: "5px", fontSize: "14px" }}
             />
             <i
               className="bi bi-search"
               style={{
-                fontSize: "12px",
+                fontSize: "18px",
                 position: "absolute",
                 left: "270px",
                 top: "50%",
@@ -185,20 +189,20 @@ export default function Projectss() {
             <div className="col-4 ">
               <select
                 className="numberpagenation"
-                style={{ cursor: "pointer", height: "30px" }}
+                style={{ cursor: "pointer", height: "36px" }}
                 onChange={handleItemsPerPageChange}
                 value={itemsPerPage}
               >
-                <option value="10" style={{ fontSize: "12px" }}>
+                <option value="10" style={{ fontSize: "14px" }}>
                   Show 10 Entities
                 </option>
-                <option value="25" style={{ fontSize: "12px" }}>
+                <option value="25" style={{ fontSize: "14px" }}>
                   Show 25 Entities
                 </option>
-                <option value="50" style={{ fontSize: "12px" }}>
+                <option value="50" style={{ fontSize: "14px" }}>
                   Show 50 Entities
                 </option>
-                <option value="-1" style={{ fontSize: "12px" }}>
+                <option value="-1" style={{ fontSize: "14px" }}>
                   Show All
                 </option>
               </select>
@@ -216,7 +220,7 @@ export default function Projectss() {
                 className="btn btn-danger"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
-                style={{ fontSize: "12px", height: "30px" }}
+                style={{ fontSize: "14px", height: "36px" }}
               >
                 Delete Selected
               </button>
@@ -232,7 +236,7 @@ export default function Projectss() {
                   justifyContent: "center",
                   alignContent: "center",
                   padding: "5px",
-                  height: "30px",
+                  height: "36px",
                 }}
                 className="add-new-project-button"
                 onClick={AddNewProject}
@@ -241,15 +245,15 @@ export default function Projectss() {
                   <img
                     src={userimage}
                     alt=""
-                    height="15px"
-                    width="15px"
-                    className="mb-3"
+                    height="18px"
+                    width="18px"
+                    className="mb-2"
                   />
                 </span>
                 <span
                   className=" ms-1"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#000000",
                     fontWeight: "bold",
                   }}
@@ -270,18 +274,19 @@ export default function Projectss() {
               <tr className="tableheader">
                 <th>
                   <input
-                    type="checkbox"
+                    type="checkbox "
                     onChange={handleSelectAll}
+                    style={{ height: "15px", width: "15px" }}
                     className="userCheckbox"
                   />
                 </th>
-                <th style={{ fontSize: "12px" }}>Project ID</th>
-                <th style={{ fontSize: "12px" }}>Project Name</th>
-                <th style={{ fontSize: "12px" }}>Clients</th>
-                <th style={{ fontSize: "12px" }}>Project Manager</th>
-                <th style={{ fontSize: "12px" }}>Start Date</th>
-                <th style={{ fontSize: "12px" }}>End Date</th>
-                <th style={{ fontSize: "12px" }}>Action</th>
+                <th style={{ fontSize: "14px" }}>Project ID</th>
+                <th style={{ fontSize: "14px" }}>Project Name</th>
+                <th style={{ fontSize: "14px" }}>Clients</th>
+                <th style={{ fontSize: "14px" }}>Project Manager</th>
+                <th style={{ fontSize: "14px" }}>Start Date</th>
+                <th style={{ fontSize: "14px" }}>End Date</th>
+                <th style={{ fontSize: "14px" }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -307,38 +312,38 @@ export default function Projectss() {
                           />
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.project.projectID}
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.project.projectName}
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.client.clientName}
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.employee.firstName}{" "}
                           {project.employee.lastName}
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.project.startDate}
                         </td>
                         <td
-                          style={{ fontSize: "12px" }}
+                          style={{ fontSize: "14px" }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
                           {project.project.endDate}
@@ -352,8 +357,8 @@ export default function Projectss() {
                             }
                             alt=""
                             style={{
-                              width: "22px",
-                              height: "22px",
+                              width: "28px",
+                              height: "28px",
                               cursor: "pointer",
                             }}
                           />
@@ -414,7 +419,7 @@ export default function Projectss() {
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}
-            style={{ fontSize: "10px" }}
+            style={{ fontSize: "14px" }}
           >
             <span> Prev</span>
           </button>
@@ -423,7 +428,7 @@ export default function Projectss() {
             (page) => (
               <button
                 key={page}
-                style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+                style={{ fontSize: "14px", color: "black", fontWeight: "600" }}
                 onClick={() => setCurrentPage(page)}
                 className={currentPage === page ? "active-page" : ""}
               >
@@ -433,7 +438,7 @@ export default function Projectss() {
           )}
 
           <button
-            style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+            style={{ fontSize: "14px", color: "black", fontWeight: "600" }}
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
           >

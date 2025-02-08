@@ -205,6 +205,7 @@ export default function TimeSheet() {
                       padding: "5px 10px",
                       borderRadius: "5px",
                       backgroundColor: "#fff",
+                      fontSize: "14px",
                     }}
                   >
                     <span style={{ marginRight: "10px" }}>
@@ -215,7 +216,6 @@ export default function TimeSheet() {
                         width="20px"
                       />
                     </span>
-                    {/* <span style={{ marginRight: "10px" }}>📅</span> */}
                     <span>
                       {selectedDate.toLocaleString("default", {
                         month: "long",
@@ -236,12 +236,12 @@ export default function TimeSheet() {
           >
             <thead>
               <tr className="tableheader">
-                <th>Name</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th style={{ textAlign: "center" }}>Role</th>
-                <th style={{ textAlign: "center" }}>Hours</th>
+                <th style={{ fontSize: "14px" }}>Name</th>
+                <th style={{ fontSize: "14px" }}>Email</th>
+                <th style={{ fontSize: "14px" }}>Department</th>
+                <th style={{ fontSize: "14px" }}>Status</th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>Role</th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>Hours</th>
               </tr>
             </thead>
             <tbody>
@@ -255,17 +255,20 @@ export default function TimeSheet() {
                       cursor: "pointer",
                     }}
                   >
-                    <td>
+                    <td style={{ fontSize: "14px" }}>
                       {employee.firstName} {employee.lastName}
                     </td>
-                    <td>{employee.email}</td>
-                    <td>{department}</td>
+                    <td style={{ fontSize: "14px" }}>{employee.email}</td>
+                    <td style={{ fontSize: "14px" }}>{department}</td>
                     <td>
-                      <span className="activeInactive">
+                      <span
+                        className="activeInactive"
+                        style={{ fontSize: "14px" }}
+                      >
                         {employee.employeeStatus ? "Active" : "Inactive"}
                       </span>
                     </td>
-                    <td style={{ textAlign: "center" }}>
+                    <td style={{ textAlign: "center", fontSize: "14px" }}>
                       {employee.role.name}
                     </td>
                     <td>
@@ -280,6 +283,7 @@ export default function TimeSheet() {
                                     textAlign: "center",
                                     display: "flex",
                                     justifyContent: "center",
+                                    fontSize: "14px",
                                   }}
                                 >
                                   {filteredEmployee.workingHourse}
@@ -387,9 +391,14 @@ export default function TimeSheet() {
             <button
               type="button"
               className="submitbutton "
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "10px", height: "36px" }}
             >
-              <span className="make_a_request_span"> Make a request</span>
+              <span
+                className="make_a_request_span"
+                style={{ fontSize: "14px", width: "141px" }}
+              >
+                Make a request
+              </span>
             </button>
           </div>
         )}

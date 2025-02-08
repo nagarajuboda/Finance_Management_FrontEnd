@@ -320,27 +320,27 @@ export function ViewProject() {
         </div>
         <div className="row m-0  project-view-row">
           <div className="col-4">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Porject outline
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Start Date
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               end Date
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Project Manager
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Project Lead
             </p>
           </div>
@@ -351,7 +351,7 @@ export function ViewProject() {
         >
           <div className="col-2 ">
             <div
-              style={{ position: "relative", width: "100%", height: "30px" }}
+              style={{ position: "relative", width: "100%", height: "36px" }}
             >
               <span
                 className="Progress_percentage"
@@ -363,7 +363,7 @@ export function ViewProject() {
                   transform: "translateX(-50%)",
                   color: progressPercentage === 100 ? "white" : "black",
                   fontWeight: "bold",
-                  fontSize: "12px",
+                  fontSize: "14px",
                   marginLeft: "18px",
                 }}
               >
@@ -387,29 +387,29 @@ export function ViewProject() {
           </div>
           <div
             className="col-2 projectPrpgress"
-            style={{ fontSize: "12px", margin: "0" }}
+            style={{ fontSize: "14px", margin: "0" }}
           ></div>
           <div
             className="col-2 projectPrpgress"
-            style={{ fontSize: "12px", margin: "0" }}
+            style={{ fontSize: "14px", margin: "0" }}
           >
             {ProjectValues.startDate}
           </div>
           <div
             className="col-2 projectPrpgress"
-            style={{ fontSize: "12px", margin: "0" }}
+            style={{ fontSize: "14px", margin: "0" }}
           >
             {ProjectValues.endDate}
           </div>
           <div
             className="col-2 projectPrpgress"
-            style={{ fontSize: "12px", margin: "0" }}
+            style={{ fontSize: "14px", margin: "0" }}
           >
             {projectManagername}
           </div>
           <div
             className="col-2 projectPrpgress"
-            style={{ fontSize: "12px", margin: "0" }}
+            style={{ fontSize: "14px", margin: "0" }}
           >
             {projectManagername}
           </div>
@@ -419,22 +419,22 @@ export function ViewProject() {
           style={{ paddingTop: "45px" }}
         >
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Client
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               client Email
             </p>
           </div>
           <div className="col-2">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Project Name
             </p>
           </div>
           <div className="col-6">
-            <p style={{ fontSize: "12px", textTransform: "uppercase" }}>
+            <p style={{ fontSize: "14px", textTransform: "uppercase" }}>
               Description
             </p>
           </div>
@@ -442,25 +442,25 @@ export function ViewProject() {
         <div className="row m-0 pt-3">
           <div
             className="col-2 "
-            style={{ fontWeight: "500", fontSize: "12px" }}
+            style={{ fontWeight: "500", fontSize: "14px" }}
           >
             {clientvalues.clientName}
           </div>
           <div
             className="col-2 "
-            style={{ fontWeight: "500", fontSize: "12px" }}
+            style={{ fontWeight: "500", fontSize: "14px" }}
           >
             {clientvalues.clientEmailId}
           </div>
           <div
             className="col-2 "
-            style={{ fontWeight: "500", fontSize: "12px" }}
+            style={{ fontWeight: "500", fontSize: "14px" }}
           >
             {ProjectValues.projectName}
           </div>
           <div
             className="col-6 "
-            style={{ fontWeight: "500", fontSize: "12px" }}
+            style={{ fontWeight: "500", fontSize: "14px" }}
           >
             {ProjectValues.description}
           </div>
@@ -488,14 +488,14 @@ export function ViewProject() {
                 style={{
                   width: "100%",
                   padding: "5px 30px 5px 5px",
-                  fontSize: "12px",
+                  fontSize: "14px",
                   boxSizing: "border-box",
                 }}
               />
               <i
                 className="bi bi-search"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "18px",
                   position: "absolute",
                   right: "10px",
                   color: "#888",
@@ -510,7 +510,7 @@ export function ViewProject() {
             style={{ display: "flex", justifyContent: "end" }}
           >
             <button
-              style={{ fontSize: "12px", height: "30px" }}
+              style={{ fontSize: "14px", height: "36px" }}
               className="btn btn-primary"
               onClick={() => setIsImportPopupOpen(true)}
             >
@@ -529,7 +529,7 @@ export function ViewProject() {
               <Dropdown.Toggle
                 id="dropdown-basic"
                 className="importdropdown btn btn-primary"
-                style={{ fontSize: "12px", height: "30px" }}
+                style={{ fontSize: "14px", height: "36px" }}
               >
                 Export To
               </Dropdown.Toggle>
@@ -540,7 +540,7 @@ export function ViewProject() {
                 >
                   <p
                     className=""
-                    style={{ fontSize: "12px", cursor: "pointer" }}
+                    style={{ fontSize: "14px", cursor: "pointer" }}
                   >
                     MS Excel
                   </p>
@@ -567,7 +567,7 @@ export function ViewProject() {
                 width: "auto",
                 alignContent: "center",
                 padding: "4px",
-                height: "30px",
+                height: "36px",
               }}
               className="add-new-project-button"
               onClick={Addemployeefunction}
@@ -576,15 +576,15 @@ export function ViewProject() {
                 <img
                   src={userimage}
                   alt=""
-                  height="16px"
-                  width="16px"
-                  className="mb-2"
+                  height="18px"
+                  width="18px"
+                  className="mb-1"
                 />
               </span>
               <span
                 className=" ms-1"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "14px",
                   color: "#000000",
                   fontWeight: "bold",
                 }}
@@ -602,22 +602,22 @@ export function ViewProject() {
           >
             <thead>
               <tr className="tableheader">
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Employee ID
                 </th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>Name</th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>Email</th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>Name</th>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>Email</th>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Mobile Number
                 </th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>Role</th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>Role</th>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Project Manager
                 </th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Assigned Date
                 </th>
-                <th style={{ fontSize: "12px", fontWeight: "500" }}>Action</th>
+                <th style={{ fontSize: "14px", fontWeight: "500" }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -631,23 +631,23 @@ export function ViewProject() {
                       cursor: "pointer",
                     }}
                   >
-                    <td style={{ fontSize: "12px" }}>
+                    <td style={{ fontSize: "14px" }}>
                       {employee.employee.employeeId}
                     </td>
                     <td
-                      style={{ fontSize: "12px" }}
+                      style={{ fontSize: "14px" }}
                     >{`${employee.employee.firstName} ${employee.employee.lastName} `}</td>
-                    <td style={{ fontSize: "12px" }}>
+                    <td style={{ fontSize: "14px" }}>
                       {employee.employee.email}
                     </td>
-                    <td style={{ fontSize: "12px" }}>
+                    <td style={{ fontSize: "14px" }}>
                       {employee.employee.mobileNo}
                     </td>
-                    <td style={{ fontSize: "12px" }}>
+                    <td style={{ fontSize: "14px" }}>
                       {employee.employee.role.name}
                     </td>
-                    <td style={{ fontSize: "12px" }}>{projectManagername}</td>
-                    <td style={{ fontSize: "12px" }}>
+                    <td style={{ fontSize: "14px" }}>{projectManagername}</td>
+                    <td style={{ fontSize: "14px" }}>
                       {new Date(employee.assignedDate).toLocaleDateString(
                         "en-GB"
                       )}
@@ -657,8 +657,8 @@ export function ViewProject() {
                         src={deleteImage}
                         alt=""
                         style={{
-                          width: "24px",
-                          height: "24px",
+                          width: "28px",
+                          height: "28px",
                           cursor: "pointer",
                         }}
                         onClick={() =>
@@ -1213,34 +1213,34 @@ export function ViewProject() {
                     },
                   }}
                 >
-                  <MenuItem value={10} style={{ fontSize: "12px" }}>
+                  <MenuItem value={10} style={{ fontSize: "14px" }}>
                     10%
                   </MenuItem>
-                  <MenuItem value={20} style={{ fontSize: "12px" }}>
+                  <MenuItem value={20} style={{ fontSize: "14px" }}>
                     20%
                   </MenuItem>
-                  <MenuItem value={30} style={{ fontSize: "12px" }}>
+                  <MenuItem value={30} style={{ fontSize: "14px" }}>
                     30%
                   </MenuItem>
-                  <MenuItem value={40} style={{ fontSize: "12px" }}>
+                  <MenuItem value={40} style={{ fontSize: "14px" }}>
                     40%
                   </MenuItem>
-                  <MenuItem value={50} style={{ fontSize: "12px" }}>
+                  <MenuItem value={50} style={{ fontSize: "14px" }}>
                     50%
                   </MenuItem>
-                  <MenuItem value={60} style={{ fontSize: "12px" }}>
+                  <MenuItem value={60} style={{ fontSize: "14px" }}>
                     60%
                   </MenuItem>
-                  <MenuItem value={70} style={{ fontSize: "12px" }}>
+                  <MenuItem value={70} style={{ fontSize: "14px" }}>
                     70%
                   </MenuItem>
-                  <MenuItem value={80} style={{ fontSize: "12px" }}>
+                  <MenuItem value={80} style={{ fontSize: "14px" }}>
                     80%
                   </MenuItem>
-                  <MenuItem value={90} style={{ fontSize: "12px" }}>
+                  <MenuItem value={90} style={{ fontSize: "14px" }}>
                     90%
                   </MenuItem>
-                  <MenuItem value={100} style={{ fontSize: "12px" }}>
+                  <MenuItem value={100} style={{ fontSize: "14px" }}>
                     100%
                   </MenuItem>
                 </TextField>
@@ -1332,7 +1332,9 @@ export function ViewProject() {
         <div className="dialog-overlay">
           <div className="dialog-box">
             <div className="dialog-header">
-              <h2 className="dialog-title">Add Employees</h2>
+              <h2 className="dialog-title" style={{ fontSize: "16px" }}>
+                Add Employees
+              </h2>
               <span className="dialog-close">
                 <i
                   className="bi bi-x-lg"
@@ -1360,8 +1362,9 @@ export function ViewProject() {
                   onChange={handleSearchChange1}
                   value={searchQuery1}
                   style={{
-                    fontSize: "12px",
+                    fontSize: "14px",
                     padding: "0px 10px",
+                    height: "36px",
                     width: "100%",
                     paddingRight: "30px",
                     boxSizing: "border-box",
@@ -1370,7 +1373,7 @@ export function ViewProject() {
                 <i
                   className="bi bi-search"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "18px",
                     position: "absolute",
                     right: "20px",
                     top: "68%",
@@ -1409,10 +1412,14 @@ export function ViewProject() {
                   }}
                 >
                   <tr>
-                    <th style={{ padding: "0px 8px" }}>Employee ID</th>
-                    <th>Name</th>
-                    <th>Role</th>
-                    <th className="">Actions</th>
+                    <th style={{ padding: "0px 8px", fontSize: "14px" }}>
+                      Employee ID
+                    </th>
+                    <th style={{ fontSize: "14px" }}>Name</th>
+                    <th style={{ fontSize: "14px" }}>Role</th>
+                    <th className="" style={{ fontSize: "14px" }}>
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="fixed_header tbody">
@@ -1426,12 +1433,23 @@ export function ViewProject() {
                             : ""
                         }
                       >
-                        <td className="data" style={{ padding: "0px 8px" }}>
+                        <td
+                          className="data"
+                          style={{ padding: "0px 8px", fontSize: "14px" }}
+                        >
                           {obj.employee.employeeId}
                         </td>
-                        <td className="data">{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
-                        <td className="data">{obj.role.name}</td>
-                        <td style={{ width: "20px" }} className="data">
+                        <td
+                          className="data"
+                          style={{ fontSize: "14px" }}
+                        >{`${obj.employee.firstName}   ${obj.employee.lastName}`}</td>
+                        <td className="data" style={{ fontSize: "14px" }}>
+                          {obj.role.name}
+                        </td>
+                        <td
+                          style={{ width: "20px", fontSize: "14px" }}
+                          className="data"
+                        >
                           {selectedRowIds.includes(obj.employee.id) ? (
                             <RxCross2
                               onClick={(e) =>
@@ -1453,8 +1471,8 @@ export function ViewProject() {
                                 toggleIcon(e, index, obj.employee.id)
                               }
                               alt=""
-                              width="27px"
-                              height="28px"
+                              width="30px"
+                              height="30px"
                             />
                           )}
                         </td>
@@ -1473,8 +1491,12 @@ export function ViewProject() {
                 textAlign: "right",
               }}
             >
-              <button className="dialog-submit-btn" onClick={addNewemployee}>
-                <span style={{ fontSize: "12px" }}>Add</span>
+              <button
+                className="dialog-submit-btn"
+                onClick={addNewemployee}
+                style={{ height: "36px" }}
+              >
+                <span style={{ fontSize: "14px" }}>Add</span>
               </button>
             </div>
           </div>

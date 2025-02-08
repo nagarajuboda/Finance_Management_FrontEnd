@@ -3,7 +3,7 @@
   padding: 0;
 }
 .imagediv {
-  height: 100vh;
+  height: 100vh !important;
   background-color: #b7e2e8;
 }
 .formdiv1 {
@@ -16,7 +16,7 @@
 }
 .Loginimagelogo {
   height: 100vh !important;
-  width: 780px;
+  width: 783px;
 }
 .archentslogo {
   left: 799px;
@@ -58,7 +58,7 @@
   height: 14px;
 }
 label {
-  height: 15px !important;
+  height: 20px;
 }
 .inputdiv {
   margin-top: 30px;
@@ -254,17 +254,69 @@ label {
     padding: 1rem;
   }
 } */
-@media (max-width: 768px) {
+
+@media (min-width: 769px) and (max-width: 802px) {
   .eyeIcon {
-    right: 74px;
+    right: 34px;
   }
 }
-@media (min-width: 769px) and (max-width: 854px) {
+@media (min-width: 802px) and (max-width: 839px) {
+  .eyeIcon {
+    right: 36px;
+  }
+}
+@media (min-width: 839px) and (max-width: 881px) {
+  .eyeIcon {
+    right: 40px;
+  }
+}
+@media (min-width: 881px) and (max-width: 976px) {
+  .eyeIcon {
+    right: 50px;
+  }
+}
+@media (min-width: 976px) and (max-width: 1020x) {
+  .eyeIcon {
+    right: 55px;
+  }
+}
+@media (min-width: 1021x) and (max-width: 1080) {
+  .eyeIcon {
+    right: 60px;
+  }
+}
+@media (min-width: 1080) and (max-width: 1146) {
+  .eyeIcon {
+    right: 65px;
+  }
+}
+@media (min-width: 1146) and (max-width: 1181) {
+  .eyeIcon {
+    right: 70px;
+  }
+}
+@media (min-width: 1181) and (max-width: 1230) {
+  .eyeIcon {
+    right: 75px;
+  }
+}
+@media (min-width: 1230) and (max-width: 1300) {
   .eyeIcon {
     right: 80px;
   }
 }
-@media (min-width: 854px) and (max-width: 900px) {
+@media (min-width: 1300) and (max-width: 1400) {
+  .eyeIcon {
+    right: 85px;
+  }
+}
+@media (min-width: 1400) and (max-width: 1459) {
+  .eyeIcon {
+    right: 90px;
+  }
+}
+
+/* @media (min-width: 854px) and (max-width: 900px) {
   .eyeIcon {
     right: 85px;
   }
@@ -283,8 +335,8 @@ label {
   .eyeIcon {
     right: 100px;
   }
-}
-@media (min-width: 1030px) and (max-width: 1070px) {
+} */
+/* @media (min-width: 1030px) and (max-width: 1070px) {
   .eyeIcon {
     right: 105px;
   }
@@ -312,10 +364,5 @@ label {
 @media (min-width: 1223px) and (max-width: 1264px) {
   .eyeIcon {
     right: 130px;
-  }
-}
-/* @media (min-width: 1265px) and (max-width: 1295px) {
-  .eyeIcon {
-    right: 135px;
   }
 } */

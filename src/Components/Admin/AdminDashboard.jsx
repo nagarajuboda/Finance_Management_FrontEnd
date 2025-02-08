@@ -391,7 +391,7 @@ export default function AdminDashboard() {
           style={{ width: "32%", marginLeft: "16px" }}
         >
           <div className="mt-2">
-            <p className="ActiveEmployeeContent">Employees on Bench</p>
+            <span className="ActiveEmployeeContent">Employees on Bench</span>
 
             <div
               style={{
@@ -542,7 +542,7 @@ export default function AdminDashboard() {
             <span style={{ fontSize: "20px" }} className="lastrowcontent">
               {totalEmployees}
             </span>
-            <span style={{ fontSize: "13px" }} className="lastrowcontent">
+            <span style={{ fontSize: "14px" }} className="lastrowcontent">
               Active Employees
             </span>
           </div>
@@ -559,8 +559,8 @@ export default function AdminDashboard() {
             <span style={{ fontSize: "20px" }} className="lastrowcontent">
               {totalBench}
             </span>
-            <span style={{ fontSize: "13px" }} className="lastrowcontent">
-              Employees on bench
+            <span style={{ fontSize: "14px" }} className="lastrowcontent">
+              Employees on Bench
             </span>
           </div>
         </div>
@@ -866,12 +866,13 @@ export default function AdminDashboard() {
               </div>
               <div
                 style={{
-                  width: "80%",
-                  margin: "auto",
+                  width: "75%",
+                  // margin: "auto",
                   padding: "20px",
-                  marginTop: "20px",
+                  // marginTop: "20px",
                   border: "1px solid",
-                  paddingTop: "10px",
+                  // paddingTop: "10px",
+                  marginLeft: "100px",
                 }}
               >
                 <div>

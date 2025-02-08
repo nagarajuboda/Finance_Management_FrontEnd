@@ -83,7 +83,7 @@ export default function EmployeeDetails() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   style={{
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "white",
                   }}
                 >
@@ -96,13 +96,13 @@ export default function EmployeeDetails() {
           <div className="row mt-4 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Email
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {employee.email}
             </div>
@@ -110,13 +110,13 @@ export default function EmployeeDetails() {
           <div className="row mt-3 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Mobile
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {`${"+91"} ${employee.mobileNo}`}
             </div>
@@ -124,13 +124,13 @@ export default function EmployeeDetails() {
           <div className="row mt-3 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Date Of Joining
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {new Date(employee.dateOfJoining).toLocaleDateString("en-GB")}
             </div>
@@ -138,13 +138,13 @@ export default function EmployeeDetails() {
           <div className="row mt-3 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Role
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {role.name}
             </div>
@@ -152,13 +152,13 @@ export default function EmployeeDetails() {
           <div className="row mt-3 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Reporting Manager
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {`${ReportingManager.firstName} ${ReportingManager.lastName}`}
             </div>
@@ -166,13 +166,13 @@ export default function EmployeeDetails() {
           <div className="row mt-3 ms-1 ">
             <div
               className="col-4 "
-              style={{ fontSize: "12px", color: "#918A8A" }}
+              style={{ fontSize: "14px", color: "#918A8A" }}
             >
               Skills
             </div>
             <div
               className="col-8"
-              style={{ fontSize: "12px", fontWeight: "600", color: "#000000" }}
+              style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
               {Skills.length > 0 ? (
                 <div>
@@ -181,7 +181,7 @@ export default function EmployeeDetails() {
                       <p
                         key={index}
                         style={{
-                          fontSize: "12px",
+                          fontSize: "14px",
                           display: "flex",
                           marginRight: "5px",
                         }}
@@ -196,7 +196,7 @@ export default function EmployeeDetails() {
                         className="tooltip-button "
                         onClick={toggleTooltip}
                         style={{
-                          fontSize: "12px",
+                          fontSize: "14px",
                           color: "#139BFF",
                           paddingBottom: "15px",
                         }}
@@ -210,7 +210,7 @@ export default function EmployeeDetails() {
                   {isTooltipVisible && (
                     <div className="tooltip-box" style={{ marginLeft: "35px" }}>
                       <div className="tooltip-header">
-                        <span style={{ fontSize: "12px", padding: "0px 7px" }}>
+                        <span style={{ fontSize: "14px", padding: "0px 7px" }}>
                           Skill Sets
                         </span>
                       </div>
@@ -223,7 +223,7 @@ export default function EmployeeDetails() {
                           borderRadius: "4px",
                           height: "100px",
                           flexWrap: "wrap",
-                          fontSize: "12px",
+                          fontSize: "14px",
                           fontWeight: "600",
                           color: "#000000",
                         }}
@@ -232,7 +232,7 @@ export default function EmployeeDetails() {
                           <li
                             key={index}
                             style={{
-                              fontSize: "12px",
+                              fontSize: "14px",
                               color: "white",
                               padding: "0px 7px",
                             }}
@@ -253,87 +253,134 @@ export default function EmployeeDetails() {
 
         <div className="working-details col-8">
           <div className="project-list mt-3">Project list</div>
-          <table className="employeeTable" style={{ width: "100%" }}>
-            <thead className="employee-Details-table">
-              <tr>
-                <th style={{ padding: "0px 8px" }}>Project Name</th>
-                <th>Client Name</th>
-                <th>Project Manager</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employeeTracking.map((obj, index) => {
-                const dates = obj.period.split(" to ");
-                const fromDate = dates[0];
-                const toDate = dates[1];
-                return obj.bench === true ? (
-                  <tr key={index}>
-                    <td>
-                      <p style={{ margin: "0", padding: "0px 8px" }}>Bench</p>
-                    </td>
-                    <td>
-                      <p
-                        style={{
-                          fontWeight: "800",
-                          margin: "0",
-                          padding: "0px 8px",
-                        }}
-                      >
-                        --
-                      </p>
-                    </td>
-                    <td>
-                      <p
-                        style={{
-                          fontWeight: "800",
-                          margin: "0",
-                          padding: "0px 8px",
-                        }}
-                      >
-                        --
-                      </p>
-                    </td>
-                    <td> {fromDate}</td>
-                    <td> {toDate}</td>
-                    <td></td>
-                  </tr>
-                ) : (
-                  <tr key={index}>
-                    <td style={{ padding: "0px 8px" }}>
-                      {obj.project.projectName}
-                    </td>
-                    <td>{obj.client.clientName}</td>
-                    <td>
-                      {obj.projectManager.firstName}{" "}
-                      {obj.projectManager.lastName}
-                    </td>
-                    <td>{fromDate}</td>
-                    {toDate == "present" ? (
+          <div
+            style={{
+              maxHeight: "350px",
+              overflowY: "auto",
+              overflowX: "hidden",
+
+              padding: "0px 10px",
+            }}
+          >
+            <table className="employeeTable" style={{ width: "100%" }}>
+              <thead
+                className="employee-Details-table"
+                style={{
+                  position: "sticky",
+                  top: "0px",
+                  left: "0px",
+                  right: "0px",
+                }}
+              >
+                <tr>
+                  <th style={{ padding: "0px 8px", fontSize: "14px" }}>
+                    Project Name
+                  </th>
+                  <th style={{ fontSize: "14px" }}>Client Name</th>
+                  <th style={{ fontSize: "14px" }}>Project Manager</th>
+                  <th style={{ fontSize: "14px" }}>Start Date</th>
+                  <th style={{ fontSize: "14px" }}>End Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {employeeTracking.map((obj, index) => {
+                  const dates = obj.period.split(" to ");
+                  const fromDate = dates[0];
+                  const toDate = dates[1];
+                  return obj.bench === true ? (
+                    <tr key={index}>
                       <td>
-                        {
-                          <p
-                            style={{
-                              fontWeight: "800",
-                              margin: "0",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            --
-                          </p>
-                        }
+                        <p
+                          style={{
+                            margin: "0",
+                            padding: "0px 8px",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Bench
+                        </p>
                       </td>
-                    ) : (
-                      <td>{toDate}</td>
-                    )}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      <td>
+                        <p
+                          style={{
+                            fontWeight: "800",
+                            margin: "0",
+                            padding: "0px 8px",
+                            fontSize: "14px",
+                          }}
+                        >
+                          --
+                        </p>
+                      </td>
+                      <td>
+                        <p
+                          style={{
+                            fontWeight: "800",
+                            margin: "0",
+                            padding: "0px 8px",
+                            fontSize: "14px",
+                          }}
+                        >
+                          --
+                        </p>
+                      </td>
+                      <td style={{ fontSize: "14px" }}> {fromDate}</td>
+                      <td style={{ fontSize: "14px" }}> {toDate}</td>
+                      <td></td>
+                    </tr>
+                  ) : (
+                    <tr key={index}>
+                      <td
+                        style={{ padding: "0px 8px", fontSize: "14px" }}
+                        className="viewEmployee-Trace-Data"
+                      >
+                        {obj.project.projectName}
+                      </td>
+                      <td
+                        className="viewEmployee-Trace-Data"
+                        style={{ fontSize: "14px" }}
+                      >
+                        {obj.client.clientName}
+                      </td>
+                      <td
+                        className="viewEmployee-Trace-Data"
+                        style={{ fontSize: "14px" }}
+                      >
+                        {obj.projectManager.firstName}{" "}
+                        {obj.projectManager.lastName}
+                      </td>
+                      <td
+                        className="viewEmployee-Trace-Data"
+                        style={{ fontSize: "14px" }}
+                      >
+                        {fromDate}
+                      </td>
+                      {toDate == "present" ? (
+                        <td>
+                          {
+                            <p
+                              style={{
+                                fontWeight: "800",
+                                margin: "0",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "start",
+                                fontSize: "14px",
+                              }}
+                            >
+                              --
+                            </p>
+                          }
+                        </td>
+                      ) : (
+                        <td style={{ fontSize: "14px" }}>{toDate}</td>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

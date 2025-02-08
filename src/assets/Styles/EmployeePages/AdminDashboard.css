@@ -16,7 +16,8 @@
 }
 .ActiveEmployeeContent {
   text-align: left;
-  font: normal normal bold 12px/24px Segoe UI;
+  font: normal normal bold 14px/24px Segoe UI;
+  font-size: 14px;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
@@ -24,14 +25,14 @@
 }
 .total_employees_content {
   text-align: left;
-  font: normal normal normal 12px/24px Segoe UI;
+  font: normal normal normal 14px/24px Segoe UI;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
 }
 .billble_content {
   text-align: left;
-  font: normal normal normal 12px/24px Segoe UI;
+  font: normal normal normal 14px/24px Segoe UI;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
@@ -70,7 +71,7 @@
 
 .Add_Employee_content {
   text-align: left;
-  font: normal normal 600 12px/30px Segoe UI;
+  font: normal normal 600 14px/30px Segoe UI;
   letter-spacing: 0px;
   color: #000000;
   opacity: 1;
@@ -79,7 +80,7 @@
   cursor: pointer;
 }
 .adminName {
-  font: normal normal bold 12px/24px Segoe UI;
+  font: normal normal bold 14px/24px Segoe UI;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
@@ -87,7 +88,7 @@
 
 .Project_Updated_Span {
   text-align: left;
-  font: normal normal 600 12px/22px Segoe UI;
+  font: normal normal 600 14px/22px Segoe UI;
   letter-spacing: 0px;
   color: #000000;
   opacity: 1;
@@ -95,19 +96,19 @@
 
 .project_updated_name {
   text-align: left;
-  font: normal normal normal 12px/18px Segoe UI;
+  font: normal normal normal 14px/18px Segoe UI;
   letter-spacing: 0px;
   color: #000000;
 }
 .updated_task_content {
   text-align: left;
-  font: normal normal normal 12px/18px Segoe UI;
+  font: normal normal normal 14px/18px Segoe UI;
   letter-spacing: 0px;
   color: #bfbfbf;
 }
 .updated_time {
   text-align: left;
-  font: normal normal normal 12px/18px Segoe UI;
+  font: normal normal normal 14px/18px Segoe UI;
   letter-spacing: 0px;
   color: #bfbfbf;
   opacity: 1;

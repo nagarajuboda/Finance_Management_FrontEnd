@@ -293,7 +293,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -306,7 +306,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "14px",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -314,16 +314,17 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "40px",
+                    // padding: "8px 12px",
+                    padding: "25px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1rem",
                     transform: "translate(14px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -332,7 +333,7 @@ export default function AddEmployee() {
               {errors.employeeId && (
                 <span
                   className="error ms-1"
-                  style={{ fontSize: "13px", color: "red" }}
+                  style={{ fontSize: "12px", color: "red" }}
                 >
                   {errors.employeeId}
                 </span>
@@ -669,7 +670,7 @@ export default function AddEmployee() {
                 {roles && roles.length > 0 ? (
                   roles.map((role, index) => (
                     <MenuItem key={index} value={role.id}>
-                      <span style={{ fontSize: "12px" }}> {role.name}</span>
+                      <span style={{ fontSize: "14px" }}> {role.name}</span>
                     </MenuItem>
                   ))
                 ) : (
@@ -679,7 +680,7 @@ export default function AddEmployee() {
               {errors.role && (
                 <span
                   className="error ms-1"
-                  style={{ fontSize: "13px", color: "red" }}
+                  style={{ fontSize: "12px", color: "red" }}
                 >
                   {errors.role}
                 </span>
@@ -738,7 +739,7 @@ export default function AddEmployee() {
                 {employees && employees.length > 0 ? (
                   employees.map((emp, index) => (
                     <MenuItem key={index} value={emp.employee.email}>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: "14px" }}>
                         {emp.employee.firstName} {emp.employee.lastName}
                       </span>
                     </MenuItem>
@@ -750,7 +751,7 @@ export default function AddEmployee() {
               {errors.projectManager && (
                 <span
                   className="error ms-1"
-                  style={{ fontSize: "13px", color: "red" }}
+                  style={{ fontSize: "12px", color: "red" }}
                 >
                   {errors.projectManager}
                 </span>
@@ -802,7 +803,7 @@ export default function AddEmployee() {
                       transform: "translate(14px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "14px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -812,8 +813,8 @@ export default function AddEmployee() {
                 <img
                   src={pulsimage}
                   alt=""
-                  width="35px"
-                  height="36px"
+                  width="40px"
+                  height="40px"
                   onClick={addName}
                   style={{ cursor: "pointer" }}
                 />
@@ -858,7 +859,7 @@ export default function AddEmployee() {
                   >
                     <p
                       className="ms-2 mt-3  "
-                      style={{ fontSize: "12px", width: "auto" }}
+                      style={{ fontSize: "14px", width: "auto" }}
                     >
                       {name}
                     </p>

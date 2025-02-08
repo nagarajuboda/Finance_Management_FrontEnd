@@ -168,8 +168,8 @@ const Sidebar = ({ children }) => {
                   cursor: "pointer",
                   marginTop: "12px",
                   marginLeft: "13px",
-                  height: "27px",
-                  width: "27px",
+                  height: "34px",
+                  width: "34px",
                 }}
               />
             </div>
@@ -179,10 +179,10 @@ const Sidebar = ({ children }) => {
                 alt="Logo"
                 className="archentslogo"
                 style={{
-                  marginLeft: "16px",
+                  marginLeft: "2px",
                   marginTop: "17px",
-                  height: "21px",
-                  width: "93px",
+                  height: "25px",
+                  width: "100px",
                 }}
               />
             )}
@@ -227,11 +227,14 @@ const Sidebar = ({ children }) => {
                     className="link_text"
                   >
                     {index === 0 ? (
-                      <div className="menuname1" style={{ fontSize: "12px" }}>
+                      <div className="menuname1" style={{ fontSize: "14px" }}>
                         {item.name}
                       </div>
                     ) : (
-                      <div className="menuname" style={{ fontSize: "12px" }}>
+                      <div
+                        className="menuname"
+                        style={{ fontSize: "14px", marginLeft: "8px" }}
+                      >
                         {item.name}
                       </div>
                     )}
