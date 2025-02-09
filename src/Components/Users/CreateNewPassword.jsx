@@ -178,7 +178,7 @@ export default function CreateNewPassword() {
             <div className="mt-2">
               <div className="password-container">
                 <label className="inputlable">Confirm Password</label>
-                <div className="password-field">
+                <div className="password-field1">
                   <input
                     type={showPassword11 ? "text" : "password"}
                     placeholder="Confirm Password"

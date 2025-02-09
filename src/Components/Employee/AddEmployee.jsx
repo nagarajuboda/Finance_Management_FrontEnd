@@ -293,7 +293,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "14px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -306,25 +306,24 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "14px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
-                    transform: "translate(15px, 9px)",
+                    transform: "translate(20px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "40px",
-                    // padding: "8px 12px",
-                    padding: "25px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
                     fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(9px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "14px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -349,7 +348,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -362,7 +361,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -370,16 +369,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -403,7 +402,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -416,7 +415,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -424,16 +423,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -449,7 +448,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -462,7 +461,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -470,16 +469,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -505,7 +504,7 @@ export default function AddEmployee() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -518,7 +517,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -526,16 +525,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -570,7 +569,7 @@ export default function AddEmployee() {
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {
-                          fontSize: "12px",
+                          fontSize: "14px",
                           "& fieldset": {
                             border: "1px solid #DCDCDC",
                           },
@@ -583,7 +582,7 @@ export default function AddEmployee() {
                         },
                         "& .MuiInputLabel-root": {
                           color: "#000000",
-
+                          fontSize: "1.1rem",
                           fontWeight: "500",
                           transform: "translate(15px, 9px)",
                           "&.Mui-focused": {
@@ -591,15 +590,16 @@ export default function AddEmployee() {
                           },
                         },
                         "& .MuiOutlinedInput-input": {
-                          height: "22px",
-                          padding: "8px 12px",
+                          height: "36px",
+                          padding: "10px 12px",
+                          fontSize: "14px",
                         },
                         "& .MuiInputLabel-shrink": {
-                          fontSize: "12px",
-                          transform: "translate(14px, -9px) scale(0.75)",
+                          fontSize: "1.1rem",
+                          transform: "translate(8px, -9px) scale(0.75)",
                         },
                         "& input::placeholder": {
-                          fontSize: "12px",
+                          fontSize: "14px",
                           color: "#AEAEAE",
                         },
                       }}
@@ -629,7 +629,7 @@ export default function AddEmployee() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -642,7 +642,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -650,16 +650,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -680,7 +680,7 @@ export default function AddEmployee() {
               {errors.role && (
                 <span
                   className="error ms-1"
-                  style={{ fontSize: "12px", color: "red" }}
+                  style={{ fontSize: "13px", color: "red" }}
                 >
                   {errors.role}
                 </span>
@@ -698,7 +698,7 @@ export default function AddEmployee() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -711,7 +711,7 @@ export default function AddEmployee() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -719,16 +719,16 @@ export default function AddEmployee() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -751,7 +751,7 @@ export default function AddEmployee() {
               {errors.projectManager && (
                 <span
                   className="error ms-1"
-                  style={{ fontSize: "12px", color: "red" }}
+                  style={{ fontSize: "13px", color: "red" }}
                 >
                   {errors.projectManager}
                 </span>
@@ -768,12 +768,12 @@ export default function AddEmployee() {
                   value={name}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
+                  width="245px"
                   fullWidth
                   sx={{
-                    width: "215px",
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
-
+                      fontSize: "14px",
+                      width: "245px",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -786,7 +786,7 @@ export default function AddEmployee() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -794,13 +794,13 @@ export default function AddEmployee() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
-                      fontSize: "12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
                       fontSize: "14px",
@@ -884,7 +884,7 @@ export default function AddEmployee() {
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               <button
-                className=" addEmployeeSubmitbutton me-1 "
+                className=" addEmployeeSubmitbutton me-2 "
                 onSubmit={AddEmployeeForm}
               >
                 <span className="addemployeespan ">submit</span>

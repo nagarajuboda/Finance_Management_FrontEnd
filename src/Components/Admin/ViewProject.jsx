@@ -699,12 +699,17 @@ export function ViewProject() {
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modalheader">
-              <h2 className="employeeDetailsContent">Update Project Details</h2>
+              <h2
+                className="employeeDetailsContent"
+                style={{ fontSize: "14px" }}
+              >
+                Update Project Details
+              </h2>
               <span className="cancelicon1">
                 <i
                   className="bi bi-x-lg"
                   onClick={handleEditClose}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", fontSize: "1.2rem" }}
                 ></i>
               </span>
             </div>
@@ -728,7 +733,7 @@ export function ViewProject() {
                   select
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "1rem",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -741,7 +746,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-                      fontSize: "0.85rem",
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -749,16 +754,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
-                      fontSize: "1rem",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -769,7 +774,7 @@ export function ViewProject() {
                   {Projects && Projects.length > 0 ? (
                     Projects.map((project, index) => (
                       <MenuItem key={index} value={project.project.projectID}>
-                        <span style={{ fontSize: "12px" }}>
+                        <span style={{ fontSize: "14px" }}>
                           {project.project.projectID}
                         </span>
                       </MenuItem>
@@ -797,7 +802,7 @@ export function ViewProject() {
                   fullWidth
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -810,7 +815,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -818,15 +823,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -849,7 +855,7 @@ export function ViewProject() {
                   fullWidth
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -862,7 +868,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -870,15 +876,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -903,7 +910,7 @@ export function ViewProject() {
                   fullWidth
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -916,7 +923,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -924,15 +931,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -948,7 +956,7 @@ export function ViewProject() {
                   fullWidth
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -961,7 +969,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -969,15 +977,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -995,7 +1004,7 @@ export function ViewProject() {
                   select
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -1008,24 +1017,24 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-                      fontSize: "12px",
-                      fontWeight: "600",
+                      fontSize: "1.1rem",
+                      fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
                         color: "black",
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
-                      fontSize: "1rem",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -1036,7 +1045,7 @@ export function ViewProject() {
                   {clients && clients.length > 0 ? (
                     clients.map((client, index) => (
                       <MenuItem key={client.id} value={client.id}>
-                        <span style={{ fontSize: "12px" }}>
+                        <span style={{ fontSize: "14px" }}>
                           {" "}
                           {client.clientEmailId}
                         </span>
@@ -1067,7 +1076,7 @@ export function ViewProject() {
                   select
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -1080,7 +1089,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -1088,15 +1097,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -1107,7 +1117,7 @@ export function ViewProject() {
                   {employeelist && employeelist.length > 0 ? (
                     employeelist.map((emp) => (
                       <MenuItem key={emp.employee.id} value={emp.employee.id}>
-                        <span style={{ fontSize: "12px" }}>
+                        <span style={{ fontSize: "14px" }}>
                           {emp.employee.firstName} {emp.employee.lastName}
                         </span>
                       </MenuItem>
@@ -1128,7 +1138,7 @@ export function ViewProject() {
                   select
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -1141,6 +1151,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -1148,23 +1159,24 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
                 >
-                  <MenuItem value={1} style={{ fontSize: "12px" }}>
+                  <MenuItem value={1} style={{ fontSize: "14px" }}>
                     Active
                   </MenuItem>
-                  <MenuItem value={0} style={{ fontSize: "12px" }}>
+                  <MenuItem value={0} style={{ fontSize: "14px" }}>
                     InActive
                   </MenuItem>
                 </TextField>
@@ -1180,7 +1192,7 @@ export function ViewProject() {
                   select
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -1193,6 +1205,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -1200,15 +1213,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -1264,10 +1278,10 @@ export function ViewProject() {
                   className="textareaclass"
                   fullWidth
                   multiline
-                  rows={2}
+                  rows={1}
                   sx={{
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -1280,6 +1294,7 @@ export function ViewProject() {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -1287,14 +1302,16 @@ export function ViewProject() {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      boxSizing: "border-box",
+                      height: "40px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
-                    "& textarea::placeholder": {
-                      fontSize: "12px",
+                    "& input::placeholder": {
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
@@ -1304,7 +1321,7 @@ export function ViewProject() {
             <div
               className=" row"
               style={{
-                marginTop: "20px",
+                marginTop: "50px",
                 marginLeft: "7px",
                 marginRight: "12px",
               }}

@@ -162,7 +162,7 @@ const EditEmployeePopup = () => {
               <i
                 className="bi bi-x-lg"
                 onClick={handleEditClose1}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", fontSize: "1.3rem" }}
               ></i>
             </span>
           </div>
@@ -186,7 +186,7 @@ const EditEmployeePopup = () => {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -199,7 +199,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -207,16 +207,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -227,7 +227,7 @@ const EditEmployeePopup = () => {
                 {employeelist && employeelist.length > 0 ? (
                   employeelist.map((emp, index) => (
                     <MenuItem key={index} value={emp.employee.employeeId}>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: "14px" }}>
                         {emp.employee.employeeId}
                       </span>
                     </MenuItem>
@@ -247,7 +247,7 @@ const EditEmployeePopup = () => {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -260,7 +260,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -268,15 +268,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -292,7 +293,7 @@ const EditEmployeePopup = () => {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -305,7 +306,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -313,15 +314,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -346,7 +348,7 @@ const EditEmployeePopup = () => {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -359,7 +361,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -367,15 +369,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -391,7 +394,7 @@ const EditEmployeePopup = () => {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -404,7 +407,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -412,15 +415,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -443,7 +447,7 @@ const EditEmployeePopup = () => {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -456,7 +460,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -464,15 +468,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -499,7 +504,7 @@ const EditEmployeePopup = () => {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -512,7 +517,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -520,23 +525,24 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
               >
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "14px" }}>
                   Active
                 </MenuItem>
-                <MenuItem value={0} style={{ fontSize: "12px" }}>
+                <MenuItem value={0} style={{ fontSize: "14px" }}>
                   InActive
                 </MenuItem>
               </TextField>
@@ -552,7 +558,7 @@ const EditEmployeePopup = () => {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -565,7 +571,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -573,15 +579,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -592,7 +599,7 @@ const EditEmployeePopup = () => {
                 {roleList && roleList.length > 0 ? (
                   roleList.map((role, index) => (
                     <MenuItem key={role.id} value={role.id}>
-                      <span style={{ fontSize: "12px" }}> {role.name}</span>
+                      <span style={{ fontSize: "14px" }}> {role.name}</span>
                     </MenuItem>
                   ))
                 ) : (
@@ -610,7 +617,7 @@ const EditEmployeePopup = () => {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -623,7 +630,7 @@ const EditEmployeePopup = () => {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -631,15 +638,16 @@ const EditEmployeePopup = () => {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -650,7 +658,7 @@ const EditEmployeePopup = () => {
                 {employeelist && employeelist.length > 0 ? (
                   employeelist.map((emp) => (
                     <MenuItem key={emp.employee.id} value={emp.employee.id}>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: "14px" }}>
                         {emp.employee.firstName} {emp.employee.lastName}
                       </span>
                     </MenuItem>
@@ -682,9 +690,8 @@ const EditEmployeePopup = () => {
                   onKeyPress={handleKeyPress}
                   fullWidth
                   sx={{
-                    width: "240px",
                     "& .MuiOutlinedInput-root": {
-                      fontSize: "12px",
+                      fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
                       },
@@ -697,7 +704,7 @@ const EditEmployeePopup = () => {
                     },
                     "& .MuiInputLabel-root": {
                       color: "#000000",
-
+                      fontSize: "1.1rem",
                       fontWeight: "500",
                       transform: "translate(15px, 9px)",
                       "&.Mui-focused": {
@@ -705,26 +712,27 @@ const EditEmployeePopup = () => {
                       },
                     },
                     "& .MuiOutlinedInput-input": {
-                      height: "22px",
-                      padding: "8px 12px",
+                      height: "36px",
+                      padding: "10px 12px",
+                      fontSize: "14px",
                     },
                     "& .MuiInputLabel-shrink": {
-                      fontSize: "1rem",
-                      transform: "translate(14px, -9px) scale(0.75)",
+                      fontSize: "1.1rem",
+                      transform: "translate(8px, -9px) scale(0.75)",
                     },
                     "& input::placeholder": {
-                      fontSize: "12px",
+                      fontSize: "13px",
                       color: "#AEAEAE",
                     },
                   }}
                 />
               </div>
-              <div className="ms-2">
+              <div className="">
                 <img
                   src={pulsimage}
                   alt=""
-                  width="35px"
-                  height="36px"
+                  width="38px"
+                  height="38px"
                   onClick={addName}
                   style={{ cursor: "pointer" }}
                 />
@@ -742,7 +750,7 @@ const EditEmployeePopup = () => {
                   padding: "5px",
                   gap: "2px",
 
-                  height: "70px",
+                  height: "100px",
 
                   borderRadius: "4px",
                   display: "flex",
@@ -761,7 +769,7 @@ const EditEmployeePopup = () => {
                   >
                     <p
                       className="ms-2 mt-3  "
-                      style={{ fontSize: "12px", width: "auto" }}
+                      style={{ fontSize: "14px", width: "auto" }}
                     >
                       {name.skill}
                     </p>

@@ -272,6 +272,7 @@ export default function Roles() {
       `https://localhost:44305/api/Roles/${roleId}`
     );
     var result = response.data;
+    console.log(response, "response");
     if (result.message != null) {
       fetchRoles();
       setDeleterolepopup(true);
@@ -588,6 +589,43 @@ export default function Roles() {
                 value={values.RoleName}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "14px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "1px",
+                  },
+
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "13px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
               {errors.RoleName && (
@@ -616,7 +654,7 @@ export default function Roles() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -626,6 +664,29 @@ export default function Roles() {
                     "&.Mui-focused fieldset": {
                       border: "1px solid #DCDCDC",
                     },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "1px",
+                  },
+
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "13px",
+                    color: "#AEAEAE",
                   },
                 }}
               >
@@ -701,6 +762,42 @@ export default function Roles() {
                 value={role.name}
                 onChange={handleChange1}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "14px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "14px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
             </div>
@@ -721,7 +818,7 @@ export default function Roles() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -732,19 +829,41 @@ export default function Roles() {
                       border: "1px solid #DCDCDC",
                     },
                   },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "14px",
+                    color: "#AEAEAE",
+                  },
                 }}
               >
-                <MenuItem value="" style={{ fontSize: "12px" }}>
+                <MenuItem value="" style={{ fontSize: "14px" }}>
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "14px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "14px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "14px" }}>
                   High
                 </MenuItem>
               </TextField>

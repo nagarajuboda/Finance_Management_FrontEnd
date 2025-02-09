@@ -10,10 +10,10 @@
 }
 
 .modal-content {
-  top: 75px;
-  left: 160px;
+  top: 92px;
+  left: 281px;
   width: 925px;
-  height: 445px;
+  height: 485px;
 
   background: #ffffff 0% 0% no-repeat padding-box;
   border: 1px solid #cecece;
@@ -87,10 +87,13 @@
   background: #139bff 0% 0% no-repeat padding-box;
   opacity: 1;
 }
+.cancelicon1 {
+  font-size: 16px;
+}
 .employeeDetailsContent {
   height: 17px;
   font-family: "Segoe UI", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: bold;
   line-height: 19px;
   letter-spacing: 0px;
@@ -127,7 +130,6 @@
 .EditformSubmit {
   width: 85px;
   height: 36px;
-
   background: #139bff 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -135,11 +137,10 @@
 .editformspan {
   width: 30px;
   height: 14px;
-
   text-align: center;
   font-family: Raleway;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 30px;
   font-style: normal;
   letter-spacing: 0px;
@@ -150,7 +151,6 @@
 .EditformCancel {
   width: 85px;
   height: 36px;
-
   background: #e5e5e5 0% 0% no-repeat padding-box;
   border-radius: 5px;
   opacity: 1;
@@ -162,7 +162,7 @@
   text-align: center;
   font-family: Raleway;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 29px;
   font-style: normal;
   letter-spacing: 0px;

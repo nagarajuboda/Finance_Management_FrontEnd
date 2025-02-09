@@ -277,7 +277,6 @@ export default function Employees() {
                 disabled
                 style={{
                   fontSize: "13px",
-
                   color: "black",
                 }}
                 className="Show-Deleted-employee-button ms-1"
