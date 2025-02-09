@@ -339,11 +339,17 @@ export default function Roles() {
           <div className="col-6 d-flex justify-content-end">
             <div className="me-2">
               <button
-                className="DelRecordbutton me-2"
+                className="btn btn-danger deleteSelected"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
+                style={{
+                  fontSize: "14px",
+                  height: "36px",
+                  display: "flex",
+                  justifyContent: "end",
+                }}
               >
-                <span className="delSelectedSpan">Delete Selected</span>
+                Delete Selected
               </button>
             </div>
             <div>
@@ -591,7 +597,7 @@ export default function Roles() {
                 fullWidth
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "14px",
+                    fontSize: "1.1rempx",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -614,7 +620,7 @@ export default function Roles() {
                   "& .MuiOutlinedInput-input": {
                     height: "36px",
                     padding: "10px 12px",
-                    fontSize: "1px",
+                    fontSize: "14px",
                   },
 
                   "& .MuiInputLabel-shrink": {
@@ -677,7 +683,7 @@ export default function Roles() {
                   "& .MuiOutlinedInput-input": {
                     height: "36px",
                     padding: "10px 12px",
-                    fontSize: "1px",
+                    fontSize: "14px",
                   },
 
                   "& .MuiInputLabel-shrink": {
