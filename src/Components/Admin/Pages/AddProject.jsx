@@ -965,9 +965,9 @@ export default function AddProject() {
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     fontSize: "1.1rem",
-                    height: "85px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
+                      height: "80px",
                     },
                     "&:hover fieldset": {
                       border: "1px solid #DCDCDC",
@@ -981,7 +981,7 @@ export default function AddProject() {
                     fontSize: "1.1rem",
                     fontWeight: "500",
 
-                    transform: "translate(15px, 9px)",
+                    transform: "translate(10px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
@@ -1015,7 +1015,7 @@ export default function AddProject() {
           <div
             className="row m-0"
             style={{
-              paddingTop: "20px",
+              paddingTop: "50px",
             }}
           >
             <div className="col-10"></div>

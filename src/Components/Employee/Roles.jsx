@@ -685,13 +685,12 @@ export default function Roles() {
                     padding: "10px 12px",
                     fontSize: "14px",
                   },
-
                   "& .MuiInputLabel-shrink": {
                     fontSize: "1.1rem",
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}

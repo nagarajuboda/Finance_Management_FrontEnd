@@ -1284,6 +1284,7 @@ export function ViewProject() {
                       fontSize: "1.1rem",
                       "& fieldset": {
                         border: "1px solid #DCDCDC",
+                        height: "80px",
                       },
                       "&:hover fieldset": {
                         border: "1px solid #DCDCDC",
