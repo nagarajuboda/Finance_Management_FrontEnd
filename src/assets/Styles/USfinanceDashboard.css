@@ -1,7 +1,7 @@
 .Dashboard-paragrapha {
   text-align: left;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 24px;
   font-family: "Segoe UI";
   letter-spacing: 0px;
@@ -46,6 +46,48 @@
 }
 .recharts-wrapper {
   width: none !important;
+}
+/* .UpcommingUsfinance {
+  border-right: 3.5px solid #a5aeb4;
+  color: #a5aeb4;
+  display: flex;
+} */
+.UpcommingUsfinance {
+  position: relative;
+  color: #a5aeb4;
+  text-align: center;
+}
+
+.UpcommingUsfinance::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2.5px;
+  background-color: #a5aeb4;
+  transform: translateX(-50%);
+}
+.Revenue-overview {
+  /* width: 795px; */
+  height: 444px;
+  /* UI Properties */
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 18px #64646430;
+  border-radius: 10px;
+  opacity: 1;
+  margin-top: 15px;
+}
+.Revenue-overview-span {
+  text-align: left;
+  font: normal normal bold 16px/24px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.Revenue-overview-maindiv {
+  margin-top: 50px;
 }
 .upcommingtimesheet {
   text-align: left;

@@ -331,11 +331,11 @@ const Home = () => {
   }
 
   return (
-    <div className="row m-0">
-      <div className="imagediv col-6">
+    <div className="row m-0 p-0">
+      <div className="imagediv col-6 p-0">
         <img src={LoginImage} alt="" className="Loginimagelogo" />
       </div>
-      <div className="formdiv col-6">
+      <div className="formdiv col-6 ">
         <div className="">
           <img src={archetslogo} alt="" className="archentslogo" />
         </div>
