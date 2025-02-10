@@ -160,7 +160,11 @@ export default function EmployeeDetails() {
               className="col-8"
               style={{ fontSize: "14px", fontWeight: "600", color: "#000000" }}
             >
-              {`${ReportingManager.firstName} ${ReportingManager.lastName}`}
+              {ReportingManager
+                ? `${ReportingManager?.firstName ?? ""} ${
+                    ReportingManager?.lastName ?? ""
+                  }`.trim() || "N/A"
+                : "N/A"}
             </div>
           </div>
           <div className="row mt-3 ms-1 ">

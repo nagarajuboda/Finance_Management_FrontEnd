@@ -748,14 +748,14 @@ export default function AddEmployee() {
                   <MenuItem disabled>No Employees Found</MenuItem>
                 )}
               </TextField>
-              {errors.projectManager && (
+              {/* {errors.projectManager && (
                 <span
                   className="error ms-1"
                   style={{ fontSize: "13px", color: "red" }}
                 >
                   {errors.projectManager}
                 </span>
-              )}
+              )} */}
             </div>
           </div>
           <div className="row m-0" style={{ paddingTop: "30px" }}>

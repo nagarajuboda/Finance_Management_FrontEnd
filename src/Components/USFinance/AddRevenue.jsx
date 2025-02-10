@@ -430,7 +430,12 @@ export default function AddRevenue() {
                 onClick={SaveForm}
                 disabled={disiblebuttons}
               >
-                <span className="AddRevneueSaveButtonSpan"> Save</span>
+                <span
+                  className="AddRevneueSaveButtonSpan"
+                  style={{ fontSize: "14px" }}
+                >
+                  Save
+                </span>
               </button>
               <button
                 type="button"
