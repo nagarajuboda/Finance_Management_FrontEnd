@@ -836,7 +836,7 @@ export default function Roles() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "14px",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -849,7 +849,7 @@ export default function Roles() {
                     fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
