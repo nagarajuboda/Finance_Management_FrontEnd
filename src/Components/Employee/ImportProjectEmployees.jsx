@@ -67,7 +67,7 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
           .filter(
             (employeeId) => employeeId !== null && employeeId !== undefined
           );
-        console.log(emails, "=========>");
+
         let formattedEmails = `<span style:"color:"black">Employees Already exsit:</span><br>${emails.join(
           "<br>"
         )}`;

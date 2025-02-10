@@ -391,7 +391,7 @@ export default function AdminDashboard() {
           style={{ width: "32%", marginLeft: "16px" }}
         >
           <div className="mt-2">
-            <p className="ActiveEmployeeContent">Employees on Bench</p>
+            <span className="ActiveEmployeeContent">Employees on Bench</span>
 
             <div
               style={{
@@ -542,7 +542,7 @@ export default function AdminDashboard() {
             <span style={{ fontSize: "20px" }} className="lastrowcontent">
               {totalEmployees}
             </span>
-            <span style={{ fontSize: "13px" }} className="lastrowcontent">
+            <span style={{ fontSize: "14px" }} className="lastrowcontent">
               Active Employees
             </span>
           </div>
@@ -559,8 +559,8 @@ export default function AdminDashboard() {
             <span style={{ fontSize: "20px" }} className="lastrowcontent">
               {totalBench}
             </span>
-            <span style={{ fontSize: "13px" }} className="lastrowcontent">
-              Employees on bench
+            <span style={{ fontSize: "14px" }} className="lastrowcontent">
+              Employees on Bench
             </span>
           </div>
         </div>
@@ -582,7 +582,7 @@ export default function AdminDashboard() {
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "24px",
+                  fontSize: "28px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
             </div>
             <div
               style={{
-                marginTop: "20px",
+                marginTop: "12px",
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "10px",
@@ -633,7 +633,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   In Progress
@@ -651,7 +651,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   Completed
@@ -669,7 +669,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   Not Started
@@ -693,7 +693,7 @@ export default function AdminDashboard() {
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "24px",
+                  fontSize: "28px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
@@ -726,7 +726,7 @@ export default function AdminDashboard() {
             </div>
             <div
               style={{
-                marginTop: "20px",
+                marginTop: "12px",
                 display: "flex",
                 justifyContent: "space-between",
                 gap: "10px",
@@ -744,7 +744,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   Planning
@@ -762,7 +762,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   Designing
@@ -780,7 +780,7 @@ export default function AdminDashboard() {
                   }}
                 ></span>
                 <span
-                  style={{ fontSize: "12px" }}
+                  style={{ fontSize: "13px" }}
                   className="ActiveProject_Inprogress_notstated"
                 >
                   Pre Construction
@@ -804,7 +804,7 @@ export default function AdminDashboard() {
                 class="bi bi-three-dots"
                 style={{
                   color: "#989898",
-                  fontSize: "24px",
+                  fontSize: "28px",
                   fontWeight: "600",
                   cursor: "pointer",
                 }}
@@ -853,12 +853,14 @@ export default function AdminDashboard() {
                   padding: "0px 20px",
                 }}
               >
-                <span className="adminName">loreum lpsum</span>
+                <span className="adminName" style={{ fontSize: "14px" }}>
+                  loreum lpsum
+                </span>
                 <i
                   class="bi bi-three-dots"
                   style={{
                     color: "#989898",
-                    fontSize: "24px",
+                    fontSize: "28px",
                     fontWeight: "600",
                     cursor: "pointer",
                   }}
@@ -866,12 +868,13 @@ export default function AdminDashboard() {
               </div>
               <div
                 style={{
-                  width: "80%",
-                  margin: "auto",
+                  width: "75%",
+                  // margin: "auto",
                   padding: "20px",
-                  marginTop: "20px",
+                  // marginTop: "20px",
                   border: "1px solid",
-                  paddingTop: "10px",
+                  // paddingTop: "10px",
+                  marginLeft: "100px",
                 }}
               >
                 <div>
@@ -908,18 +911,20 @@ export default function AdminDashboard() {
                   padding: "0px 20px",
                 }}
               >
-                <span className="adminName">Latest update</span>
+                <span className="adminName" style={{ fontSize: "14px" }}>
+                  Latest update
+                </span>
                 <i
                   class="bi bi-three-dots"
                   style={{
                     color: "#989898",
-                    fontSize: "24px",
+                    fontSize: "28px",
                     fontWeight: "600",
                     cursor: "pointer",
                   }}
                 ></i>
               </div>
-              <div className="latest_updatesImage row">
+              <div className="latest_updatesImage row mt-3">
                 <div className="row m-0">
                   <div className="col-2">
                     <div
@@ -954,7 +959,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="col-3  p-0">
-                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                    <span className="updated_time" style={{ fontSize: "13px" }}>
                       45 minutes ago
                     </span>
                   </div>
@@ -984,7 +989,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="col-3 p-0 ">
-                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                    <span className="updated_time" style={{ fontSize: "13px" }}>
                       45 minutes ago
                     </span>
                   </div>
@@ -1025,7 +1030,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="col-3  p-0">
-                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                    <span className="updated_time" style={{ fontSize: "13px" }}>
                       45 minutes ago
                     </span>
                   </div>
@@ -1066,7 +1071,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="col-3 p-0 ">
-                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                    <span className="updated_time" style={{ fontSize: "13px" }}>
                       45 minutes ago
                     </span>
                   </div>
@@ -1107,7 +1112,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <div className="col-3 p-0">
-                    <span className="updated_time" style={{ fontSize: "10px" }}>
+                    <span className="updated_time" style={{ fontSize: "13px" }}>
                       45 minutes ago
                     </span>
                   </div>
@@ -1117,8 +1122,9 @@ export default function AdminDashboard() {
                 style={{
                   border: "1px solid #64646430",
                   width: "85%",
+                  marginTop: "70px",
                 }}
-                className="ms-4 mt-3"
+                className="ms-4 "
               ></div>
               <div className="viewAlldiv">
                 <span className="ViewAll" style={{ cursor: "pointer" }}>

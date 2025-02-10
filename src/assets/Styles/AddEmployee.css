@@ -40,14 +40,16 @@
 .MuiFormControl-root {
   width: 100%;
 }
-
+.css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root {
+  line-height: 2.4375em;
+}
 .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input {
   padding: 0 !important;
   height: 36px !important;
 }
 
 .MuiOutlinedInput-root {
-  height: 35px !important;
+  height: 43px !important;
 }
 .addEmployeeSubmitbutton {
   width: 105px;
@@ -64,6 +66,7 @@
   letter-spacing: 0px;
   color: #ffffff;
   text-transform: uppercase;
+  font-size: 14px;
   opacity: 1;
 }
 .addemployeeResetbutton {
@@ -75,9 +78,10 @@
 }
 .resetspan {
   width: 37px;
+
   height: 14px;
   text-align: left;
-  font: normal normal bold 12px/30px Raleway;
+  font: normal normal bold 14px/30px Raleway;
   letter-spacing: 0px;
   color: #000000;
   text-transform: uppercase;
@@ -87,7 +91,8 @@
   margin-top: 23px !important;
 }
 .css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input {
-  height: 3px !important;
+  height: 36px !important;
+  font-size: 14px;
 }
 
 textarea .rows .css-w4nesw-MuiInputBase-input-MuiOutlinedInput-input {
@@ -96,7 +101,6 @@ textarea .rows .css-w4nesw-MuiInputBase-input-MuiOutlinedInput-input {
 .skillsetbox {
   width: auto;
   height: 36px;
-
   background: #f5f5f5 0% 0% no-repeat padding-box;
   border-radius: 5px;
 }

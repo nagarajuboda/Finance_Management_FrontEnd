@@ -146,11 +146,13 @@ export default function AddRevenue() {
         <span>
           <i
             class="bi bi-arrow-left"
-            style={{ fontSize: "20px", cursor: "pointer" }}
+            style={{ fontSize: "28px", cursor: "pointer" }}
             onClick={backtoProjectList}
           ></i>
         </span>
-        <span className="ms-3"> Project Details</span>
+        <span className="ms-3" style={{ fontSize: "16px" }}>
+          Project Details
+        </span>
       </div>
       <div className="addRevenueMaindiv p-2">
         <div
@@ -161,7 +163,9 @@ export default function AddRevenue() {
           }}
         >
           <div>
-            <span className="project_Name ms-2">{Project.projectName}</span>
+            <span className="project_Name ms-2" style={{ fontSize: "14px" }}>
+              {Project.projectName}
+            </span>
           </div>
           <div>
             <DatePicker
@@ -171,6 +175,7 @@ export default function AddRevenue() {
               showMonthYearPicker
               maxDate={new Date()}
               className="timesheet-datepicker me-2"
+              style={{ fontSize: "14px" }}
               customInput={
                 <div
                   style={{
@@ -181,6 +186,7 @@ export default function AddRevenue() {
                     padding: "0px 10px",
                     borderRadius: "5px",
                     backgroundColor: "#fff",
+                    fontSize: "14px",
                   }}
                 >
                   <span style={{ marginRight: "10px" }}>
@@ -210,27 +216,36 @@ export default function AddRevenue() {
           >
             <thead>
               <tr className="tableheader">
-                <th style={{ fontSize: "12px" }}>Name</th>
-                <th style={{ fontSize: "12px" }}>Email</th>
-                <th style={{ textAlign: "center" }}>Status</th>
-                <th style={{ textAlign: "center" }}>Role</th>
-                <th>Worked Hours</th>
-                <th style={{ textAlign: "center" }}>Rate per Hour</th>
-                <th style={{ textAlign: "center" }}>Total Revenue</th>
+                <th style={{ fontSize: "14px" }}>Name</th>
+                <th style={{ fontSize: "14px" }}>Email</th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>
+                  Status
+                </th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>Role</th>
+                <th style={{ fontSize: "14px" }}>Worked Hours</th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>
+                  Rate per Hour
+                </th>
+                <th style={{ textAlign: "center", fontSize: "14px" }}>
+                  Total Revenue
+                </th>
               </tr>
             </thead>
             <tbody>
               {TimeSheetdata.length === 0 ? (
                 <tr className="tablebody">
-                  <td colSpan="7" style={{ textAlign: "center" }}>
+                  <td
+                    colSpan="7"
+                    style={{ textAlign: "center", fontSize: "14px" }}
+                  >
                     No timesheet available for the selected month.
                   </td>
                 </tr>
               ) : (
                 TimeSheetdata.map((emp, index) => (
                   <tr key={index} className="tablebody">
-                    <td>{emp.name}</td>
-                    <td>{emp.email}</td>
+                    <td style={{ fontSize: "14px" }}>{emp.name}</td>
+                    <td style={{ fontSize: "14px" }}>{emp.email}</td>
                     <td>
                       <div
                         style={{
@@ -241,17 +256,21 @@ export default function AddRevenue() {
                           textAlign: "center",
                         }}
                       >
-                        <span>{emp.status === 1 ? "Active" : "Inactive"}</span>
+                        <span style={{ fontSize: "14px" }}>
+                          {emp.status === 1 ? "Active" : "Inactive"}
+                        </span>
                       </div>
                     </td>
-                    <td style={{ textAlign: "center" }}>{emp.role}</td>
+                    <td style={{ textAlign: "center", fontSize: "14px" }}>
+                      {emp.role}
+                    </td>
                     <td style={{ textAlign: "center" }}>
                       <input
                         type="text"
                         className="timesheet_input form-control  "
                         value={`${emp.hoursWorked} ${"Hrs"}`}
                         disabled
-                        style={{ textAlign: "end" }}
+                        style={{ textAlign: "end", fontSize: "14px" }}
                       />
                     </td>
                     <td style={{ textAlign: "center" }}>
@@ -266,16 +285,22 @@ export default function AddRevenue() {
                                   display: "flex",
                                   textAlign: "center",
                                   justifyContent: "center",
+                                  fontSize: "14px",
                                 }}
                               >
                                 <FaDollarSign
                                   className="mt-2 ms-1"
                                   style={{
-                                    fontSize: "0.70rem",
+                                    fontSize: "14px",
                                     textAlign: "center",
                                   }}
                                 />
-                                <p style={{ textAlign: "center" }}>
+                                <p
+                                  style={{
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   {obj.hourlyRate}
                                 </p>
                               </div>
@@ -285,6 +310,7 @@ export default function AddRevenue() {
                                 style={{
                                   display: "flex",
                                   justifyContent: "start",
+                                  fontSize: "14px",
                                 }}
                               >
                                 <input
@@ -341,6 +367,7 @@ export default function AddRevenue() {
                               style={{
                                 display: "flex",
                                 justifyContent: "center",
+                                fontSize: "14px",
                               }}
                             >
                               {obj.isSubmited === true ? (
@@ -348,10 +375,12 @@ export default function AddRevenue() {
                                   <FaDollarSign
                                     className="mt-2 ms-1"
                                     style={{
-                                      fontSize: "0.70rem",
+                                      fontSize: "14px",
                                     }}
                                   />
-                                  <p>{obj.totalRevenue}</p>
+                                  <p style={{ fontSize: "14px" }}>
+                                    {obj.totalRevenue}
+                                  </p>
                                 </div>
                               ) : (
                                 <input
@@ -363,7 +392,10 @@ export default function AddRevenue() {
                                     obj.totalRevenue
                                   }
                                   disabled={true}
-                                  style={{ textAlign: "center" }}
+                                  style={{
+                                    textAlign: "center",
+                                    fontSize: "14px",
+                                  }}
                                 />
                               )}
                             </div>
@@ -373,7 +405,7 @@ export default function AddRevenue() {
                         <div
                           style={{ display: "flex", justifyContent: "center" }}
                         >
-                          <p>
+                          <p style={{ fontSize: "14px" }}>
                             {"$"} {emp.hoursWorked * rate[emp.id] || "0"}
                           </p>
                         </div>

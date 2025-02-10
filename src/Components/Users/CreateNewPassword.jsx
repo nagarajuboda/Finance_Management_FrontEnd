@@ -126,19 +126,129 @@ export default function CreateNewPassword() {
     }
   }
   return (
-    <div
-      className="fogotpasswordpagemaindiv "
-      style={{ height: "100vh", display: "flex" }}
-    >
-      <div className="" style={{ width: "50%" }}>
-        <img
-          src={forgotpasswordsideImaage}
-          alt=""
-          className="forgotpasswordImage"
-        />
+    <div className="fogotpasswordpagemaindiv  row ">
+      <div className="col-6">
+        <img src={forgotpasswordsideImaage} alt="" className="Loginimagelogo" />
       </div>
-      <div
-        className="formdiv3"
+      <div className="formdiv col-6">
+        <div className="">
+          <img src={archetslogo} alt="" className="archentslogo" />
+        </div>
+        <div className="formdiv1">
+          <div className="logincontent">Set New Password</div>
+          <div className="pleaseLoginContent">
+            Enter and confirm your new password to complete the reset process.
+          </div>
+          {/* <div className="pleaseLoginContent">
+            Please login using email id and password
+          </div> */}
+          <div className="inputdiv">
+            <div>
+              <div>
+                <label className="inputlable">New Password</label>
+              </div>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                className="emailinput1 form-control"
+                name="NewPassword"
+                value={passwordValues.NewPassword}
+                onChange={handlePasswordChange}
+              />
+              <div
+                className="eyeIcon"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  cursor: "pointer",
+                  right: "197px",
+                  top: "315px",
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+              {passwordErrors.NewPassword && (
+                <p
+                  className="validationError m-1"
+                  style={{ color: "red", fontSize: "12px" }}
+                >
+                  {passwordErrors.NewPassword}
+                </p>
+              )}
+            </div>
+            <div className="mt-2">
+              <div className="password-container">
+                <label className="inputlable">Confirm Password</label>
+                <div className="password-field1">
+                  <input
+                    type={showPassword11 ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    className="emailinput1 form-control"
+                    name="ConfirmPassword"
+                    value={passwordValues.ConfirmPassword}
+                    onChange={handlePasswordChange}
+                  />
+                  <div
+                    className="eyeIcon1"
+                    onClick={() => setShowPassword11(!showPassword11)}
+                    style={{ cursor: "pointer", marginRight: "15px" }}
+                  >
+                    {showPassword11 ? <FaEyeSlash /> : <FaEye />}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="backtologin1 mt-2">
+                <div>
+                  {passwordErrors.ConfirmPassword && (
+                    <p
+                      className="validationError m-1"
+                      style={{ color: "red", fontSize: "12px" }}
+                    >
+                      {passwordErrors.ConfirmPassword}
+                    </p>
+                  )}
+                </div>
+
+                <a
+                  style={{
+                    color: "#0071FF",
+                    cursor: "pointer",
+                  }}
+                  onClick={backtoLogin}
+                  className=""
+                >
+                  Back to login?
+                </a>
+              </div>
+            </div>
+          </div>
+          {/* <div
+            className="forgotpasswordtag mt-1"
+            style={{ display: "flex", justifyContent: "end" }}
+          >
+            <div className="mt-1">
+              <a
+                className="forgotpasswordatag"
+                onClick={backtoLogin}
+                style={{ color: "#0071FF", cursor: "pointer" }}
+              >
+                Back to Login?
+              </a>
+            </div>
+          </div> */}
+          <div className="loginbutton">
+            <button className="buttonlogin1" onClick={onSetNewPasswordClick}>
+              Set New Password
+            </button>
+          </div>
+          <div className="forcontect">
+            if you are a new user, please contact archents support team.
+          </div>
+        </div>
+      </div>
+      {/* <div
+        className="formdiv3 col-6"
         style={{ backgroundColor: "#FAFFFB", width: "50%" }}
       >
         <div className="formdiv2">
@@ -238,7 +348,7 @@ export default function CreateNewPassword() {
             </form>
           </div>
         </div>
-      </div>
+      </div> */}
       <ToastContainer />
     </div>
   );

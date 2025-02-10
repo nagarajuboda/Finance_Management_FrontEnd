@@ -311,9 +311,9 @@ export default function UsFinanceTeamDashboard() {
             className="upcomingtimesheetdiv"
           >
             <div className="flex justify-center items-center">
-              <span style={{ fontSize: "12px" }} className="m-4">
+              {/* <span style={{ fontSize: "12px" }} className="m-4">
                 Submitted Timesheet
-              </span>
+              </span> */}
               <div className="row" style={{ width: "100vw" }}>
                 <div className="col-6">
                   <PieChart width={400} height={300} className="ms-4">
@@ -460,16 +460,22 @@ export default function UsFinanceTeamDashboard() {
                   </PieChart>
                   <div className="absolute text-sm">
                     <div
-                      style={{ position: "absolute", left: "10px", top: "50%" }}
+                      style={{
+                        position: "absolute",
+                        left: "10px",
+                        top: "10%",
+                        fontSize: "12px",
+                      }}
                     >
-                      <span style={{ fontWeight: "bold" }}>70%</span> Billable
-                      Employees
+                      <span style={{ fontWeight: "bold" }}>70%</span>
+                      Billable Employees
                     </div>
                     <div
                       style={{
                         position: "absolute",
-                        right: "10px",
-                        top: "20%",
+                        right: "250px",
+                        top: "80%",
+                        fontSize: "12px",
                       }}
                     >
                       <span style={{ fontWeight: "bold" }}>30%</span> Non

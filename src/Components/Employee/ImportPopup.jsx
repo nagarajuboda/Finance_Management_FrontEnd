@@ -154,24 +154,21 @@ const ImportPopup = ({ isOpen, handleClose }) => {
                   {selectedFile ? selectedFile.name : "No file chosen"}
                 </span>
               </label>
-              {/* <label htmlFor="file">
-                <img
-                  src={fileupload}
-                  alt="Upload"
-                  className="uploadfileimage"
-                />
-
-                <p className="choosefile">
-                  <span className="choosefilespan">Choose File</span>
-                </p>
-                <span className="cancelicon">No file chosen</span>
-              </label> */}
             </div>
           </div>
           <div className="popup-actions">
-            <button className="submit-btn">Submit</button>
-            <button className="cancel-btn" onClick={handleClose}>
-              Cancel
+            <button
+              className="submit-btn"
+              style={{ height: "36px", fontSize: "14px" }}
+            >
+              <span style={{ fontSize: "14px" }}> Submit</span>
+            </button>
+            <button
+              className="cancel-btn"
+              onClick={handleClose}
+              style={{ height: "36px" }}
+            >
+              <span style={{ fontSize: "14px" }}>Cancel</span>
             </button>
           </div>
         </div>

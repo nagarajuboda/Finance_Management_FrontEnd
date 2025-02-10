@@ -351,6 +351,42 @@ export default function AddProject() {
                 value={values.ProjectID}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1.1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "13px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
               {errorss.ProjectID && (
@@ -371,6 +407,42 @@ export default function AddProject() {
                 value={values.ProjectName}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1.1rem",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "13px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
               {errorss.ProjectName && (
@@ -398,7 +470,7 @@ export default function AddProject() {
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {
-                          fontSize: "12px",
+                          fontSize: "1.1rem",
                           "& fieldset": {
                             border: "1px solid #DCDCDC",
                           },
@@ -411,24 +483,24 @@ export default function AddProject() {
                         },
                         "& .MuiInputLabel-root": {
                           color: "#000000",
-                          fontSize: "12px",
-                          fontWeight: "600",
+                          fontSize: "1.1rem",
+                          fontWeight: "500",
                           transform: "translate(15px, 9px)",
                           "&.Mui-focused": {
-                            color: "black !important",
+                            color: "black",
                           },
                         },
                         "& .MuiOutlinedInput-input": {
-                          height: "22px",
-                          padding: "8px 12px",
-                          fontSize: "12px",
+                          height: "36px",
+                          padding: "10px 12px",
+                          fontSize: "14px",
                         },
                         "& .MuiInputLabel-shrink": {
-                          fontSize: "12px",
-                          transform: "translate(14px, -9px) scale(0.75)",
+                          fontSize: "1.1rem",
+                          transform: "translate(8px, -9px) scale(0.75)",
                         },
                         "& input::placeholder": {
-                          fontSize: "12px",
+                          fontSize: "13px",
                           color: "#AEAEAE",
                         },
                       }}
@@ -460,7 +532,7 @@ export default function AddProject() {
                       fullWidth
                       sx={{
                         "& .MuiOutlinedInput-root": {
-                          fontSize: "12px",
+                          fontSize: "1.1rem",
                           "& fieldset": {
                             border: "1px solid #DCDCDC",
                           },
@@ -473,24 +545,24 @@ export default function AddProject() {
                         },
                         "& .MuiInputLabel-root": {
                           color: "#000000",
-                          fontSize: "12px",
-                          fontWeight: "600",
+                          fontSize: "1.1rem",
+                          fontWeight: "500",
                           transform: "translate(15px, 9px)",
                           "&.Mui-focused": {
-                            color: "black !important",
+                            color: "black",
                           },
                         },
                         "& .MuiOutlinedInput-input": {
-                          height: "22px",
-                          padding: "8px 12px",
-                          fontSize: "12px",
+                          height: "36px",
+                          padding: "10px 12px",
+                          fontSize: "14px",
                         },
                         "& .MuiInputLabel-shrink": {
-                          fontSize: "12px",
-                          transform: "translate(14px, -9px) scale(0.75)",
+                          fontSize: "1.1rem",
+                          transform: "translate(8px, -9px) scale(0.75)",
                         },
                         "& input::placeholder": {
-                          fontSize: "12px",
+                          fontSize: "13px",
                           color: "#AEAEAE",
                         },
                       }}
@@ -510,7 +582,7 @@ export default function AddProject() {
           </div>
           <div className="row m-0" style={{ paddingTop: "33px" }}>
             <div
-              className="col-3 row m-0"
+              className="col-2 row m-0"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               <TextField
@@ -522,9 +594,8 @@ export default function AddProject() {
                 fullWidth
                 select
                 sx={{
-                  width: "85%",
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -537,25 +608,24 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "12px",
-                    fontWeight: "600",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
-
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -566,8 +636,7 @@ export default function AddProject() {
                 {clients && clients.length > 0 ? (
                   clients.map((client, index) => (
                     <MenuItem key={client.id} value={client.clientEmailId}>
-                      <span style={{ fontSize: "12px" }}>
-                        {" "}
+                      <span style={{ fontSize: "14px" }}>
                         {client.clientName}
                       </span>
                     </MenuItem>
@@ -577,16 +646,6 @@ export default function AddProject() {
                 )}
               </TextField>
 
-              <div className="" style={{ width: "15%" }}>
-                <img
-                  src={image}
-                  alt=""
-                  width="35px"
-                  height="36px"
-                  style={{ cursor: "pointer" }}
-                  onClick={ClientPopup}
-                />
-              </div>
               {errorss.ClientEmail && (
                 <span
                   className="error  "
@@ -600,7 +659,17 @@ export default function AddProject() {
                 </span>
               )}
             </div>
-
+            <div className=" col-1">
+              <img
+                src={image}
+                className="ms-5"
+                alt=""
+                width="40px"
+                height="40px"
+                style={{ cursor: "pointer" }}
+                onClick={ClientPopup}
+              />
+            </div>
             <div className="col-3">
               <TextField
                 label="Project Manager"
@@ -612,7 +681,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -625,7 +694,7 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -633,16 +702,16 @@ export default function AddProject() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -653,7 +722,7 @@ export default function AddProject() {
                 {employees && employees.length > 0 ? (
                   employees.map((emp, index) => (
                     <MenuItem key={emp.employee.id} value={emp.employee.email}>
-                      <span style={{ fontSize: "12px" }}>
+                      <span style={{ fontSize: "14px" }}>
                         {emp.employee.firstName}
                         {emp.employee.lastName}
                       </span>
@@ -684,7 +753,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -697,7 +766,7 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
@@ -705,16 +774,16 @@ export default function AddProject() {
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -725,7 +794,7 @@ export default function AddProject() {
                 {AllDepartments && AllDepartments.length > 0 ? (
                   AllDepartments.map((dept, index) => (
                     <MenuItem key={dept.id} value={dept.deptName}>
-                      <span style={{ fontSize: "12px" }}> {dept.deptName}</span>
+                      <span style={{ fontSize: "14px" }}> {dept.deptName}</span>
                     </MenuItem>
                   ))
                 ) : (
@@ -753,7 +822,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -766,24 +835,24 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -794,7 +863,7 @@ export default function AddProject() {
                 {filteredTeams && filteredTeams.length > 0 ? (
                   filteredTeams.map((team, index) => (
                     <MenuItem key={team.id} value={team.teamName}>
-                      <span style={{ fontSize: "12px" }}> {team.teamName}</span>
+                      <span style={{ fontSize: "14px" }}> {team.teamName}</span>
                     </MenuItem>
                   ))
                 ) : (
@@ -823,7 +892,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -836,24 +905,24 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
-                    fontSize: "0.85rem",
-                    fontWeight: "600",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
                     transform: "translate(15px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    height: "22px",
-                    padding: "8px 12px",
-                    fontSize: "1rem",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "12px",
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -864,7 +933,7 @@ export default function AddProject() {
                 {AllCurrency && AllCurrency.length > 0 ? (
                   AllCurrency.map((currency, index) => (
                     <MenuItem key={currency.id} value={currency.type}>
-                      <span style={{ fontSize: "12px" }}>{currency.type}</span>
+                      <span style={{ fontSize: "14px" }}>{currency.type}</span>
                     </MenuItem>
                   ))
                 ) : (
@@ -892,12 +961,13 @@ export default function AddProject() {
                 className="textareaclass"
                 fullWidth
                 multiline
-                rows={2}
+                rows={1}
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "12px",
+                    fontSize: "1.1rem",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
+                      height: "80px",
                     },
                     "&:hover fieldset": {
                       border: "1px solid #DCDCDC",
@@ -908,21 +978,25 @@ export default function AddProject() {
                   },
                   "& .MuiInputLabel-root": {
                     color: "#000000",
+                    fontSize: "1.1rem",
                     fontWeight: "500",
-                    transform: "translate(15px, 9px)",
+
+                    transform: "translate(10px, 9px)",
                     "&.Mui-focused": {
                       color: "black",
                     },
                   },
                   "& .MuiOutlinedInput-input": {
-                    boxSizing: "border-box",
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
                   },
                   "& .MuiInputLabel-shrink": {
-                    fontSize: "1rem",
-                    transform: "translate(14px, -9px) scale(0.75)",
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
                   },
-                  "& textarea::placeholder": {
-                    fontSize: "12px",
+                  "& input::placeholder": {
+                    fontSize: "13px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -941,7 +1015,7 @@ export default function AddProject() {
           <div
             className="row m-0"
             style={{
-              paddingTop: "20px",
+              paddingTop: "50px",
             }}
           >
             <div className="col-10"></div>
@@ -969,12 +1043,14 @@ export default function AddProject() {
           <div className="client-modal-overlay">
             <div className="client-modal-box">
               <div className="client-modal-header">
-                <h2 className="headercontent">Add Client Details</h2>
+                <h2 className="headercontent" style={{ fontSize: "14px" }}>
+                  Add Client Details
+                </h2>
                 <sapn className="cancelicon1">
                   <i
                     class="bi bi-x-lg"
                     onClick={closeModal}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", fontSize: "1.2rem" }}
                   ></i>
                 </sapn>
               </div>
@@ -990,6 +1066,42 @@ export default function AddProject() {
                         value={values.clientName}
                         onChange={handleChange}
                         className="custom-text-field"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            fontSize: "1.1rem",
+                            "& fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&:hover fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&.Mui-focused fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#000000",
+                            fontSize: "1.1rem",
+                            fontWeight: "500",
+                            transform: "translate(15px, 9px)",
+                            "&.Mui-focused": {
+                              color: "black",
+                            },
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            height: "36px",
+                            padding: "10px 12px",
+                            fontSize: "14px",
+                          },
+                          "& .MuiInputLabel-shrink": {
+                            fontSize: "1.1rem",
+                            transform: "translate(8px, -9px) scale(0.75)",
+                          },
+                          "& input::placeholder": {
+                            fontSize: "13px",
+                            color: "#AEAEAE",
+                          },
+                        }}
                       />
                       {errors.ClientName && (
                         <span
@@ -1006,6 +1118,42 @@ export default function AddProject() {
                         variant="outlined"
                         fullWidth
                         className="custom-text-field"
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            fontSize: "1.1rem",
+                            "& fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&:hover fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                            "&.Mui-focused fieldset": {
+                              border: "1px solid #DCDCDC",
+                            },
+                          },
+                          "& .MuiInputLabel-root": {
+                            color: "#000000",
+                            fontSize: "1.1rem",
+                            fontWeight: "500",
+                            transform: "translate(15px, 9px)",
+                            "&.Mui-focused": {
+                              color: "black",
+                            },
+                          },
+                          "& .MuiOutlinedInput-input": {
+                            height: "36px",
+                            padding: "10px 12px",
+                            fontSize: "14px",
+                          },
+                          "& .MuiInputLabel-shrink": {
+                            fontSize: "1.1rem",
+                            transform: "translate(8px, -9px) scale(0.75)",
+                          },
+                          "& input::placeholder": {
+                            fontSize: "13px",
+                            color: "#AEAEAE",
+                          },
+                        }}
                         name="ClientEmailId"
                         value={values.ClientEmailId}
                         onChange={handleChange}
@@ -1033,7 +1181,7 @@ export default function AddProject() {
                         select
                         sx={{
                           "& .MuiOutlinedInput-root": {
-                            fontSize: "12px",
+                            fontSize: "1.1rem",
                             "& fieldset": {
                               border: "1px solid #DCDCDC",
                             },
@@ -1046,24 +1194,24 @@ export default function AddProject() {
                           },
                           "& .MuiInputLabel-root": {
                             color: "#000000",
-                            fontSize: "12px",
-                            fontWeight: "600",
+                            fontSize: "1.1rem",
+                            fontWeight: "500",
                             transform: "translate(15px, 9px)",
                             "&.Mui-focused": {
                               color: "black",
                             },
                           },
                           "& .MuiOutlinedInput-input": {
-                            height: "22px",
-                            padding: "8px 12px",
-                            fontSize: "1rem",
+                            height: "36px",
+                            padding: "10px 12px",
+                            fontSize: "14px",
                           },
                           "& .MuiInputLabel-shrink": {
-                            fontSize: "1rem",
-                            transform: "translate(14px, -9px) scale(0.75)",
+                            fontSize: "1.1rem",
+                            transform: "translate(8px, -9px) scale(0.75)",
                           },
                           "& input::placeholder": {
-                            fontSize: "12px",
+                            fontSize: "13px",
                             color: "#AEAEAE",
                           },
                         }}
@@ -1072,10 +1220,10 @@ export default function AddProject() {
                           <em>Select</em>
                         </MenuItem>
                         <MenuItem value="John">
-                          <span style={{ fontSize: "12px" }}>John</span>
+                          <span style={{ fontSize: "14px" }}>John</span>
                         </MenuItem>
                         <MenuItem value="Sonu">
-                          <span style={{ fontSize: "12px" }}>Sonu</span>
+                          <span style={{ fontSize: "14px" }}>Sonu</span>
                         </MenuItem>
                       </TextField>
                     </div>
@@ -1090,7 +1238,7 @@ export default function AddProject() {
                         select
                         sx={{
                           "& .MuiOutlinedInput-root": {
-                            fontSize: "12px",
+                            fontSize: "1.1rem",
                             "& fieldset": {
                               border: "1px solid #DCDCDC",
                             },
@@ -1103,24 +1251,24 @@ export default function AddProject() {
                           },
                           "& .MuiInputLabel-root": {
                             color: "#000000",
-                            fontSize: "12px",
-                            fontWeight: "600",
+                            fontSize: "1.1rem",
+                            fontWeight: "500",
                             transform: "translate(15px, 9px)",
                             "&.Mui-focused": {
                               color: "black",
                             },
                           },
                           "& .MuiOutlinedInput-input": {
-                            height: "22px",
-                            padding: "8px 12px",
-                            fontSize: "1rem",
+                            height: "36px",
+                            padding: "10px 12px",
+                            fontSize: "14px",
                           },
                           "& .MuiInputLabel-shrink": {
-                            fontSize: "1rem",
-                            transform: "translate(14px, -9px) scale(0.75)",
+                            fontSize: "1.1rem",
+                            transform: "translate(8px, -9px) scale(0.75)",
                           },
                           "& input::placeholder": {
-                            fontSize: "12px",
+                            fontSize: "13px",
                             color: "#AEAEAE",
                           },
                         }}
@@ -1129,10 +1277,10 @@ export default function AddProject() {
                           <em>Select</em>
                         </MenuItem>
                         <MenuItem value="USA">
-                          <span style={{ fontSize: "12px" }}>USA</span>
+                          <span style={{ fontSize: "14px" }}>USA</span>
                         </MenuItem>
                         <MenuItem value="UK">
-                          <span style={{ fontSize: "12px" }}>UK</span>
+                          <span style={{ fontSize: "14px" }}>UK</span>
                         </MenuItem>
                       </TextField>
                       {errors.ClientLocation && (
@@ -1153,16 +1301,26 @@ export default function AddProject() {
                       className="col-4"
                       style={{ display: "flex", alignContent: "center" }}
                     >
-                      <button className="addclient-popup-submit-button">
-                        <span className="addclient-popup-submit-button-span">
+                      <button
+                        className="addclient-popup-submit-button"
+                        style={{ height: "36px" }}
+                      >
+                        <span
+                          className="addclient-popup-submit-button-span"
+                          style={{ fontSize: "14px" }}
+                        >
                           Add
                         </span>
                       </button>
                       <button
                         className="addclient-popup-Cancel-button ms-3 "
                         onClick={closeModal}
+                        style={{ height: "36px" }}
                       >
-                        <span className="addclient-popup-Cancel-button-span">
+                        <span
+                          className="addclient-popup-Cancel-button-span"
+                          style={{ fontSize: "14px" }}
+                        >
                           cancel
                         </span>
                       </button>

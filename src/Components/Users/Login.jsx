@@ -14,6 +14,7 @@ import { getotpValidation } from "./getotpValidation";
 import loginLogo from "../../../src/assets/Images/loginbg1.png";
 import Login2 from "../../../src/assets/Images/Login2.png";
 import archetslogo from "../../../src/assets/Images/primary-logo.png";
+import LoginImage from "../../../src/assets/Images/loginbg1.png";
 import rememeberme from "../../assets/Images/checkbox.svg";
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -332,13 +333,13 @@ const Home = () => {
   return (
     <div className="row m-0">
       <div className="imagediv col-6">
-        <img src={Login2} alt="" className="Loginimagelogo" />
+        <img src={LoginImage} alt="" className="Loginimagelogo" />
       </div>
       <div className="formdiv col-6">
+        <div className="">
+          <img src={archetslogo} alt="" className="archentslogo" />
+        </div>
         <div className="formdiv1">
-          <div className="">
-            <img src={archetslogo} alt="" className="archentslogo" />
-          </div>
           <div className="logincontent">Login</div>
           <div className="financecontent">Welcome to Finance Management !</div>
           <div className="pleaseLoginContent">
@@ -405,16 +406,11 @@ const Home = () => {
             className="forgotpasswordtag mt-1"
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            <div style={{ display: "flex" }}>
-              <input
-                type="checkbox"
-                name=""
-                id=""
-                style={{ fontSize: "20px" }}
-              />
+            <div style={{ display: "flex" }} className="ms-1">
+              <input type="checkbox" name="" id="" style={{ width: "18px" }} />
               <p className="remembermecontent m-2">Remember me</p>
             </div>
-            <div className="mt-2">
+            <div className="mt-1">
               <a
                 className="forgotpasswordatag"
                 onClick={navigatetoforgotpasswordpage}
@@ -425,7 +421,7 @@ const Home = () => {
             </div>
           </div>
           <div className="loginbutton">
-            <button className="buttonlogin" onClick={onLoginButtonClick}>
+            <button className="buttonlogin1" onClick={onLoginButtonClick}>
               Login
             </button>
           </div>

@@ -85,8 +85,8 @@ main {
 }
 .iconimages {
   margin-left: 15px;
-  width: 17px;
-  height: 17px;
+  width: 20px;
+  height: 20px;
 }
 .indexicon {
   height: 20px;
@@ -99,6 +99,7 @@ main {
   display: flex;
   height: 50px;
   color: "black";
+  margin-top: 20px;
 }
 
 .link_text {
@@ -129,7 +130,7 @@ main {
   font-style: normal;
   font-variant: normal;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 14px;
   font-family: "Raleway";
 }
 
@@ -184,7 +185,7 @@ main {
 
 .tree li span {
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   margin-left: 8px;
   color: #707070;
@@ -194,8 +195,9 @@ main {
   content: "";
   position: absolute;
   top: -9px;
-  margin-left: 24px;
+  margin-left: 26px;
   bottom: 9px;
+  border-color: #707070;
 
   border-left: 2px solid #707070;
 }

@@ -311,7 +311,7 @@ input[type="txt"] {
 }
 .Active_project_conetnt {
   text-align: left;
-  font: normal normal bold 12px/24px Segoe UI;
+  font: normal normal bold 14px/24px Segoe UI;
   letter-spacing: 0px;
   color: #989898;
   opacity: 1;
@@ -335,15 +335,14 @@ input[type="txt"] {
   padding-top: 30px;
 }
 .Profit_and_loss_flowchat {
-  height: 425px;
-
+  height: 484px;
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 7px 18px #64646430;
   border-radius: 10px;
   opacity: 1;
 }
 .recentActivities {
-  height: 425px;
+  height: 484px;
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 7px 18px #64646430;
   border-radius: 10px;

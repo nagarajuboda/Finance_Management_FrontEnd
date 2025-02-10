@@ -272,6 +272,7 @@ export default function Roles() {
       `https://localhost:44305/api/Roles/${roleId}`
     );
     var result = response.data;
+    console.log(response, "response");
     if (result.message != null) {
       fetchRoles();
       setDeleterolepopup(true);
@@ -335,19 +336,25 @@ export default function Roles() {
             className="col-2 "
             style={{ display: "flex", justifyContent: "end" }}
           ></div>
-          <div className="col-6 d-flex justify-content-end pe-3">
+          <div className="col-6 d-flex justify-content-end">
             <div className="me-2">
               <button
-                className="DelRecordbutton me-2"
+                className="btn btn-danger deleteSelected"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
+                style={{
+                  fontSize: "14px",
+                  height: "36px",
+                  display: "flex",
+                  justifyContent: "end",
+                }}
               >
-                <span className="delSelectedSpan">Delete Selected</span>
+                Delete Selected
               </button>
             </div>
             <div>
               <button
-                className="add-new-role-button me-2"
+                className="add-new-role-button me-2 "
                 onClick={AddNewRolePopup}
               >
                 <span>
@@ -386,6 +393,7 @@ export default function Roles() {
                     type="checkbox"
                     onChange={handleSelectAll}
                     className="userCheckbox"
+                    style={{ height: "15px", width: "15px" }}
                   />
                 </th>
                 <th className="rolethclass">Role Name</th>
@@ -414,6 +422,7 @@ export default function Roles() {
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
+                      fontSize: "14px",
                     }}
                   >
                     {role.name}
@@ -423,6 +432,7 @@ export default function Roles() {
                       pointerEvents:
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
+                      fontSize: "14px",
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
                     }}
                   >
@@ -434,6 +444,7 @@ export default function Roles() {
                         role.status === "Inactive" ? "none" : "auto",
                       opacity: role.status === "Inactive" ? 0.5 : 1,
                       color: role.status === "Inactive" ? "#aaa" : "inherit",
+                      fontSize: "14px",
                     }}
                   >
                     {role.priority}
@@ -452,7 +463,7 @@ export default function Roles() {
                           position: "relative",
                           display: "inline-block",
                           width: "40px",
-                          height: "20px",
+                          height: "20px !important",
                         }}
                       >
                         <input
@@ -516,8 +527,8 @@ export default function Roles() {
                           }}
                           alt="Edit Role"
                           style={{
-                            width: "18px",
-                            height: "18px",
+                            width: "24px",
+                            height: "24px",
                             cursor:
                               role.status === "Inactive"
                                 ? "not-allowed"
@@ -536,7 +547,11 @@ export default function Roles() {
                       >
                         <img
                           src={deleteicon}
-                          style={{ width: "25px", cursor: "pointer" }}
+                          style={{
+                            width: "28px",
+                            cursor: "pointer",
+                            height: "28px",
+                          }}
                           onClick={(e) => {
                             if (role.status !== "Inactive") {
                               DeleteRoleFunction(role.id);
@@ -580,6 +595,43 @@ export default function Roles() {
                 value={values.RoleName}
                 onChange={handleChange}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "1.1rempx",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "13px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
               {errors.RoleName && (
@@ -608,7 +660,7 @@ export default function Roles() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -619,19 +671,41 @@ export default function Roles() {
                       border: "1px solid #DCDCDC",
                     },
                   },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "14px",
+                    color: "#AEAEAE",
+                  },
                 }}
               >
-                <MenuItem value="" style={{ fontSize: "12px" }}>
+                <MenuItem value="" style={{ fontSize: "14px" }}>
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "14px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "14px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "14px" }}>
                   High
                 </MenuItem>
               </TextField>
@@ -693,6 +767,42 @@ export default function Roles() {
                 value={role.name}
                 onChange={handleChange1}
                 fullWidth
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    fontSize: "14px",
+                    "& fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&:hover fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                    "&.Mui-focused fieldset": {
+                      border: "1px solid #DCDCDC",
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "14px",
+                    color: "#AEAEAE",
+                  },
+                }}
                 className="custom-text-field"
               />
             </div>
@@ -713,7 +823,7 @@ export default function Roles() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -724,19 +834,41 @@ export default function Roles() {
                       border: "1px solid #DCDCDC",
                     },
                   },
+                  "& .MuiInputLabel-root": {
+                    color: "#000000",
+                    fontSize: "1.1rem",
+                    fontWeight: "500",
+                    transform: "translate(15px, 9px)",
+                    "&.Mui-focused": {
+                      color: "black",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    height: "36px",
+                    padding: "10px 12px",
+                    fontSize: "14px",
+                  },
+                  "& .MuiInputLabel-shrink": {
+                    fontSize: "1.1rem",
+                    transform: "translate(8px, -9px) scale(0.75)",
+                  },
+                  "& input::placeholder": {
+                    fontSize: "14px",
+                    color: "#AEAEAE",
+                  },
                 }}
               >
-                <MenuItem value="" style={{ fontSize: "12px" }}>
+                <MenuItem value="" style={{ fontSize: "14px" }}>
                   <em>Select</em>
                 </MenuItem>
 
-                <MenuItem value={3} style={{ fontSize: "12px" }}>
+                <MenuItem value={3} style={{ fontSize: "14px" }}>
                   Low
                 </MenuItem>
-                <MenuItem value={2} style={{ fontSize: "12px" }}>
+                <MenuItem value={2} style={{ fontSize: "14px" }}>
                   Medium
                 </MenuItem>
-                <MenuItem value={1} style={{ fontSize: "12px" }}>
+                <MenuItem value={1} style={{ fontSize: "14px" }}>
                   High
                 </MenuItem>
               </TextField>

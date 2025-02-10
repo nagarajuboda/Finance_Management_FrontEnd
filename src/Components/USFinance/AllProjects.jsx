@@ -57,7 +57,9 @@ export default function AllProjects() {
   return (
     <div>
       <div className="">
-        <p className="listofProjectContents"> list of Projects</p>
+        <p className="listofProjectContents" style={{ fontSize: "16px" }}>
+          List of Projects
+        </p>
         <div className="AllProject-maindiv">
           <div
             className=""
@@ -69,7 +71,9 @@ export default function AllProjects() {
             }}
           >
             <div className=" ms-3">
-              <p className="Project-list-content">Project list</p>
+              <p className="Project-list-content" style={{ fontSize: "14px" }}>
+                Project list
+              </p>
             </div>
 
             <div
@@ -83,14 +87,19 @@ export default function AllProjects() {
                 value={searchQuery}
                 className="searchinput "
                 placeholder="Search Projects"
-                style={{ width: "250px", padding: "5px", fontSize: "12px" }}
+                style={{
+                  width: "280px",
+                  padding: "5px",
+                  fontSize: "14px",
+                  height: "36px",
+                }}
               />
               <i
                 className="bi bi-search"
                 style={{
-                  fontSize: "12px",
+                  fontSize: "18px",
                   position: "absolute",
-                  left: "228px",
+                  left: "255px",
                   top: "50%",
                   transform: "translateY(-50%)",
                   color: "#888",
@@ -100,19 +109,19 @@ export default function AllProjects() {
             </div>
             <div className=" me-2">
               <select
-                className="numberpagenation"
-                style={{ cursor: "pointer", height: "30px" }}
+                className="numberpagenation me-2"
+                style={{ cursor: "pointer", height: "36px" }}
               >
-                <option value="10" style={{ fontSize: "12px" }}>
+                <option value="10" style={{ fontSize: "14px" }}>
                   Show 10 Entities
                 </option>
-                <option value="25" style={{ fontSize: "12px" }}>
+                <option value="25" style={{ fontSize: "14px" }}>
                   Show 25 Entities
                 </option>
-                <option value="50" style={{ fontSize: "12px" }}>
+                <option value="50" style={{ fontSize: "14px" }}>
                   Show 50 Entities
                 </option>
-                <option value="-1" style={{ fontSize: "12px" }}>
+                <option value="-1" style={{ fontSize: "14px" }}>
                   Show All
                 </option>
               </select>
@@ -126,12 +135,12 @@ export default function AllProjects() {
             >
               <thead>
                 <tr className="tableheader">
-                  <th style={{ fontSize: "12px" }}>Project ID</th>
-                  <th style={{ fontSize: "12px" }}>Project Name</th>
-                  <th style={{ fontSize: "12px" }}>Clients</th>
-                  <th style={{ fontSize: "12px" }}>Project Manager</th>
-                  <th style={{ fontSize: "12px" }}>Start Date</th>
-                  <th style={{ fontSize: "12px" }}>End Date</th>
+                  <th style={{ fontSize: "14px" }}>Project ID</th>
+                  <th style={{ fontSize: "14px" }}>Project Name</th>
+                  <th style={{ fontSize: "14px" }}>Clients</th>
+                  <th style={{ fontSize: "14px" }}>Project Manager</th>
+                  <th style={{ fontSize: "14px" }}>Start Date</th>
+                  <th style={{ fontSize: "14px" }}>End Date</th>
                 </tr>
               </thead>
               <tbody>
@@ -148,23 +157,23 @@ export default function AllProjects() {
                           }}
                           onClick={(e) => ViewProject(project.project.id)}
                         >
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.project.projectID}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.project.projectName}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.client.clientName}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.employee.firstName}{" "}
                             {project.employee.lastName}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.project.startDate}
                           </td>
-                          <td style={{ fontSize: "12px" }}>
+                          <td style={{ fontSize: "14px" }}>
                             {project.project.endDate}
                           </td>
                         </tr>
@@ -190,7 +199,7 @@ export default function AllProjects() {
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              style={{ fontSize: "10px" }}
+              style={{ fontSize: "14px" }}
             >
               <span> Prev</span>
             </button>
@@ -200,7 +209,7 @@ export default function AllProjects() {
                 <button
                   key={page}
                   style={{
-                    fontSize: "10px",
+                    fontSize: "14px",
                     color: "black",
                     fontWeight: "600",
                   }}
@@ -213,7 +222,7 @@ export default function AllProjects() {
             )}
 
             <button
-              style={{ fontSize: "10px", color: "black", fontWeight: "600" }}
+              style={{ fontSize: "14px", color: "black", fontWeight: "600" }}
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
             >
