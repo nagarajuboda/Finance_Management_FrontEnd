@@ -17,6 +17,7 @@ import { format } from "date-fns";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
+  var senderemail = userDetails.employee.email;
   const [selectedProject, setSelectedProject] = useState();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState("");
@@ -28,6 +29,7 @@ export default function TimeSheet() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitOpen, setIssubmitOpen] = useState(false);
   const [ProjectEmployees, setProjectemployess] = useState([]);
+  const [submittedTimesheet, setSubmittedTimesheet] = useState({});
   useEffect(() => {
     FetchData();
     const year = selectedDate.getFullYear();
@@ -35,7 +37,20 @@ export default function TimeSheet() {
     const result = `${month} ${year}`;
     setFormattedDate(result);
   }, [selectedDate, ProjectEmployees, department]);
-
+  const monthMap = {
+    January: "1",
+    February: "2",
+    March: "3",
+    April: "4",
+    May: "5",
+    June: "6",
+    July: "7",
+    August: "8",
+    September: "9",
+    October: "10",
+    November: "11",
+    December: "12",
+  };
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(id);
     const projects = response.item;
@@ -49,6 +64,7 @@ export default function TimeSheet() {
       selectedProject?.value
     );
     setGetTimesheet(Timesheetresponse.item);
+    console.log(Timesheetresponse.item, "===========");
     if (Timesheetresponse.item.length > 0) {
       if (Timesheetresponse.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);
@@ -72,6 +88,7 @@ export default function TimeSheet() {
     const ProjectEmployeess = await axios.get(
       `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${selectedProject.value}&date=${formattedDate}`
     );
+    console.log(ProjectEmployees, "projectEmployees");
     setHours({});
     var result = ProjectEmployeess.data;
     if (result.isSuccess) {
@@ -123,6 +140,7 @@ export default function TimeSheet() {
       employeeData,
     };
     const response = await TimeSheetService.AddNewTimeSheet(data, id, true);
+    console.log(response, "response");
     if (response.isSuccess) {
       setIssubmitOpen(true);
       FetchData();
@@ -152,6 +170,30 @@ export default function TimeSheet() {
         autoClose: 4000,
       });
     }
+  };
+  const RequestForUpdateTimeSheet = async () => {
+    // console.log(getTimeSheet, "------------>");
+    var timesheetid = getTimeSheet.map((data) => data.timesheetId);
+
+    const month = selectedDate.toLocaleString("default", { month: "long" });
+    const year = selectedDate.getFullYear();
+    const monthNumber = monthMap[month];
+
+    var obj = {
+      senderId: id,
+      senderEmail: senderemail,
+      timesheetId: timesheetid[0],
+      projectId: selectedProject.value,
+      projectName: selectedProject.label,
+      selectedMonth: monthNumber,
+      selectedYear: year,
+      createdAt: new Date(),
+    };
+
+    var response = await axios.post(
+      "https://localhost:44305/api/Notifications/CreateNotification",
+      obj
+    );
   };
   return (
     <div>
@@ -392,6 +434,7 @@ export default function TimeSheet() {
               type="button"
               className="submitbutton "
               style={{ marginRight: "10px", height: "36px" }}
+              onClick={RequestForUpdateTimeSheet}
             >
               <span
                 className="make_a_request_span"

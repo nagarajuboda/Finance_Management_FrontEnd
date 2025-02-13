@@ -10,6 +10,8 @@ import USFinanceTeamService from "../../Service/USFinanceTeamService/USFinanceTe
 import { ToastContainer, toast } from "react-toastify";
 import { FaDollarSign } from "react-icons/fa6";
 import "react-toastify/dist/ReactToastify.css";
+import ellips from "../../assets/Images/Ellipse.png";
+import checkimage from "../../assets/Images/check.png";
 export default function AddRevenue() {
   const navigate = useNavigate();
   var projectID = sessionStorage.getItem("id");
@@ -18,6 +20,8 @@ export default function AddRevenue() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
+  const [isopen, setisOpen] = useState(false);
+  const [submitisopen, setSubmitisOpen] = useState(false);
   const [rate, setRate] = useState({});
   const monthMap = {
     January: "1",
@@ -104,10 +108,12 @@ export default function AddRevenue() {
       false
     );
     if (AddtimeSheetResponse.isSuccess) {
-      toast.success("Successfully saved.", {
-        position: "top-right",
-        autoClose: 4000,
-      });
+      setisOpen(true);
+      GetTimeSheet();
+      // toast.success("Successfully saved.", {
+      //   position: "top-right",
+      //   autoClose: 4000,
+      // });
     } else {
       toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",
@@ -127,11 +133,7 @@ export default function AddRevenue() {
     );
 
     if (AddtimeSheetResponse.isSuccess) {
-      toast.success("Successfully submitted.", {
-        position: "top-right",
-        autoClose: 4000,
-      });
-
+      setSubmitisOpen(true);
       await GetTimeSheet(projectID, selectedDate);
     } else {
       toast.error(AddtimeSheetResponse.error.message, {
@@ -139,6 +141,12 @@ export default function AddRevenue() {
         autoClose: 4000,
       });
     }
+  };
+  const CloseSuccessPopup = () => {
+    setisOpen(false);
+  };
+  const SubmitSuccessPopupclose = () => {
+    setSubmitisOpen(false);
   };
   return (
     <div>
@@ -448,6 +456,78 @@ export default function AddRevenue() {
             </div>
           )}
         </div>
+        {isopen && (
+          <div className="unique-popup-overlay">
+            <div className="unique-popup-container">
+              <div className="unique-popup-icon">
+                <div className="ellipse-container">
+                  <img
+                    src={checkimage}
+                    alt="Check"
+                    className="check-image"
+                    height="40px"
+                    width="40px"
+                  />
+                  <img
+                    src={ellips}
+                    alt="Ellipse"
+                    className="ellipse-image"
+                    height="65px"
+                    width="65px"
+                  />
+                </div>
+              </div>
+              <h2 className="unique-popup-title">
+                Revenue Saved Successfully done.
+              </h2>
+              <p className="unique-popup-message">
+                Click OK to see the results
+              </p>
+              <button
+                className="unique-popup-button"
+                onClick={CloseSuccessPopup}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+        {submitisopen && (
+          <div className="unique-popup-overlay">
+            <div className="unique-popup-container">
+              <div className="unique-popup-icon">
+                <div className="ellipse-container">
+                  <img
+                    src={checkimage}
+                    alt="Check"
+                    className="check-image"
+                    height="40px"
+                    width="40px"
+                  />
+                  <img
+                    src={ellips}
+                    alt="Ellipse"
+                    className="ellipse-image"
+                    height="65px"
+                    width="65px"
+                  />
+                </div>
+              </div>
+              <h2 className="unique-popup-title">
+                Revenue Submitted Successfully done.
+              </h2>
+              <p className="unique-popup-message">
+                Click OK to see the results
+              </p>
+              <button
+                className="unique-popup-button"
+                onClick={SubmitSuccessPopupclose}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <ToastContainer />
     </div>

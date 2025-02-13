@@ -41,17 +41,13 @@
 .circle {
   background-color: #64bb6a;
   border-radius: 50%;
-  height: 5rem;
-  width: 5rem;
+  height: 5.1rem;
+  width: 5.1rem;
 }
 .recharts-wrapper {
   width: none !important;
 }
-/* .UpcommingUsfinance {
-  border-right: 3.5px solid #a5aeb4;
-  color: #a5aeb4;
-  display: flex;
-} */
+
 .UpcommingUsfinance {
   position: relative;
   color: #a5aeb4;
@@ -69,9 +65,7 @@
   transform: translateX(-50%);
 }
 .Revenue-overview {
-  /* width: 795px; */
-  height: 444px;
-  /* UI Properties */
+  height: 540px;
   background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 7px 18px #64646430;
   border-radius: 10px;
@@ -85,6 +79,22 @@
   color: #000000;
   text-transform: uppercase;
   opacity: 1;
+}
+.Monthly-overview-content {
+  text-align: left;
+  font: normal normal bold 16px/24px Segoe UI;
+  letter-spacing: 0px;
+  font-weight: 600;
+  opacity: 1;
+  color: #989898;
+}
+
+.dropdown-menu {
+  min-width: 130px !important;
+}
+
+.dropDownmenuItems {
+  height: 100px !important;
 }
 .Revenue-overview-maindiv {
   margin-top: 50px;
@@ -104,7 +114,13 @@
   border-radius: 10px;
   opacity: 1;
 }
-
+.dropdownitems {
+  text-align: left;
+  font: normal normal normal 14px/30px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
 .chart-container {
   position: relative;
   text-align: center;
@@ -112,7 +128,6 @@
   margin: auto;
 }
 
-/* Centering the text inside the donut chart */
 .chart-center-text {
   position: absolute;
   top: 50%;
@@ -164,20 +179,20 @@
 }
 .total_projects_content {
   text-align: left;
-  font: normal normal bold 12px/24px Segoe UI;
+  font: normal normal bold 14px/24px Segoe UI;
   letter-spacing: 0px;
   color: #707070;
   opacity: 1;
 }
-
+.bar-pie-chart {
+  /* width: 949px !important; */
+  height: 426px !important;
+}
 .recharts-surface {
   width: 75% !important;
   height: 100% !important;
 }
 .weekly_timeSheet_boxshodow {
-  /* background: red 0% 0% no-repeat padding-box;
-  box-shadow: 0px 10px 25px #64646430; */
-
   text-align: center;
   font-style: normal;
   font-variant: normal;
@@ -191,6 +206,11 @@
   text-transform: uppercase;
   opacity: 1;
 }
-.kjasdsakj {
-  color: red;
+
+.total-balance {
+  text-align: left;
+  font: normal normal 800 18px/29px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
 }
