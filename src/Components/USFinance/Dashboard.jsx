@@ -271,11 +271,10 @@ export default function UsFinanceTeamDashboard() {
           {
             data: revenueValues,
             backgroundColor: barcolors,
-
-            barThickness: 50,
+            barThickness: 60,
             maxBarThickness: 50,
             categoryPercentage: 10,
-            barPercentage: 10,
+            barPercentage: 20,
           },
         ],
       },

@@ -13,6 +13,7 @@ import logout from "../../../src/assets/Images/Logout.png";
 import NotificationImage from "../../../src/assets/Images/Notification.png";
 import checkimgae1 from "../../assets/Images/check.png";
 import elllips1 from "../../assets/Images/Ellipse.png";
+import { formatDistanceToNow } from "date-fns";
 import {
   FaSearch,
   FaUserCircle,
@@ -34,6 +35,7 @@ export default function Header({ isOpen }) {
   const [user, setUser] = useState({});
   const [userRole, setUserRole] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  var employeeID = userDetails.employee.id;
   const [unreadCount, setUnreadCount] = useState(0);
   const [AcceptSuccessMessage, setAcceptSuccessMessage] = useState(false);
   const [singleNotification, setSingleNotification] = useState({});
@@ -50,23 +52,52 @@ export default function Header({ isOpen }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [notifications]);
+  const getRelativeTime = (timestamp) => {
+    const parsedDate = Date.parse(timestamp);
+    if (isNaN(parsedDate)) {
+      return "Invalid date";
+    }
+
+    const date = new Date(parsedDate); // Now it should be valid
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+
+    if (diffInSeconds < 60) {
+      return "Just now";
+    }
+
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+    };
+
+    for (const [unit, seconds] of Object.entries(intervals)) {
+      const interval = Math.floor(diffInSeconds / seconds);
+      if (interval >= 1) {
+        return `${interval} ${unit}${interval > 1 ? "s" : ""} ago`;
+      }
+    }
+
+    return "Just now";
+  };
+
   const fetchdata = async () => {
-    // var response = await axios.get(
-    //   "https://localhost:44305/api/Notifications/all"
-    // );
     var response = await axios.get(
-      `https://localhost:44305/api/Notifications/${userDetails.employee.id}`
+      `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
-    console.log(result, "result");
     setNotifications(result);
   };
+
   useEffect(() => {
     const subscription = getSessionData().subscribe({
       next: (data) => {
         setSessionDataState(data);
-        console.log(data, "Updated sessionData");
       },
       error: (err) => {
         console.error("Error fetching session data: ", err);
@@ -79,7 +110,6 @@ export default function Header({ isOpen }) {
   }, []);
   const profileRef = useRef(null);
   const navigate = useNavigate();
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -113,7 +143,6 @@ export default function Header({ isOpen }) {
     navigate("/user/Login");
   };
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);
   };
@@ -132,7 +161,6 @@ export default function Header({ isOpen }) {
       fetchdata();
     }
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -402,7 +430,9 @@ export default function Header({ isOpen }) {
                               </span>
                             </div>
                           </p>
-                          <span className="ms-5 meta-info">5 minutes ago</span>
+                          <span className="ms-5 meta-info">
+                            {getRelativeTime(notif.createdAt)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -445,7 +475,9 @@ export default function Header({ isOpen }) {
                               </span>
                             </div>
                           </p>
-                          <span className="ms-5 meta-info">5 minutes ago</span>
+                          <span className="ms-5 meta-info">
+                            {getRelativeTime(notif.createdAt)}
+                          </span>
                         </div>
                       </div>
                     </div>
