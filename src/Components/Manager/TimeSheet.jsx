@@ -29,25 +29,14 @@ export default function TimeSheet() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitOpen, setIssubmitOpen] = useState(false);
   const [ProjectEmployees, setProjectemployess] = useState([]);
-  const [submittedTimesheet, setSubmittedTimesheet] = useState({});
   const [requestnotification, setRequestNotification] = useState({});
-  const [notificationData, setnotificationData] = useState({});
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [disiblemakeArequestbuttons, setDisiblemakeArequestbuttons] =
-    useState(true);
   useEffect(() => {
     FetchData();
     const year = selectedDate.getFullYear();
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
     setFormattedDate(result);
-  }, [
-    selectedDate,
-    ProjectEmployees,
-    department,
-    requestnotification,
-    isDisabled,
-  ]);
+  }, [selectedDate, ProjectEmployees, department]);
   const monthMap = {
     January: "1",
     February: "2",
@@ -89,22 +78,6 @@ export default function TimeSheet() {
       newHours[each.employeeId] = each.workingHourse;
     });
     setHours(newHours);
-
-    var timesheetid = getTimeSheet.map((data) => data.timesheetId);
-    console.log(timesheetid);
-    var notificationResponse = await axios.get(
-      `https://localhost:44305/api/Notifications/SenderNotifications?senderid=${id}&timeSheetID=${timesheetid[0]}`
-    );
-    var notificationResult = notificationResponse.data;
-    if (notificationResult.isSuccess) {
-      debugger;
-      if (notificationResult.item != null) {
-        setnotificationData(notificationResult.item);
-        setIsDisabled(true);
-      } else {
-        setIsDisabled(false);
-      }
-    }
   }
   const handleDateChange = async (date) => {
     setSelectedDate(date);
@@ -195,10 +168,8 @@ export default function TimeSheet() {
       });
     }
   };
-  //console.log(notificationData, "notificatonData");
   const RequestForUpdateTimeSheet = async () => {
     var timesheetid = getTimeSheet.map((data) => data.timesheetId);
-    console.log(timesheetid, "==========>");
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const year = selectedDate.getFullYear();
     const monthNumber = monthMap[month];
@@ -219,7 +190,6 @@ export default function TimeSheet() {
     var result = response.data;
     setRequestNotification(result);
   };
-  console.log(projectOptions, "===========>");
   return (
     <div>
       <div className="timeSheet_content">TimeSheet</div>
@@ -456,10 +426,9 @@ export default function TimeSheet() {
             }}
           >
             <button
-              disabled={isDisabled}
               type="button"
-              className="submitbutton  "
-              style={{ marginRight: "10px", height: "36px", color: "black" }}
+              className="submitbutton "
+              style={{ marginRight: "10px", height: "36px" }}
               onClick={RequestForUpdateTimeSheet}
             >
               <span

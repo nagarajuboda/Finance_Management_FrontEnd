@@ -1,0 +1,60 @@
+.notifications-span {
+  text-align: left;
+  font: normal normal bold 16px/24px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
+  opacity: 1;
+}
+.Allnotifications {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 2px 16px #e5e5e5;
+  border-radius: 5px;
+  height: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  min-height: 200px;
+}
+.All-notification-span {
+  text-align: left;
+  font: normal normal bold 14px/24px Segoe UI;
+  letter-spacing: 0px;
+  color: #139bff;
+  opacity: 1;
+}
+.timesheetApproval-message {
+  text-align: left;
+  font: normal normal bold 14px/22px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+.approval-please-message {
+  text-align: left;
+  font: normal normal normal 12px/18px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}
+.meta-infoo {
+  text-align: left;
+  font: normal normal normal 14px/18px Segoe UI;
+  letter-spacing: 0px;
+  color: #a5aeb4;
+  opacity: 1;
+}
+.notification-accept-button {
+  height: 36px;
+  background: #139bff 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  width: 80px;
+  opacity: 1;
+  color: white;
+}
+.notification-decline-button {
+  width: 80px;
+  height: 36px;
+  background: #e5e5e5 0% 0% no-repeat padding-box;
+  border-radius: 5px;
+  opacity: 1;
+}

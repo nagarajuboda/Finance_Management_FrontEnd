@@ -59,14 +59,12 @@ export default function Header({ isOpen }) {
       return "Invalid date";
     }
 
-    const date = new Date(parsedDate); // Now it should be valid
+    const date = new Date(parsedDate);
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-
     if (diffInSeconds < 60) {
       return "Just now";
     }
-
     const intervals = {
       year: 31536000,
       month: 2592000,
@@ -91,7 +89,10 @@ export default function Header({ isOpen }) {
       `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
-    setNotifications(result);
+
+    var NotReadNotification = result.filter((data) => data.isRead === false);
+
+    setNotifications(NotReadNotification);
   };
 
   useEffect(() => {
@@ -147,18 +148,17 @@ export default function Header({ isOpen }) {
     setIsPopupOpen((prev) => !prev);
   };
   const [issuccess1, setissuccess1] = useState(false);
-  const [NotificationPopup, setNotificationPopup] = useState(false);
-  const markAsRead = async (id) => {
-    setNotificationPopup(true);
+  const markAsRead = async (idd) => {
     setIsPopupOpen(false);
-    const getsingleRecord = notifications.find((record) => record.id === id);
+    const getsingleRecord = notifications.find((record) => record.id === idd);
     setSingleNotification(getsingleRecord);
     var response = await axios.put(
-      `https://localhost:44305/api/Notifications/mark-as-read/${id}`
+      `https://localhost:44305/api/Notifications/MarkAsRead?notificationId=${idd}`
     );
     var resultmessage = response.data;
     if (resultmessage.message) {
       fetchdata();
+      navigate("/dashboard/Notifications");
     }
   };
   useEffect(() => {
@@ -174,7 +174,6 @@ export default function Header({ isOpen }) {
     };
   }, []);
   const CloseTimeSheetPopup = () => {
-    setNotificationPopup(false);
     setIsClosing(false);
   };
   const AcceptNotificaton = async (accept) => {
@@ -186,7 +185,6 @@ export default function Header({ isOpen }) {
     setissuccess1(result.isSuccess);
     if (issuccess1) {
       if (accept == "Accepted") {
-        setNotificationPopup(false);
         setAcceptSuccessMessage(true);
       } else {
         setDeclinedPopup(true);
@@ -198,7 +196,6 @@ export default function Header({ isOpen }) {
   };
   const DelciedClosePopup = () => {
     setDeclinedPopup(false);
-    setNotificationPopup(false);
   };
   return (
     <div
@@ -447,7 +444,7 @@ export default function Header({ isOpen }) {
                   key={notif.id}
                   className="notification-item mt-2 pb-2"
                   style={{
-                    backgroundColor: "rgb(245 242 242)",
+                    //backgroundColor: "rgb(245 242 242)",
                     marginBottom: "15px",
                   }}
                 >
@@ -492,59 +489,7 @@ export default function Header({ isOpen }) {
           )}
         </div>
       )}
-      {NotificationPopup && (
-        <div className="alert-overlay">
-          <div className="alert-box">
-            <div className="alert-header">
-              <h2 className="alert-title ms-2">TimeSheet Notificaton</h2>
-              <span className="alert-close-icon me-2">
-                <i
-                  className="bi bi-x-lg"
-                  onClick={CloseTimeSheetPopup}
-                  style={{ cursor: "pointer" }}
-                ></i>
-              </span>
-            </div>
-            <div className="alert-body">
-              <div className="alert-icon">
-                <div className="icon-container">
-                  <span style={{ fontSize: "12px" }}>
-                    Please fill in your monthly hours worked and per-hour rate
-                    by the end of this month.
-                  </span>
-                </div>
-              </div>
-              {userDetails.employee.role.name == "Admin" && (
-                <div
-                  style={{ display: "flex", paddingBottom: "15px" }}
-                  className="ms-2 mt-3"
-                >
-                  <button
-                    className="Accept_button "
-                    onClick={() => AcceptNotificaton("Accepted")}
-                  >
-                    <span className="Accept_button_span"> Accept</span>
-                  </button>
-                  <button
-                    className="Decline_button ms-2"
-                    onClick={() => AcceptNotificaton("Rejected")}
-                  >
-                    <span className="Decline_button_span"> Decline</span>
-                  </button>
-                  <button
-                    className="cancel_button ms-2"
-                    onClick={CloseTimeSheetPopup}
-                  >
-                    <span className="cancel_button_span"> Cancel</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
       <div>
-        {" "}
         {AcceptSuccessMessage && (
           <div className="unique-popup-overlay">
             <div className="unique-popup-container">
