@@ -54,13 +54,11 @@ export default function Notifications() {
     timesheetid,
     acceptOrReject
   ) => {
-    console.log(notificationId, timesheetid, acceptOrReject);
     var response = await NotificationService.UpdateNotification(
       notificationId,
       timesheetid,
       acceptOrReject
     );
-    console.log(response);
     if (response.isSuccess) {
       if (acceptOrReject == "Accepted") {
         setAcceptSuccessMessage(true);
@@ -77,7 +75,7 @@ export default function Notifications() {
     fetchData();
     setDeclinedPopup(false);
   };
-  console.log(notifications, "=======>");
+
   return (
     <div>
       <div className="AllNotificationDiv">
@@ -137,34 +135,6 @@ export default function Notifications() {
                               </span>
                             </p>
                           </div>
-                          {/* <div className="">
-                            <button
-                              type="button"
-                              className="notification-accept-button"
-                              onClick={() =>
-                                AcceptNotificaton(
-                                  notif.id,
-                                  notif.timesheetId,
-                                  "Accepted"
-                                )
-                              }
-                            >
-                              Accept
-                            </button>
-                            <button
-                              type="button"
-                              className="notification-decline-button ms-3"
-                              onClick={() =>
-                                AcceptNotificaton(
-                                  notif.id,
-                                  notif.timesheetId,
-                                  "Rejected"
-                                )
-                              }
-                            >
-                              Decline
-                            </button>
-                          </div> */}
                           <div>
                             {notif.reply === 1 ? (
                               <div>
