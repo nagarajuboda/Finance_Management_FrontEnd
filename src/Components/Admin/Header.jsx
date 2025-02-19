@@ -197,6 +197,10 @@ export default function Header({ isOpen }) {
   const DelciedClosePopup = () => {
     setDeclinedPopup(false);
   };
+  const ViewAllNotification = () => {
+    navigate("/dashboard/Notifications");
+    setIsPopupOpen(false);
+  };
   return (
     <div
       className="Headermaindiv"
@@ -487,6 +491,15 @@ export default function Header({ isOpen }) {
               )
             )
           )}
+          <div className="ViewAll-button-div">
+            <button
+              type="button"
+              className="ViewAll-button"
+              onClick={ViewAllNotification}
+            >
+              View All
+            </button>
+          </div>
         </div>
       )}
       <div>
