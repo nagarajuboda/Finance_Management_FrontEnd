@@ -32,6 +32,7 @@ import ProjectManagerProjects from "../Components/Manager/ProjectManagerProjects
 import TimeSheetModule from "../Components/Manager/TimeSheet";
 import UsFinanceTeamDashboard from "../Components/USFinance/Dashboard";
 import USFinanceTeamAllProjects from "../Components/USFinance/AllProjects";
+import Notifications from "../Components/Admin/Notifications";
 
 export default function AdminRoutes() {
   return (
@@ -71,6 +72,7 @@ export default function AdminRoutes() {
         <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
         <Route path="/Employees" element={<Employees />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />
+        <Route path="/Notifications" element={<Notifications />} />
         <Route
           path="/USFinanceTeamAllProjects"
           element={<USFinanceTeamAllProjects />}

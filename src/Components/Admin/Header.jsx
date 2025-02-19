@@ -13,6 +13,7 @@ import logout from "../../../src/assets/Images/Logout.png";
 import NotificationImage from "../../../src/assets/Images/Notification.png";
 import checkimgae1 from "../../assets/Images/check.png";
 import elllips1 from "../../assets/Images/Ellipse.png";
+import { formatDistanceToNow } from "date-fns";
 import {
   FaSearch,
   FaUserCircle,
@@ -34,6 +35,7 @@ export default function Header({ isOpen }) {
   const [user, setUser] = useState({});
   const [userRole, setUserRole] = useState({});
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
+  var employeeID = userDetails.employee.id;
   const [unreadCount, setUnreadCount] = useState(0);
   const [AcceptSuccessMessage, setAcceptSuccessMessage] = useState(false);
   const [singleNotification, setSingleNotification] = useState({});
@@ -50,23 +52,53 @@ export default function Header({ isOpen }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [notifications]);
+  const getRelativeTime = (timestamp) => {
+    const parsedDate = Date.parse(timestamp);
+    if (isNaN(parsedDate)) {
+      return "Invalid date";
+    }
+
+    const date = new Date(parsedDate);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    if (diffInSeconds < 60) {
+      return "Just now";
+    }
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      week: 604800,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+    };
+
+    for (const [unit, seconds] of Object.entries(intervals)) {
+      const interval = Math.floor(diffInSeconds / seconds);
+      if (interval >= 1) {
+        return `${interval} ${unit}${interval > 1 ? "s" : ""} ago`;
+      }
+    }
+
+    return "Just now";
+  };
+
   const fetchdata = async () => {
-    // var response = await axios.get(
-    //   "https://localhost:44305/api/Notifications/all"
-    // );
     var response = await axios.get(
-      `https://localhost:44305/api/Notifications/${userDetails.employee.id}`
+      `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
-    console.log(result, "result");
-    setNotifications(result);
+
+    var NotReadNotification = result.filter((data) => data.isRead === false);
+
+    setNotifications(NotReadNotification);
   };
+
   useEffect(() => {
     const subscription = getSessionData().subscribe({
       next: (data) => {
         setSessionDataState(data);
-        console.log(data, "Updated sessionData");
       },
       error: (err) => {
         console.error("Error fetching session data: ", err);
@@ -79,7 +111,6 @@ export default function Header({ isOpen }) {
   }, []);
   const profileRef = useRef(null);
   const navigate = useNavigate();
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -113,26 +144,23 @@ export default function Header({ isOpen }) {
     navigate("/user/Login");
   };
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);
   };
   const [issuccess1, setissuccess1] = useState(false);
-  const [NotificationPopup, setNotificationPopup] = useState(false);
-  const markAsRead = async (id) => {
-    setNotificationPopup(true);
+  const markAsRead = async (idd) => {
     setIsPopupOpen(false);
-    const getsingleRecord = notifications.find((record) => record.id === id);
+    const getsingleRecord = notifications.find((record) => record.id === idd);
     setSingleNotification(getsingleRecord);
     var response = await axios.put(
-      `https://localhost:44305/api/Notifications/mark-as-read/${id}`
+      `https://localhost:44305/api/Notifications/MarkAsRead?notificationId=${idd}`
     );
     var resultmessage = response.data;
     if (resultmessage.message) {
       fetchdata();
+      navigate("/dashboard/Notifications");
     }
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popupRef.current && !popupRef.current.contains(event.target)) {
@@ -146,7 +174,6 @@ export default function Header({ isOpen }) {
     };
   }, []);
   const CloseTimeSheetPopup = () => {
-    setNotificationPopup(false);
     setIsClosing(false);
   };
   const AcceptNotificaton = async (accept) => {
@@ -158,7 +185,6 @@ export default function Header({ isOpen }) {
     setissuccess1(result.isSuccess);
     if (issuccess1) {
       if (accept == "Accepted") {
-        setNotificationPopup(false);
         setAcceptSuccessMessage(true);
       } else {
         setDeclinedPopup(true);
@@ -170,7 +196,10 @@ export default function Header({ isOpen }) {
   };
   const DelciedClosePopup = () => {
     setDeclinedPopup(false);
-    setNotificationPopup(false);
+  };
+  const ViewAllNotification = () => {
+    navigate("/dashboard/Notifications");
+    setIsPopupOpen(false);
   };
   return (
     <div
@@ -402,7 +431,9 @@ export default function Header({ isOpen }) {
                               </span>
                             </div>
                           </p>
-                          <span className="ms-5 meta-info">5 minutes ago</span>
+                          <span className="ms-5 meta-info">
+                            {getRelativeTime(notif.createdAt)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -417,7 +448,7 @@ export default function Header({ isOpen }) {
                   key={notif.id}
                   className="notification-item mt-2 pb-2"
                   style={{
-                    backgroundColor: "rgb(245 242 242)",
+                    //backgroundColor: "rgb(245 242 242)",
                     marginBottom: "15px",
                   }}
                 >
@@ -445,7 +476,9 @@ export default function Header({ isOpen }) {
                               </span>
                             </div>
                           </p>
-                          <span className="ms-5 meta-info">5 minutes ago</span>
+                          <span className="ms-5 meta-info">
+                            {getRelativeTime(notif.createdAt)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -458,61 +491,18 @@ export default function Header({ isOpen }) {
               )
             )
           )}
-        </div>
-      )}
-      {NotificationPopup && (
-        <div className="alert-overlay">
-          <div className="alert-box">
-            <div className="alert-header">
-              <h2 className="alert-title ms-2">TimeSheet Notificaton</h2>
-              <span className="alert-close-icon me-2">
-                <i
-                  className="bi bi-x-lg"
-                  onClick={CloseTimeSheetPopup}
-                  style={{ cursor: "pointer" }}
-                ></i>
-              </span>
-            </div>
-            <div className="alert-body">
-              <div className="alert-icon">
-                <div className="icon-container">
-                  <span style={{ fontSize: "12px" }}>
-                    Please fill in your monthly hours worked and per-hour rate
-                    by the end of this month.
-                  </span>
-                </div>
-              </div>
-              {userDetails.employee.role.name == "Admin" && (
-                <div
-                  style={{ display: "flex", paddingBottom: "15px" }}
-                  className="ms-2 mt-3"
-                >
-                  <button
-                    className="Accept_button "
-                    onClick={() => AcceptNotificaton("Accepted")}
-                  >
-                    <span className="Accept_button_span"> Accept</span>
-                  </button>
-                  <button
-                    className="Decline_button ms-2"
-                    onClick={() => AcceptNotificaton("Rejected")}
-                  >
-                    <span className="Decline_button_span"> Decline</span>
-                  </button>
-                  <button
-                    className="cancel_button ms-2"
-                    onClick={CloseTimeSheetPopup}
-                  >
-                    <span className="cancel_button_span"> Cancel</span>
-                  </button>
-                </div>
-              )}
-            </div>
+          <div className="ViewAll-button-div">
+            <button
+              type="button"
+              className="ViewAll-button"
+              onClick={ViewAllNotification}
+            >
+              View All
+            </button>
           </div>
         </div>
       )}
       <div>
-        {" "}
         {AcceptSuccessMessage && (
           <div className="unique-popup-overlay">
             <div className="unique-popup-container">
