@@ -11,13 +11,29 @@ export default function Notifications() {
   const [declinedPopup, setDeclinedPopup] = useState(false);
   var userID = userDetails.employee.id;
   const [notifications, setNotifications] = useState([]);
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   useEffect(() => {
     fetchData();
   }, []);
   const fetchData = async () => {
     var result = await NotificationService.GetUserNotifications(userID);
-    setNotifications(result);
+    if (result.isSuccess) {
+      setNotifications(result.item);
+    }
   };
   const getRelativeTime = (timestamp) => {
     const parsedDate = Date.parse(timestamp);
@@ -116,8 +132,17 @@ export default function Notifications() {
                         <div className="ms-3">
                           <span className="timesheetApproval-message">
                             This is a reminder regarding a timesheet approval
-                            change request from Project Manager Nagaraju Boda
-                            for May 2024.
+                            change request from Project Manager{" "}
+                            <span style={{ fontWeight: "1000" }}>
+                              {notif.senderDetails.firstName}{" "}
+                              {notif.senderDetails.lastName}
+                            </span>{" "}
+                            for{" "}
+                            <span style={{ fontWeight: "1000" }}>
+                              {months[notif.selectedMonth - 1]}{" "}
+                              {notif.selectedYear}
+                            </span>
+                            .
                           </span>
                           <div
                             style={{
@@ -137,15 +162,28 @@ export default function Notifications() {
                           </div>
                           <div>
                             {notif.reply === 1 ? (
-                              <div>
-                                <button type="button">Accepted</button>
+                              <div style={{ marginBottom: "20px" }}>
+                                <button
+                                  type="button"
+                                  className="accepted_button"
+                                >
+                                  Accepted
+                                </button>
                               </div>
                             ) : notif.reply === 2 ? (
-                              <div>
-                                <button type="button">Rejected</button>
+                              <div style={{ marginBottom: "20px" }}>
+                                <button
+                                  type="button"
+                                  className="rejected_button"
+                                >
+                                  Rejected
+                                </button>
                               </div>
                             ) : (
-                              <div className="">
+                              <div
+                                className=""
+                                style={{ marginBottom: "20px" }}
+                              >
                                 <button
                                   type="button"
                                   className="notification-accept-button"

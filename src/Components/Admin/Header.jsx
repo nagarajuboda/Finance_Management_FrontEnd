@@ -41,6 +41,7 @@ export default function Header({ isOpen }) {
   const [singleNotification, setSingleNotification] = useState({});
   const [notifications, setNotifications] = useState([]);
   const [DeclinedPopup, setDeclinedPopup] = useState(false);
+  const [allNotifications, setAllNotifications] = useState([]);
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen1(false);
@@ -89,10 +90,13 @@ export default function Header({ isOpen }) {
       `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
-
-    var NotReadNotification = result.filter((data) => data.isRead === false);
-
-    setNotifications(NotReadNotification);
+    if (result.isSuccess) {
+      setAllNotifications(result.item);
+      var NotReadNotification = result.item.filter(
+        (data) => data.isRead === false
+      );
+      setNotifications(NotReadNotification);
+    }
   };
 
   useEffect(() => {
@@ -392,12 +396,12 @@ export default function Header({ isOpen }) {
           >
             Recent Notification
           </div>
-          {notifications.length === 0 ? (
+          {allNotifications.length === 0 ? (
             <span
               style={{
                 display: "flex",
                 justifyContent: "center",
-                fontSize: "12px",
+                fontSize: "14px",
               }}
             >
               No notifications
@@ -420,27 +424,30 @@ export default function Header({ isOpen }) {
                           }}
                         >
                           <p className="meta-info" style={{ display: "flex" }}>
-                            {"14/05/2024"} |
+                            <span className="me-1"> {"14/05/2024"}</span>
+                            <span className="ms-2"> |</span>
                             <div>
                               <span
-                                className="action-link ms-2"
-                                style={{ color: "black", fontWeight: "600" }}
+                                className="action-link ms-1"
+                                style={{
+                                  color: "black",
+                                  fontWeight: "600",
+                                }}
                                 onClick={() => markAsRead(notif.id)}
                               >
                                 View Info
                               </span>
                             </div>
                           </p>
-                          <span className="ms-5 meta-info">
+                          <span
+                            className="ms-2 meta-info"
+                            style={{ fontSize: "14px" }}
+                          >
                             {getRelativeTime(notif.createdAt)}
                           </span>
                         </div>
                       </div>
                     </div>
-
-                    {/* <p className="time-info">
-                  {new Date(notif.createdAt).toLocaleString()}
-                </p> */}
                   </div>
                 </div>
               ) : (
@@ -448,7 +455,6 @@ export default function Header({ isOpen }) {
                   key={notif.id}
                   className="notification-item mt-2 pb-2"
                   style={{
-                    //backgroundColor: "rgb(245 242 242)",
                     marginBottom: "15px",
                   }}
                 >
@@ -465,8 +471,14 @@ export default function Header({ isOpen }) {
                             justifyContent: "space-between",
                           }}
                         >
-                          <p className="meta-info" style={{ display: "flex" }}>
-                            {"14/05/2024"} |
+                          <p
+                            className="meta-info "
+                            style={{ display: "flex", fontSize: "14px " }}
+                          >
+                            {new Date(notif.createdAt).toLocaleDateString(
+                              "en-GB"
+                            )}
+                            |
                             <div>
                               <span
                                 className="action-link ms-2"
@@ -482,24 +494,24 @@ export default function Header({ isOpen }) {
                         </div>
                       </div>
                     </div>
-
-                    {/* <p className="time-info">
-                    {new Date(notif.createdAt).toLocaleString()}
-                  </p> */}
                   </div>
                 </div>
               )
             )
           )}
-          <div className="ViewAll-button-div">
-            <button
-              type="button"
-              className="ViewAll-button"
-              onClick={ViewAllNotification}
-            >
-              View All
-            </button>
-          </div>
+          {allNotifications.length > 0 && (
+            <div className="">
+              <div className="ViewAll-button-div  ">
+                <button
+                  type="button"
+                  className="ViewAll-button"
+                  onClick={ViewAllNotification}
+                >
+                  View All
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
       <div>

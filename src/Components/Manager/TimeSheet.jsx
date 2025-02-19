@@ -14,6 +14,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
 import { format } from "date-fns";
+import NotificationService from "../../Service/NotificationService";
+import { useTable } from "react-table";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -25,18 +27,20 @@ export default function TimeSheet() {
   const [department, setDepartment] = useState("");
   const [getTimeSheet, setGetTimesheet] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
+  const [disibleRequestbuttons, setDisiblerequestbuttons] = useState(false);
   const [hours, setHours] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitOpen, setIssubmitOpen] = useState(false);
   const [ProjectEmployees, setProjectemployess] = useState([]);
   const [requestnotification, setRequestNotification] = useState({});
+  const [timesheetids, settimesheetids] = useState([]);
   useEffect(() => {
     FetchData();
     const year = selectedDate.getFullYear();
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
     setFormattedDate(result);
-  }, [selectedDate, ProjectEmployees, department]);
+  }, [selectedDate, ProjectEmployees, department, timesheetids]);
   const monthMap = {
     January: "1",
     February: "2",
@@ -63,7 +67,22 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+
     setGetTimesheet(Timesheetresponse.item);
+    const timesheetIDs = Timesheetresponse.item
+      .filter((data) => data.isSubmited === true)
+      .map((data) => data.timesheetId);
+    if (timesheetIDs.length > 0) {
+      settimesheetids(timesheetIDs);
+      const notificationResponse =
+        await NotificationService.GetNotificationsByTimesheetId(
+          timesheetids[0]
+        );
+      if (notificationResponse.isSuccess) {
+        setDisiblerequestbuttons(true);
+      }
+    }
+
     if (Timesheetresponse.item.length > 0) {
       if (Timesheetresponse.item.every((el) => el.isSubmited === true)) {
         setDisiblebuttons(true);
@@ -79,6 +98,7 @@ export default function TimeSheet() {
     });
     setHours(newHours);
   }
+  // console.log(timesheetids, "=================>");
   const handleDateChange = async (date) => {
     setSelectedDate(date);
     const formattedDate = `${date.toLocaleString("default", {
@@ -201,6 +221,13 @@ export default function TimeSheet() {
               style={{ marginLeft: "10px" }}
             >
               Billing Hours
+            </span>
+            <span>
+              {timesheetids.map((ids) => {
+                {
+                  <div>{ids}</div>;
+                }
+              })}
             </span>
           </div>
           <div
@@ -427,7 +454,8 @@ export default function TimeSheet() {
           >
             <button
               type="button"
-              className="submitbutton "
+              className="submitbutton  make-a-request-button"
+              disabled={disibleRequestbuttons}
               style={{ marginRight: "10px", height: "36px" }}
               onClick={RequestForUpdateTimeSheet}
             >

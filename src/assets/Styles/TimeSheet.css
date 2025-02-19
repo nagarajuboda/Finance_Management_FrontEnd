@@ -17,6 +17,9 @@
 .submitbutton:disabled {
   cursor: not-allowed;
 }
+.make-a-request-button:disabled {
+  cursor: not-allowed;
+}
 .make_a_request_span:disabled {
   color: rgb(181, 175, 175);
 }

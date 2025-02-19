@@ -15,6 +15,16 @@
   margin-bottom: 15px;
   min-height: 200px;
 }
+.accepted_button {
+  color: blue;
+  font-size: 14px;
+  font-weight: 600;
+}
+.rejected_button {
+  color: red;
+  font-size: 14px;
+  font-weight: 600;
+}
 .All-notification-span {
   text-align: left;
   font: normal normal bold 14px/24px Segoe UI;

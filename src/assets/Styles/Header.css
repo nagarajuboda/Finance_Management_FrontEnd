@@ -118,10 +118,10 @@
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
-/* 
-.notification-item.unread {
-  background: #f9f9f9;
-} */
+.notification-item1 {
+  margin-top: 5px;
+  border-top: 1px solid #eee;
+}
 
 .notification-meta {
   font-size: 0.75rem;
@@ -141,7 +141,7 @@
   font-style: normal;
   font-variant: normal;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 24px;
   font-family: Roboto;
   letter-spacing: 0px;
@@ -178,7 +178,7 @@
   font-style: normal;
   font-variant: normal;
   font-weight: medium;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 22px;
   font-family: Roboto;
   letter-spacing: 0px;
@@ -219,7 +219,7 @@
 }
 .ViewAll-button {
   text-align: center;
-  font: normal normal 600 14px/18px Segoe UI;
+  font: normal normal 600 16px/18px Segoe UI;
   letter-spacing: 0px;
   color: #0d56e6;
 }
@@ -227,7 +227,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 10px;
+  margin-bottom: 20px !important;
+  margin-top: 20px;
 }
 
 .notification-content {
