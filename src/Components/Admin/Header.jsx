@@ -407,97 +407,53 @@ export default function Header({ isOpen }) {
               No notifications
             </span>
           ) : (
-            notifications.map((notif) =>
-              notif.isRead ? (
-                <div key={notif.id} className="notification-item mt-2 ">
-                  <div className="notification-content ">
-                    <div style={{ display: "flex" }}>
-                      <div className="boxshowdow mt-2"></div>
-                      <div className="ms-3">
-                        <span className="forwhatrequest">
-                          TimeSheet change request approved
-                        </span>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
+            notifications.map((notif) => (
+              <div
+                key={notif.id}
+                className="notification-item mt-2 pb-2"
+                style={{
+                  marginBottom: "15px",
+                }}
+              >
+                <div className="notification-content">
+                  <div style={{ display: "flex" }}>
+                    <div className="boxshowdow"></div>
+                    <div className="ms-3">
+                      <span className="forwhatrequest">
+                        TimeSheet change request approved
+                      </span>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <p
+                          className="meta-info "
+                          style={{ display: "flex", fontSize: "14px " }}
                         >
-                          <p className="meta-info" style={{ display: "flex" }}>
-                            <span className="me-1"> {"14/05/2024"}</span>
-                            <span className="ms-2"> |</span>
-                            <div>
-                              <span
-                                className="action-link ms-1"
-                                style={{
-                                  color: "black",
-                                  fontWeight: "600",
-                                }}
-                                onClick={() => markAsRead(notif.id)}
-                              >
-                                View Info
-                              </span>
-                            </div>
-                          </p>
-                          <span
-                            className="ms-2 meta-info"
-                            style={{ fontSize: "14px" }}
-                          >
-                            {getRelativeTime(notif.createdAt)}
-                          </span>
-                        </div>
+                          {new Date(notif.createdAt).toLocaleDateString(
+                            "en-GB"
+                          )}
+                          |
+                          <div>
+                            <span
+                              className="action-link ms-2"
+                              onClick={() => markAsRead(notif.id)}
+                            >
+                              View Info
+                            </span>
+                          </div>
+                        </p>
+                        <span className="ms-5 meta-info">
+                          {getRelativeTime(notif.createdAt)}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div
-                  key={notif.id}
-                  className="notification-item mt-2 pb-2"
-                  style={{
-                    marginBottom: "15px",
-                  }}
-                >
-                  <div className="notification-content">
-                    <div style={{ display: "flex" }}>
-                      <div className="boxshowdow"></div>
-                      <div className="ms-3">
-                        <span className="forwhatrequest">
-                          TimeSheet change request approved
-                        </span>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <p
-                            className="meta-info "
-                            style={{ display: "flex", fontSize: "14px " }}
-                          >
-                            {new Date(notif.createdAt).toLocaleDateString(
-                              "en-GB"
-                            )}
-                            |
-                            <div>
-                              <span
-                                className="action-link ms-2"
-                                onClick={() => markAsRead(notif.id)}
-                              >
-                                View Info
-                              </span>
-                            </div>
-                          </p>
-                          <span className="ms-5 meta-info">
-                            {getRelativeTime(notif.createdAt)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            )
+              </div>
+            ))
           )}
           {allNotifications.length > 0 && (
             <div className="">
