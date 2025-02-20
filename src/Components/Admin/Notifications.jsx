@@ -98,7 +98,7 @@ export default function Notifications() {
         <span className="notifications-span ">notifications</span>
       </div>
       <div className="Allnotifications">
-        {userDetails.employee.role.name !== null && (
+        {userDetails.employee.role.name == "Admin" ? (
           <div className="m-3">
             <span className="All-notification-span ms-2">All Notification</span>
             {notifications.length === 0 ? (
@@ -209,6 +209,95 @@ export default function Notifications() {
                                   }
                                 >
                                   Decline
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <span className="meta-infoo">
+                        {getRelativeTime(notif.createdAt)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        ) : (
+          <div className="m-3">
+            <span className="All-notification-span ms-2">All Notification</span>
+            {notifications.length === 0 ? (
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  fontSize: "12px",
+                }}
+              >
+                No notifications
+              </span>
+            ) : (
+              notifications.map((notif) => (
+                <div
+                  key={notif.id}
+                  className="notification-item mt-2 pb-2"
+                  style={{
+                    marginBottom: "15px",
+                  }}
+                >
+                  <div className="notification-content">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div style={{ display: "flex" }} className="">
+                        <div className="boxshowdow"></div>
+                        <div className="ms-3">
+                          {notif.reply === 1 ? (
+                            <span className="timesheetApproval-message">
+                              Your Timesheet update request for{" "}
+                              <span style={{ fontWeight: "1000" }}>
+                                {months[notif.selectedMonth - 1]}{" "}
+                                {notif.selectedYear}
+                              </span>{" "}
+                              has been accepted by the Admin. You can process
+                              with the Timesheet update.
+                            </span>
+                          ) : (
+                            <span className="timesheetApproval-message">
+                              Your Timesheet update request for{" "}
+                              {months[notif.selectedMonth - 1]}{" "}
+                              {notif.selectedYear} has been decline by the
+                              Admin.
+                            </span>
+                          )}
+
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          ></div>
+                          <div>
+                            {notif.reply === 1 ? (
+                              <div style={{ marginBottom: "20px" }}>
+                                <button
+                                  type="button"
+                                  className="accepted_button"
+                                >
+                                  Accepted
+                                </button>
+                              </div>
+                            ) : (
+                              <div style={{ marginBottom: "20px" }}>
+                                <button
+                                  type="button"
+                                  className="rejected_button"
+                                >
+                                  Rejected
                                 </button>
                               </div>
                             )}

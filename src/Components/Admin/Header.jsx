@@ -419,9 +419,21 @@ export default function Header({ isOpen }) {
                   <div style={{ display: "flex" }}>
                     <div className="boxshowdow"></div>
                     <div className="ms-3">
-                      <span className="forwhatrequest">
-                        TimeSheet change request approved
-                      </span>
+                      {userDetails.employee.role.name === "Admin" ? (
+                        <span className="forwhatrequest">
+                          TimeSheet change request approved
+                        </span>
+                      ) : notif.reply === 1 ? (
+                        <span className="forwhatrequest">
+                          TimeSheet change request Accepted
+                        </span>
+                      ) : (
+                        notif.reply === 2 && (
+                          <span className="forwhatrequest">
+                            TimeSheet change request decline
+                          </span>
+                        )
+                      )}
                       <div
                         style={{
                           display: "flex",
