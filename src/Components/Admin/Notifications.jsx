@@ -98,7 +98,7 @@ export default function Notifications() {
         <span className="notifications-span ">notifications</span>
       </div>
       <div className="Allnotifications">
-        {userDetails.employee.role.name === "Admin" && (
+        {userDetails.employee.role.name !== null && (
           <div className="m-3">
             <span className="All-notification-span ms-2">All Notification</span>
             {notifications.length === 0 ? (
