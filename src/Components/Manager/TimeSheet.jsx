@@ -14,6 +14,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
 import { format } from "date-fns";
+import NotificationService from "../../Service/NotificationService";
+import { useTable } from "react-table";
+import { data } from "jquery";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -25,13 +28,23 @@ export default function TimeSheet() {
   const [department, setDepartment] = useState("");
   const [getTimeSheet, setGetTimesheet] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
+  const [disibleRequestbuttons, setDisiblerequestbuttons] = useState(false);
   const [hours, setHours] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitOpen, setIssubmitOpen] = useState(false);
   const [ProjectEmployees, setProjectemployess] = useState([]);
   const [requestnotification, setRequestNotification] = useState({});
+  const [timesheetids, settimesheetids] = useState([]);
+  const [NotificationPopup, setnotificationPopup] = useState(false);
+
+  const [NotificationData, setNotificationData] = useState({});
+  const [flag, setflag] = useState(false);
   useEffect(() => {
+    const checkIsSubmitted =
+      getTimeSheet.length > 0 && getTimeSheet[0].isSubmited === true;
+    setflag(checkIsSubmitted);
     FetchData();
+
     const year = selectedDate.getFullYear();
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
@@ -63,6 +76,21 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+
+    if (Timesheetresponse.isSuccess && Timesheetresponse.item.length > 0) {
+      var timesheetid = await Timesheetresponse.item.map(
+        (data) => data.timesheetId
+      );
+      var result = await NotificationService.GetNotificationsByTimesheetId(
+        timesheetid[0]
+      );
+      if (result.isSuccess && result.item !== null) {
+        setDisiblerequestbuttons(true);
+      } else {
+        setDisiblerequestbuttons(false);
+      }
+    }
+
     setGetTimesheet(Timesheetresponse.item);
     if (Timesheetresponse.item.length > 0) {
       if (Timesheetresponse.item.every((el) => el.isSubmited === true)) {
@@ -94,7 +122,6 @@ export default function TimeSheet() {
       setDepartment(result.item.item2);
     }
   };
-
   const handleProjectChange = async (option) => {
     setSelectedProject(option);
     const ProjectEmployeess = await axios.get(
@@ -188,8 +215,16 @@ export default function TimeSheet() {
       obj
     );
     var result = response.data;
+
+    if (result !== null) {
+      FetchData();
+      setnotificationPopup(true);
+    } else {
+      setnotificationPopup(false);
+    }
     setRequestNotification(result);
   };
+
   return (
     <div>
       <div className="timeSheet_content">TimeSheet</div>
@@ -427,7 +462,8 @@ export default function TimeSheet() {
           >
             <button
               type="button"
-              className="submitbutton "
+              className="submitbutton  make-a-request-button"
+              disabled={disibleRequestbuttons}
               style={{ marginRight: "10px", height: "36px" }}
               onClick={RequestForUpdateTimeSheet}
             >
@@ -509,6 +545,42 @@ export default function TimeSheet() {
           </div>
         </div>
       )}
+      {NotificationPopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={checkimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={ellips}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">
+              Your request has been successfully sent to the Indian Finance Team
+              for timesheet editing.
+            </h2>
+            <p className="unique-popup-message">Click OK to see the result</p>
+            <button
+              className="unique-popup-button"
+              onClick={() => setnotificationPopup(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
       <ToastContainer position="top-end" autoClose={5000} />
     </div>
   );
