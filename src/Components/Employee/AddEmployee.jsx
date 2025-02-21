@@ -162,6 +162,7 @@ export default function AddEmployee() {
 
   const Handleonchnage = (e) => {
     const { name, value } = e.target;
+    console.log(value, "==========>");
     setValues({
       ...values,
       [name]: value,
@@ -251,7 +252,7 @@ export default function AddEmployee() {
           email: values.email,
           mobileNo: values.mobileNo,
           dateOfJoining: formattedDate,
-          otp: values.projectManager,
+          projectManagerId: values.projectManager,
           roleId: values.role,
           EmployeeStatus: "Active",
           skillSets: values.skillSets,
@@ -739,7 +740,7 @@ export default function AddEmployee() {
                 </MenuItem>
                 {employees && employees.length > 0 ? (
                   employees.map((emp, index) => (
-                    <MenuItem key={index} value={emp.employee.email}>
+                    <MenuItem key={index} value={emp.employee.id}>
                       <span style={{ fontSize: "14px" }}>
                         {emp.employee.firstName} {emp.employee.lastName}
                       </span>
