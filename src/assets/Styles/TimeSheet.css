@@ -16,10 +16,9 @@
 }
 .submitbutton:disabled {
   cursor: not-allowed;
+  background-color: #8dcaf5;
 }
-.make_a_request_span:disabled {
-  color: rgb(181, 175, 175);
-}
+
 .drop_down_list {
   width: 200px;
   font-size: 14px;
