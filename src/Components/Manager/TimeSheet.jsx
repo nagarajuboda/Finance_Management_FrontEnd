@@ -36,7 +36,7 @@ export default function TimeSheet() {
   const [requestnotification, setRequestNotification] = useState({});
   const [timesheetids, settimesheetids] = useState([]);
   const [NotificationPopup, setnotificationPopup] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [NotificationData, setNotificationData] = useState({});
   const [flag, setflag] = useState(false);
   useEffect(() => {
@@ -84,7 +84,9 @@ export default function TimeSheet() {
       var result = await NotificationService.GetNotificationsByTimesheetId(
         timesheetid[0]
       );
-      if (result.isSuccess && result.item !== null) {
+      if (result.isSuccess && result.item != null && result.item.reply === 2) {
+        setDisiblerequestbuttons(false);
+      } else if (result.isSuccess && result.item !== null) {
         setDisiblerequestbuttons(true);
       } else {
         setDisiblerequestbuttons(false);
@@ -210,13 +212,15 @@ export default function TimeSheet() {
       selectedYear: year,
       createdAt: new Date(),
     };
+    setLoading(true);
     var response = await axios.post(
       "https://localhost:44305/api/Notifications/CreateNotification",
       obj
     );
     var result = response.data;
-
+    console.log(result);
     if (result !== null) {
+      setLoading(false);
       FetchData();
       setnotificationPopup(true);
     } else {
@@ -224,11 +228,20 @@ export default function TimeSheet() {
     }
     setRequestNotification(result);
   };
+  //console.log(requestnotification, "=====================>");
+  console.log(loading, "=========>");
 
   return (
     <div>
       <div className="timeSheet_content">TimeSheet</div>
       <div className="TimeSheetMainDiv">
+        {/* {loading && (
+          <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        )} */}
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ paddingTop: "20px" }}>
             <span
@@ -460,20 +473,38 @@ export default function TimeSheet() {
               paddingBottom: "15px",
             }}
           >
-            <button
-              type="button"
-              className="submitbutton  make-a-request-button"
-              disabled={disibleRequestbuttons}
-              style={{ marginRight: "10px", height: "36px" }}
-              onClick={RequestForUpdateTimeSheet}
-            >
-              <span
-                className="make_a_request_span"
-                style={{ fontSize: "14px", width: "141px" }}
+            {loading === false ? (
+              <button
+                type="button"
+                className="submitbutton  make-a-request-button"
+                disabled={disibleRequestbuttons}
+                style={{ marginRight: "10px", height: "36px" }}
+                onClick={RequestForUpdateTimeSheet}
               >
-                Make a request
-              </span>
-            </button>
+                <span
+                  className="make_a_request_span"
+                  style={{ fontSize: "14px", width: "141px" }}
+                >
+                  Make a request
+                </span>
+              </button>
+            ) : (
+              loading && (
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  disabled
+                  style={{ marginRight: "10px", height: "36px" }}
+                >
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
+                </button>
+              )
+            )}
           </div>
         )}
       </div>

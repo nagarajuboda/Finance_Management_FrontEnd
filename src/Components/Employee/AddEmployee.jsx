@@ -39,6 +39,7 @@ export default function AddEmployee() {
   const [date, setDate] = useState(null);
   const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (e) => {
     setName(e.target.value);
   };
@@ -258,13 +259,13 @@ export default function AddEmployee() {
         Skillsetlists: namesList,
       };
       console.log(obj, "obj");
+      setLoading(true);
       var response = await axios.post(
         "https://localhost:44305/api/Employees/Add",
         obj
       );
-      console.log(response, "reponse============>");
-
       if (response.data.isSuccess == true) {
+        setLoading(false);
         setIsOpen(true);
       } else {
         toast.error(response.data.error.message, {
@@ -883,12 +884,31 @@ export default function AddEmployee() {
               className="col-2"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <button
-                className=" addEmployeeSubmitbutton me-2 "
-                onSubmit={AddEmployeeForm}
-              >
-                <span className="addemployeespan ">submit</span>
-              </button>
+              {loading === false ? (
+                <button
+                  className=" addEmployeeSubmitbutton me-2 "
+                  onSubmit={AddEmployeeForm}
+                >
+                  <span className="addemployeespan ">submit</span>
+                </button>
+              ) : (
+                loading &&
+                loading && (
+                  <button
+                    class="addEmployeeSubmitbutton me-2"
+                    type="button"
+                    disabled
+                    style={{ color: "white" }}
+                  >
+                    <span
+                      class="spinner-border spinner-border-sm "
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Loading...
+                  </button>
+                )
+              )}
               <button
                 className="addemployeeResetbutton  "
                 onClick={ClearValues}
