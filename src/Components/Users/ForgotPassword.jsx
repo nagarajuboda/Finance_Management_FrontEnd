@@ -62,6 +62,7 @@ export default function ForgotPassword() {
           onClose: () => navigate("/user/VerifyOtp"),
         });
       } else {
+        setLoading(false);
         toast.error("Please enter a valid email.", {
           position: "top-right",
           autoClose: 4000,

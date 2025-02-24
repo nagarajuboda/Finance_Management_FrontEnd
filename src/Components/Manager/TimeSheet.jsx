@@ -179,6 +179,11 @@ export default function TimeSheet() {
     if (response.isSuccess) {
       setIssubmitOpen(true);
       FetchData();
+    } else {
+      toast.error(response.error.message, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
   };
   const Resetfunction = (e) => {
