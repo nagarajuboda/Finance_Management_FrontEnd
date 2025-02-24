@@ -11,8 +11,8 @@ export default function Notifications() {
   const [declinedPopup, setDeclinedPopup] = useState(false);
   var userID = userDetails.employee.id;
   const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loading1, setLoading1] = useState(false);
+  const [loadingStates, setLoadingStates] = useState({});
+  const [loadingDeclineStates, setLoadingDeclineStates] = useState({});
   const months = [
     "January",
     "February",
@@ -67,14 +67,19 @@ export default function Notifications() {
 
     return "Just now";
   };
+
   const AcceptNotificaton = async (
     index,
     notificationId,
     timesheetid,
     acceptOrReject
   ) => {
-    setLoading(true);
-    setLoading1(true);
+    if (acceptOrReject === "Accepted") {
+      setLoadingStates((prev) => ({ ...prev, [index]: true }));
+    } else {
+      setLoadingDeclineStates((prev) => ({ ...prev, [index]: true }));
+    }
+
     var response = await NotificationService.UpdateNotification(
       notificationId,
       timesheetid,
@@ -82,11 +87,14 @@ export default function Notifications() {
     );
     if (response.isSuccess) {
       if (acceptOrReject == "Accepted") {
-        setLoading(false);
         setAcceptSuccessMessage(true);
+        setLoadingStates((prev) => ({ ...prev, [index]: false }));
       } else {
-        setLoading1(false);
         setDeclinedPopup(true);
+        setLoadingDeclineStates((prev) => ({
+          ...prev,
+          [index]: false,
+        }));
       }
     }
   };
@@ -192,36 +200,74 @@ export default function Notifications() {
                                 style={{ marginBottom: "20px" }}
                               >
                                 <div>
-                                  <button
-                                    type="button"
-                                    className="notification-accept-button"
-                                    onClick={() =>
-                                      AcceptNotificaton(
-                                        index,
-                                        notif.id,
-                                        notif.timesheetId,
-                                        "Accepted"
-                                      )
-                                    }
-                                  >
-                                    Accept
-                                  </button>
+                                  {loadingStates[index] ? (
+                                    <button
+                                      className="btn btn-primary "
+                                      type="button"
+                                      disabled
+                                      style={{
+                                        marginRight: "10px",
+                                        height: "36px",
+                                      }}
+                                    >
+                                      <span
+                                        className="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                      ></span>
+                                      Loading...
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="notification-accept-button"
+                                      onClick={() =>
+                                        AcceptNotificaton(
+                                          index,
+                                          notif.id,
+                                          notif.timesheetId,
+                                          "Accepted"
+                                        )
+                                      }
+                                    >
+                                      Accept
+                                    </button>
+                                  )}
                                 </div>
                                 <div>
-                                  <button
-                                    type="button"
-                                    className="notification-decline-button ms-3"
-                                    onClick={() =>
-                                      AcceptNotificaton(
-                                        index,
-                                        notif.id,
-                                        notif.timesheetId,
-                                        "Rejected"
-                                      )
-                                    }
-                                  >
-                                    Decline
-                                  </button>
+                                  {loadingDeclineStates[index] ? (
+                                    <button
+                                      className="btn btn-danger ms-3"
+                                      type="button"
+                                      disabled
+                                      style={{
+                                        marginRight: "10px",
+                                        height: "36px",
+                                      }}
+                                    >
+                                      <span
+                                        className="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                      ></span>
+                                      Loading...
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="notification-decline-button ms-3"
+                                      onClick={() =>
+                                        AcceptNotificaton(
+                                          index,
+                                          notif.id,
+                                          notif.timesheetId,
+                                          "Rejected"
+                                        )
+                                      }
+                                    >
+                                      Decline
+                                    </button>
+                                  )}
                                 </div>
                               </div>
                             )}

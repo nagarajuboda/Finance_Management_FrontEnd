@@ -291,7 +291,9 @@ export default function Employees() {
                 }}
                 className="Show-Deleted-employee-button ms-1"
               >
-                <span className="deleteSelectedd"> Deleted Employees</span>
+                <span className="deleteSelectedd" style={{ fontSize: "14px" }}>
+                  Deleted Employees
+                </span>
               </button>
             )}
           </div>

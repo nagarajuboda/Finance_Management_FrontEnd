@@ -76,6 +76,9 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+    var checkIsSubmitted = await Timesheetresponse.item.map(
+      (data) => data.isSubmited
+    );
 
     if (Timesheetresponse.isSuccess && Timesheetresponse.item.length > 0) {
       var timesheetid = await Timesheetresponse.item.map(
@@ -84,9 +87,15 @@ export default function TimeSheet() {
       var result = await NotificationService.GetNotificationsByTimesheetId(
         timesheetid[0]
       );
-      if (result.isSuccess && result.item != null && result.item.reply === 2) {
-        setDisiblerequestbuttons(false);
-      } else if (result.isSuccess && result.item !== null) {
+
+      var checkNotificationReplay = await result.item.map((data) => data.reply);
+      const hasZero = checkNotificationReplay.some((value) => value === 0);
+
+      if (
+        checkIsSubmitted[0] === true &&
+        result.item.length > 0 &&
+        hasZero === true
+      ) {
         setDisiblerequestbuttons(true);
       } else {
         setDisiblerequestbuttons(false);
@@ -218,7 +227,6 @@ export default function TimeSheet() {
       obj
     );
     var result = response.data;
-    console.log(result);
     if (result !== null) {
       setLoading(false);
       FetchData();
@@ -228,8 +236,6 @@ export default function TimeSheet() {
     }
     setRequestNotification(result);
   };
-  //console.log(requestnotification, "=====================>");
-  console.log(loading, "=========>");
 
   return (
     <div>
