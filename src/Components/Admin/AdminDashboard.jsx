@@ -1239,60 +1239,6 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
-          <div className="addEmployee_quick_action">
-            <div className="Quick_Actions_image">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={AddEmployeeQuickAction}
-                  alt=""
-                  height="52px"
-                  width="52px"
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <span className="Add_Employee_content">Add Employee</span>
-              </div>
-            </div>
-          </div>
-          <div className="addEmployee_quick_action">
-            <div className="Quick_Actions_image">
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <img
-                  src={AddEmployeeQuickAction}
-                  alt=""
-                  height="52px"
-                  width="52px"
-                />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <span className="Add_Employee_content">Add Employee</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

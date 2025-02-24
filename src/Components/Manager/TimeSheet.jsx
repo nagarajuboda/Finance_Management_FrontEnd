@@ -241,13 +241,6 @@ export default function TimeSheet() {
     <div>
       <div className="timeSheet_content">TimeSheet</div>
       <div className="TimeSheetMainDiv">
-        {/* {loading && (
-          <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )} */}
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ paddingTop: "20px" }}>
             <span
