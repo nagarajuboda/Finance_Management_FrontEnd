@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 export default function ForgotPassword() {
+  const [loading, setLoading] = useState(false);
   const [emailvalues, setEmialValuess] = useState({
     email: "",
   });
@@ -44,13 +45,15 @@ export default function ForgotPassword() {
       var obj = {
         Email: emailvalues.email,
       };
-
+      setLoading(true);
       var responses = await axios.post(
         "https://localhost:44305/api/Auth/get-otp",
         obj
       );
+
       var result = await responses.data;
       if (result.isSuccess) {
+        setLoading(false);
         localStorage.setItem("Email", emailvalues.email);
         localStorage.setItem("OTP", result.item.otp);
         toast.success("OTP sent successfully to Your Email.", {
@@ -128,7 +131,20 @@ export default function ForgotPassword() {
                 </div>
 
                 <div className="loginbutton">
-                  <button className="buttonlogin">Submit</button>
+                  {loading === false ? (
+                    <button className="buttonlogin">Submit</button>
+                  ) : (
+                    loading && (
+                      <button class="buttonlogin" type="button" disabled>
+                        <span
+                          class="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Loading...
+                      </button>
+                    )
+                  )}
                 </div>
                 <div className="forcontect1">
                   if you are a new user, please contact archents support team.

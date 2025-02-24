@@ -39,6 +39,7 @@ export default function AddEmployee() {
   const [date, setDate] = useState(null);
   const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (e) => {
     setName(e.target.value);
   };
@@ -161,6 +162,7 @@ export default function AddEmployee() {
 
   const Handleonchnage = (e) => {
     const { name, value } = e.target;
+    console.log(value, "==========>");
     setValues({
       ...values,
       [name]: value,
@@ -250,7 +252,7 @@ export default function AddEmployee() {
           email: values.email,
           mobileNo: values.mobileNo,
           dateOfJoining: formattedDate,
-          otp: values.projectManager,
+          projectManagerId: values.projectManager,
           roleId: values.role,
           EmployeeStatus: "Active",
           skillSets: values.skillSets,
@@ -258,13 +260,13 @@ export default function AddEmployee() {
         Skillsetlists: namesList,
       };
       console.log(obj, "obj");
+      setLoading(true);
       var response = await axios.post(
         "https://localhost:44305/api/Employees/Add",
         obj
       );
-      console.log(response, "reponse============>");
-
       if (response.data.isSuccess == true) {
+        setLoading(false);
         setIsOpen(true);
       } else {
         toast.error(response.data.error.message, {
@@ -738,7 +740,7 @@ export default function AddEmployee() {
                 </MenuItem>
                 {employees && employees.length > 0 ? (
                   employees.map((emp, index) => (
-                    <MenuItem key={index} value={emp.employee.email}>
+                    <MenuItem key={index} value={emp.employee.id}>
                       <span style={{ fontSize: "14px" }}>
                         {emp.employee.firstName} {emp.employee.lastName}
                       </span>
@@ -883,12 +885,31 @@ export default function AddEmployee() {
               className="col-2"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
-              <button
-                className=" addEmployeeSubmitbutton me-2 "
-                onSubmit={AddEmployeeForm}
-              >
-                <span className="addemployeespan ">submit</span>
-              </button>
+              {loading === false ? (
+                <button
+                  className=" addEmployeeSubmitbutton me-2 "
+                  onSubmit={AddEmployeeForm}
+                >
+                  <span className="addemployeespan ">submit</span>
+                </button>
+              ) : (
+                loading &&
+                loading && (
+                  <button
+                    class="addEmployeeSubmitbutton me-2"
+                    type="button"
+                    disabled
+                    style={{ color: "white" }}
+                  >
+                    <span
+                      class="spinner-border spinner-border-sm "
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Loading...
+                  </button>
+                )
+              )}
               <button
                 className="addemployeeResetbutton  "
                 onClick={ClearValues}

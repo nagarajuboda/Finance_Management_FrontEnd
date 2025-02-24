@@ -36,7 +36,7 @@ export default function TimeSheet() {
   const [requestnotification, setRequestNotification] = useState({});
   const [timesheetids, settimesheetids] = useState([]);
   const [NotificationPopup, setnotificationPopup] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [NotificationData, setNotificationData] = useState({});
   const [flag, setflag] = useState(false);
   useEffect(() => {
@@ -76,6 +76,9 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+    var checkIsSubmitted = await Timesheetresponse.item.map(
+      (data) => data.isSubmited
+    );
 
     if (Timesheetresponse.isSuccess && Timesheetresponse.item.length > 0) {
       var timesheetid = await Timesheetresponse.item.map(
@@ -84,7 +87,15 @@ export default function TimeSheet() {
       var result = await NotificationService.GetNotificationsByTimesheetId(
         timesheetid[0]
       );
-      if (result.isSuccess && result.item !== null) {
+
+      var checkNotificationReplay = await result.item.map((data) => data.reply);
+      const hasZero = checkNotificationReplay.some((value) => value === 0);
+
+      if (
+        checkIsSubmitted[0] === true &&
+        result.item.length > 0 &&
+        hasZero === true
+      ) {
         setDisiblerequestbuttons(true);
       } else {
         setDisiblerequestbuttons(false);
@@ -210,13 +221,14 @@ export default function TimeSheet() {
       selectedYear: year,
       createdAt: new Date(),
     };
+    setLoading(true);
     var response = await axios.post(
       "https://localhost:44305/api/Notifications/CreateNotification",
       obj
     );
     var result = response.data;
-
     if (result !== null) {
+      setLoading(false);
       FetchData();
       setnotificationPopup(true);
     } else {
@@ -460,20 +472,38 @@ export default function TimeSheet() {
               paddingBottom: "15px",
             }}
           >
-            <button
-              type="button"
-              className="submitbutton  make-a-request-button"
-              disabled={disibleRequestbuttons}
-              style={{ marginRight: "10px", height: "36px" }}
-              onClick={RequestForUpdateTimeSheet}
-            >
-              <span
-                className="make_a_request_span"
-                style={{ fontSize: "14px", width: "141px" }}
+            {loading === false ? (
+              <button
+                type="button"
+                className="submitbutton  make-a-request-button"
+                disabled={disibleRequestbuttons}
+                style={{ marginRight: "10px", height: "36px" }}
+                onClick={RequestForUpdateTimeSheet}
               >
-                Make a request
-              </span>
-            </button>
+                <span
+                  className="make_a_request_span"
+                  style={{ fontSize: "14px", width: "141px" }}
+                >
+                  Make a request
+                </span>
+              </button>
+            ) : (
+              loading && (
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  disabled
+                  style={{ marginRight: "10px", height: "36px" }}
+                >
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
+                </button>
+              )
+            )}
           </div>
         )}
       </div>
