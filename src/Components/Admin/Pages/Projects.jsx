@@ -217,7 +217,7 @@ export default function Projectss() {
               }}
             >
               <button
-                className="btn btn-danger"
+                className="btn btn-danger projectdeletedbutton"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{ fontSize: "14px", height: "36px" }}

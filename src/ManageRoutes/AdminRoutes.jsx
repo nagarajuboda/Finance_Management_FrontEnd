@@ -52,7 +52,7 @@ export default function AdminRoutes() {
         <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
-        <Route path="/UnderEmployees" element={<Employeess />} />
+        <Route path="/Employeeslist" element={<Employeess />} />
         <Route path="/FinanceDashboard" element={<UsFinanceTeamDashboard />} />
 
         <Route

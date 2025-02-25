@@ -54,7 +54,7 @@ export default function Header({ isOpen }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [notifications]);
   const getRelativeTime = (timestamp) => {
     const parsedDate = Date.parse(timestamp);
     if (isNaN(parsedDate)) {
@@ -207,6 +207,15 @@ export default function Header({ isOpen }) {
     navigate("/dashboard/Notifications");
     setIsPopupOpen(false);
   };
+  const sortedNotifications = notifications
+    .filter((notif) => {
+      const notifDate = new Date(notif.createdAt);
+      const today = new Date();
+
+      return notifDate >= notifDate <= today;
+    })
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return (
     <div
       className="Headermaindiv"
@@ -409,7 +418,7 @@ export default function Header({ isOpen }) {
               No notifications
             </span>
           ) : (
-            notifications.map((notif) => (
+            sortedNotifications.map((notif) => (
               <div
                 key={notif.id}
                 className="notification-item mt-2 pb-2"

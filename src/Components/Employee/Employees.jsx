@@ -354,7 +354,7 @@ export default function Employees() {
           {!isDivVisible && (
             <div className="col-2 ">
               <button
-                className="btn btn-danger deleteSelected"
+                className="btn btn-danger deleteSelected "
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{

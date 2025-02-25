@@ -17,6 +17,10 @@
   color: #000000;
   opacity: 1;
 }
+
+.deleteselected :disabled {
+  cursor: not-allowed !important;
+}
 table.dataTable {
   margin-top: -15px !important;
 }

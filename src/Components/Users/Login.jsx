@@ -84,7 +84,7 @@ const Home = () => {
           } else if (result.item.employee.role.name === "Indian-finance") {
             navigate("/Dashboard/Dashboard");
           } else if (result.item.employee.role.name === "Project Manager") {
-            navigate("/dashboard/UnderEmployees");
+            navigate("/dashboard/Employeeslist");
           }
         }
       } else {

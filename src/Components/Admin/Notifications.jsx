@@ -30,6 +30,7 @@ export default function Notifications() {
 
   useEffect(() => {
     fetchData();
+    getRelativeTime(new Date());
   }, []);
   const fetchData = async () => {
     var result = await NotificationService.GetUserNotifications(userID);
@@ -89,12 +90,14 @@ export default function Notifications() {
       if (acceptOrReject == "Accepted") {
         setAcceptSuccessMessage(true);
         setLoadingStates((prev) => ({ ...prev, [index]: false }));
+        fetchData();
       } else {
         setDeclinedPopup(true);
         setLoadingDeclineStates((prev) => ({
           ...prev,
           [index]: false,
         }));
+        fetchData();
       }
     }
   };
@@ -106,6 +109,14 @@ export default function Notifications() {
     fetchData();
     setDeclinedPopup(false);
   };
+  const sortedNotifications = notifications
+    .filter((notif) => {
+      const notifDate = new Date(notif.createdAt);
+      const today = new Date();
+
+      return notifDate >= notifDate <= today;
+    })
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
     <div>
@@ -127,7 +138,7 @@ export default function Notifications() {
                 No notifications
               </span>
             ) : (
-              notifications.map((notif, index) => (
+              sortedNotifications.map((notif, index) => (
                 <div
                   key={notif.id}
                   className="notification-item mt-2 pb-2"
@@ -135,6 +146,7 @@ export default function Notifications() {
                     marginBottom: "15px",
                   }}
                 >
+                  {console.log(notifications, "===========>")}
                   <div className="notification-content">
                     <div
                       style={{
@@ -297,7 +309,7 @@ export default function Notifications() {
                 No notifications
               </span>
             ) : (
-              notifications.map((notif) => (
+              sortedNotifications.map((notif) => (
                 <div
                   key={notif.id}
                   className="notification-item mt-2 pb-2"

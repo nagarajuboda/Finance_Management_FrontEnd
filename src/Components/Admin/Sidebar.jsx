@@ -97,7 +97,7 @@ const Sidebar = ({ children }) => {
     {
       name: "HR Management",
       icon: hrManagement,
-      submenu: [{ path: "/dashboard/UnderEmployees", name: "Employees" }],
+      submenu: [{ path: "/dashboard/Employeeslist", name: "Employees" }],
     },
     {
       name: "Project Management",
