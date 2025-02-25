@@ -274,10 +274,10 @@ export default function Projectss() {
               <tr className="tableheader">
                 <th>
                   <input
-                    type="checkbox "
+                    type="checkbox"
                     onChange={handleSelectAll}
                     style={{ height: "15px", width: "15px" }}
-                    className="userCheckbox"
+                    className="userCheckbox row-checkbox"
                   />
                 </th>
                 <th style={{ fontSize: "14px" }}>Project ID</th>

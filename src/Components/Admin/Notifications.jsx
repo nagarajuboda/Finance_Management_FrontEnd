@@ -113,7 +113,7 @@ export default function Notifications() {
         <span className="notifications-span ">notifications</span>
       </div>
       <div className="Allnotifications">
-        {userDetails.employee.role.name == "Admin" ? (
+        {userDetails.employee.role.name == "Indian-finance" ? (
           <div className="m-3">
             <span className="All-notification-span ms-2">All Notification</span>
             {notifications.length === 0 ? (
@@ -322,15 +322,15 @@ export default function Notifications() {
                                 {months[notif.selectedMonth - 1]}{" "}
                                 {notif.selectedYear}
                               </span>{" "}
-                              has been accepted by the Admin. You can process
-                              with the Timesheet update.
+                              has been accepted by the indian finance team. You
+                              can process with the Timesheet update.
                             </span>
                           ) : (
                             <span className="timesheetApproval-message">
                               Your Timesheet update request for{" "}
                               {months[notif.selectedMonth - 1]}{" "}
                               {notif.selectedYear} has been decline by the
-                              Admin.
+                              indian finance team.
                             </span>
                           )}
 

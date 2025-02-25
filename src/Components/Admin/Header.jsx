@@ -47,13 +47,14 @@ export default function Header({ isOpen }) {
       setIsOpen1(false);
     }
   };
+
   useEffect(() => {
     fetchdata();
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [notifications]);
+  }, []);
   const getRelativeTime = (timestamp) => {
     const parsedDate = Date.parse(timestamp);
     if (isNaN(parsedDate)) {
@@ -90,6 +91,7 @@ export default function Header({ isOpen }) {
       `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
+
     if (result.isSuccess) {
       setAllNotifications(result.item);
       var NotReadNotification = result.item.filter(
@@ -419,7 +421,7 @@ export default function Header({ isOpen }) {
                   <div style={{ display: "flex" }}>
                     <div className="boxshowdow"></div>
                     <div className="ms-3">
-                      {userDetails.employee.role.name === "Admin" ? (
+                      {userDetails.employee.role.name === "Indian-finance" ? (
                         <span className="forwhatrequest">
                           TimeSheet change request approved
                         </span>

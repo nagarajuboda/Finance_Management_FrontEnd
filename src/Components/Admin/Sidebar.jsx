@@ -133,11 +133,32 @@ const Sidebar = ({ children }) => {
     },
   ];
 
+  const IndianFinanceTeamMenuItems = [
+    {
+      name: "Dashboard",
+      icon: dashboardsidebarimage,
+      path: "/Dashboard/Dashboard",
+    },
+    {
+      name: "Revenue",
+      icon: ProjectManagement,
+      submenu: [{ path: "/Dashboard/sjkfnkdjsfdskl", name: "Revenue" }],
+    },
+  ];
+
+  // const menuItems =
+  //   sessionData?.employee?.role?.name === "Admin"
+  //     ? adminMenuItems
+  //     : sessionData?.employee?.role?.name === "US-finance"
+  //     ? usFinanceTeamMenuItems
+  //     : ProjectManagerMenuItems;
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
       : sessionData?.employee?.role?.name === "US-finance"
       ? usFinanceTeamMenuItems
+      : sessionData?.employee?.role?.name === "Indian-finance"
+      ? IndianFinanceTeamMenuItems
       : ProjectManagerMenuItems;
 
   return (
