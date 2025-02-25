@@ -269,6 +269,7 @@ export default function AddEmployee() {
         setLoading(false);
         setIsOpen(true);
       } else {
+        setLoading(false);
         toast.error(response.data.error.message, {
           position: "top-right",
           autoClose: "4000",
