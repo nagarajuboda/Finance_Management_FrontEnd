@@ -146,7 +146,6 @@ export default function Notifications() {
                     marginBottom: "15px",
                   }}
                 >
-                  {console.log(notifications, "===========>")}
                   <div className="notification-content">
                     <div
                       style={{
