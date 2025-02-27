@@ -1,95 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../../assets/Styles/Employee.css";
-import editicon from "../../assets/Images/Editicon.png";
-import deleteicon from "../../assets/Images/deleteicon.png";
-import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
-import images from "../../assets/Images/User.png";
 import axios from "axios";
-import EditEmployeePopup from "./EditEmployeePopup";
-import ImportPopup from "./ImportPopup";
-import ellips from "../../assets/Images/Ellipse.png";
-import checkimage from "../../assets/Images/check.png";
-import EmployeeDetails from "./EmployeeDetails";
-import { useTheme } from "@emotion/react";
 import Dropdown from "react-bootstrap/Dropdown";
-export default function Employees() {
+export default function ListOfEmployees() {
   const navigate = useNavigate();
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
-  const [DeleteEmployeesflog, SetDeletedEmployeeflog] = useState(false);
-  const [open, setOpen] = useState(false);
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  console.log(userDetails, "==========>");
   useEffect(() => {
     FetchData();
   }, [selectedEmployeeIds, isDivVisible]);
 
-  const EdittogglePopup = (e, index, employeeid) => {
-    sessionStorage.setItem("EmployeeID", employeeid);
-    navigate("/dashboard/EditEmployee");
-  };
-
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
-  };
   const FetchData = async () => {
     const response = await axios.get(
       "https://localhost:44305/api/Employees/GetAllEmployees"
     );
     var result = response.data.item;
     setEmployees(result);
-  };
-
-  const handleOpenPopup = async (e, index, id) => {
-    var response = await axios.put(
-      `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
-    );
-    var result = response.data;
-    if (result.isSuccess === true) {
-      FetchData();
-      setOpen(true);
-    }
-  };
-
-  const closeDeletePopup = () => {
-    setOpen(false);
-  };
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-    if (isChecked) {
-      const allEmployeeIds = currentItems.map((emp) => emp.employeeDetails.id);
-      setSelectedEmployeeIds(allEmployeeIds);
-      setDisiblebuttons(false);
-    } else {
-      setSelectedEmployeeIds([]);
-      setDisiblebuttons(true);
-    }
-    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
-      checkbox.checked = isChecked;
-    });
-  };
-
-  const Addemployeefuncton = () => {
-    navigate("/dashboard/AddEmployee");
-  };
-  const DeleteSelectedRecords = async () => {
-    const response = await axios.put(
-      "https://localhost:44305/api/Employees/DeleteSelectedEmployees",
-      selectedEmployeeIds
-    );
-    const result = response.data;
-
-    if (result.isSuccess) {
-      setOpen(true);
-      FetchData();
-    }
   };
 
   const handleSearchChange = (e) => {
@@ -221,19 +154,19 @@ export default function Employees() {
             </div>
           ) : (
             <div
-              className="col-1"
+              className="col-2 "
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <p className="employeecontent" style={{ fontSize: "13px" }}>
+              <p className="employeecontent me-5" style={{ fontSize: "14px" }}>
                 Employee list
               </p>
             </div>
           )}
-          {isDivVisible && <div className="col-3"></div>}
+          <div className="col-3"></div>
 
           <div
             className="col-3"
@@ -311,17 +244,6 @@ export default function Employees() {
               </button>
             )}
           </div>
-          {!isDivVisible && (
-            <div className="col-1">
-              <button
-                style={{ fontSize: "14px", height: "36px" }}
-                className="btn btn-primary"
-                onClick={() => setIsPopupOpen(true)}
-              >
-                Import
-              </button>
-            </div>
-          )}
           <div className="col-1" style={{ padding: "0px" }}>
             <Dropdown>
               <Dropdown.Toggle
@@ -352,60 +274,6 @@ export default function Employees() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          {!isDivVisible && (
-            <div className="col-2 ">
-              <button
-                className="btn btn-danger deleteSelected "
-                disabled={disiblebuttons}
-                onClick={DeleteSelectedRecords}
-                style={{
-                  fontSize: "14px",
-                  height: "36px",
-                  display: "flex",
-                  justifyContent: "end",
-                }}
-              >
-                Delete Selected
-              </button>
-            </div>
-          )}
-          {!isDivVisible && (
-            <div className="col-2">
-              <button
-                style={{
-                  display: "flex",
-                  width: "auto",
-
-                  alignContent: "center",
-                  padding: "5px",
-                  height: "36px",
-                }}
-                className="add-new-project-button"
-                onClick={Addemployeefuncton}
-              >
-                <span>
-                  <img
-                    src={images}
-                    alt=""
-                    height="18px"
-                    width="18px"
-                    className="mb-2"
-                  />
-                </span>
-                <span
-                  className=" ms-1"
-                  style={{
-                    fontSize: "14px",
-                    height: "36px",
-                    color: "#000000",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Add Employee
-                </span>
-              </button>
-            </div>
-          )}
         </div>
 
         <div style={{ padding: "10px" }}>
@@ -416,13 +284,6 @@ export default function Employees() {
           >
             <thead>
               <tr className="tableheader">
-                <th>
-                  <input
-                    type="checkbox"
-                    onChange={handleSelectAll}
-                    className="userCheckbox row-checkbox"
-                  />
-                </th>
                 <th style={{ fontSize: "14px" }}>Employee ID</th>
                 <th style={{ fontSize: "14px" }}>First Name</th>
                 <th style={{ fontSize: "14px" }}>Last Name</th>
@@ -453,18 +314,6 @@ export default function Employees() {
                             cursor: "pointer",
                           }}
                         >
-                          <td style={{ textAlign: "start" }}>
-                            <input
-                              type="checkbox"
-                              className="row-checkbox"
-                              onChange={(e) =>
-                                handleCheckboxChange(
-                                  employee.employeeDetails.id,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          </td>
                           <td
                             style={{ fontSize: "14px" }}
                             onClick={(e) =>
@@ -543,42 +392,6 @@ export default function Employees() {
                             {employee.reportingManagerDetails !== "N/A"
                               ? `${employee.reportingManagerDetails.firstName} ${employee.reportingManagerDetails.lastName}`
                               : "N/A"}
-                          </td>
-                          <td>
-                            <img
-                              src={editicon}
-                              onClick={(e) =>
-                                EdittogglePopup(
-                                  e,
-                                  index,
-                                  employee.employeeDetails.id
-                                )
-                              }
-                              alt=""
-                              style={{
-                                width: "24px",
-                                height: "24px",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </td>
-                          <td>
-                            <img
-                              src={deleteicon}
-                              onClick={(e) =>
-                                handleOpenPopup(
-                                  e,
-                                  index,
-                                  employee.employeeDetails.id
-                                )
-                              }
-                              alt=""
-                              style={{
-                                width: "28px",
-                                height: "28px",
-                                cursor: "pointer",
-                              }}
-                            />
                           </td>
                         </tr>
                       )
@@ -685,40 +498,7 @@ export default function Employees() {
             </tbody>
           </table>
         </div>
-        {open && (
-          <div className="unique-popup-overlay">
-            <div className="unique-popup-container">
-              <div className="unique-popup-icon">
-                <div className="ellipse-container">
-                  <img
-                    src={checkimage}
-                    alt="Check"
-                    className="check-image"
-                    height="40px"
-                    width="40px"
-                  />
-                  <img
-                    src={ellips}
-                    alt="Ellipse"
-                    className="ellipse-image"
-                    height="65px"
-                    width="65px"
-                  />
-                </div>
-              </div>
-              <h2 className="unique-popup-title">Deleted Successfully</h2>
-              <p className="unique-popup-message">
-                Click OK to see the results
-              </p>
-              <button
-                className="unique-popup-button"
-                onClick={closeDeletePopup}
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        )}
+
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <select
             style={{ cursor: "pointer", fontSize: "14px" }}
@@ -774,7 +554,6 @@ export default function Employees() {
             </button>
           </div>
         </div>
-        <ImportPopup isOpen={isPopupOpen} handleClose={togglePopup} />
       </div>
     </div>
   );

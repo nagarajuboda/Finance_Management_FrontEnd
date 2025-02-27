@@ -5,7 +5,9 @@
   border-radius: 5px;
   opacity: 1;
 }
-
+.projectdeletedbutton:disabled {
+  cursor: not-allowed;
+}
 .deleteSelected-Span {
   font-style: normal;
   font-variant: normal;

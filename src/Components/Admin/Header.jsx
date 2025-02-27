@@ -47,6 +47,7 @@ export default function Header({ isOpen }) {
       setIsOpen1(false);
     }
   };
+
   useEffect(() => {
     fetchdata();
     document.addEventListener("mousedown", handleClickOutside);
@@ -90,6 +91,7 @@ export default function Header({ isOpen }) {
       `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
     );
     var result = response.data;
+
     if (result.isSuccess) {
       setAllNotifications(result.item);
       var NotReadNotification = result.item.filter(
@@ -205,6 +207,15 @@ export default function Header({ isOpen }) {
     navigate("/dashboard/Notifications");
     setIsPopupOpen(false);
   };
+  const sortedNotifications = notifications
+    .filter((notif) => {
+      const notifDate = new Date(notif.createdAt);
+      const today = new Date();
+
+      return notifDate >= notifDate <= today;
+    })
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
   return (
     <div
       className="Headermaindiv"
@@ -407,7 +418,7 @@ export default function Header({ isOpen }) {
               No notifications
             </span>
           ) : (
-            notifications.map((notif) => (
+            sortedNotifications.map((notif) => (
               <div
                 key={notif.id}
                 className="notification-item mt-2 pb-2"
@@ -419,7 +430,7 @@ export default function Header({ isOpen }) {
                   <div style={{ display: "flex" }}>
                     <div className="boxshowdow"></div>
                     <div className="ms-3">
-                      {userDetails.employee.role.name === "Admin" ? (
+                      {userDetails.employee.role.name === "Indian-finance" ? (
                         <span className="forwhatrequest">
                           TimeSheet change request approved
                         </span>

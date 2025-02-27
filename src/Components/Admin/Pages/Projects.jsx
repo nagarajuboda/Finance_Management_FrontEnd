@@ -217,7 +217,7 @@ export default function Projectss() {
               }}
             >
               <button
-                className="btn btn-danger"
+                className="btn btn-danger projectdeletedbutton"
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{ fontSize: "14px", height: "36px" }}
@@ -274,10 +274,10 @@ export default function Projectss() {
               <tr className="tableheader">
                 <th>
                   <input
-                    type="checkbox "
+                    type="checkbox"
                     onChange={handleSelectAll}
                     style={{ height: "15px", width: "15px" }}
-                    className="userCheckbox"
+                    className="userCheckbox row-checkbox"
                   />
                 </th>
                 <th style={{ fontSize: "14px" }}>Project ID</th>

@@ -89,15 +89,15 @@ const Sidebar = ({ children }) => {
   ];
 
   const ProjectManagerMenuItems = [
-    {
-      name: "Dashboard",
-      icon: dashboardsidebarimage,
-      path: "/Dashboard/ManagerDasboard",
-    },
+    // {
+    //   name: "Dashboard",
+    //   icon: dashboardsidebarimage,
+    //   path: "/Dashboard/ManagerDasboard",
+    // },
     {
       name: "HR Management",
       icon: hrManagement,
-      submenu: [{ path: "/dashboard/UnderEmployees", name: "Employees" }],
+      submenu: [{ path: "/dashboard/Employeeslist", name: "Employees" }],
     },
     {
       name: "Project Management",
@@ -133,11 +133,36 @@ const Sidebar = ({ children }) => {
     },
   ];
 
+  const IndianFinanceTeamMenuItems = [
+    {
+      name: "Dashboard",
+      icon: dashboardsidebarimage,
+      path: "/Dashboard/Dashboard",
+    },
+    {
+      name: "Hr Management",
+      icon: hrManagement,
+      submenu: [{ path: "/dashboard/EmployeeList", name: "Employees" }],
+    },
+    {
+      name: "Project Management",
+      icon: ProjectManagement,
+      submenu: [{ path: "/Dashboard/ProjectList", name: "Projects" }],
+    },
+    {
+      name: "Revenue",
+      icon: ProjectManagement,
+      submenu: [{ path: "/Dashboard/sjdsjsk", name: "Revenue" }],
+    },
+  ];
+
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems
       : sessionData?.employee?.role?.name === "US-finance"
       ? usFinanceTeamMenuItems
+      : sessionData?.employee?.role?.name === "Indian-finance"
+      ? IndianFinanceTeamMenuItems
       : ProjectManagerMenuItems;
 
   return (

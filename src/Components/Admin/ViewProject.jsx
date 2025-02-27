@@ -67,6 +67,7 @@ export function ViewProject() {
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
   const [assignedNewEmployeePopup, setassignedNewEmployeePopup] =
     useState(false);
+  const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   useEffect(() => {
     FetchData();
     filteredEmployees;
@@ -313,9 +314,15 @@ export function ViewProject() {
         <div className="row update-button-row">
           <div className="col-10"></div>
           <div className="col-2 button-col">
-            <button className="update-button" onClick={(e) => updateEmployee()}>
-              Update
-            </button>
+            {(userDetails.employee.role.name === "Admin" ||
+              userDetails.employee.role.name === "Project Manager") && (
+              <button
+                className="update-button"
+                onClick={(e) => updateEmployee()}
+              >
+                Update
+              </button>
+            )}
           </div>
         </div>
         <div className="row m-0  project-view-row">
@@ -504,19 +511,28 @@ export function ViewProject() {
               ></i>
             </div>
           </div>
-          <div className="col-3"></div>
-          <div
-            className="col-1"
-            style={{ display: "flex", justifyContent: "end" }}
-          >
-            <button
-              style={{ fontSize: "14px", height: "36px" }}
-              className="btn btn-primary"
-              onClick={() => setIsImportPopupOpen(true)}
+          {userDetails.employee.role.name === "Admin" ||
+          userDetails.employee.role.name === "Project Manager" ? (
+            <div className="col-3"></div>
+          ) : (
+            <div className="col-5 ms-5"></div>
+          )}
+
+          {(userDetails.employee.role.name === "Admin" ||
+            userDetails.employee.role.name === "Project Manager") && (
+            <div
+              className="col-1"
+              style={{ display: "flex", justifyContent: "end" }}
             >
-              Import
-            </button>
-          </div>
+              <button
+                style={{ fontSize: "14px", height: "36px" }}
+                className="btn btn-primary"
+                onClick={() => setIsImportPopupOpen(true)}
+              >
+                Import
+              </button>
+            </div>
+          )}
           <div
             className="col-1"
             style={{
@@ -554,45 +570,48 @@ export function ViewProject() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div
-            className="col-2"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <button
+          {(userDetails.employee.role.name === "Admin" ||
+            userDetails.employee.role.name === "Project Manager") && (
+            <div
+              className="col-2"
               style={{
                 display: "flex",
-                width: "auto",
-                alignContent: "center",
-                padding: "4px",
-                height: "36px",
+                justifyContent: "center",
               }}
-              className="add-new-project-button"
-              onClick={Addemployeefunction}
             >
-              <span>
-                <img
-                  src={userimage}
-                  alt=""
-                  height="18px"
-                  width="18px"
-                  className="mb-1"
-                />
-              </span>
-              <span
-                className=" ms-1"
+              <button
                 style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  fontWeight: "bold",
+                  display: "flex",
+                  width: "auto",
+                  alignContent: "center",
+                  padding: "4px",
+                  height: "36px",
                 }}
+                className="add-new-project-button"
+                onClick={Addemployeefunction}
               >
-                Add Employee
-              </span>
-            </button>
-          </div>
+                <span>
+                  <img
+                    src={userimage}
+                    alt=""
+                    height="18px"
+                    width="18px"
+                    className="mb-1"
+                  />
+                </span>
+                <span
+                  className=" ms-1"
+                  style={{
+                    fontSize: "14px",
+                    color: "#000000",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add Employee
+                </span>
+              </button>
+            </div>
+          )}
         </div>
         <div style={{ padding: "10px" }}>
           <table
@@ -617,7 +636,12 @@ export function ViewProject() {
                 <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Assigned Date
                 </th>
-                <th style={{ fontSize: "14px", fontWeight: "500" }}>Action</th>
+                {(userDetails.employee.role.name === "Admin" ||
+                  userDetails.employee.role.name === "Project Manager") && (
+                  <th style={{ fontSize: "14px", fontWeight: "500" }}>
+                    Action
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -652,23 +676,26 @@ export function ViewProject() {
                         "en-GB"
                       )}
                     </td>
-                    <td>
-                      <img
-                        src={deleteImage}
-                        alt=""
-                        style={{
-                          width: "28px",
-                          height: "28px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          handleDelete(
-                            employee.employee.id,
-                            employee.project.id
-                          )
-                        }
-                      />
-                    </td>
+                    {(userDetails.employee.role.name === "Admin" ||
+                      userDetails.employee.role.name === "Project Manager") && (
+                      <td>
+                        <img
+                          src={deleteImage}
+                          alt=""
+                          style={{
+                            width: "28px",
+                            height: "28px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleDelete(
+                              employee.employee.id,
+                              employee.project.id
+                            )
+                          }
+                        />
+                      </td>
+                    )}
                   </tr>
                 ))
               ) : (
