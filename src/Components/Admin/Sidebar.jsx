@@ -140,18 +140,17 @@ const Sidebar = ({ children }) => {
       path: "/Dashboard/Dashboard",
     },
     {
-      name: "Revenue",
+      name: "Hr Management",
+      icon: hrManagement,
+      submenu: [{ path: "/dashboard/EmployeeList", name: "Employees" }],
+    },
+    {
+      name: "Project Management",
       icon: ProjectManagement,
-      submenu: [{ path: "/Dashboard/sjkfnkdjsfdskl", name: "Revenue" }],
+      submenu: [{ path: "/Dashboard/ProjectList", name: "Projects" }],
     },
   ];
 
-  // const menuItems =
-  //   sessionData?.employee?.role?.name === "Admin"
-  //     ? adminMenuItems
-  //     : sessionData?.employee?.role?.name === "US-finance"
-  //     ? usFinanceTeamMenuItems
-  //     : ProjectManagerMenuItems;
   const menuItems =
     sessionData?.employee?.role?.name === "Admin"
       ? adminMenuItems

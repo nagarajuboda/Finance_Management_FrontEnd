@@ -34,7 +34,8 @@ import UsFinanceTeamDashboard from "../Components/USFinance/Dashboard";
 import USFinanceTeamAllProjects from "../Components/USFinance/AllProjects";
 import Notifications from "../Components/Admin/Notifications";
 import IndianFinanceTeamDashboard from "../Components/IndianFinance/Dashboard";
-
+import ListOfEmployees from "../Components/IndianFinance/ListOfEmployees";
+import ProjectsList from "../Components/IndianFinance/Projects";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -53,6 +54,7 @@ export default function AdminRoutes() {
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employeeslist" element={<Employeess />} />
+
         <Route path="/FinanceDashboard" element={<UsFinanceTeamDashboard />} />
 
         <Route
@@ -74,7 +76,9 @@ export default function AdminRoutes() {
         <Route path="/Employees" element={<Employees />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />
         <Route path="/Notifications" element={<Notifications />} />
+        <Route path="/EmployeeList" element={<ListOfEmployees />} />
         <Route path="/Dashboard" element={<IndianFinanceTeamDashboard />} />
+        <Route path="/ProjectList" element={<ProjectsList />} />
         <Route
           path="/USFinanceTeamAllProjects"
           element={<USFinanceTeamAllProjects />}

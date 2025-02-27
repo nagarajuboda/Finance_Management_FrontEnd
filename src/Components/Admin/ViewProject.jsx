@@ -67,6 +67,8 @@ export function ViewProject() {
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
   const [assignedNewEmployeePopup, setassignedNewEmployeePopup] =
     useState(false);
+
+  const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   useEffect(() => {
     FetchData();
     filteredEmployees;
@@ -313,9 +315,14 @@ export function ViewProject() {
         <div className="row update-button-row">
           <div className="col-10"></div>
           <div className="col-2 button-col">
-            <button className="update-button" onClick={(e) => updateEmployee()}>
-              Update
-            </button>
+            {userDetails.employee.role.name === "Admin" && (
+              <button
+                className="update-button"
+                onClick={(e) => updateEmployee()}
+              >
+                Update
+              </button>
+            )}
           </div>
         </div>
         <div className="row m-0  project-view-row">
@@ -505,94 +512,154 @@ export function ViewProject() {
             </div>
           </div>
           <div className="col-3"></div>
-          <div
-            className="col-1"
-            style={{ display: "flex", justifyContent: "end" }}
-          >
-            <button
-              style={{ fontSize: "14px", height: "36px" }}
-              className="btn btn-primary"
-              onClick={() => setIsImportPopupOpen(true)}
+          {userDetails.employee.role.name === "Admin" ? (
+            <div
+              className="col-1"
+              style={{ display: "flex", justifyContent: "end" }}
             >
-              Import
-            </button>
-          </div>
-          <div
-            className="col-1"
-            style={{
-              display: "flex",
-
-              justifyContent: "space-between",
-            }}
-          >
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-basic"
-                className="importdropdown btn btn-primary"
+              <button
                 style={{ fontSize: "14px", height: "36px" }}
+                className="btn btn-primary"
+                onClick={() => setIsImportPopupOpen(true)}
               >
-                Export To
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu style={{ paddingTop: "10px" }}>
-                <Dropdown.Item
-                  onClick={() => DownloadExcel("employees", "excel", ProjectID)}
-                >
-                  <p
-                    className=""
-                    style={{ fontSize: "14px", cursor: "pointer" }}
-                  >
-                    MS Excel
-                  </p>
-                </Dropdown.Item>
-                <Dropdown.Item
-                  style={{ marginTop: "5px" }}
-                  onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
-                >
-                  Adobe PDF
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          <div
-            className="col-2"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <button
+                Import
+              </button>
+            </div>
+          ) : (
+            <div
+              className="col-1"
+              style={{ display: "flex", justifyContent: "end" }}
+            ></div>
+          )}
+          {userDetails.employee.role.name === "Admin" ? (
+            <div
+              className="col-1"
               style={{
                 display: "flex",
-                width: "auto",
-                alignContent: "center",
-                padding: "4px",
-                height: "36px",
+                justifyContent: "space-between",
               }}
-              className="add-new-project-button"
-              onClick={Addemployeefunction}
             >
-              <span>
-                <img
-                  src={userimage}
-                  alt=""
-                  height="18px"
-                  width="18px"
-                  className="mb-1"
-                />
-              </span>
-              <span
-                className=" ms-1"
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  className="importdropdown btn btn-primary"
+                  style={{ fontSize: "14px", height: "36px" }}
+                >
+                  Export To
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                  <Dropdown.Item
+                    onClick={() =>
+                      DownloadExcel("employees", "excel", ProjectID)
+                    }
+                  >
+                    <p
+                      className=""
+                      style={{ fontSize: "14px", cursor: "pointer" }}
+                    >
+                      MS Excel
+                    </p>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    style={{ marginTop: "5px" }}
+                    onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
+                  >
+                    Adobe PDF
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          ) : (
+            <div
+              className="col-3"
+              style={{
+                display: "flex",
+                alignItems: "end",
+                justifyContent: "end",
+              }}
+            >
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdown-basic"
+                  className="importdropdown btn btn-primary"
+                  style={{ fontSize: "14px", height: "36px" }}
+                >
+                  Export To
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                  <Dropdown.Item
+                    onClick={() =>
+                      DownloadExcel("employees", "excel", ProjectID)
+                    }
+                  >
+                    <p
+                      className=""
+                      style={{ fontSize: "14px", cursor: "pointer" }}
+                    >
+                      MS Excel
+                    </p>
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    style={{ marginTop: "5px" }}
+                    onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
+                  >
+                    Adobe PDF
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          )}
+          {userDetails.employee.role.name === "Admin" ? (
+            <div
+              className="col-2"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <button
                 style={{
-                  fontSize: "14px",
-                  color: "#000000",
-                  fontWeight: "bold",
+                  display: "flex",
+                  width: "auto",
+                  alignContent: "center",
+                  padding: "4px",
+                  height: "36px",
                 }}
+                className="add-new-project-button"
+                onClick={Addemployeefunction}
               >
-                Add Employee
-              </span>
-            </button>
-          </div>
+                <span>
+                  <img
+                    src={userimage}
+                    alt=""
+                    height="18px"
+                    width="18px"
+                    className="mb-1"
+                  />
+                </span>
+                <span
+                  className=" ms-1"
+                  style={{
+                    fontSize: "14px",
+                    color: "#000000",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add Employee
+                </span>
+              </button>
+            </div>
+          ) : (
+            <div
+              className="col-2"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            ></div>
+          )}
         </div>
         <div style={{ padding: "10px" }}>
           <table
@@ -617,7 +684,11 @@ export function ViewProject() {
                 <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Assigned Date
                 </th>
-                <th style={{ fontSize: "14px", fontWeight: "500" }}>Action</th>
+                {userDetails.employee.role.name === "Admin" && (
+                  <th style={{ fontSize: "14px", fontWeight: "500" }}>
+                    Action
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -652,23 +723,25 @@ export function ViewProject() {
                         "en-GB"
                       )}
                     </td>
-                    <td>
-                      <img
-                        src={deleteImage}
-                        alt=""
-                        style={{
-                          width: "28px",
-                          height: "28px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() =>
-                          handleDelete(
-                            employee.employee.id,
-                            employee.project.id
-                          )
-                        }
-                      />
-                    </td>
+                    {userDetails.employee.role.name === "Admin" && (
+                      <td>
+                        <img
+                          src={deleteImage}
+                          alt=""
+                          style={{
+                            width: "28px",
+                            height: "28px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleDelete(
+                              employee.employee.id,
+                              employee.project.id
+                            )
+                          }
+                        />
+                      </td>
+                    )}
                   </tr>
                 ))
               ) : (
