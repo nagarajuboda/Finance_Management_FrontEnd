@@ -67,7 +67,6 @@ export function ViewProject() {
   const [deleteemployeepopup, setdeleteEmployeepopup] = useState(false);
   const [assignedNewEmployeePopup, setassignedNewEmployeePopup] =
     useState(false);
-
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   useEffect(() => {
     FetchData();
@@ -315,7 +314,8 @@ export function ViewProject() {
         <div className="row update-button-row">
           <div className="col-10"></div>
           <div className="col-2 button-col">
-            {userDetails.employee.role.name === "Admin" && (
+            {(userDetails.employee.role.name === "Admin" ||
+              userDetails.employee.role.name === "Project Manager") && (
               <button
                 className="update-button"
                 onClick={(e) => updateEmployee()}
@@ -511,8 +511,15 @@ export function ViewProject() {
               ></i>
             </div>
           </div>
-          <div className="col-3"></div>
-          {userDetails.employee.role.name === "Admin" ? (
+          {userDetails.employee.role.name === "Admin" ||
+          userDetails.employee.role.name === "Project Manager" ? (
+            <div className="col-3"></div>
+          ) : (
+            <div className="col-5 ms-5"></div>
+          )}
+
+          {(userDetails.employee.role.name === "Admin" ||
+            userDetails.employee.role.name === "Project Manager") && (
             <div
               className="col-1"
               style={{ display: "flex", justifyContent: "end" }}
@@ -525,93 +532,46 @@ export function ViewProject() {
                 Import
               </button>
             </div>
-          ) : (
-            <div
-              className="col-1"
-              style={{ display: "flex", justifyContent: "end" }}
-            ></div>
           )}
-          {userDetails.employee.role.name === "Admin" ? (
-            <div
-              className="col-1"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdown-basic"
-                  className="importdropdown btn btn-primary"
-                  style={{ fontSize: "14px", height: "36px" }}
-                >
-                  Export To
-                </Dropdown.Toggle>
+          <div
+            className="col-1"
+            style={{
+              display: "flex",
 
-                <Dropdown.Menu style={{ paddingTop: "10px" }}>
-                  <Dropdown.Item
-                    onClick={() =>
-                      DownloadExcel("employees", "excel", ProjectID)
-                    }
-                  >
-                    <p
-                      className=""
-                      style={{ fontSize: "14px", cursor: "pointer" }}
-                    >
-                      MS Excel
-                    </p>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    style={{ marginTop: "5px" }}
-                    onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
-                  >
-                    Adobe PDF
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          ) : (
-            <div
-              className="col-3"
-              style={{
-                display: "flex",
-                alignItems: "end",
-                justifyContent: "end",
-              }}
-            >
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdown-basic"
-                  className="importdropdown btn btn-primary"
-                  style={{ fontSize: "14px", height: "36px" }}
-                >
-                  Export To
-                </Dropdown.Toggle>
+              justifyContent: "space-between",
+            }}
+          >
+            <Dropdown>
+              <Dropdown.Toggle
+                id="dropdown-basic"
+                className="importdropdown btn btn-primary"
+                style={{ fontSize: "14px", height: "36px" }}
+              >
+                Export To
+              </Dropdown.Toggle>
 
-                <Dropdown.Menu style={{ paddingTop: "10px" }}>
-                  <Dropdown.Item
-                    onClick={() =>
-                      DownloadExcel("employees", "excel", ProjectID)
-                    }
+              <Dropdown.Menu style={{ paddingTop: "10px" }}>
+                <Dropdown.Item
+                  onClick={() => DownloadExcel("employees", "excel", ProjectID)}
+                >
+                  <p
+                    className=""
+                    style={{ fontSize: "14px", cursor: "pointer" }}
                   >
-                    <p
-                      className=""
-                      style={{ fontSize: "14px", cursor: "pointer" }}
-                    >
-                      MS Excel
-                    </p>
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    style={{ marginTop: "5px" }}
-                    onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
-                  >
-                    Adobe PDF
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
-          )}
-          {userDetails.employee.role.name === "Admin" ? (
+                    MS Excel
+                  </p>
+                </Dropdown.Item>
+                <Dropdown.Item
+                  style={{ marginTop: "5px" }}
+                  onClick={() => DownloadExcel("employees", "pdf", ProjectID)}
+                >
+                  Adobe PDF
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          {(userDetails.employee.role.name === "Admin" ||
+            userDetails.employee.role.name === "Project Manager") && (
             <div
               className="col-2"
               style={{
@@ -651,14 +611,6 @@ export function ViewProject() {
                 </span>
               </button>
             </div>
-          ) : (
-            <div
-              className="col-2"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-              }}
-            ></div>
           )}
         </div>
         <div style={{ padding: "10px" }}>
@@ -684,7 +636,8 @@ export function ViewProject() {
                 <th style={{ fontSize: "14px", fontWeight: "500" }}>
                   Assigned Date
                 </th>
-                {userDetails.employee.role.name === "Admin" && (
+                {(userDetails.employee.role.name === "Admin" ||
+                  userDetails.employee.role.name === "Project Manager") && (
                   <th style={{ fontSize: "14px", fontWeight: "500" }}>
                     Action
                   </th>
@@ -723,7 +676,8 @@ export function ViewProject() {
                         "en-GB"
                       )}
                     </td>
-                    {userDetails.employee.role.name === "Admin" && (
+                    {(userDetails.employee.role.name === "Admin" ||
+                      userDetails.employee.role.name === "Project Manager") && (
                       <td>
                         <img
                           src={deleteImage}

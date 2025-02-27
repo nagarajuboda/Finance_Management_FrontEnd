@@ -89,11 +89,11 @@ const Sidebar = ({ children }) => {
   ];
 
   const ProjectManagerMenuItems = [
-    {
-      name: "Dashboard",
-      icon: dashboardsidebarimage,
-      path: "/Dashboard/ManagerDasboard",
-    },
+    // {
+    //   name: "Dashboard",
+    //   icon: dashboardsidebarimage,
+    //   path: "/Dashboard/ManagerDasboard",
+    // },
     {
       name: "HR Management",
       icon: hrManagement,
@@ -148,6 +148,11 @@ const Sidebar = ({ children }) => {
       name: "Project Management",
       icon: ProjectManagement,
       submenu: [{ path: "/Dashboard/ProjectList", name: "Projects" }],
+    },
+    {
+      name: "Revenue",
+      icon: ProjectManagement,
+      submenu: [{ path: "/Dashboard/sjdsjsk", name: "Revenue" }],
     },
   ];
 
