@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiurl } from "../createAxiosInstance";
 const EmployeeService = {
   async FcnGetProjectMangerProjects(id) {
     const response = await axios.get(
@@ -13,8 +14,8 @@ const EmployeeService = {
     return response.data;
   },
   async GetEmployeefcn(empId) {
-    const response = await axios.get(
-      `https://localhost:44305/api/Employees/GetEmployeeDetails?id=${empId}`
+    const response = await apiurl.get(
+      `Employees/GetEmployeeDetails?id=${empId}`
     );
 
     return response.data;
@@ -31,6 +32,35 @@ const EmployeeService = {
       `https://localhost:44305/api/Employees/UpdateProfile`,
       obj
     );
+
+    return response.data;
+  },
+  async GetEmployees() {
+    const response = await apiurl.get("/Employees/GetAllEmployees");
+
+    return response.data;
+  },
+  async DeleteEmployees(id) {
+    const response = await apiurl.put(`/Employees/DeleteEmployee?id=${id}`);
+    return response.data;
+  },
+  async DeleteSelectedEmployees(ids) {
+    const response = await apiurl.put(
+      "/Employees/DeleteSelectedEmployees",
+      ids
+    );
+
+    return response.data;
+  },
+  async EmployeeDetailss(EmployeeID) {
+    const response = await apiurl.get(
+      `/Employees/EmployeeDetails?id=${EmployeeID}`
+    );
+
+    return response.data;
+  },
+  async AddEmployee(obj) {
+    const response = await apiurl.post("/Employees/Add", obj);
 
     return response.data;
   },

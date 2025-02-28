@@ -3,6 +3,7 @@ import userProfile from "../../assets/Images/adminprofile.png";
 import { useEffect, useState, React } from "react";
 import axios from "axios";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
+import { apiurl } from "../../Service/createAxiosInstance";
 export default function EmployeeDetails() {
   const employeeID = sessionStorage.getItem("id");
 
@@ -19,10 +20,9 @@ export default function EmployeeDetails() {
     fetchData();
   }, [employeeID]);
   const fetchData = async () => {
-    const response = await axios.get(
-      `https://localhost:44305/api/Employees/EmployeeDetails?id=${employeeID}`
-    );
-    var employeeResponse = response.data;
+    debugger;
+    const response = await EmployeeService.EmployeeDetailss(employeeID);
+    var employeeResponse = response;
     setEmployee(employeeResponse.item.employee);
     setRole(employeeResponse.item.getRole);
     setReportingManager(employeeResponse.item.reportingManager);

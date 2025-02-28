@@ -42,11 +42,21 @@ export default function Header({ isOpen }) {
   const [notifications, setNotifications] = useState([]);
   const [DeclinedPopup, setDeclinedPopup] = useState(false);
   const [allNotifications, setAllNotifications] = useState([]);
+  const [token, setToken] = useState(null);
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen1(false);
     }
   };
+  useEffect(() => {
+    const subscription = getSessionData().subscribe((data) => {
+      if (data) {
+        setToken(data.token);
+      }
+    });
+
+    return () => subscription.unsubscribe(); // Cleanup subscription on unmount
+  }, []);
 
   useEffect(() => {
     fetchdata();
@@ -54,7 +64,7 @@ export default function Header({ isOpen }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [notifications]);
+  }, []);
   const getRelativeTime = (timestamp) => {
     const parsedDate = Date.parse(timestamp);
     if (isNaN(parsedDate)) {

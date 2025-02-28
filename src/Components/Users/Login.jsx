@@ -7,7 +7,10 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { setSessionData } from "../../Service/SharedSessionData";
+import {
+  setSessionData,
+  getSessionData,
+} from "../../Service/SharedSessionData";
 import { ControlCameraSharp } from "@mui/icons-material";
 import { LoginFormValidation } from "../Admin/Pages/LoginFormValidation";
 import { getotpValidation } from "./getotpValidation";
@@ -16,6 +19,7 @@ import Login2 from "../../../src/assets/Images/Login2.png";
 import archetslogo from "../../../src/assets/Images/primary-logo.png";
 import LoginImage from "../../../src/assets/Images/loginbg1.png";
 import rememeberme from "../../assets/Images/checkbox.svg";
+
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -68,11 +72,14 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
+      console.log(result, "result");
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true);
       if (result.isSuccess === true) {
+        debugger;
         setLoggedIn(true);
-        setSessionData(result.item);
+        setSessionData(result.item.token);
+        localStorage.setItem("token", result.item.token);
         if (result.item.employee.isFirstTimeLogin === true) {
           localStorage.setItem("Email", valuess.email);
           navigate("/user/CreateNewPassword");

@@ -4,6 +4,8 @@ import "../../assets/Styles/Employee.css";
 import "reactjs-popup/dist/index.css";
 import axios from "axios";
 import Dropdown from "react-bootstrap/Dropdown";
+import { apiurl } from "../../Service/createAxiosInstance";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function ListOfEmployees() {
   const navigate = useNavigate();
 
@@ -18,10 +20,8 @@ export default function ListOfEmployees() {
   }, [selectedEmployeeIds, isDivVisible]);
 
   const FetchData = async () => {
-    const response = await axios.get(
-      "https://localhost:44305/api/Employees/GetAllEmployees"
-    );
-    var result = response.data.item;
+    const response = await EmployeeService.GetEmployees();
+    var result = response.item;
     setEmployees(result);
   };
 
@@ -321,7 +321,6 @@ export default function ListOfEmployees() {
                             }
                           >
                             <span className="ms-2">
-                              {" "}
                               {employee.employeeDetails.employeeId}
                             </span>
                           </td>
@@ -404,18 +403,6 @@ export default function ListOfEmployees() {
                             cursor: "pointer",
                           }}
                         >
-                          <td style={{ textAlign: "start" }}>
-                            <input
-                              type="checkbox"
-                              className="row-checkbox "
-                              onChange={(e) =>
-                                handleCheckboxChange(
-                                  employee.employeeDetails.id,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          </td>
                           <td
                             style={{ fontSize: "14px ms-2" }}
                             onClick={(e) =>
