@@ -98,11 +98,13 @@ export default function AddRevenue() {
   const backtoProjectList = () => {
     navigate("/dashboard/USFinanceTeamAllProjects");
   };
+  console.log(TimeSheetdata, "========>");
   const SaveForm = async () => {
     const employeeData = TimeSheetdata.map((employee) => ({
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
+
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false

@@ -152,7 +152,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Revenue",
       icon: ProjectManagement,
-      submenu: [{ path: "/Dashboard/sjdsjsk", name: "Revenue" }],
+      submenu: [{ path: "/Dashboard/AddExpense", name: "Add Expense" }],
     },
   ];
 

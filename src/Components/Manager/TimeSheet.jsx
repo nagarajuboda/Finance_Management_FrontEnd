@@ -44,7 +44,6 @@ export default function TimeSheet() {
       getTimeSheet.length > 0 && getTimeSheet[0].isSubmited === true;
     setflag(checkIsSubmitted);
     FetchData();
-
     const year = selectedDate.getFullYear();
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
