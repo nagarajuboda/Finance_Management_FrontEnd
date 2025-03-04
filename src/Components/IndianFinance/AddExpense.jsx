@@ -5,10 +5,20 @@ import { useState } from "react";
 import calenderImage from "../../assets/Images/calendar_11919171.png";
 import IndianFinanceService from "../../Service/IndianFinance/IndianFinanceService";
 import { select } from "@material-tailwind/react";
+import axios from "axios";
 import { useEffect } from "react";
 export default function AddExpense() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [RevenueData, setRevenueData] = useState([]);
+  const [generalApportionment, setgeneralApportionment] = useState();
+  const [GetExpenses, setGetExpenses] = useState([]);
+  const [SpecificApprotionmentvalue, setSpecificApprotionmentvalue] = useState(
+    {}
+  );
+  const [
+    generalApportionmentEachEmployee,
+    setgeneralApportionmentEachEmployee,
+  ] = useState();
 
   const monthMap = {
     January: "1",
@@ -25,8 +35,17 @@ export default function AddExpense() {
     December: "12",
   };
   useEffect(() => {
+    FetchData();
     handleDateChange(selectedDate);
-  }, []);
+  }, [generalApportionment]);
+
+  const FetchData = async () => {
+    const month = selectedDate.toLocaleString("default", { month: "long" });
+    const year = selectedDate.getFullYear();
+    var getMonthNunber = monthMap[month];
+    var response = await IndianFinanceService.GetExpenses(getMonthNunber, year);
+    setGetExpenses(response.item);
+  };
 
   const handleDateChange = async (date) => {
     setSelectedDate(date);
@@ -41,11 +60,48 @@ export default function AddExpense() {
       setRevenueData(response.item);
     }
   };
-  console.log(RevenueData);
+  const handleChange = (generalApportionmentAmout) => {
+    setgeneralApportionment(generalApportionmentAmout);
+    const employeeCount = RevenueData.length;
+    const amountPerEmployee =
+      employeeCount > 0 ? generalApportionmentAmout / employeeCount : 0;
+    setgeneralApportionmentEachEmployee(amountPerEmployee);
+  };
+  const SpecificApprotionmenthandleChange = (employeeId, value) => {
+    setSpecificApprotionmentvalue((prev) => ({
+      ...prev,
+      [employeeId]: Number(value) || 0,
+    }));
+  };
+  const SaveExpenses = async () => {
+    const month = selectedDate.toLocaleString("default", { month: "long" });
+    const year = selectedDate.getFullYear();
+    var getMonthNunber = monthMap[month];
+    const employeeData = RevenueData.map((employee) => ({
+      employeeId: employee.id,
+      specificApportionment: Number(
+        SpecificApprotionmentvalue[employee.id] || ""
+      ),
+      generalApportionment: Number(generalApportionmentEachEmployee),
+      month: Number(getMonthNunber),
+      year: year,
+      revenueGenerated: employee.revenueAmount,
+    }));
+    const response = await axios.post(
+      `https://localhost:44305/api/Expenses/AddExpenses?isSubmmited=${"false"}`,
+      employeeData
+    );
+    // var response = await IndianFinanceService.AddExpenses(
+    //   employeeData,
+    //   "false"
+    // );
+
+    console.log(response, "=========>");
+  };
 
   return (
     <div>
-      <span>Expense</span>
+      <span className="Expenses-span">Expense</span>
       <div className="Add-Expense-MainDiv">
         <div
           className="General-Apportionment "
@@ -60,10 +116,8 @@ export default function AddExpense() {
             <input
               type="text"
               className="timesheet_input form-control ms-3 "
-              d
               placeholder="$"
-              //   value={hours[employee.id] || ""}
-              //   onChange={(e) => handleHoursChange(employee.id, e.target.value)}
+              onChange={(e) => handleChange(e.target.value)}
             />
           </div>
           <div className="me-4">
@@ -120,55 +174,158 @@ export default function AddExpense() {
                 <th style={{ fontSize: "14px" }}>Specific Apportionment</th>
                 <th style={{ fontSize: "14px" }}>General Apportionment</th>
                 <th style={{ fontSize: "14px" }}>Total Expenses</th>
-                <th style={{ fontSize: "14px" }}>Profit/Loss</th>
               </tr>
             </thead>
             <tbody>
-              {RevenueData.length > 0 &&
-                RevenueData.map((Revneu, index) => (
-                  <tr key={index} className="tablebody">
-                    <td style={{ fontSize: "14px" }}>{Revneu.employeeId}</td>
+              {RevenueData.length > 0 ? (
+                RevenueData.map((Revenue, index) => (
+                  <tr
+                    key={index}
+                    className="tablebody"
+                    style={{
+                      backgroundColor: "white",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <td style={{ fontSize: "14px" }}>{Revenue.employeeId}</td>
                     <td style={{ fontSize: "14px" }}>
-                      {Revneu.firstName} {Revneu.LastName}
+                      {Revenue.firstName} {Revenue.LastName}
                     </td>
                     <td style={{ fontSize: "14px" }}>
-                      {Revneu.revenueAmount ? Revneu.revenueAmount : "0"}
+                      {Revenue.revenueAmount ? Revenue.revenueAmount : "0"}
                     </td>
-                    <td style={{ fontSize: "14px" }}>
+                    <td>
+                      {GetExpenses.length > 0 ? (
+                        GetExpenses.filter(
+                          (obj) => obj.employeeId === Revenue.id
+                        ).map((filteredEmployee) => (
+                          <div key={filteredEmployee.employeeId}>
+                            {filteredEmployee.isSubmitted === true ? (
+                              <span
+                                style={{
+                                  textAlign: "center",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                {filteredEmployee.generalApportionment}
+                              </span>
+                            ) : (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <input
+                                  type="text"
+                                  className="timesheet_input form-control ms-3 "
+                                  d
+                                  placeholder="$"
+                                  value={
+                                    SpecificApprotionmentvalue[Revenue.id] || ""
+                                  }
+                                  onChange={(e) =>
+                                    SpecificApprotionmenthandleChange(
+                                      Revenue.id,
+                                      e.target.value
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))
+                      ) : (
+                        <div
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <input
+                            type="text"
+                            className="timesheet_input form-control ms-3 "
+                            d
+                            placeholder="$"
+                            value={SpecificApprotionmentvalue[Revenue.id] || ""}
+                            onChange={(e) =>
+                              SpecificApprotionmenthandleChange(
+                                Revenue.id,
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </td>
+                    <td>
                       <input
                         type="text"
                         className="timesheet_input form-control ms-3 "
                         d
                         placeholder="$"
-                        //   value={hours[employee.id] || ""}
-                        //   onChange={(e) => handleHoursChange(employee.id, e.target.value)}
+                        value={`$ ${generalApportionmentEachEmployee ?? 0}`}
+                        disabled
                       />
                     </td>
-                    <td style={{ fontSize: "14px" }}>
+                    <td>
                       <input
-                        type="text"
-                        className="timesheet_input form-control ms-3 "
-                        d
-                        placeholder="$"
-                        //   value={hours[employee.id] || ""}
-                        //   onChange={(e) => handleHoursChange(employee.id, e.target.value)}
+                        type="number"
+                        className="timesheet_input form-control "
+                        value={
+                          (Number(generalApportionmentEachEmployee) || 0) +
+                          (Number(SpecificApprotionmentvalue[Revenue.id]) || 0)
+                        }
+                        disabled={true}
+                        style={{
+                          textAlign: "center",
+                          fontSize: "14px",
+                        }}
                       />
                     </td>
-                    <td style={{ fontSize: "14px" }}>
-                      <input
-                        type="text"
-                        className="timesheet_input form-control ms-3 "
-                        d
-                        placeholder="$"
-                        //   value={hours[employee.id] || ""}
-                        //   onChange={(e) => handleHoursChange(employee.id, e.target.value)}
-                      />
-                    </td>
-                    <td></td>
                   </tr>
-                ))}
+                ))
+              ) : (
+                <tr style={{ width: "100%" }}>
+                  <td></td>
+                  <td></td>
+
+                  <td></td>
+                  <td>No Records Found</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              )}
             </tbody>
           </table>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              paddingBottom: "15px",
+              paddingTop: "15px",
+            }}
+          >
+            <button
+              type="button"
+              className="AddRevneueSaveButton me-3"
+              onClick={SaveExpenses}
+            >
+              <span
+                className="AddRevneueSaveButtonSpan"
+                style={{ fontSize: "14px" }}
+              >
+                Save
+              </span>
+            </button>
+            <button
+              type="button"
+              className="AddRevneueSubmitButton"
+              //  onClick={SubmitFormFunction}
+            >
+              <span className="AddRevneueSubmitButtonSpan"> Submit</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -63,6 +63,7 @@ export default function TimeSheet() {
     November: "11",
     December: "12",
   };
+  console.log(ProjectEmployees, "pproject employees");
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(id);
     const projects = response.item;
@@ -75,6 +76,7 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+    console.log(Timesheetresponse, "imeSheet response");
     var checkIsSubmitted = await Timesheetresponse.item.map(
       (data) => data.isSubmited
     );
@@ -193,7 +195,6 @@ export default function TimeSheet() {
       employeeId: employee.id,
       hoursWorked: hours[employee.id] || "",
     }));
-
     var projectId = selectedProject.value;
     var data = {
       projectId,

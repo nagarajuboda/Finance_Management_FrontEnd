@@ -15,3 +15,10 @@
   align-items: center;
   justify-content: space-between;
 }
+.Expenses-span {
+  text-align: left;
+  font: normal normal bold 16px/17px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  opacity: 1;
+}

@@ -50,6 +50,7 @@ export default function AddRevenue() {
     setProject(result.item.project);
   }
   const handleHoursChange = (timesheetId, value) => {
+    console.log(timesheetId, value, "==========>");
     setRate((prev) => ({
       ...prev,
       [timesheetId]: value,
@@ -104,7 +105,6 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       false

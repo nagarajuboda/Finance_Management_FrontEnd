@@ -51,14 +51,11 @@ const Home = () => {
   };
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
-
     const newErrors = {
       email: LoginFormValidation("email", valuess.email),
       password: LoginFormValidation("password", valuess.password),
     };
-
     setError(newErrors);
-
     const isValid = Object.values(newErrors).every((error) => error === "");
 
     if (isValid) {
@@ -72,11 +69,9 @@ const Home = () => {
         obj
       );
       var result = await responses.data;
-      console.log(result, "result");
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true);
       if (result.isSuccess === true) {
-        debugger;
         setLoggedIn(true);
         setSessionData(result.item.token);
         localStorage.setItem("token", result.item.token);
