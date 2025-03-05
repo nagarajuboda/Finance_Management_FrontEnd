@@ -13,11 +13,10 @@ const IndianFinanceService = {
     );
     return response.data;
   },
-  async AddExpenses(requestBody, isSubmitted) {
-    debugger;
+  async AddExpenses(obj, isSubmitted) {
     const response = await axios.post(
       `https://localhost:44305/api/Expenses/AddExpenses?isSubmmited=${isSubmitted}`,
-      requestBody
+      obj
     );
     return response.data;
   },

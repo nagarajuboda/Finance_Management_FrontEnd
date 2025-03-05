@@ -50,13 +50,12 @@ export default function AddRevenue() {
     setProject(result.item.project);
   }
   const handleHoursChange = (timesheetId, value) => {
-    console.log(timesheetId, value, "==========>");
     setRate((prev) => ({
       ...prev,
       [timesheetId]: value,
     }));
   };
-  console.log(rate, "rate");
+
   const GetTimeSheet = async (projectID, selectedDate) => {
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const year = selectedDate.getFullYear();
@@ -99,7 +98,6 @@ export default function AddRevenue() {
   const backtoProjectList = () => {
     navigate("/dashboard/USFinanceTeamAllProjects");
   };
-  console.log(TimeSheetdata, "========>");
   const SaveForm = async () => {
     const employeeData = TimeSheetdata.map((employee) => ({
       timesheetId: employee.id,
@@ -112,10 +110,6 @@ export default function AddRevenue() {
     if (AddtimeSheetResponse.isSuccess) {
       setisOpen(true);
       GetTimeSheet();
-      // toast.success("Successfully saved.", {
-      //   position: "top-right",
-      //   autoClose: 4000,
-      // });
     } else {
       toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",

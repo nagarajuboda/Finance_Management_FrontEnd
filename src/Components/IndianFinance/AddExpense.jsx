@@ -5,13 +5,23 @@ import { useState } from "react";
 import calenderImage from "../../assets/Images/calendar_11919171.png";
 import IndianFinanceService from "../../Service/IndianFinance/IndianFinanceService";
 import { select } from "@material-tailwind/react";
+import ellips from "../../../src/assets/Images/Ellipse.png";
+import checkimage from "../../../src/assets/Images/check.png";
 import axios from "axios";
 import { useEffect } from "react";
 export default function AddExpense() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [RevenueData, setRevenueData] = useState([]);
-  const [generalApportionment, setgeneralApportionment] = useState();
+  const [generalApportionment, setgeneralApportionment] = useState(0);
   const [GetExpenses, setGetExpenses] = useState([]);
+  const [generalExpensesForEachEmployee, setGeneralExpensesForEachEmployee] =
+    useState();
+  const [isOpen, setIsOpen] = useState(false);
+  const [rate, setRate] = useState({});
+  const [
+    generalApprotionmentSubmittedvalue,
+    SetgeneralApprotionmentSubmittedvalue,
+  ] = useState();
   const [SpecificApprotionmentvalue, setSpecificApprotionmentvalue] = useState(
     {}
   );
@@ -35,42 +45,55 @@ export default function AddExpense() {
     December: "12",
   };
   useEffect(() => {
-    FetchData();
     handleDateChange(selectedDate);
-  }, [generalApportionment]);
-
-  const FetchData = async () => {
-    const month = selectedDate.toLocaleString("default", { month: "long" });
-    const year = selectedDate.getFullYear();
-    var getMonthNunber = monthMap[month];
-    var response = await IndianFinanceService.GetExpenses(getMonthNunber, year);
-    setGetExpenses(response.item);
-  };
+  }, [generalApprotionmentSubmittedvalue]);
 
   const handleDateChange = async (date) => {
     setSelectedDate(date);
-    const formattedDate = `${date.toLocaleString("default", {
-      month: "long",
-    })} ${date.getFullYear()}`;
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
     var getMonthNunber = monthMap[month];
+    var response = await IndianFinanceService.GetExpenses(getMonthNunber, year);
+    setGetExpenses(response.item);
+    if (response.item.length > 0) {
+      var GeneralApprotionmentvalue = await response.item.map(
+        (data) => data.generalApportionment
+      );
+      setgeneralApportionmentEachEmployee(GeneralApprotionmentvalue[0]);
+      const totalSum = GeneralApprotionmentvalue.reduce(
+        (acc, curr) => acc + curr,
+        0
+      );
+      setgeneralApportionment(totalSum);
+    } else {
+      setgeneralApportionment("");
+      setgeneralApportionmentEachEmployee(0);
+    }
+
     var response = await IndianFinanceService.GetRevenue(getMonthNunber, year);
     if (response.isSuccess) {
       setRevenueData(response.item);
     }
   };
-  const handleChange = (generalApportionmentAmout) => {
-    setgeneralApportionment(generalApportionmentAmout);
+
+  //   const handleChange = (e) => {
+  //     const amount = e.target.value;
+  //     setgeneralApportionment(amount);
+  //     const employeeCount = RevenueData.length;
+  //     const amountPerEmployee = employeeCount > 0 ? amount / employeeCount : 0;
+  //     setgeneralApportionmentEachEmployee(amountPerEmployee);
+  //   };
+  const handleChange = (e) => {
+    const amount = Number(e.target.value); // Ensure it's a number
+    setgeneralApportionment(amount);
     const employeeCount = RevenueData.length;
-    const amountPerEmployee =
-      employeeCount > 0 ? generalApportionmentAmout / employeeCount : 0;
+    const amountPerEmployee = employeeCount > 0 ? amount / employeeCount : 0;
     setgeneralApportionmentEachEmployee(amountPerEmployee);
   };
   const SpecificApprotionmenthandleChange = (employeeId, value) => {
     setSpecificApprotionmentvalue((prev) => ({
       ...prev,
-      [employeeId]: Number(value) || 0,
+      [employeeId]: Number(value),
     }));
   };
   const SaveExpenses = async () => {
@@ -79,26 +102,26 @@ export default function AddExpense() {
     var getMonthNunber = monthMap[month];
     const employeeData = RevenueData.map((employee) => ({
       employeeId: employee.id,
-      specificApportionment: Number(
-        SpecificApprotionmentvalue[employee.id] || ""
-      ),
-      generalApportionment: Number(generalApportionmentEachEmployee),
+      specificApportionment: rate[employee.id] || "",
+      generalApportionment: generalApportionmentEachEmployee,
       month: Number(getMonthNunber),
       year: year,
-      revenueGenerated: employee.revenueAmount,
+      revenueGenerated: Number(employee.revenueAmount),
     }));
-    const response = await axios.post(
-      `https://localhost:44305/api/Expenses/AddExpenses?isSubmmited=${"false"}`,
-      employeeData
+    var response = await IndianFinanceService.AddExpenses(
+      employeeData,
+      "false"
     );
-    // var response = await IndianFinanceService.AddExpenses(
-    //   employeeData,
-    //   "false"
-    // );
-
-    console.log(response, "=========>");
+    if (response.isSuccess) {
+      setIsOpen(true);
+    }
   };
-
+  const handleHoursChange = (EmployeeID, value) => {
+    setRate((prev) => ({
+      ...prev,
+      [EmployeeID]: value,
+    }));
+  };
   return (
     <div>
       <span className="Expenses-span">Expense</span>
@@ -113,11 +136,13 @@ export default function AddExpense() {
         >
           <div className="d-flex " style={{ alignItems: "center" }}>
             <span className="">General Apportionment</span>
+
             <input
-              type="text"
-              className="timesheet_input form-control ms-3 "
-              placeholder="$"
-              onChange={(e) => handleChange(e.target.value)}
+              type="number"
+              className="timesheet_input form-control"
+              // placeholder="Enter General Apportionment"
+              value={generalApportionment}
+              onChange={handleChange}
             />
           </div>
           <div className="me-4">
@@ -209,30 +234,44 @@ export default function AddExpense() {
                                   fontSize: "14px",
                                 }}
                               >
-                                {filteredEmployee.generalApportionment}
+                                {filteredEmployee.specificApportionment}
                               </span>
                             ) : (
                               <div
+                                key={filteredEmployee.employeeId}
                                 style={{
                                   display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
+                                  justifyContent: "start",
+                                  fontSize: "14px",
                                 }}
                               >
                                 <input
-                                  type="text"
-                                  className="timesheet_input form-control ms-3 "
-                                  d
-                                  placeholder="$"
+                                  type="number"
+                                  className="timesheet_input form-control "
+                                  placeholder="Hourly Rate In $"
                                   value={
-                                    SpecificApprotionmentvalue[Revenue.id] || ""
+                                    rate[filteredEmployee.employeeId] !==
+                                    undefined
+                                      ? rate[filteredEmployee.employeeId]
+                                      : filteredEmployee.specificApportionment
                                   }
-                                  onChange={(e) =>
-                                    SpecificApprotionmenthandleChange(
-                                      Revenue.id,
-                                      e.target.value
-                                    )
-                                  }
+                                  onChange={(e) => {
+                                    const newRate = e.target.value;
+                                    if (
+                                      newRate &&
+                                      (newRate === "" || newRate >= 0)
+                                    ) {
+                                      handleHoursChange(
+                                        filteredEmployee.employeeId,
+                                        newRate
+                                      );
+                                    } else {
+                                      handleHoursChange(
+                                        filteredEmployee.employeeId,
+                                        rate
+                                      );
+                                    }
+                                  }}
                                 />
                               </div>
                             )}
@@ -240,13 +279,13 @@ export default function AddExpense() {
                         ))
                       ) : (
                         <div
-                          style={{ display: "flex", justifyContent: "center" }}
+                          style={{ display: "flex", justifyContent: "start" }}
                         >
                           <input
                             type="text"
-                            className="timesheet_input form-control ms-3 "
+                            className="timesheet_input form-control "
                             d
-                            placeholder="$"
+                            placeholder="00:00  Hrs"
                             value={SpecificApprotionmentvalue[Revenue.id] || ""}
                             onChange={(e) =>
                               SpecificApprotionmenthandleChange(
@@ -264,7 +303,7 @@ export default function AddExpense() {
                         className="timesheet_input form-control ms-3 "
                         d
                         placeholder="$"
-                        value={`$ ${generalApportionmentEachEmployee ?? 0}`}
+                        value={`$   ${generalApportionmentEachEmployee ?? 0}`}
                         disabled
                       />
                     </td>
@@ -274,8 +313,16 @@ export default function AddExpense() {
                         className="timesheet_input form-control "
                         value={
                           (Number(generalApportionmentEachEmployee) || 0) +
-                          (Number(SpecificApprotionmentvalue[Revenue.id]) || 0)
+                          (Number(SpecificApprotionmentvalue[Revenue.id]) ||
+                            0) +
+                          (Number(rate[Revenue.id]) || 0) // Ensure correct employee ID
                         }
+                        // value={
+                        //   (Number(generalApportionmentEachEmployee) || 0) +
+                        //   (Number(SpecificApprotionmentvalue[Revenue.id]) ||
+                        //     0) +
+                        //   (Number(rate[Revenue.id]) || 0)
+                        // }
                         disabled={true}
                         style={{
                           textAlign: "center",
@@ -328,6 +375,40 @@ export default function AddExpense() {
           </div>
         </div>
       </div>
+      {isOpen && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={checkimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={ellips}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">
+              Monthly Expenses Saved Successfully!
+            </h2>
+            <p className="unique-popup-message">Click OK to see the result</p>
+            <button
+              className="unique-popup-button"
+              onClick={() => setIsOpen(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

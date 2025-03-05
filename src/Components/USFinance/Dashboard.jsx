@@ -51,9 +51,7 @@ export default function UsFinanceTeamDashboard() {
     November: "11",
     December: "12",
   };
-  // useEffect(() => {
-  //   handleDateChange(selectedDate1);
-  // }, [selectedDate1, RevenueValues, ProjectNames]);
+
   const handleDateChange1 = async (date) => {
     setSelectedDate(date);
   };
