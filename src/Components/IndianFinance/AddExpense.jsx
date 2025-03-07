@@ -13,7 +13,9 @@ import axios from "axios";
 import { useEffect } from "react";
 export default function AddExpense() {
   const [error, setError] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  );
   const [RevenueData, setRevenueData] = useState([]);
   const [generalApportionment, setgeneralApportionment] = useState(0);
   const [GetExpenses, setGetExpenses] = useState([]);
@@ -23,6 +25,7 @@ export default function AddExpense() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen1, setIsOpen1] = useState(false);
   const [isSubmittedFlag, SetisSubmittedFlag] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [rate, setRate] = useState({});
   const [
     generalApprotionmentSubmittedvalue,
@@ -78,6 +81,7 @@ export default function AddExpense() {
       );
       setgeneralApportionment(totalSum);
     } else {
+      SetisSubmittedFlag(false);
       setgeneralApportionment("");
       setgeneralApportionmentEachEmployee(0);
     }
@@ -142,7 +146,16 @@ export default function AddExpense() {
       [EmployeeID]: value,
     }));
   };
-  console.log(isSubmittedFlag, "isSubmitted");
+  console.log(isSubmittedFlag, "sumittedflag");
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const filteredEmployees = RevenueData.filter((employee) => {
+    return (
+      employee.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
   return (
     <div>
       <span className="Expenses-span">Expense</span>
@@ -202,13 +215,52 @@ export default function AddExpense() {
               </div>
             </div>
           </div>
-          <div className="me-4">
+          <div className="me-4" style={{ display: "flex" }}>
+            <div
+              className="me-4"
+              style={{
+                position: "relative",
+                display: "flex",
+                justifyContent: "end",
+              }}
+            >
+              <input
+                type="text"
+                className="searchinput"
+                placeholder="Search employees"
+                onChange={handleSearchChange}
+                value={searchQuery}
+                style={{
+                  fontSize: "14px",
+                  padding: "0px 8px",
+                  width: "300px",
+                  height: "36px",
+                  paddingRight: "30px",
+                  boxSizing: "border-box",
+                }}
+              />
+              <i
+                className="bi bi-search"
+                style={{
+                  fontSize: "18px",
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#888",
+                  pointerEvents: "none",
+                }}
+              ></i>
+            </div>
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
-              maxDate={new Date()}
+              maxDate={
+                new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+              } // Last month
+              //maxDate={new Date()}
               className="timesheet-datepicker"
               customInput={
                 <div
@@ -259,8 +311,8 @@ export default function AddExpense() {
               </tr>
             </thead>
             <tbody>
-              {RevenueData.length > 0 ? (
-                RevenueData.map((Revenue, index) => (
+              {filteredEmployees.length > 0 ? (
+                filteredEmployees.map((Revenue, index) => (
                   <tr
                     key={index}
                     className="tablebody"
@@ -303,7 +355,7 @@ export default function AddExpense() {
                                 }}
                               >
                                 <input
-                                  type="text"
+                                  type="number"
                                   className="timesheet_input form-control  "
                                   value={hours[Revenue.id] || ""}
                                   onChange={(e) =>
@@ -341,7 +393,7 @@ export default function AddExpense() {
                               }}
                             />
                             <input
-                              type="text"
+                              type="number"
                               className="timesheet_input form-control ps-4"
                               d
                               value={hours[Revenue.id] || ""}
@@ -375,9 +427,8 @@ export default function AddExpense() {
                           }}
                         />
                         <input
-                          type="text"
+                          type="number"
                           className="timesheet_input form-control ms-3 ps-4 "
-                          d
                           placeholder="$"
                           value={generalApportionmentEachEmployee ?? 0}
                           disabled
@@ -431,7 +482,7 @@ export default function AddExpense() {
                   <td></td>
 
                   <td></td>
-                  <td>No Records Found</td>
+                  <td style={{ fontSize: "14px" }}>No Records Found</td>
                   <td></td>
                   <td></td>
                 </tr>
@@ -448,11 +499,12 @@ export default function AddExpense() {
           >
             <button
               type="button"
-              className="AddRevneueSaveButton me-3"
+              className="AddRevneueSaveButton me-3 ExpensesSaveButton"
+              disabled={isSubmittedFlag}
               onClick={() => AddExpenses("false")}
             >
               <span
-                className="AddRevneueSaveButtonSpan"
+                className="AddRevneueSaveButtonSpan "
                 style={{ fontSize: "14px" }}
               >
                 Save
@@ -460,8 +512,9 @@ export default function AddExpense() {
             </button>
             <button
               type="button"
-              className="AddRevneueSubmitButton"
+              className="AddRevneueSubmitButton ExpensesSubmitButton"
               onClick={() => AddExpenses("true")}
+              disabled={isSubmittedFlag}
             >
               <span className="AddRevneueSubmitButtonSpan"> Submit</span>
             </button>

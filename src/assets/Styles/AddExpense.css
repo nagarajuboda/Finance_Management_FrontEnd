@@ -22,3 +22,13 @@
   color: #000000;
   opacity: 1;
 }
+.ExpensesSaveButton:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+.ExpensesSubmitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
