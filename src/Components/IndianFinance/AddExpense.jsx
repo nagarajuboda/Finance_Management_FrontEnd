@@ -324,7 +324,15 @@ export default function AddExpense() {
                       {Revenue.firstName} {Revenue.LastName}
                     </td>
                     <td style={{ fontSize: "14px" }}>
-                      {Revenue.revenueAmount ? Revenue.revenueAmount : "0"}
+                      <span>
+                        <FaDollarSign
+                          className=" ms-1 mb-1 "
+                          style={{ fontSize: "14px" }}
+                        />
+                      </span>
+                      <span className="ms-1">
+                        {Revenue.revenueAmount ? Revenue.revenueAmount : "0"}
+                      </span>
                     </td>
                     <td>
                       {GetExpenses.length > 0 ? (
@@ -339,7 +347,7 @@ export default function AddExpense() {
                                   style={{ fontSize: "14px" }}
                                 />
                                 <span
-                                  className="ms-2"
+                                  className="ms-1"
                                   style={{
                                     textAlign: "start",
                                     display: "flex",
