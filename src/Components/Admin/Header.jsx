@@ -56,7 +56,7 @@ export default function Header({ isOpen }) {
     });
 
     return () => subscription.unsubscribe(); // Cleanup subscription on unmount
-  }, []);
+  }, [notifications]);
 
   useEffect(() => {
     fetchdata();

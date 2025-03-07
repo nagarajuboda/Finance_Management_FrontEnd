@@ -14,6 +14,7 @@ import EmployeeDetails from "../Employee/EmployeeDetails";
 import ImportPopup from "../Employee/ImportPopup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { getSessionData } from "../../Service/SharedSessionData";
+import { apiurl } from "../../Service/createAxiosInstance";
 export default function Employees() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -32,67 +33,20 @@ export default function Employees() {
     FetchData();
   }, [selectedEmployeeIds, isDivVisible, id]);
 
-  const EdittogglePopup = (e, index, employeeid) => {
-    sessionStorage.setItem("EmployeeID", employeeid);
-    navigate("/dashboard/EditEmployee");
-  };
-
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
   const FetchData = async () => {
-    const response = await axios.get(
+    const response = await apiurl.get(
       `https://localhost:44305/api/Employees/GetEmployeesByManager?id=${id}`
     );
     var result = response.data.item;
 
     setEmployees(result);
   };
-  const handleOpenPopup = async (e, index, id) => {
-    var response = await axios.put(
-      `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
-    );
-    var result = response.data;
-    if (result.isSuccess === true) {
-      FetchData();
-      setOpen(true);
-    }
-  };
 
   const closeDeletePopup = () => {
     setOpen(false);
-  };
-  const handleSelectAll = (e) => {
-    const isChecked = e.target.checked;
-
-    if (isChecked && selectedEmployeeIds.length > 0) {
-      const allEmployeeIds = currentItems.map((employee) => employee.id);
-      setSelectedEmployeeIds(allEmployeeIds);
-
-      setDisiblebuttons(false);
-    } else {
-      setSelectedEmployeeIds([]);
-      setDisiblebuttons(true);
-    }
-    document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
-      checkbox.checked = isChecked;
-    });
-  };
-
-  const Addemployeefuncton = () => {
-    navigate("/dashboard/AddEmployee");
-  };
-  const DeleteSelectedRecords = async () => {
-    const response = await axios.put(
-      "https://localhost:44305/api/Employees/DeleteSelectedEmployees",
-      selectedEmployeeIds
-    );
-    const result = response.data;
-
-    if (result.isSuccess) {
-      setOpen(true);
-      FetchData();
-    }
   };
 
   const handleSearchChange = (e) => {
@@ -133,35 +87,17 @@ export default function Employees() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const handleCheckboxChange = (employeeId, isChecked) => {
-    setSelectedEmployeeIds((prevSelected) => {
-      let updatedSelected;
-      if (isChecked) {
-        updatedSelected = [...prevSelected, employeeId];
-      } else {
-        updatedSelected = prevSelected.filter((id) => id !== employeeId);
-      }
-
-      if (updatedSelected.length === 0) {
-        setDisiblebuttons(true);
-      } else {
-        setDisiblebuttons(false);
-      }
-
-      return updatedSelected;
-    });
-  };
   const DownloadExcel = async (listtype, filetype) => {
     let response;
     try {
       if (isDivVisible == false) {
         response = await axios.get(
-          `https://localhost:44305/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
+          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
           { responseType: "blob" }
         );
       } else {
         response = await axios.get(
-          `https://localhost:44305/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}&ManagerId=${id}`,
+          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}&ManagerId=${id}`,
           { responseType: "blob" }
         );
       }

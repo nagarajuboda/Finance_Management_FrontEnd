@@ -18,12 +18,11 @@ export default function Projects() {
   }
   function ProjectNameclick(e, index, id) {
     e.preventDefault();
-    console.log(id, "id");
+
     localStorage.setItem("projectId", id);
 
     navigate("/Dashboard/ViewProject");
   }
-  console.log(projectDetails, "details");
   return (
     <div className="maindivv">
       <div className="card" style={{ borderRadius: "0px" }}>

@@ -38,7 +38,7 @@ export default function AllProjects() {
           "https://localhost:44305/api/Projects/GetAllProjects"
         );
         const result = response.data;
-        console.log(result, "all projects");
+
         setAllProjects(result.item);
         setFilteredProjects(result.item);
       } catch (error) {

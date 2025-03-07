@@ -34,7 +34,6 @@ export const addEmployeeFormValidation = (name, value) => {
     }
   }
   if (name === "role") {
-    console.log(value, "in validation");
     if (!value) return "Please select role";
   }
   if (name === "dateOfJoining") {

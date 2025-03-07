@@ -27,7 +27,6 @@ export default function Employees() {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-
   useEffect(() => {
     FetchData();
   }, [selectedEmployeeIds, isDivVisible]);
@@ -36,7 +35,6 @@ export default function Employees() {
     sessionStorage.setItem("EmployeeID", employeeid);
     navigate("/dashboard/EditEmployee");
   };
-
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
@@ -44,10 +42,8 @@ export default function Employees() {
   const FetchData = async () => {
     const response = await EmployeeService.GetEmployees();
     var result = response.item;
-    console.log(result);
     setEmployees(result);
   };
-
   const handleOpenPopup = async (e, index, id) => {
     var response = await EmployeeService.DeleteEmployees(id);
     var result = response;
@@ -155,7 +151,7 @@ export default function Employees() {
   };
   const DownloadExcel = async (listtype, filetype) => {
     let response;
-    debugger;
+
     try {
       if (isDivVisible == false) {
         response = await axios.get(

@@ -27,7 +27,6 @@ export default function GetAllRevenue() {
   const now = new Date();
   const maxDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  console.log(selectedDate, "selected Date");
   useEffect(() => {
     GetRevenue(selectedDate);
   }, [selectedDate]);
@@ -43,10 +42,8 @@ export default function GetAllRevenue() {
     const formattedDate = format(date, "MMMM yyyy");
     const [month, year] = formattedDate.split(" ");
     const monthNumber = monthMap[month];
-    console.log(monthNumber, year);
     var response = await IndianFinanceService.GetRevenue(monthNumber, year);
     setData(response);
-    console.log(response, "getRevenue Response");
   };
 
   const handleSearch = (event) => {

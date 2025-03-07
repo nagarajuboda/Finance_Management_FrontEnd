@@ -64,5 +64,23 @@ const EmployeeService = {
 
     return response.data;
   },
+  async TotalEmployees() {
+    const response = await apiurl.get("/Employees/TotalEmployees");
+    return response.data;
+  },
+  async ProjectProgressPercentage() {
+    const response = await apiurl.get("/Projects/ProjectProgressPercentage");
+    return response.data;
+  },
+  async UpdateEmployee(obj) {
+    const response = await apiurl.put("/Employees/UpdateEmployee", obj);
+    return response.data;
+  },
+  async GetMangerByEmployees(id) {
+    const response = await apiurl.get(
+      ` /Employees/GetEmployeesByManager?id=${id}`
+    );
+    return response.data;
+  },
 };
 export default EmployeeService;

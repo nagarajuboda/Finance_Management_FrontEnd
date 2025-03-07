@@ -87,7 +87,6 @@ const ImportProjectEmployees = ({ IsProjectOpen1, handleClose1 }) => {
     } else {
       var errorresponse = result.item.map((obj) => obj);
       let formattedErrors = errorresponse.join(", ");
-      console.log(formattedErrors);
       Swal.fire({
         title: "Error!",
         html: `<div style="width: auto; max-height: 80px; overflow-y: auto; overflow-x: hidden;">

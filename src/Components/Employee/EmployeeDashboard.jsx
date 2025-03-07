@@ -61,7 +61,6 @@ const EmployeeDashboard = () => {
       );
       setAllEmployees(response.data);
       const employeesData = response.data;
-      console.log(employeesData, "employee data");
       setEmployees(employeesData.filter((emp) => emp.employeeStatus === 1));
       setInactiveEmployees(
         employeesData.filter((emp) => emp.employeeStatus === 0)
@@ -193,7 +192,6 @@ const EmployeeDashboard = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      console.log(event);
       if (profileRef.current && !profileRef.current.contains(event.target)) {
         setShowModal(false);
       }
@@ -277,7 +275,6 @@ const EmployeeDashboard = () => {
     } else {
       var errorresponse = result.item.map((obj) => obj);
       let formattedErrors = errorresponse.join(", ");
-      console.log(formattedErrors);
       Swal.fire({
         title: "Error!",
         html: `<div style="width: auto; max-height: 80px; overflow-y: auto; overflow-x: hidden;">

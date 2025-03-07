@@ -17,7 +17,9 @@ export default function AddRevenue() {
   var projectID = sessionStorage.getItem("id");
   const [Project, setProject] = useState({});
   const [TimeSheetdata, setTimeSheet] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  );
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
   const [isopen, setisOpen] = useState(false);
@@ -122,7 +124,6 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-    console.log(employeeData, "employeeData");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       true

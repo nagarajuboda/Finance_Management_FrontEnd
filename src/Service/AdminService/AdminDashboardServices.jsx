@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiurl } from "../createAxiosInstance";
 
 const AdminDashboardServices = {
   async fcnAddClientAsync(obj) {
@@ -42,8 +43,8 @@ const AdminDashboardServices = {
     return response.data;
   },
   async fcngetEmployeeDetails(employeeID) {
-    var response = await axios.get(
-      `https://localhost:44305/api/Employees/EmployeeDetails?id=${employeeID}`
+    var response = await apiurl.get(
+      `/Employees/EmployeeDetails?id=${employeeID}`
     );
     return response.data;
   },

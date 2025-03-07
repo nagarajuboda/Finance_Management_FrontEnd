@@ -55,8 +55,6 @@ export default function UsFinanceTeamDashboard() {
   const handleDateChange1 = async (date) => {
     setSelectedDate(date);
   };
-  console.log(ProjectNames, "project Names");
-
   const [activeIndex, setActiveIndex] = useState(-1);
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -242,7 +240,6 @@ export default function UsFinanceTeamDashboard() {
     }
   };
   const Graph = (result) => {
-    console.log(result, "adasdlasklk");
     if (barchartintance.current) {
       barchartintance.current.destroy();
     }

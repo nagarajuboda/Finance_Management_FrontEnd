@@ -146,7 +146,6 @@ export default function AddExpense() {
       [EmployeeID]: value,
     }));
   };
-  console.log(isSubmittedFlag, "sumittedflag");
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -259,8 +258,7 @@ export default function AddExpense() {
               showMonthYearPicker
               maxDate={
                 new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
-              } // Last month
-              //maxDate={new Date()}
+              }
               className="timesheet-datepicker"
               customInput={
                 <div
@@ -335,16 +333,23 @@ export default function AddExpense() {
                         ).map((filteredEmployee) => (
                           <div key={filteredEmployee.employeeId}>
                             {filteredEmployee.isSubmitted === true ? (
-                              <span
-                                style={{
-                                  textAlign: "start",
-                                  display: "flex",
-                                  justifyContent: "start",
-                                  fontSize: "14px",
-                                }}
-                              >
-                                {filteredEmployee.specificApportionment}
-                              </span>
+                              <div style={{ display: "flex" }}>
+                                <FaDollarSign
+                                  className=" ms-1 mt-1"
+                                  style={{ fontSize: "14px" }}
+                                />
+                                <span
+                                  className="ms-2"
+                                  style={{
+                                    textAlign: "start",
+                                    display: "flex",
+                                    justifyContent: "start",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {filteredEmployee.specificApportionment}
+                                </span>
+                              </div>
                             ) : (
                               <div
                                 key={filteredEmployee.employeeId}

@@ -34,7 +34,6 @@ export default function EmployeeDetails() {
   };
 
   const moreskills = () => {
-    console.log("button cliked");
     setisVisible(true);
   };
   const toggleDropdown = () => {

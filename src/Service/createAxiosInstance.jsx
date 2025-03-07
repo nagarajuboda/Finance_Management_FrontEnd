@@ -8,8 +8,6 @@ const createAxiosInstance = (baseURL) => {
     baseURL: baseURL,
   });
   const token = localStorage.getItem("token");
-  console.log(token);
-  // ✅ Request Interceptor: Attach Token
 
   api.interceptors.request.use(
     (config) => {
@@ -22,12 +20,10 @@ const createAxiosInstance = (baseURL) => {
     (error) => Promise.reject(error)
   );
 
-  // ✅ Response Interceptor: Handle Errors
   api.interceptors.response.use(
     (response) => response,
     (error) => {
       if (!error.response) {
-        // Handle Network Errors
         toast.error("Network error. Please check your connection.");
         return Promise.reject(error);
       }
@@ -39,7 +35,6 @@ const createAxiosInstance = (baseURL) => {
         localStorage.removeItem("token");
         window.location.href = "/login";
       } else {
-        // Handle other API errors
         const errorMessage =
           data?.errors && Array.isArray(data.errors)
             ? data.errors.join(", ")

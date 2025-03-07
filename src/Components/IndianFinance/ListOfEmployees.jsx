@@ -94,12 +94,12 @@ export default function ListOfEmployees() {
     try {
       if (isDivVisible == false) {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
+          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
           { responseType: "blob" }
         );
       } else {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
+          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
           { responseType: "blob" }
         );
       }
