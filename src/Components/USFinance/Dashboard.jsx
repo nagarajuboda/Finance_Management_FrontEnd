@@ -51,14 +51,10 @@ export default function UsFinanceTeamDashboard() {
     November: "11",
     December: "12",
   };
-  // useEffect(() => {
-  //   handleDateChange(selectedDate1);
-  // }, [selectedDate1, RevenueValues, ProjectNames]);
+
   const handleDateChange1 = async (date) => {
     setSelectedDate(date);
   };
-  console.log(ProjectNames, "project Names");
-
   const [activeIndex, setActiveIndex] = useState(-1);
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -244,7 +240,6 @@ export default function UsFinanceTeamDashboard() {
     }
   };
   const Graph = (result) => {
-    console.log(result, "adasdlasklk");
     if (barchartintance.current) {
       barchartintance.current.destroy();
     }

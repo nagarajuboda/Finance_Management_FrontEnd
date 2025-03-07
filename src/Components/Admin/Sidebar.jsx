@@ -142,7 +142,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Hr Management",
       icon: hrManagement,
-      submenu: [{ path: "/dashboard/EmployeeList", name: "Employees" }],
+      submenu: [{ path: "/dashboard/EmployeeList/", name: "Employees" }],
     },
     {
       name: "Project Management",
@@ -152,7 +152,7 @@ const Sidebar = ({ children }) => {
     {
       name: "Revenue",
       icon: ProjectManagement,
-      submenu: [{ path: "/Dashboard/sjdsjsk", name: "Revenue" }],
+      submenu: [{ path: "/Dashboard/AddExpense", name: "Add Expense" }],
     },
   ];
 

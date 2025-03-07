@@ -90,26 +90,16 @@ export default function AddProject() {
     StartDate: "",
   });
   const handleSelectedDate = (newDate) => {
-    console.log(newDate);
     setValues({
       ...values,
       StartDate: newDate ? newDate.format("MM/DD/YYYY") : "",
     });
-    console.log(
-      "Selected Start Date:",
-      newDate ? newDate.format("MM/DD/YYYY") : ""
-    );
   };
   const handleSelectedEndDate = (newDate) => {
-    console.log(newDate);
     setValues({
       ...values,
       EndDate: newDate ? newDate.format("MM/DD/YYYY") : "",
     });
-    console.log(
-      "Selected Start Date:",
-      newDate ? newDate.format("MM/DD/YYYY") : ""
-    );
   };
 
   async function FetchCurrency() {
@@ -123,7 +113,6 @@ export default function AddProject() {
   const handleChange = async (e) => {
     const { name, value } = e.target;
 
-    console.log(value);
     if (name === "Department") {
       if (value === "") {
         setFilteredTeams([]);
@@ -155,7 +144,7 @@ export default function AddProject() {
       [name]: AddProjectFormValidation(name, value),
     });
   };
-  console.log(values);
+
   async function formSubmit(e) {
     e.preventDefault();
     const newErrors = {
@@ -207,10 +196,9 @@ export default function AddProject() {
       EndDate: AddProjectFormValidation("EndDate", values.EndDate, values),
     };
     setErrorss(newErrors);
-    console.log(values, "=>values");
+
     const isValid = Object.values(newErrors).every((error) => error === "");
 
-    console.log(isValid, "values");
     if (isValid) {
       var obj = {
         project: {
@@ -232,7 +220,7 @@ export default function AddProject() {
         DepartmentTeam: values.departmentTeam,
         Department: values.Department,
       };
-      console.log(obj, "final obj");
+
       var response = await AdminDashboardServices.fcnAddProject(obj);
 
       if (response.isSuccess === true) {
@@ -301,9 +289,7 @@ export default function AddProject() {
       ),
     };
     setErrors(newErrors);
-    console.log(errors, "errorrs");
     const isValid = Object.values(newErrors).every((error) => error === "");
-    console.log(isValid, "isvalid");
     if (isValid) {
       const obj = {
         ClientName: values.ClientName,

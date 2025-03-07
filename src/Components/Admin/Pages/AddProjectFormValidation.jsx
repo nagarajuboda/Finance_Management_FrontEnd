@@ -10,7 +10,7 @@ export const AddProjectFormValidation = (name, value, values) => {
   }
   if (name === "EndDate") {
     if (!value) return "Deadline Date is required";
-    console.log(value, "=====>");
+
     if (
       new Date(value) < new Date(values.StartDate) ||
       new Date(value) < new Date(values.StartDate)

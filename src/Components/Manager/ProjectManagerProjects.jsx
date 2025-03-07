@@ -36,7 +36,6 @@ export default function ProjectManagerProjects() {
     const result = response.data;
     setProjects(result.item);
   };
-  console.log(Projects);
   const AddNewProject = () => {
     navigate("/Dashboard/AddProject");
   };

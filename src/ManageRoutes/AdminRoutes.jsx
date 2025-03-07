@@ -36,6 +36,7 @@ import Notifications from "../Components/Admin/Notifications";
 import IndianFinanceTeamDashboard from "../Components/IndianFinance/Dashboard";
 import ListOfEmployees from "../Components/IndianFinance/ListOfEmployees";
 import ProjectsList from "../Components/IndianFinance/Projects";
+import AddExpense from "../Components/IndianFinance/AddExpense";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -71,7 +72,7 @@ export default function AdminRoutes() {
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
-
+        <Route path="/AddExpense" element={<AddExpense />} />
         <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
         <Route path="/Employees" element={<Employees />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />

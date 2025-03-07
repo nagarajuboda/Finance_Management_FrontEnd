@@ -22,7 +22,9 @@ export default function TimeSheet() {
   var id = userDetails.employee.id;
   var senderemail = userDetails.employee.email;
   const [selectedProject, setSelectedProject] = useState();
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  );
   const [formattedDate, setFormattedDate] = useState("");
   const [projectOptions, setProjects] = useState([]);
   const [department, setDepartment] = useState("");
@@ -44,7 +46,6 @@ export default function TimeSheet() {
       getTimeSheet.length > 0 && getTimeSheet[0].isSubmited === true;
     setflag(checkIsSubmitted);
     FetchData();
-
     const year = selectedDate.getFullYear();
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
@@ -64,6 +65,7 @@ export default function TimeSheet() {
     November: "11",
     December: "12",
   };
+
   async function FetchData() {
     const response = await EmployeeService.GetProjectInfo(id);
     const projects = response.item;
@@ -76,6 +78,7 @@ export default function TimeSheet() {
       formattedDate,
       selectedProject?.value
     );
+
     var checkIsSubmitted = await Timesheetresponse.item.map(
       (data) => data.isSubmited
     );
@@ -164,6 +167,7 @@ export default function TimeSheet() {
       [employeeId]: value,
     }));
   };
+
   const SubmitFormFunction = async () => {
     const employeeData = ProjectEmployees.map((employee) => ({
       employeeId: employee.id,
@@ -194,7 +198,6 @@ export default function TimeSheet() {
       employeeId: employee.id,
       hoursWorked: hours[employee.id] || "",
     }));
-
     var projectId = selectedProject.value;
     var data = {
       projectId,
@@ -282,7 +285,13 @@ export default function TimeSheet() {
                 onChange={handleDateChange}
                 dateFormat="MMMM yyyy"
                 showMonthYearPicker
-                maxDate={new Date()}
+                maxDate={
+                  new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth() - 1,
+                    1
+                  )
+                }
                 className="timesheet-datepicker"
                 customInput={
                   <div

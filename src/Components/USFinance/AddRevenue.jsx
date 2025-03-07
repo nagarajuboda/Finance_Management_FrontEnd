@@ -17,7 +17,9 @@ export default function AddRevenue() {
   var projectID = sessionStorage.getItem("id");
   const [Project, setProject] = useState({});
   const [TimeSheetdata, setTimeSheet] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  );
   const [GetSubmitedRevenue, setGetRevenue] = useState([]);
   const [disiblebuttons, setDisiblebuttons] = useState(false);
   const [isopen, setisOpen] = useState(false);
@@ -55,7 +57,7 @@ export default function AddRevenue() {
       [timesheetId]: value,
     }));
   };
-  console.log(rate, "rate");
+
   const GetTimeSheet = async (projectID, selectedDate) => {
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const year = selectedDate.getFullYear();
@@ -110,10 +112,6 @@ export default function AddRevenue() {
     if (AddtimeSheetResponse.isSuccess) {
       setisOpen(true);
       GetTimeSheet();
-      // toast.success("Successfully saved.", {
-      //   position: "top-right",
-      //   autoClose: 4000,
-      // });
     } else {
       toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",
@@ -126,7 +124,6 @@ export default function AddRevenue() {
       timesheetId: employee.id,
       hourlyRate: rate[employee.id] || "",
     }));
-    console.log(employeeData, "employeeData");
     var AddtimeSheetResponse = await USFinanceTeamService.AddRevenue(
       employeeData,
       true

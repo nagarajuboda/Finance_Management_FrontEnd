@@ -10,6 +10,7 @@ import { Button, Box, Typography } from "@mui/material";
 import checkimage1 from "../../assets/Images/cancelbutton.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
+import { apiurl } from "../../Service/createAxiosInstance";
 const EditEmployeePopup = () => {
   const [employees, setEmployees] = useState([]);
   const [isopen, setopen] = useState(false);
@@ -140,10 +141,7 @@ const EditEmployeePopup = () => {
       emp: employeeData1,
       skillsset: namesList,
     };
-    var response = await axios.put(
-      "https://localhost:44305/api/Employees/UpdateEmployee",
-      payload
-    );
+    var response = await apiurl.put("/Employees/UpdateEmployee", payload);
     var result = response.data;
     if (result.isSuccess) {
       navigate("/dashboard/Employees");

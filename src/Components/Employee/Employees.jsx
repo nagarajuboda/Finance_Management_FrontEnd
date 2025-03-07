@@ -14,10 +14,11 @@ import checkimage from "../../assets/Images/check.png";
 import EmployeeDetails from "./EmployeeDetails";
 import { useTheme } from "@emotion/react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { apiurl } from "../../Service/createAxiosInstance";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function Employees() {
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
   const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([]);
@@ -26,7 +27,6 @@ export default function Employees() {
   const [isDivVisible, setIsDivVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
-  console.log(userDetails, "==========>");
   useEffect(() => {
     FetchData();
   }, [selectedEmployeeIds, isDivVisible]);
@@ -35,23 +35,18 @@ export default function Employees() {
     sessionStorage.setItem("EmployeeID", employeeid);
     navigate("/dashboard/EditEmployee");
   };
-
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
+
   const FetchData = async () => {
-    const response = await axios.get(
-      "https://localhost:44305/api/Employees/GetAllEmployees"
-    );
-    var result = response.data.item;
+    const response = await EmployeeService.GetEmployees();
+    var result = response.item;
     setEmployees(result);
   };
-
   const handleOpenPopup = async (e, index, id) => {
-    var response = await axios.put(
-      `https://localhost:44305/api/Employees/DeleteEmployee?id=${id}`
-    );
-    var result = response.data;
+    var response = await EmployeeService.DeleteEmployees(id);
+    var result = response;
     if (result.isSuccess === true) {
       FetchData();
       setOpen(true);
@@ -80,12 +75,10 @@ export default function Employees() {
     navigate("/dashboard/AddEmployee");
   };
   const DeleteSelectedRecords = async () => {
-    const response = await axios.put(
-      "https://localhost:44305/api/Employees/DeleteSelectedEmployees",
+    const response = await EmployeeService.DeleteSelectedEmployees(
       selectedEmployeeIds
     );
-    const result = response.data;
-
+    const result = response;
     if (result.isSuccess) {
       setOpen(true);
       FetchData();
@@ -158,15 +151,16 @@ export default function Employees() {
   };
   const DownloadExcel = async (listtype, filetype) => {
     let response;
+
     try {
       if (isDivVisible == false) {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
+          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
           { responseType: "blob" }
         );
       } else {
         response = await axios.get(
-          `https://localhost:44305/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
+          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
           { responseType: "blob" }
         );
       }

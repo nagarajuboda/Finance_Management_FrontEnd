@@ -272,7 +272,6 @@ export default function Roles() {
       `https://localhost:44305/api/Roles/${roleId}`
     );
     var result = response.data;
-    console.log(response, "response");
     if (result.message != null) {
       fetchRoles();
       setDeleterolepopup(true);

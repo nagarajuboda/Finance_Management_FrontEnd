@@ -32,6 +32,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 import "react-circular-progressbar/dist/styles.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function AdminDashboard() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -65,23 +66,19 @@ export default function AdminDashboard() {
     FetchData();
   }, []);
   const FetchData = async () => {
-    var response = await axios.get(
-      "https://localhost:44305/api/Employees/TotalEmployees"
+    var response = await EmployeeService.TotalEmployees();
+    var InActiveProjectProgressResponse =
+      await EmployeeService.ProjectProgressPercentage();
+    SetNotStatedProgress(
+      InActiveProjectProgressResponse.item.percentage.notStarted
     );
-    var InActiveProjectProgressResponse = await axios.get(
-      "https://localhost:44305/api/Projects/ProjectProgressPercentage"
-    );
-    var ActiveProjectResult = InActiveProjectProgressResponse.data;
-    SetNotStatedProgress(ActiveProjectResult.item.percentage.notStarted);
-    setInprogress(ActiveProjectResult.item.percentage.inProgress);
-    setCompleted(ActiveProjectResult.item.percentage.completed);
-    var resuult = response.data;
-
-    if (resuult.isSuccess) {
-      setTotalEmployees(resuult.item.item1);
-      setTotalBenchEmployees(resuult.item.item2);
-      setBillbleEmployees(resuult.item.item3);
-      setTotalProjects(resuult.item.item4);
+    setInprogress(InActiveProjectProgressResponse.item.percentage.inProgress);
+    setCompleted(InActiveProjectProgressResponse.item.percentage.completed);
+    if (response.isSuccess) {
+      setTotalEmployees(response.item.item1);
+      setTotalBenchEmployees(response.item.item2);
+      setBillbleEmployees(response.item.item3);
+      setTotalProjects(response.item.item4);
     }
   };
 

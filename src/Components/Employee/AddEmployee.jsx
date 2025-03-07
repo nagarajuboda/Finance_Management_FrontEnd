@@ -28,6 +28,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
 import { useNavigate } from "react-router-dom";
+import EmployeeService from "../../Service/EmployeeService/EmployeeService";
 export default function AddEmployee() {
   const [isopen, setIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
@@ -58,45 +59,6 @@ export default function AddEmployee() {
     setNamesList((prevLanguages) =>
       prevLanguages.filter((item) => item.trim() !== skill)
     );
-  };
-  const textFieldStyles = {
-    "& .MuiOutlinedInput-root": {
-      fontSize: "1rem",
-      "& fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-      "&:hover fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-      "&.Mui-focused fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-    },
-    "& .MuiInputLabel-root": {
-      color: "#000000",
-      fontSize: "0.85rem",
-      fontWeight: 600,
-      transform: "translate(15px, 10px) scale(1)",
-      "&.Mui-focused": {
-        color: "#000000",
-      },
-    },
-    "& .MuiOutlinedInput-input": {
-      height: "1.4375em",
-      padding: "8px 12px",
-      fontSize: "12px",
-    },
-    "& .MuiInputLabel-shrink": {
-      fontSize: "0.85rem",
-      transform: "translate(14px, -4px) scale(0.75)",
-    },
-    "& input::placeholder": {
-      fontSize: "0.85rem",
-      color: "#AEAEAE",
-    },
-    "& .MuiSvgIcon-root": {
-      color: "#AEAEAE",
-    },
   };
 
   const [values, setValues] = useState({
@@ -162,7 +124,6 @@ export default function AddEmployee() {
 
   const Handleonchnage = (e) => {
     const { name, value } = e.target;
-    console.log(value, "==========>");
     setValues({
       ...values,
       [name]: value,
@@ -173,45 +134,7 @@ export default function AddEmployee() {
       [name]: addEmployeeFormValidation(name, value),
     });
   };
-  const inputStyles = {
-    "& .MuiOutlinedInput-root": {
-      fontSize: "12px",
-      "& fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-      "&:hover fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-      "&.Mui-focused fieldset": {
-        border: "1px solid #DCDCDC",
-      },
-    },
-    "& .MuiInputLabel-root": {
-      color: "#000000",
-      fontSize: "0.85rem",
-      fontWeight: 600,
-      transform: "translate(15px, 10px) scale(1)",
-      "&.Mui-focused": {
-        color: "black",
-      },
-    },
-    "& .MuiOutlinedInput-input": {
-      height: "22px",
-      padding: "8px 12px",
-      fontSize: "12px",
-    },
-    "& .MuiInputLabel-shrink": {
-      fontSize: "1rem",
-      transform: "translate(14px, -6px) scale(0.75)",
-    },
-    "& input::placeholder": {
-      fontSize: "12px",
-      color: "#AEAEAE",
-    },
-    "& .MuiSvgIcon-root": {
-      color: "#AEAEAE",
-    },
-  };
+
   const closeSuccessPopup = () => {
     setIsOpen(false);
     navigate("/dashboard/Employees");
@@ -259,18 +182,15 @@ export default function AddEmployee() {
         },
         Skillsetlists: namesList,
       };
-      console.log(obj, "obj");
+
       setLoading(true);
-      var response = await axios.post(
-        "https://localhost:44305/api/Employees/Add",
-        obj
-      );
-      if (response.data.isSuccess == true) {
+      var response = await EmployeeService.AddEmployee(obj);
+      if (response.isSuccess == true) {
         setLoading(false);
         setIsOpen(true);
       } else {
         setLoading(false);
-        toast.error(response.data.error.message, {
+        toast.error(response.error.message, {
           position: "top-right",
           autoClose: "4000",
         });
