@@ -55,9 +55,7 @@ export default function AdminRoutes() {
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employeeslist" element={<Employeess />} />
-
         <Route path="/FinanceDashboard" element={<UsFinanceTeamDashboard />} />
-
         <Route
           path="/ProjectManagerProjects"
           element={<ProjectManagerProjects />}
@@ -68,7 +66,6 @@ export default function AdminRoutes() {
         <Route path="/EditEmployee" element={<EditEmployeePopup />} />
         <Route path="/UpdateProject" element={<UpdateProject />} />
         <Route path="/TimeSheet" element={<TimeSheetModule />} />
-
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
@@ -92,7 +89,6 @@ export default function AdminRoutes() {
           path="/USFinance/UsFinaceALlProjects"
           element={<USFiNanceAllProjects />}
         />
-
         <Route path="/AllEmployees" element={<AllEmployees />} />
       </Routes>
     </Sidebar>

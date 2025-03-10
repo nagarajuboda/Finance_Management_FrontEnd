@@ -19,6 +19,7 @@ import Login2 from "../../../src/assets/Images/Login2.png";
 import archetslogo from "../../../src/assets/Images/primary-logo.png";
 import LoginImage from "../../../src/assets/Images/loginbg1.png";
 import rememeberme from "../../assets/Images/checkbox.svg";
+import { useEffect } from "react";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,7 +30,7 @@ const Home = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [disibleloginbuttons, setDisibleloginbuttons] = useState(false);
-
+  const [tempToken, setTempToken] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [emailvalues, setEmialValuess] = useState({
@@ -49,6 +50,9 @@ const Home = () => {
   const navigatetoforgotpasswordpage = async () => {
     navigate("/user/forgotpassword");
   };
+  useEffect(() => {
+    console.log(tempToken, "temptoken");
+  }, [tempToken]);
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
     const newErrors = {
@@ -68,6 +72,7 @@ const Home = () => {
         "https://localhost:44305/api/Login/login",
         obj
       );
+
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
       setLoggedIn(true);
@@ -75,6 +80,7 @@ const Home = () => {
         setLoggedIn(true);
         setSessionData(result.item.token);
         localStorage.setItem("token", result.item.token);
+        setTempToken(result.item.token);
         if (result.item.employee.isFirstTimeLogin === true) {
           localStorage.setItem("Email", valuess.email);
           navigate("/user/CreateNewPassword");

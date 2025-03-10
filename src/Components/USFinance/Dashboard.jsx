@@ -17,7 +17,6 @@ import { addMonths } from "date-fns";
 export default function UsFinanceTeamDashboard() {
   const chartref = useRef(null);
   const barchartref = useRef(null);
-  const chartref1 = useRef(null);
   const chartref2 = useRef(null);
   const chartintance = useRef(null);
   const chartintance1 = useRef(null);
@@ -177,29 +176,7 @@ export default function UsFinanceTeamDashboard() {
       }
     };
   }, []);
-  useEffect(() => {
-    if (chartintance1.current) {
-      chartintance1.current.destroy();
-    }
-    const myChartRef = chartref1.current.getContext("2d");
-    chartintance1.current = new Chart(myChartRef, {
-      type: "pie",
-      data: {
-        datasets: [
-          {
-            data: [300, 50],
-            backgroundColor: ["rgb(54, 162, 235)", "rgb(244, 85, 85)"],
-            hoverOffset: 4,
-          },
-        ],
-      },
-    });
-    return () => {
-      if (chartintance1.current) {
-        chartintance1.current.destroy();
-      }
-    };
-  }, []);
+
   useEffect(() => {
     if (chartintance2.current) {
       chartintance2.current.destroy();
@@ -404,14 +381,14 @@ export default function UsFinanceTeamDashboard() {
         <span className="project-uodate-content">Project Update</span>
       </div>
       <div
-        className=" m-0"
+        className=" m-0 row"
         style={{
           display: "flex",
           justifyContent: "space-between",
           paddingTop: "10px",
         }}
       >
-        <div className="Project_progress1 " style={{ width: "22%" }}>
+        <div className="Project_progress1 col-4 ">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <canvas
@@ -467,10 +444,7 @@ export default function UsFinanceTeamDashboard() {
             </div>
           </div>
         </div>
-        <div
-          className="Project_progress1 "
-          style={{ width: "22%", marginLeft: "50px" }}
-        >
+        <div className="Project_progress1 col-4 " style={{ width: "400px" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <canvas
@@ -526,69 +500,7 @@ export default function UsFinanceTeamDashboard() {
             </div>
           </div>
         </div>
-        <div
-          className="Project_progress1 "
-          style={{ width: "22%", marginLeft: "50px" }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div>
-              <canvas
-                ref={chartref1}
-                style={{ width: "100px", height: "50px" }}
-              />
-            </div>
-            <div>
-              <div class="dropdown mt-3 ms-4">
-                <button
-                  class=" dropdown-toggle this_month_content"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  style={{ color: "#989898", fontSize: "14px" }}
-                >
-                  This Month
-                </button>
-                <ul
-                  class="dropdown-menu custom-dropdown-widt w-50"
-                  aria-labelledby="dropdownMenuButton1"
-                  style={{ width: "100px" }}
-                >
-                  <li>
-                    <a class="dropdown-item dropdownitems" href="#">
-                      Yearly
-                    </a>
-                  </li>
-                  <li className="mt-1 ">
-                    <a class="dropdown-item dropdownitems" href="#">
-                      Monthly
-                    </a>
-                  </li>
-                  <li className="mt-1">
-                    <a class="dropdown-item dropdownitems" href="#">
-                      Weekly
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="mt-5 me-3">
-                <span className="total_projects_content  ">
-                  <span
-                    style={{ fontSize: "18px", color: "black" }}
-                    className="me-2"
-                  >
-                    02
-                  </span>
-                  Pending Projects
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="Project_progress1"
-          style={{ width: "22%", marginLeft: "50px" }}
-        >
+        <div className="Project_progress1 col-4">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <div
