@@ -80,7 +80,6 @@ const Home = () => {
       if (result.isSuccess === true) {
         setLoggedIn(true);
         setSessionData(result.item.token);
-        localStorage.setItem("token", result.item.token);
         setTempToken(result.item.token);
         if (result.item.employee.isFirstTimeLogin === true) {
           localStorage.setItem("Email", valuess.email);
