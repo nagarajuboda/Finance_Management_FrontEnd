@@ -674,7 +674,7 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
-          <div
+          {/* <div
             className="Project_progress col-4"
             style={{ width: "32%", marginLeft: "16px" }}
           >
@@ -831,7 +831,7 @@ export default function AdminDashboard() {
               </p>
               <Doughnut data={data} options={options} />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="Profit_And_Loss_Summary">

@@ -49,6 +49,7 @@ export default function Header({ isOpen }) {
     }
   };
   useEffect(() => {
+    console.log(userDetails, "userDetails Token");
     const subscription = getSessionData().subscribe((data) => {
       if (data) {
         setToken(data.token);
