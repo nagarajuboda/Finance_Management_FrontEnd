@@ -37,7 +37,6 @@ import IndianFinanceTeamDashboard from "../Components/IndianFinance/Dashboard";
 import ListOfEmployees from "../Components/IndianFinance/ListOfEmployees";
 import ProjectsList from "../Components/IndianFinance/Projects";
 import AddExpense from "../Components/IndianFinance/AddExpense";
-import ProtectedRoute from "./ProtectedRoute";
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -56,9 +55,7 @@ export default function AdminRoutes() {
         <Route path="/Roles" element={<Roles />} />
         <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
         <Route path="/Employeeslist" element={<Employeess />} />
-
         <Route path="/FinanceDashboard" element={<UsFinanceTeamDashboard />} />
-
         <Route
           path="/ProjectManagerProjects"
           element={<ProjectManagerProjects />}
@@ -69,16 +66,12 @@ export default function AdminRoutes() {
         <Route path="/EditEmployee" element={<EditEmployeePopup />} />
         <Route path="/UpdateProject" element={<UpdateProject />} />
         <Route path="/TimeSheet" element={<TimeSheetModule />} />
-
         <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
         <Route path="/Dashboard/Profile" element={<Profile />} />
         <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
         <Route path="/AddExpense" element={<AddExpense />} />
         <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
-        <Route
-          path="/Employees"
-          element={<ProtectedRoute element={Employees} />}
-        />
+        <Route path="/Employees" element={<Employees />} />
         <Route path="/AddEmployee" element={<AddEmployee />} />
         <Route path="/Notifications" element={<Notifications />} />
         <Route path="/EmployeeList" element={<ListOfEmployees />} />
@@ -96,7 +89,6 @@ export default function AdminRoutes() {
           path="/USFinance/UsFinaceALlProjects"
           element={<USFiNanceAllProjects />}
         />
-
         <Route path="/AllEmployees" element={<AllEmployees />} />
       </Routes>
     </Sidebar>

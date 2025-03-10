@@ -42,21 +42,20 @@ export default function Header({ isOpen }) {
   const [notifications, setNotifications] = useState([]);
   const [DeclinedPopup, setDeclinedPopup] = useState(false);
   const [allNotifications, setAllNotifications] = useState([]);
-  const [token, setToken] = useState(null);
+  // const [token, setToken] = useState(null);
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setIsOpen1(false);
     }
   };
   useEffect(() => {
-    console.log(userDetails, "userDetails Token");
-    const subscription = getSessionData().subscribe((data) => {
-      if (data) {
-        setToken(data.token);
-      }
-    });
-
-    return () => subscription.unsubscribe(); // Cleanup subscription on unmount
+    // console.log(userDetails, "userDetails Token");
+    // const subscription = getSessionData().subscribe((data) => {
+    //   if (data) {
+    //     setToken(data.token);
+    //   }
+    // });
+    // return () => subscription.unsubscribe(); // Cleanup subscription on unmount
   }, [notifications]);
 
   useEffect(() => {
