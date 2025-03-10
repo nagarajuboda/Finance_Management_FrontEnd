@@ -7,6 +7,7 @@ const createAxiosInstance = (baseURL) => {
   const api = axios.create({
     baseURL: baseURL,
   });
+
   const token = localStorage.getItem("token");
 
   api.interceptors.request.use(
