@@ -3,83 +3,60 @@ import { apiurl } from "../createAxiosInstance";
 
 const AdminDashboardServices = {
   async fcnAddClientAsync(obj) {
-    const response = await axios.post(
-      "https://localhost:44305/api/Clients/Add",
-      obj
-    );
+    const response = await apiurl.post("/Clients/Add", obj);
 
     return response.data;
   },
   async FcnGetAllClients() {
-    var response = await axios.get(
-      "https://localhost:44305/api/Clients/GetAllClients"
-    );
+    var response = await apiurl.get("/Clients/GetAllClients");
     return response.data;
   },
   async fcnAddProject(obj) {
-    var response = await axios.post(
-      "https://localhost:44305/api/Projects/NewProject",
-      obj
-    );
+    var response = await apiurl.post("/Projects/NewProject", obj);
     return response.data;
   },
   async fcnUpdateProject(project) {
-    var response = await axios.post(
-      "https://localhost:44305/api/Projects/UpdateProject",
-      project
-    );
+    var response = await apiurl.post("/Projects/UpdateProject", project);
     return response.data;
   },
   async fcngetEmployees() {
-    var response = await axios.get(
-      "https://localhost:44305/api/Projects/GetEmployees"
-    );
+    var response = await apiurl.get("/Projects/GetEmployees");
     return response.data;
   },
   async fcngetEmployee(employeeID) {
-    var response = await axios.get(
-      `https://localhost:44305/api/Employees/GetEmployee?id=${employeeID}`
-    );
+    var response = await apiurl.get(`/Employees/GetEmployee?id=${employeeID}`);
     return response.data;
   },
   async fcngetEmployeeDetails(employeeID) {
     var response = await apiurl.get(
-      `/Employees/EmployeeDetails?id=${employeeID}`
+      `/Employees/GetEmployeeDetailsById?id=${employeeID}`
     );
     return response.data;
   },
   async fcnAssignEmployee(obj) {
-    const response = await axios.post(
-      "https://localhost:44305/api/Projects/AssignEmployee",
-      obj
-    );
+    const response = await apiurl.post("/Projects/AssignEmployee", obj);
 
     return response.data;
   },
   async DeleteEmployeefcn(id, projectid) {
-    const response = await axios.delete(
-      `https://localhost:44305/api/Projects/DeleteProjectEmployee?id=${id}&projectID=${projectid}`
+    const response = await apiurl.delete(
+      `/Projects/DeleteProjectEmployee?id=${id}&projectID=${projectid}`
     );
 
     return response.data;
   },
   async GetAllCurrency() {
-    const response = await axios.get(
-      "https://localhost:44305/api/Projects/GetCurrency"
-    );
+    const response = await apiurl.get("/Projects/GetCurrency");
 
     return response.data;
   },
   async GetAllDepartments() {
-    const response = await axios.get(
-      "https://localhost:44305/api/Projects/Departments"
-    );
+    const response = await apiurl.get("/Projects/Departments");
 
     return response.data;
   },
   async GetDepartmentTeams(deptId) {
-    const baseUrl = "https://localhost:44305/api/Projects";
-    const response = await axios.get(`${baseUrl}/DepartmentTeams`, {
+    const response = await apiurl.get(`/Projects/DepartmentTeams`, {
       params: {
         deptid: deptId,
       },
@@ -88,10 +65,12 @@ const AdminDashboardServices = {
     return response.data;
   },
   async GetProjectManager() {
-    const response = await axios.get(
-      `https://localhost:44305/api/Projects/GetProjectManagers`
-    );
+    const response = await apiurl.get(`/Projects/GetProjectManagers`);
     return response.data;
+  },
+  async FcnGetRole(roleId) {
+    const response = await apiurl.get(`/Roles/getRole?id=${roleId} `);
+    return response;
   },
 };
 

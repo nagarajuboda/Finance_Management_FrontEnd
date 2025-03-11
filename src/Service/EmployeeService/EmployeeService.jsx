@@ -15,7 +15,7 @@ const EmployeeService = {
   },
   async GetEmployeefcn(empId) {
     const response = await apiurl.get(
-      `Employees/GetEmployeeDetails?id=${empId}`
+      `Employees/GetEmployeeProjectDetailsById?id=${empId}`
     );
 
     return response.data;
@@ -54,7 +54,7 @@ const EmployeeService = {
   },
   async EmployeeDetailss(EmployeeID) {
     const response = await apiurl.get(
-      `/Employees/EmployeeDetails?id=${EmployeeID}`
+      `/Employees/GetEmployeeDetailsById?id=${EmployeeID}`
     );
 
     return response.data;
@@ -65,7 +65,7 @@ const EmployeeService = {
     return response.data;
   },
   async TotalEmployees() {
-    const response = await apiurl.get("/Employees/TotalEmployees");
+    const response = await apiurl.get("/Employees/GetEmployeesAndProjectCount");
     return response.data;
   },
   async ProjectProgressPercentage() {

@@ -270,7 +270,6 @@ export default function AdminDashboard() {
       },
     ],
   };
-
   const options11 = {
     plugins: {
       tooltip: {

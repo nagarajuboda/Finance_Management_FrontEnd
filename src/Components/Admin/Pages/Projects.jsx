@@ -12,6 +12,7 @@ import { useRef } from "react";
 import elipisimage from "../../../assets/Images/Ellipse.png";
 import checkimage from "../../../assets/Images/check.png";
 import { CoPresentOutlined } from "@mui/icons-material";
+import ProjectService from "../../../Service/AdminService/ProjectService";
 
 export default function Projectss() {
   const navigate = useNavigate();
@@ -29,9 +30,7 @@ export default function Projectss() {
     FetchData();
   }, [selectedProjectIds]);
   const FetchData = async () => {
-    const response = await axios.get(
-      "https://localhost:44305/api/Projects/GetAllProjects"
-    );
+    const response = await ProjectService.FcnGetAllProjects();
     const result = response.data;
     setProjects(result.item);
   };
@@ -40,9 +39,7 @@ export default function Projectss() {
     navigate("/Dashboard/AddProject");
   };
   const DeleteProject = async (e, index, projectid) => {
-    var response = await axios.put(
-      `https://localhost:44305/api/Projects/DeleteProject?id=${projectid}`
-    );
+    var response = await ProjectService.FcnDeleteProject(projectid);
     var result = response.data;
 
     if (result.isSuccess) {
@@ -110,8 +107,7 @@ export default function Projectss() {
   };
 
   const DeleteSelectedRecords = async () => {
-    const response = await axios.put(
-      "https://localhost:44305/api/Projects/DeleteSelectedProjects",
+    const response = await ProjectService.FcnDeleteSelectedProject(
       selectedProjectIds
     );
     const result = response.data;

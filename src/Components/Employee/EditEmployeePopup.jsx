@@ -11,6 +11,7 @@ import checkimage1 from "../../assets/Images/cancelbutton.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { apiurl } from "../../Service/createAxiosInstance";
+import RolesService from "../../Service/AdminService/RolesService";
 const EditEmployeePopup = () => {
   const [employees, setEmployees] = useState([]);
   const [isopen, setopen] = useState(false);
@@ -73,9 +74,7 @@ const EditEmployeePopup = () => {
   };
   const FeatchData = async () => {
     var response = await AdminDashboardServices.fcngetEmployees();
-    const Rolesresponse = await axios.get(
-      "https://localhost:44305/api/Roles/AllRoles"
-    );
+    const Rolesresponse = await RolesService.FcnGetRoles();
 
     var rolesResult = Rolesresponse.data;
     setRoleList(rolesResult);

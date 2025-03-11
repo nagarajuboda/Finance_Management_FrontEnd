@@ -28,6 +28,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ImportProjectEmployees from "../Employee/ImportProjectEmployees";
+import ProjectService from "../../Service/AdminService/ProjectService";
 export function ViewProject() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isImportPopupOpen, setIsImportPopupOpen] = useState(false);
@@ -95,9 +96,7 @@ export function ViewProject() {
   };
 
   async function FetchData() {
-    const Projects = await axios.get(
-      "https://localhost:44305/api/Projects/GetAllProjects"
-    );
+    const Projects = await ProjectService.FcnGetAllProjects();
     const Projectsresult = Projects.data;
     setProjects(Projectsresult.item);
     var projectManagerResponse =
@@ -108,11 +107,8 @@ export function ViewProject() {
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
-    var response = await axios.get(
-      `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
-    );
+    var response = await ProjectService.FcnProjectInfo(ProjectID);
     var result = response.data;
-
     if (result.isSuccess === true) {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
@@ -228,7 +224,7 @@ export function ViewProject() {
         id: ProjectValues.id,
       },
     ];
-    var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
+    var response = await ProjectService.fcnAssignEmployee(requestBody);
 
     if (response.isSuccess) {
       setassignedNewEmployeePopup(true);
@@ -283,7 +279,7 @@ export function ViewProject() {
     let response;
     try {
       response = await axios.get(
-        `https://localhost:44305/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
+        `https://localhost:44305/Api/Export/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
         { responseType: "blob" }
       );
 

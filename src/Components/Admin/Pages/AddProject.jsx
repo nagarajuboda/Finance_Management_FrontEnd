@@ -37,6 +37,7 @@ import {
 } from "@mui/material";
 import ellips from "../../../assets/Images/Ellipse.png";
 import checkimage from "../../../assets/Images/check.png";
+import ProjectService from "../../../Service/AdminService/ProjectService";
 
 export default function AddProject() {
   const navigate = useNavigate();
@@ -121,11 +122,10 @@ export default function AddProject() {
           (dept) => dept.deptName === value
         );
 
-        const response = await axios.get(
-          `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
+        const response = await ProjectService.FcnAddSelectedDept(
+          selectedDepartment.id
         );
-
-        setFilteredTeams(response.data.item);
+        setFilteredTeams(response.item);
       }
     }
 

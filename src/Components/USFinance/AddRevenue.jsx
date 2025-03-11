@@ -178,7 +178,9 @@ export default function AddRevenue() {
               onChange={handleDateChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
-              maxDate={new Date()}
+              maxDate={
+                new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+              }
               className="timesheet-datepicker me-2"
               style={{ fontSize: "14px" }}
               customInput={
