@@ -75,7 +75,7 @@ const Home = () => {
 
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
-
+      localStorage.setItem("token", result.item.token);
       setLoggedIn(true);
       if (result.isSuccess === true) {
         setLoggedIn(true);
@@ -85,7 +85,7 @@ const Home = () => {
           localStorage.setItem("Email", valuess.email);
           navigate("/user/CreateNewPassword");
         } else {
-          localStorage.setItem("token", result.item.token);
+          sessionStorage.setItem("token", result.item.token);
           if (result.item.employee.role.name === "US-finance") {
             navigate("/Dashboard/FinanceDashboard");
           } else if (result.item.employee.role.name === "Admin") {

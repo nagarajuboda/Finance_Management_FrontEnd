@@ -156,6 +156,7 @@ export default function Header({ isOpen }) {
   };
 
   const Logoutfunction = () => {
+    sessionStorage.removeItem("token");
     navigate("/user/Login");
   };
   const [isPopupOpen, setIsPopupOpen] = useState(false);

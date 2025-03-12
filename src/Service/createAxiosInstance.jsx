@@ -7,9 +7,7 @@ const createAxiosInstance = (baseURL) => {
   const api = axios.create({
     baseURL: baseURL,
   });
-
-  const token = localStorage.getItem("token");
-
+  const token = sessionStorage.getItem("token");
   api.interceptors.request.use(
     (config) => {
       if (token) {

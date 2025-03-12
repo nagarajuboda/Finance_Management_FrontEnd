@@ -10,6 +10,7 @@ const AdminDashboardServices = {
   async FcnGetAllClients() {
     var response = await apiurl.get("/Clients/GetAllClients");
     return response.data;
+    s;
   },
   async fcnAddProject(obj) {
     var response = await apiurl.post("/Projects/NewProject", obj);
@@ -73,5 +74,4 @@ const AdminDashboardServices = {
     return response;
   },
 };
-
 export default AdminDashboardServices;
