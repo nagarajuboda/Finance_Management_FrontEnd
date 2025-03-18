@@ -94,7 +94,6 @@ export function ViewProject() {
       return Math.min(Math.max(progressPercentage, 0), 100);
     }
   };
-
   async function FetchData() {
     const Projects = await ProjectService.FcnGetAllProjects();
     const Projectsresult = Projects.data;
@@ -302,6 +301,7 @@ export function ViewProject() {
       console.error("Error downloading file:", error);
     }
   };
+  console.log(progressPercentage, "==============>");
 
   return (
     <div className="viewProject-Main-div">

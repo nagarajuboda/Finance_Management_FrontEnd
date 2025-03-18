@@ -50,9 +50,7 @@ const Home = () => {
   const navigatetoforgotpasswordpage = async () => {
     navigate("/user/forgotpassword");
   };
-  useEffect(() => {
-    console.log(tempToken, "temptoken");
-  }, [tempToken]);
+  useEffect(() => {}, [tempToken]);
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
     const newErrors = {
@@ -75,9 +73,10 @@ const Home = () => {
 
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
-      localStorage.setItem("token", result.item.token);
+
       setLoggedIn(true);
       if (result.isSuccess === true) {
+        localStorage.setItem("sessionData", JSON.stringify(result.item));
         setLoggedIn(true);
         setSessionData(result.item.token);
         setTempToken(result.item.token);
@@ -85,7 +84,7 @@ const Home = () => {
           localStorage.setItem("Email", valuess.email);
           navigate("/user/CreateNewPassword");
         } else {
-          sessionStorage.setItem("token", result.item.token);
+          localStorage.setItem("sessionData", JSON.stringify(result.item));
           if (result.item.employee.role.name === "US-finance") {
             navigate("/Dashboard/FinanceDashboard");
           } else if (result.item.employee.role.name === "Admin") {

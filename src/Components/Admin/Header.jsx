@@ -156,9 +156,10 @@ export default function Header({ isOpen }) {
   };
 
   const Logoutfunction = () => {
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("sessionData");
     navigate("/user/Login");
   };
+
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);

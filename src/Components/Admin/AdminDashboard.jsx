@@ -53,8 +53,10 @@ export default function AdminDashboard() {
   const totalBench = TotalbenchEmployees;
   const internal = 0;
   const noProjects = TotalProject;
-  const internalPercentage = (internal / totalBench) * 100;
-  const noProjectsPercentage = (noProjects / totalBench) * 100;
+  // const internalPercentage = (internal / totalBench) * 100;
+  // const noProjectsPercentage = (noProjects / totalBench) * 100;
+  const internalPercentage = totalBench ? (internal / totalBench) * 100 : 0;
+  const noProjectsPercentage = totalBench ? (noProjects / totalBench) * 100 : 0;
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -63,9 +65,11 @@ export default function AdminDashboard() {
   const [completed, setCompleted] = useState(0);
   const navigate = useNavigate();
   useEffect(() => {
+    const userDetails = JSON.parse(localStorage.getItem("sessionData"));
     FetchData();
   }, []);
   const FetchData = async () => {
+    debugger;
     var response = await EmployeeService.TotalEmployees();
     var InActiveProjectProgressResponse =
       await EmployeeService.ProjectProgressPercentage();
@@ -421,7 +425,7 @@ export default function AdminDashboard() {
                   strokeDasharray={`${internalPercentage} ${
                     100 - internalPercentage
                   }`}
-                  strokeDashoffset="0"
+                  strokeDashoffset={0}
                 />
                 <circle
                   cx="18"
@@ -575,7 +579,7 @@ export default function AdminDashboard() {
             >
               <span className="Active_project_conetnt">Active Projects</span>
               <i
-                class="bi bi-three-dots"
+                className="bi bi-three-dots"
                 style={{
                   color: "#989898",
                   fontSize: "28px",
@@ -853,7 +857,7 @@ export default function AdminDashboard() {
                   loreum lpsum
                 </span>
                 <i
-                  class="bi bi-three-dots"
+                  className="bi bi-three-dots"
                   style={{
                     color: "#989898",
                     fontSize: "28px",
@@ -911,7 +915,7 @@ export default function AdminDashboard() {
                   Latest update
                 </span>
                 <i
-                  class="bi bi-three-dots"
+                  className="bi bi-three-dots"
                   style={{
                     color: "#989898",
                     fontSize: "28px",
@@ -1126,7 +1130,7 @@ export default function AdminDashboard() {
                 <span className="ViewAll" style={{ cursor: "pointer" }}>
                   View All
                   <i
-                    class="bi bi-arrow-right ms-1"
+                    className="bi bi-arrow-right ms-1"
                     height="12px"
                     width="12px"
                   ></i>
