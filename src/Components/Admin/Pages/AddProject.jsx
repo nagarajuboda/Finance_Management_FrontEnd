@@ -327,7 +327,7 @@ export default function AddProject() {
       </div>
       <div className="carddiv">
         <form onSubmit={formSubmit}>
-          <div className="row m-0" style={{ paddingTop: "25px" }}>
+          <div className="row m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3">
               <TextField
                 label="Project ID"
@@ -1002,6 +1002,7 @@ export default function AddProject() {
             className="row m-0"
             style={{
               paddingTop: "50px",
+              paddingBottom: "25px",
             }}
           >
             <div className="col-10"></div>

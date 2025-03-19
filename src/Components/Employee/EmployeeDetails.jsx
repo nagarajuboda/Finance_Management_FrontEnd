@@ -20,7 +20,6 @@ export default function EmployeeDetails() {
     fetchData();
   }, [employeeID]);
   const fetchData = async () => {
-    debugger;
     const response = await EmployeeService.EmployeeDetailss(employeeID);
     var employeeResponse = response;
     setEmployee(employeeResponse.item.employee);

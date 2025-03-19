@@ -36,13 +36,6 @@ const createAxiosInstance = (baseURL) => {
         toast.error("Unauthorized! Please log in again.");
         localStorage.removeItem("sessionData");
         window.location.href = "/login";
-      } else {
-        const errorMessage =
-          data?.errors && Array.isArray(data.errors)
-            ? data.errors.join(", ")
-            : data?.message || "An unexpected error occurred";
-
-        toast.error(errorMessage);
       }
 
       return Promise.reject(error);

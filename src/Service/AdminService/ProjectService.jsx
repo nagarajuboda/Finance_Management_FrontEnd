@@ -31,5 +31,12 @@ const ProjectService = {
     const response = await apiurl.get(`/Projects/DepartmentTeams?deptid=${id}`);
     return response.data;
   },
+  async FcnExportProjectEmployees(listtype, filetype, ProjectID) {
+    const response = await apiurl.get(
+      `/Export/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${ProjectID}`,
+      { responseType: "blob" }
+    );
+    return response;
+  },
 };
 export default ProjectService;

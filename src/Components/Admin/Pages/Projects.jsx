@@ -141,7 +141,7 @@ export default function Projectss() {
         <div
           className="row"
           style={{
-            paddingTop: "12px",
+            paddingTop: "20px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -411,7 +411,7 @@ export default function Projectss() {
             </div>
           </div>
         )}
-        <div className="pagination">
+        <div className="pagination" style={{ paddingBottom: "35px" }}>
           <button
             onClick={handlePreviousPage}
             disabled={currentPage === 1}

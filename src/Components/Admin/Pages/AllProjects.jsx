@@ -14,6 +14,7 @@ import {
   Paper,
 } from "@mui/material";
 import "../../../assets/Styles/AllProduct.css";
+import { apiurl } from "../../../Service/createAxiosInstance";
 
 export default function AllProjects() {
   const navigate = useNavigate();
@@ -34,9 +35,7 @@ export default function AllProjects() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          "https://localhost:44305/api/Projects/GetAllProjects"
-        );
+        const response = await apiurl.get("/Projects/GetAllProjects");
         const result = response.data;
 
         setAllProjects(result.item);

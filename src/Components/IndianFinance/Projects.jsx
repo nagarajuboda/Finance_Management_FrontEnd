@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 
 import { CoPresentOutlined } from "@mui/icons-material";
+import ProjectService from "../../Service/AdminService/ProjectService";
 
 export default function Projects() {
   const navigate = useNavigate();
@@ -21,9 +22,7 @@ export default function Projects() {
     FetchData();
   }, [selectedProjectIds]);
   const FetchData = async () => {
-    const response = await axios.get(
-      "https://localhost:44305/api/Projects/GetAllProjects"
-    );
+    const response = await ProjectService.FcnGetAllProjects();
     const result = response.data;
     setProjects(result.item);
   };

@@ -297,7 +297,7 @@ export default function Roles() {
         <div
           className="row"
           style={{
-            paddingTop: "5px",
+            paddingTop: "15px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -356,7 +356,11 @@ export default function Roles() {
         </div>
 
         <div style={{ padding: "10px" }}>
-          <table id="example" className="roleTable" style={{ width: "100%" }}>
+          <table
+            id="example"
+            className="roleTable"
+            style={{ width: "100%", paddingBottom: "40px" }}
+          >
             <thead>
               <tr
                 className="roleheader"

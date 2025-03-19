@@ -154,14 +154,16 @@ export default function Employees() {
 
     try {
       if (isDivVisible == false) {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
-          { responseType: "blob" }
+        response = await EmployeeService.fcnExportEmployees(
+          listtype,
+          filetype,
+          "Active"
         );
       } else {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
-          { responseType: "blob" }
+        response = await EmployeeService.fcnExportEmployees(
+          listtype,
+          filetype,
+          "Inactive"
         );
       }
 
@@ -199,7 +201,15 @@ export default function Employees() {
     <div className="Employeemaindiv">
       <div className="employeeheader">Employees</div>
       <div className="Employeelist">
-        <div className="row" style={{ paddingTop: "15px" }}>
+        <div
+          className="row"
+          style={{
+            paddingTop: "20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {isDivVisible ? (
             <div
               className="col-2"
@@ -713,7 +723,13 @@ export default function Employees() {
             </div>
           </div>
         )}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingBottom: "35px",
+          }}
+        >
           <select
             style={{ cursor: "pointer", fontSize: "14px" }}
             className="numberpagenation ms-2"

@@ -29,6 +29,7 @@ import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
 import { useNavigate } from "react-router-dom";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
+import RolesService from "../../Service/AdminService/RolesService";
 export default function AddEmployee() {
   const [isopen, setIsOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
@@ -106,9 +107,7 @@ export default function AddEmployee() {
 
   const FeatchData = async () => {
     var response = await AdminDashboardServices.fcngetEmployees();
-    const Rolesresponse = await axios.get(
-      "https://localhost:44305/api/Roles/AllRoles"
-    );
+    const Rolesresponse = await RolesService.FcnGetRoles();
     var rolesResult = Rolesresponse.data;
     setRoles(rolesResult);
     if (response.isSuccess) {
@@ -205,7 +204,7 @@ export default function AddEmployee() {
       <div className="addemployeecontent">Add new Employee</div>
       <form onSubmit={AddEmployeeForm}>
         <div className="employeeformdiv">
-          <div className="row  m-0">
+          <div className="row  m-0" style={{ paddingTop: "15px" }}>
             <div className="col-3">
               <TextField
                 label="Employee ID"
@@ -800,7 +799,10 @@ export default function AddEmployee() {
               </div>
             </div>
           </div>
-          <div className="row m-0" style={{ paddingTop: "25px " }}>
+          <div
+            className="row m-0"
+            style={{ paddingTop: "25px ", paddingBottom: "30px" }}
+          >
             <div className="col-10"></div>
             <div
               className="col-2"

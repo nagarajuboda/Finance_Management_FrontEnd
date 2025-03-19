@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import userService from "../../Service/UserService/userService";
 export default function VerifyOtp() {
   var email1 = localStorage.getItem("Email");
   var otp = localStorage.getItem("OTP");
@@ -39,10 +40,7 @@ export default function VerifyOtp() {
     const isValid = Object.values(newErrors).every((error) => error === "");
     if (!isValid) {
       var obj = { Email: email1, Otp: otpValues.Otp };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/verify-otp",
-        obj
-      );
+      var responses = await userService.FcnVerifyOTP(obj);
       var result = await responses.data;
       if (result.isSuccess) {
         localStorage.setItem("ValueOTP", otpValues.Otp);

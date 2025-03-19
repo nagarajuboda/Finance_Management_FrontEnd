@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import userService from "../../Service/UserService/userService";
 export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [emailvalues, setEmialValuess] = useState({
@@ -46,11 +47,7 @@ export default function ForgotPassword() {
         Email: emailvalues.email,
       };
       setLoading(true);
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/get-otp",
-        obj
-      );
-
+      var responses = await userService.FcnGetOTP(obj);
       var result = await responses.data;
       if (result.isSuccess) {
         setLoading(false);

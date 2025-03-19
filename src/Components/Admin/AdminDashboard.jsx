@@ -69,7 +69,6 @@ export default function AdminDashboard() {
     FetchData();
   }, []);
   const FetchData = async () => {
-    debugger;
     var response = await EmployeeService.TotalEmployees();
     var InActiveProjectProgressResponse =
       await EmployeeService.ProjectProgressPercentage();

@@ -23,6 +23,8 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import axios from "axios";
+import { apiurl } from "../../Service/createAxiosInstance";
+import NotificationService from "../../Service/NotificationService";
 
 export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
@@ -96,10 +98,8 @@ export default function Header({ isOpen }) {
   };
 
   const fetchdata = async () => {
-    var response = await axios.get(
-      `https://localhost:44305/api/Notifications/NotificationsWithEmployeeID?EmployeeId=${employeeID}`
-    );
-    var result = response.data;
+    var response = await NotificationService.GetUserNotifications(employeeID);
+    var result = response;
 
     if (result.isSuccess) {
       setAllNotifications(result.item);
@@ -164,13 +164,12 @@ export default function Header({ isOpen }) {
   const togglePopup = () => {
     setIsPopupOpen((prev) => !prev);
   };
-  const [issuccess1, setissuccess1] = useState(false);
   const markAsRead = async (idd) => {
     setIsPopupOpen(false);
     const getsingleRecord = notifications.find((record) => record.id === idd);
     setSingleNotification(getsingleRecord);
-    var response = await axios.put(
-      `https://localhost:44305/api/Notifications/MarkAsRead?notificationId=${idd}`
+    var response = await apiurl.put(
+      `/Notifications/MarkAsRead?notificationId=${idd}`
     );
     var resultmessage = response.data;
     if (resultmessage.message) {
@@ -190,24 +189,7 @@ export default function Header({ isOpen }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  const CloseTimeSheetPopup = () => {
-    setIsClosing(false);
-  };
-  const AcceptNotificaton = async (accept) => {
-    const valuesss = "43819553-25a5-442c-8d34-b093b143854d";
-    var response = await axios.post(
-      `https://localhost:44305/api/Timesheets/UpdatedTimeSheetForNotification?TimeSheetID=${valuesss}`
-    );
-    var result = response.data;
-    setissuccess1(result.isSuccess);
-    if (issuccess1) {
-      if (accept == "Accepted") {
-        setAcceptSuccessMessage(true);
-      } else {
-        setDeclinedPopup(true);
-      }
-    }
-  };
+
   const closeAcceptedorRejectedPopup = () => {
     setAcceptSuccessMessage(false);
   };

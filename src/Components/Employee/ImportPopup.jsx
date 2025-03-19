@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { apiurl } from "../../Service/createAxiosInstance";
 const ImportPopup = ({ isOpen, handleClose }) => {
   const [AllEmployees, setAllEmployees] = useState([]);
   const [inactiveEmployees, setInactiveEmployees] = useState([]);
@@ -34,10 +35,7 @@ const ImportPopup = ({ isOpen, handleClose }) => {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    const response = await axios.post(
-      "https://localhost:44305/api/Employees/BulkInsert",
-      formData
-    );
+    const response = await apiurl.post("/Employees/BulkInsert", formData);
     var result = response.data;
 
     if (!selectedFile) {

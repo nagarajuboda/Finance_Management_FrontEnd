@@ -14,6 +14,7 @@ import TimeSheetService from "../../../Service/TimeSheetService";
 import { GrPowerReset } from "react-icons/gr";
 import { IoSaveOutline } from "react-icons/io5";
 import axios from "axios";
+import { apiurl } from "../../../Service/createAxiosInstance";
 
 export default function TimeSheet() {
   const [projectDetails, setProjectDetails] = useState([]);
@@ -156,8 +157,8 @@ export default function TimeSheet() {
   const GetProjectDeatis = async (id, date) => {
     setSelectedProjectID(id);
     const formattedDate = format(date, "MMMM yyyy");
-    const ProjectEmployees = await axios.get(
-      `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
+    const ProjectEmployees = await apiurl.get(
+      `/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
     );
     const response = await TimeSheetService.GetTimeSheetDeatils(
       formattedDate,

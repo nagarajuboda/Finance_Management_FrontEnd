@@ -2,14 +2,14 @@ import axios from "axios";
 import { apiurl } from "../createAxiosInstance";
 const EmployeeService = {
   async FcnGetProjectMangerProjects(id) {
-    const response = await axios.get(
-      `https://localhost:44305/api/EmployeeProjects/GetProjectManagerProjects?id=${id}`
+    const response = await apiurl.get(
+      `/EmployeeProjects/GetProjectManagerProjects?id=${id}`
     );
     return response.data;
   },
   async GetProjectInfo(id) {
-    const response = await axios.get(
-      `https://localhost:44305/api/EmployeeProjects/GetAllProjectInfo?projectManagerid=${id}`
+    const response = await apiurl.get(
+      `/EmployeeProjects/GetAllProjectInfo?projectManagerid=${id}`
     );
     return response.data;
   },
@@ -21,17 +21,14 @@ const EmployeeService = {
     return response.data;
   },
   async GetprojectEmployees(id, formattedDate) {
-    const response = await axios.post(
-      `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
+    const response = await apiurl.post(
+      `/Timesheets/GetProjectEmployee?projectID=${id}&date=${formattedDate}`
     );
 
     return response.data;
   },
   async UpdateProfilefcn(obj) {
-    const response = await axios.post(
-      `https://localhost:44305/api/Employees/UpdateProfile`,
-      obj
-    );
+    const response = await apiurl.post(`/Employees/UpdateProfile`, obj);
 
     return response.data;
   },
@@ -61,7 +58,6 @@ const EmployeeService = {
   },
   async AddEmployee(obj) {
     const response = await apiurl.post("/Employees/Add", obj);
-
     return response.data;
   },
   async TotalEmployees() {
@@ -81,6 +77,13 @@ const EmployeeService = {
       ` /Employees/GetEmployeesByManager?id=${id}`
     );
     return response.data;
+  },
+  async fcnExportEmployees(listtype, filetype, EmployeeStatus) {
+    const response = await apiurl.get(
+      `/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${EmployeeStatus}`,
+      { responseType: "blob" }
+    );
+    return response;
   },
 };
 export default EmployeeService;

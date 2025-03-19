@@ -15,6 +15,7 @@ import ImportPopup from "../Employee/ImportPopup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { getSessionData } from "../../Service/SharedSessionData";
 import { apiurl } from "../../Service/createAxiosInstance";
+import ManagerService from "../../Service/ManagerService/ManagerService";
 export default function Employees() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -37,11 +38,8 @@ export default function Employees() {
     setIsPopupOpen(!isPopupOpen);
   };
   const FetchData = async () => {
-    const response = await apiurl.get(
-      `https://localhost:44305/api/Employees/GetEmployeesByManager?id=${id}`
-    );
+    const response = await ManagerService.FcnGetEmployeesByManager(id);
     var result = response.data.item;
-
     setEmployees(result);
   };
 
@@ -91,14 +89,18 @@ export default function Employees() {
     let response;
     try {
       if (isDivVisible == false) {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
-          { responseType: "blob" }
+        response = await ManagerService.FcnExportByManagerEmployees(
+          listtype,
+          filetype,
+          "Active",
+          id
         );
       } else {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}&ManagerId=${id}`,
-          { responseType: "blob" }
+        response = await ManagerService.FcnExportByManagerEmployees(
+          listtype,
+          filetype,
+          "Inactive",
+          id
         );
       }
 

@@ -274,14 +274,14 @@ export function ViewProject() {
   const closeAssignedPopup = () => {
     setassignedNewEmployeePopup(false);
   };
-  const DownloadExcel = async (listtype, filetype, proID) => {
+  const DownloadExcel = async (listtype, filetype, projectId) => {
     let response;
     try {
-      response = await axios.get(
-        `https://localhost:44305/Api/Export/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
-        { responseType: "blob" }
+      response = await ProjectService.FcnExportProjectEmployees(
+        listtype,
+        filetype,
+        projectId
       );
-
       const blob = new Blob([response.data], {
         type: response.headers["content-type"],
       });
@@ -301,8 +301,6 @@ export function ViewProject() {
       console.error("Error downloading file:", error);
     }
   };
-  console.log(progressPercentage, "==============>");
-
   return (
     <div className="viewProject-Main-div">
       <div className="view-Project">Project Details</div>
@@ -609,7 +607,7 @@ export function ViewProject() {
             </div>
           )}
         </div>
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: "10px", paddingBottom: "35px" }}>
           <table
             id="example"
             className="employeeTable m-0 p-0"
