@@ -1,4 +1,3 @@
-import Dashboard from "../Components/Dashboard";
 import Sidebar from "../Components/Admin/Sidebar";
 import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
@@ -9,7 +8,6 @@ import EmployeeDetails from "../Components/Employee/EmployeeDetails";
 import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
 import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
 import Profile from "../Components/Admin/Pages/Profile";
-import AllEmployees from "../Components/Hr/Employees";
 import GetAllRevenue from "../Components/IndianFinance/Revenue";
 import AddRevenue from "../Components/USFinance/AddRevenue";
 import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
@@ -74,7 +72,6 @@ export default function AdminRoutes() {
             path="/USFinance/UsFinaceALlProjects"
             element={<USFiNanceAllProjects />}
           />
-          <Route path="/AllEmployees" element={<AllEmployees />} />
         </Routes>
       </Sidebar>
     </ProtectedRoute>

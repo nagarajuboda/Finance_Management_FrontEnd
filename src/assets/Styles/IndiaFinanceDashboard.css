@@ -1,146 +1,66 @@
-.Dashboard-paragrapha {
+.Dashboard-paragraph {
   text-align: left;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 24px;
-  font-family: "Segoe UI";
+  font: normal normal bold 16px/24px Segoe UI;
   letter-spacing: 0px;
   color: #000000;
   text-transform: uppercase;
-  opacity: 1;
 }
-.Total-Data {
-  top: 164px;
-  width: 370px;
+.total-balance {
   height: 160px;
-  box-shadow: 0px 7px 18px #64646429;
-  border-radius: 10px;
-  opacity: 0.34;
-}
-.Total-Bal {
-  left: 85px;
   background: #eec0c091 0% 0% no-repeat padding-box;
-}
-.Monthly-Income {
-  left: 520px;
-
-  background: #c8e3e5 0% 0% no-repeat padding-box;
-}
-.Monthly-Exp {
-  left: 955px;
-  background: #d4d69ae8 0% 0% no-repeat padding-box;
-}
-.Cap {
-  top: 184px;
-  height: 52px;
-
-  text-align: left;
-  font: normal normal 600 12px/29px Segoe UI;
-  letter-spacing: 0px;
-  color: black;
-  opacity: 1;
-}
-.Total-Bal-Title {
-  left: 102px;
-
-  height: 52px;
-}
-.Monthly-Income-Title {
-  left: 537px;
-  width: 119px;
-}
-.Monthly-Exp-Title {
-  left: 972px;
-  width: 142px;
-}
-.Revenue-Div {
-  top: 418px;
-  left: 85px;
-  width: 745px;
-  height: 444px;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 7px 18px #64646430;
-  border-radius: 10px;
-  opacity: 1;
-  padding: 40px;
-}
-.Exp-Div {
-  top: 418px;
-  left: 926px;
-  width: 399px;
-  height: 444px;
-
-  background: #ffffff 0% 0% no-repeat padding-box;
   box-shadow: 0px 7px 18px #64646429;
   border-radius: 10px;
-  opacity: 1;
 }
-.P-L-Summary {
-  top: 960px;
-  left: 85px;
-  width: 1164px;
-  height: 410px;
-  padding: 30px;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 7px 18px #64646430;
+.monthly-income {
+  background: #c8e3e5 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 18px #64646429;
   border-radius: 10px;
-  opacity: 1;
 }
-.P-L-Inner {
-  top: 990px;
-  left: 111px;
-  width: 1100px;
-  height: 351px;
-
-  border: 1px solid #cfcfcf;
+.monthly-expenses {
+  background: #d4d69ae8 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 16px #64646429;
   border-radius: 10px;
-  opacity: 1;
 }
-.Exp-Chart {
-  top: 497px;
-  left: 985px;
-  width: 282px;
-  height: 287px;
-  background: transparent url("Images/5.png") 0% 0% no-repeat padding-box;
-  opacity: 1;
-}
-.Revenue-Chart {
-  top: 502px;
-  left: 162px;
-  width: 660px;
-  height: 304px;
-
-  background: #f5f5f5 0% 0% no-repeat padding-box;
-  border-radius: 10px;
-  opacity: 1;
-}
-.Balance {
-  height: 52px;
-  text-align: left;
-  font: normal normal bold 12px/29px Segoe UI;
+.Total-Balance-Span {
+  font-size: 16px;
+  line-height: 29px;
+  font-family: "Segoe UI", sans-serif;
   letter-spacing: 0px;
-  color: black;
-  opacity: 1;
+  padding-top: 30px !important;
+  font-weight: bold;
 }
-.Bal-Percentage {
-  height: 52px;
-  text-align: right;
-  font: normal normal bold 12px/29px Segoe UI;
+.Total-balance-amout {
+  text-align: center;
+  font: normal normal bold 16px/29px Segoe UI;
   letter-spacing: 0px;
-  color: #258f00;
-  opacity: 1;
 }
-.Details {
-  text-align: left center;
-  font: normal normal 600 12px/19px Segoe UI;
+.white-line {
+  border-bottom: 2px solid white;
+  color: white;
+  opacity: 1;
+  height: 15px;
+}
+.see-details {
+  font: normal normal 600 14px/19px Segoe UI;
   letter-spacing: 0px;
   color: #000000;
-  opacity: 1;
-  padding: 12px 14px 12px 7px;
 }
-
-.Outer-Details {
-  display: flex;
-  border-top: 1px solid white;
-  justify-content: space-between;
+.revenue-summary {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 18px #64646430;
+  border-radius: 10px;
+  opacity: 1;
+}
+.expenses-overview {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 18px #64646429;
+  border-radius: 10px;
+  opacity: 1;
+}
+.indian-finance-revneue-overview {
+  height: 400px !important;
+  width: 800px;
+}
+.chart-container {
+  border-radius: 20px; /* Adjust as needed */
 }

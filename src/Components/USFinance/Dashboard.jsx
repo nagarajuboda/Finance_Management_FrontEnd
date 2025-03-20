@@ -297,6 +297,9 @@ export default function UsFinanceTeamDashboard() {
           chartArea: {
             backgroundColor: "red",
           },
+          legend: {
+            display: false,
+          },
           tooltip: {
             callbacks: {
               label: function (tooltipItem) {
