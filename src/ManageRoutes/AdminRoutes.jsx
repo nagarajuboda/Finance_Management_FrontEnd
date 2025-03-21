@@ -29,51 +29,66 @@ import ProjectsList from "../Components/IndianFinance/Projects";
 import AddExpense from "../Components/IndianFinance/AddExpense";
 import ProtectedRoute from "./ProtectedRoute";
 export default function AdminRoutes() {
+  const sessionData = localStorage.getItem("sessionData");
+  const userDetails = sessionData ? JSON.parse(sessionData) : null;
   return (
-    <ProtectedRoute>
-      <Sidebar>
-        <Routes>
-          <Route path="/AdminDashboard" element={<AdminDashboard />} />
-          <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
-          <Route path="/AddProject" element={<AddProject />} />
-          <Route path="/All/Projects" element={<Projectss />} />
-          <Route path="/ViewProject" element={<ViewProject />} />
-          <Route path="/Roles" element={<Roles />} />
-          <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
-          <Route path="/Employeeslist" element={<Employeess />} />
-          <Route
-            path="/FinanceDashboard"
-            element={<UsFinanceTeamDashboard />}
-          />
-          <Route
-            path="/ProjectManagerProjects"
-            element={<ProjectManagerProjects />}
-          />
-          <Route path="/ManagerDasboard" element={<ManagerDashboard />} />
-          <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
-          <Route path="/EditEmployee" element={<EditEmployeePopup />} />
-          <Route path="/TimeSheet" element={<TimeSheetModule />} />
-          <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
-          <Route path="/Dashboard/Profile" element={<Profile />} />
-          <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
-          <Route path="/AddExpense" element={<AddExpense />} />
-          <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
-          <Route path="/Employees" element={<Employees />} />
-          <Route path="/AddEmployee" element={<AddEmployee />} />
-          <Route path="/Notifications" element={<Notifications />} />
-          <Route path="/EmployeeList" element={<ListOfEmployees />} />
-          <Route path="/Dashboard" element={<IndianFinanceTeamDashboard />} />
-          <Route path="/ProjectList" element={<ProjectsList />} />
-          <Route
-            path="/USFinanceTeamAllProjects"
-            element={<USFinanceTeamAllProjects />}
-          />
-          <Route
-            path="/USFinance/UsFinaceALlProjects"
-            element={<USFiNanceAllProjects />}
-          />
-        </Routes>
-      </Sidebar>
-    </ProtectedRoute>
+    <div>
+      {userDetails.employee.role.name === "Admin" && (
+        <ProtectedRoute>
+          <Sidebar>
+            <Routes>
+              <Route path="/AdminDashboard" element={<AdminDashboard />} />
+              <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
+              <Route path="/AddProject" element={<AddProject />} />
+              <Route path="/All/Projects" element={<Projectss />} />
+              <Route path="/ViewProject" element={<ViewProject />} />
+              <Route path="/Roles" element={<Roles />} />
+              <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
+              <Route path="/Employeeslist" element={<Employeess />} />
+              <Route
+                path="/FinanceDashboard"
+                element={<UsFinanceTeamDashboard />}
+              />
+              <Route
+                path="/ProjectManagerProjects"
+                element={<ProjectManagerProjects />}
+              />
+              <Route path="/ManagerDasboard" element={<ManagerDashboard />} />
+              <Route
+                path="/Employee/ViewProject"
+                element={<ViewMangerProject />}
+              />
+              <Route path="/EditEmployee" element={<EditEmployeePopup />} />
+              <Route path="/TimeSheet" element={<TimeSheetModule />} />
+              <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
+              <Route path="/Dashboard/Profile" element={<Profile />} />
+              <Route
+                path="/IndianFinance/Revenue"
+                element={<GetAllRevenue />}
+              />
+              <Route path="/AddExpense" element={<AddExpense />} />
+              <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
+              <Route path="/Employees" element={<Employees />} />
+              <Route path="/AddEmployee" element={<AddEmployee />} />
+              <Route path="/Notifications" element={<Notifications />} />
+              <Route path="/EmployeeList" element={<ListOfEmployees />} />
+              <Route
+                path="/Dashboard"
+                element={<IndianFinanceTeamDashboard />}
+              />
+              <Route path="/ProjectList" element={<ProjectsList />} />
+              <Route
+                path="/USFinanceTeamAllProjects"
+                element={<USFinanceTeamAllProjects />}
+              />
+              <Route
+                path="/USFinance/UsFinaceALlProjects"
+                element={<USFiNanceAllProjects />}
+              />
+            </Routes>
+          </Sidebar>
+        </ProtectedRoute>
+      )}
+    </div>
   );
 }

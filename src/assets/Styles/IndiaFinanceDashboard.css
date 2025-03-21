@@ -62,5 +62,50 @@
   width: 800px;
 }
 .chart-container {
-  border-radius: 20px; /* Adjust as needed */
+  border-radius: 20px;
+}
+.css-6txha4 {
+  font-size: 29px !important;
+  font-weight: bold;
+}
+.css-6txha4 .expenses-overview-pie-chat-amout {
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.legend-item {
+  align-items: center;
+  gap: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.color-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 3px;
+}
+
+.direct {
+  background-color: #03a99f;
+}
+.overhead {
+  background-color: #f96935;
+}
+.general {
+  background-color: #3b35da;
+}
+.profit-or-loss-summary-linebar {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 7px 18px #64646430;
+  border-radius: 10px;
+  opacity: 1;
+}
+.profit-or-loss-summary-contant {
+  text-align: left;
+  font: normal normal bold 16px/24px Segoe UI;
+  letter-spacing: 0px;
+  color: #000000;
+  text-transform: uppercase;
 }

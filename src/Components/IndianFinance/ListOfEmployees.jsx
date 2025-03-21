@@ -45,7 +45,6 @@ export default function ListOfEmployees() {
         .includes(searchQuery.toLowerCase())
     );
   });
-
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -56,6 +55,7 @@ export default function ListOfEmployees() {
     indexOfLastItem
   );
 
+  console.log(currentItems, "==============>");
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
   const handleItemsPerPageChange = (e) => {

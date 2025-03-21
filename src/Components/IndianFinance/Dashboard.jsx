@@ -8,6 +8,7 @@ import { useDrawingArea } from "@mui/x-charts/hooks";
 import { styled } from "@mui/material/styles";
 import Chart from "chart.js/auto";
 import calenderImage1 from "../../assets/Images/calendar_11919171.png";
+import ReactApexChart from "react-apexcharts";
 import USFinanceTeamService from "../../Service/USFinanceTeamService/USFinanceTeamService";
 export default function IndainFinanceDashboard() {
   const [selectedDate1, setSelectedDate1] = useState(
@@ -105,10 +106,16 @@ export default function IndainFinanceDashboard() {
             min: 0,
             max: 700000,
             grid: {
-              color: "#E0E0E0", // Light gray dotted lines
-              borderDash: [5, 5], // Creates a dotted effect
-              drawBorder: false, // Removes the solid border line
+              color: (context) =>
+                context.tick.value === 0 ? "transparent" : "#A5AEB4",
+              borderDash: [4, 4],
+              drawBorder: false,
+              drawTicks: false,
             },
+            border: {
+              display: false,
+            },
+
             ticks: {
               font: {
                 size: 14,
@@ -125,7 +132,9 @@ export default function IndainFinanceDashboard() {
               display: false,
               color: "#A5AEB4",
               borderDash: [5, 5],
-              drawBorder: true,
+            },
+            border: {
+              display: false,
             },
             ticks: {
               font: {
@@ -210,13 +219,13 @@ export default function IndainFinanceDashboard() {
     };
   };
   const data = [
-    { value: 5, label: "A", color: "#855FC0" },
-    { value: 5, label: "B", color: "#FFD8D8" },
-    { value: 15, label: "C", color: "#C6FFD2" },
-    { value: 20, label: "D", color: "#60CDF5" },
+    { value: 5, color: "#855FC0" },
+    { value: 5, color: "#FFD8D8" },
+    { value: 15, color: "#C6FFD2" },
+    { value: 20, color: "#60CDF5" },
   ];
   const size = {
-    width: 450,
+    width: 200,
     height: 250,
   };
   const StyledText = styled("text")(({ theme }) => ({
@@ -234,6 +243,120 @@ export default function IndainFinanceDashboard() {
       </StyledText>
     );
   }
+  const dates = [
+    { x: new Date("2024-01-01").getTime(), y: 1200000 },
+    { x: new Date("2024-02-02").getTime(), y: 1300000 },
+    { x: new Date("2024-03-03").getTime(), y: 1100000 },
+    { x: new Date("2024-04-04").getTime(), y: 1400000 },
+    { x: new Date("2024-05-01").getTime(), y: 1200000 },
+    { x: new Date("2024-06-02").getTime(), y: 1300000 },
+    { x: new Date("2024-07-03").getTime(), y: 1100000 },
+    { x: new Date("2024-08-04").getTime(), y: 1400000 },
+    { x: new Date("2024-09-01").getTime(), y: 1200000 },
+    { x: new Date("2024-10-02").getTime(), y: 1300000 },
+    { x: new Date("2024-11-03").getTime(), y: 1100000 },
+    { x: new Date("2024-12-04").getTime(), y: 1400000 },
+  ];
+  const date = [
+    { x: new Date("2024-01-01").getTime(), y: 120000 },
+    { x: new Date("2024-02-02").getTime(), y: 130 },
+    { x: new Date("2024-03-03").getTime(), y: 110000 },
+    { x: new Date("2024-04-04").getTime(), y: 140000 },
+    { x: new Date("2024-05-01").getTime(), y: 1200 },
+    { x: new Date("2024-06-02").getTime(), y: 130000 },
+    { x: new Date("2024-07-03").getTime(), y: 11000 },
+    { x: new Date("2024-08-04").getTime(), y: 140000 },
+    { x: new Date("2024-09-01").getTime(), y: 12000 },
+    { x: new Date("2024-10-02").getTime(), y: 130000 },
+    { x: new Date("2024-11-03").getTime(), y: 110000 },
+    { x: new Date("2024-12-04").getTime(), y: 140000 },
+  ];
+  const [chartData, setChartData] = useState({
+    series: [
+      {
+        name: "XYZ MOTORS",
+        data: dates,
+        type: "area", // Area chart
+      },
+      {
+        name: "ABC MOTORS",
+        data: date,
+        type: "line", // Line chart
+      },
+    ],
+    options: {
+      chart: {
+        type: "area",
+        stacked: false,
+        height: 350,
+        zoom: {
+          type: "x",
+          enabled: true,
+          autoScaleYaxis: true,
+        },
+        toolbar: {
+          autoSelected: "zoom",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+        width: [2, 3], // Different stroke widths for area and line
+      },
+      markers: {
+        size: [0, 5], // Ensure markers are visible for the line chart
+        colors: ["#FF4560"], // Marker color for the line
+        strokeColors: "#fff",
+        strokeWidth: 2,
+        hover: {
+          size: 7, // Make it bigger on hover
+        },
+      },
+      title: {
+        text: "Stock Price Movement",
+        align: "left",
+      },
+      fill: {
+        type: ["gradient", "solid"],
+        gradient: {
+          shadeIntensity: 1,
+          inverseColors: false,
+          opacityFrom: 0.5,
+          opacityTo: 0,
+          stops: [0, 90, 100],
+        },
+      },
+      yaxis: {
+        labels: {
+          formatter: function (val) {
+            return (val / 1000000).toFixed(0);
+          },
+        },
+        title: {
+          text: "Price",
+        },
+      },
+      xaxis: {
+        type: "datetime",
+        labels: {
+          formatter: function (value) {
+            return new Date(value).toLocaleString("en-US", { month: "short" });
+          },
+        },
+      },
+      tooltip: {
+        shared: false,
+        y: {
+          formatter: function (val) {
+            return (val / 1000000).toFixed(0);
+          },
+        },
+      },
+    },
+  });
+
   return (
     <div>
       <div>
@@ -397,59 +520,21 @@ export default function IndainFinanceDashboard() {
           </div>
         </div>
       </div>
-      <div className="d-flex m-0" style={{ paddingTop: "50px", gap: "40px" }}>
-        <div className="revenue-summary" style={{ flexBasis: "68%" }}>
+      <div
+        className="d-flex m-0 w-100"
+        style={{ paddingTop: "50px", gap: "40px" }}
+      >
+        <div className="revenue-summary" style={{ width: "68%" }}>
           <div
             style={{ display: "flex", justifyContent: "space-between" }}
             className="p-3"
           >
-            <span className="Monthly-overview-content">Revenue Overview</span>
-
-            <div>
-              <DatePicker
-                selected={selectedDate1}
-                onChange={handleDateChange}
-                dateFormat="MMMM yyyy"
-                showMonthYearPicker
-                maxDate={
-                  new Date(
-                    new Date().getFullYear(),
-                    new Date().getMonth() - 1,
-                    1
-                  )
-                }
-                className="timesheet-datepicker"
-                customInput={
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      border: "1px solid #ccc",
-                      padding: "5px 10px",
-                      borderRadius: "5px",
-                      backgroundColor: "#fff",
-                      fontSize: "14px",
-                    }}
-                  >
-                    <span style={{ marginRight: "10px" }}>
-                      <img
-                        src={calenderImage1}
-                        alt=""
-                        height="20px"
-                        width="20px"
-                      />
-                    </span>
-                    <span>
-                      {selectedDate1.toLocaleString("default", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-                }
-              />
-            </div>
+            <span
+              className="Monthly-overview-content"
+              style={{ fontSize: "16px" }}
+            >
+              Revenue Overview
+            </span>
           </div>
           <div
             style={{
@@ -466,15 +551,22 @@ export default function IndainFinanceDashboard() {
         <div
           className="expenses-overview"
           style={{
-            flexBasis: "32%",
+            width: "32%",
           }}
         >
-          <span>Expenses Overview</span>
           <div
+            className="Monthly-overview-content p-3"
+            style={{ fontSize: "16px" }}
+          >
+            <span>Expenses Overview</span>
+          </div>
+          <div
+            className="ps-5 relative"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              paddingTop: "60px",
             }}
           >
             <PieChart
@@ -491,11 +583,43 @@ export default function IndainFinanceDashboard() {
               ]}
               {...size}
             >
-              <PieCenterLabel>
-                <span></span>
-              </PieCenterLabel>
+              <PieCenterLabel className="">$15,00</PieCenterLabel>
+              {/* <div className="absolute top-[50px]  total-expenses-pie-chat-center-lable">
+                <PieCenterLabel>Total Expenses</PieCenterLabel>
+              </div> */}
             </PieChart>
           </div>
+          <div className="row m-0 legend" style={{ paddingTop: "50px" }}>
+            <div className="col-3 legend-item">
+              <div class="color-box direct"></div>
+              <span>Direct</span>
+            </div>
+            <div className="col-3  legend-item">
+              <div class="color-box overhead"></div>
+              <span>Overhead</span>
+            </div>
+            <div className="col-6  legend-item">
+              <div class="color-box general"></div>
+              <span>General Apportionment</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ paddingTop: "40px" }}>
+        <span className="profit-or-loss-summary-contant">
+          Profit And Loss Summary
+        </span>
+        <div className="profit-or-loss-summary-linebar">
+          <div id="chart">
+            <ReactApexChart
+              options={chartData.options}
+              series={chartData.series}
+              type="area"
+              height={350}
+            />
+          </div>
+          <div id="html-dist"></div>
         </div>
       </div>
     </div>

@@ -321,7 +321,7 @@ export default function AddExpense() {
                   >
                     <td style={{ fontSize: "14px" }}>{Revenue.employeeId}</td>
                     <td style={{ fontSize: "14px" }}>
-                      {Revenue.firstName} {Revenue.LastName}
+                      {Revenue.firstName} {Revenue.lastName}
                     </td>
                     <td style={{ fontSize: "14px" }}>
                       <span>
