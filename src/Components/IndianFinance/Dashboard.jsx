@@ -225,8 +225,8 @@ export default function IndainFinanceDashboard() {
     { value: 20, color: "#60CDF5" },
   ];
   const size = {
-    width: 200,
-    height: 250,
+    width: 300,
+    height: 350,
   };
   const StyledText = styled("text")(({ theme }) => ({
     fill: theme.palette.text.primary,
@@ -356,7 +356,88 @@ export default function IndainFinanceDashboard() {
       },
     },
   });
-
+  const employees = [
+    {
+      id: "EMP001",
+      name: "Amit Sharma",
+      email: "amit.sharma@example.com",
+      salary: 50000,
+      expense: 20000,
+      profit: 30000,
+    },
+    {
+      id: "EMP002",
+      name: "Priya Mehta",
+      email: "priya.mehta@example.com",
+      salary: 45000,
+      expense: 15000,
+      profit: 30000,
+    },
+    {
+      id: "EMP003",
+      name: "Rajesh Kumar",
+      email: "rajesh.kumar@example.com",
+      salary: 60000,
+      expense: 25000,
+      profit: 35000,
+    },
+    {
+      id: "EMP004",
+      name: "Simran Kaur",
+      email: "simran.kaur@example.com",
+      salary: 55000,
+      expense: 18000,
+      profit: 37000,
+    },
+    {
+      id: "EMP005",
+      name: "Vikram Singh",
+      email: "vikram.singh@example.com",
+      salary: 70000,
+      expense: 30000,
+      profit: 40000,
+    },
+    {
+      id: "EMP006",
+      name: "Sneha Reddy",
+      email: "sneha.reddy@example.com",
+      salary: 48000,
+      expense: 22000,
+      profit: 26000,
+    },
+    {
+      id: "EMP007",
+      name: "Arjun Nair",
+      email: "arjun.nair@example.com",
+      salary: 52000,
+      expense: 19000,
+      profit: 33000,
+    },
+    {
+      id: "EMP008",
+      name: "Pooja Iyer",
+      email: "pooja.iyer@example.com",
+      salary: 58000,
+      expense: 20000,
+      profit: 38000,
+    },
+    {
+      id: "EMP009",
+      name: "Ravi Verma",
+      email: "ravi.verma@example.com",
+      salary: 65000,
+      expense: 28000,
+      profit: 37000,
+    },
+    {
+      id: "EMP010",
+      name: "Anjali Das",
+      email: "anjali.das@example.com",
+      salary: 40000,
+      expense: 12000,
+      profit: 28000,
+    },
+  ];
   return (
     <div>
       <div>
@@ -417,7 +498,7 @@ export default function IndainFinanceDashboard() {
       <div className="row m-0 d-flex gap-5" style={{ paddingTop: "30px" }}>
         <div className="col total-balance">
           <div className="row">
-            <div className="col-4 pt-3">
+            <div className="col-12 pt-3">
               <span className="Total-Balance-Span">Total Balance</span>
             </div>
           </div>
@@ -452,7 +533,7 @@ export default function IndainFinanceDashboard() {
         </div>
         <div className="col monthly-income">
           <div className="row">
-            <div className="col-5 pt-3">
+            <div className="col-12 pt-3">
               <span className="Total-Balance-Span">Monthly Income</span>
             </div>
           </div>
@@ -487,7 +568,7 @@ export default function IndainFinanceDashboard() {
         </div>
         <div className="col monthly-expenses">
           <div className="row">
-            <div className="col-5 pt-3">
+            <div className="col-12 pt-3">
               <span className="Total-Balance-Span">Monthly Expenses</span>
             </div>
           </div>
@@ -554,19 +635,13 @@ export default function IndainFinanceDashboard() {
             width: "32%",
           }}
         >
-          <div
-            className="Monthly-overview-content p-3"
-            style={{ fontSize: "16px" }}
-          >
+          <div className="Monthly-overview-content p-3">
             <span>Expenses Overview</span>
           </div>
           <div
-            className="ps-5 relative"
+            className=" relative "
             style={{
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingTop: "60px",
             }}
           >
             <PieChart
@@ -578,7 +653,7 @@ export default function IndainFinanceDashboard() {
                   paddingAngle: 4,
                   cornerRadius: 5,
                   labelPosition: 60,
-                  outerRadius: 110,
+                  outerRadius: 105,
                 },
               ]}
               {...size}
@@ -589,7 +664,7 @@ export default function IndainFinanceDashboard() {
               </div> */}
             </PieChart>
           </div>
-          <div className="row m-0 legend" style={{ paddingTop: "50px" }}>
+          <div className="row m-0 legend" style={{ paddingTop: "20px" }}>
             <div className="col-3 legend-item">
               <div class="color-box direct"></div>
               <span>Direct</span>
@@ -646,86 +721,26 @@ export default function IndainFinanceDashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>EMP001</td>
-                  <td>Amit Sharma</td>
-                  <td>amit.sharma@example.com</td>
-                  <td>$50,000</td>
-                  <td>$20,000</td>
-                  <td>$30,000</td>
-                </tr>
-                <tr>
-                  <td>EMP002</td>
-                  <td>Priya Mehta</td>
-                  <td>priya.mehta@example.com</td>
-                  <td>$45,000</td>
-                  <td>$15,000</td>
-                  <td>$30,000</td>
-                </tr>
-                <tr>
-                  <td>EMP003</td>
-                  <td>Rajesh Kumar</td>
-                  <td>rajesh.kumar@example.com</td>
-                  <td>$60,000</td>
-                  <td>$25,000</td>
-                  <td>$35,000</td>
-                </tr>
-                <tr>
-                  <td>EMP004</td>
-                  <td>Simran Kaur</td>
-                  <td>simran.kaur@example.com</td>
-                  <td>$55,000</td>
-                  <td>$18,000</td>
-                  <td>$37,000</td>
-                </tr>
-                <tr>
-                  <td>EMP005</td>
-                  <td>Vikram Singh</td>
-                  <td>vikram.singh@example.com</td>
-                  <td>$70,000</td>
-                  <td>$30,000</td>
-                  <td>$40,000</td>
-                </tr>
-                <tr>
-                  <td>EMP006</td>
-                  <td>Sneha Reddy</td>
-                  <td>sneha.reddy@example.com</td>
-                  <td>$48,000</td>
-                  <td>$22,000</td>
-                  <td>$26,000</td>
-                </tr>
-                <tr>
-                  <td>EMP007</td>
-                  <td>Arjun Nair</td>
-                  <td>arjun.nair@example.com</td>
-                  <td>$52,000</td>
-                  <td>$19,000</td>
-                  <td>$33,000</td>
-                </tr>
-                <tr>
-                  <td>EMP008</td>
-                  <td>Pooja Iyer</td>
-                  <td>pooja.iyer@example.com</td>
-                  <td>$58,000</td>
-                  <td>$20,000</td>
-                  <td>$38,000</td>
-                </tr>
-                <tr>
-                  <td>EMP009</td>
-                  <td>Ravi Verma</td>
-                  <td>ravi.verma@example.com</td>
-                  <td>$65,000</td>
-                  <td>$28,000</td>
-                  <td>$37,000</td>
-                </tr>
-                <tr>
-                  <td>EMP010</td>
-                  <td>Anjali Das</td>
-                  <td>anjali.das@example.com</td>
-                  <td>$40,000</td>
-                  <td>$12,000</td>
-                  <td>$28,000</td>
-                </tr>
+                {employees.map((emp, index) => (
+                  <tr
+                    key={index}
+                    className="tablebody"
+                    style={{ backgroundColor: "white", cursor: "pointer" }}
+                  >
+                    <td style={{ fontSize: "14px" }}>{emp.id}</td>
+                    <td style={{ fontSize: "14px" }}>{emp.name}</td>
+                    <td style={{ fontSize: "14px" }}>{emp.email}</td>
+                    <td style={{ fontSize: "14px" }}>
+                      ${emp.salary.toLocaleString()}
+                    </td>
+                    <td style={{ fontSize: "14px" }}>
+                      ${emp.expense.toLocaleString()}
+                    </td>
+                    <td style={{ fontSize: "14px" }}>
+                      ${emp.profit.toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
