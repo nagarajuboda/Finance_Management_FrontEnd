@@ -606,11 +606,11 @@ export default function IndainFinanceDashboard() {
         </div>
       </div>
 
-      <div style={{ paddingTop: "40px" }}>
-        <span className="profit-or-loss-summary-contant">
+      <div className="mt-5">
+        <span className="profit-or-loss-summary-contant ">
           Profit And Loss Summary
         </span>
-        <div className="profit-or-loss-summary-linebar">
+        <div className="profit-or-loss-summary-linebar mt-3">
           <div id="chart">
             <ReactApexChart
               options={chartData.options}
@@ -620,6 +620,115 @@ export default function IndainFinanceDashboard() {
             />
           </div>
           <div id="html-dist"></div>
+        </div>
+      </div>
+      <div className="profit-or-loss-summary-data mt-5">
+        <span className="profit-or-loss-summary-contant ">
+          Profit Or loss summary Data
+        </span>
+        <div className="profit-or-loss-summary-table-data mt-3  ">
+          <div style={{ padding: "10px" }}>
+            <table
+              id="example"
+              className="employeeTable"
+              style={{ width: "100%" }}
+            >
+              <thead>
+                <tr className="tableheader">
+                  <th style={{ fontSize: "14px" }}>Employee ID</th>
+                  <th style={{ fontSize: "14px" }}>Employee Name</th>
+                  <th style={{ fontSize: "14px" }}>Email</th>
+                  <th style={{ fontSize: "14px" }}>Generated Revenue</th>
+                  <th style={{ fontSize: "14px" }}>Expenses</th>
+                  <th style={{ fontSize: "14px" }}>Profit/Loss</th>
+                  {/* <th style={{ fontSize: "14px" }}>Role</th>
+                  <th style={{ fontSize: "14px" }}>Reporting Manager</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>EMP001</td>
+                  <td>Amit Sharma</td>
+                  <td>amit.sharma@example.com</td>
+                  <td>$50,000</td>
+                  <td>$20,000</td>
+                  <td>$30,000</td>
+                </tr>
+                <tr>
+                  <td>EMP002</td>
+                  <td>Priya Mehta</td>
+                  <td>priya.mehta@example.com</td>
+                  <td>$45,000</td>
+                  <td>$15,000</td>
+                  <td>$30,000</td>
+                </tr>
+                <tr>
+                  <td>EMP003</td>
+                  <td>Rajesh Kumar</td>
+                  <td>rajesh.kumar@example.com</td>
+                  <td>$60,000</td>
+                  <td>$25,000</td>
+                  <td>$35,000</td>
+                </tr>
+                <tr>
+                  <td>EMP004</td>
+                  <td>Simran Kaur</td>
+                  <td>simran.kaur@example.com</td>
+                  <td>$55,000</td>
+                  <td>$18,000</td>
+                  <td>$37,000</td>
+                </tr>
+                <tr>
+                  <td>EMP005</td>
+                  <td>Vikram Singh</td>
+                  <td>vikram.singh@example.com</td>
+                  <td>$70,000</td>
+                  <td>$30,000</td>
+                  <td>$40,000</td>
+                </tr>
+                <tr>
+                  <td>EMP006</td>
+                  <td>Sneha Reddy</td>
+                  <td>sneha.reddy@example.com</td>
+                  <td>$48,000</td>
+                  <td>$22,000</td>
+                  <td>$26,000</td>
+                </tr>
+                <tr>
+                  <td>EMP007</td>
+                  <td>Arjun Nair</td>
+                  <td>arjun.nair@example.com</td>
+                  <td>$52,000</td>
+                  <td>$19,000</td>
+                  <td>$33,000</td>
+                </tr>
+                <tr>
+                  <td>EMP008</td>
+                  <td>Pooja Iyer</td>
+                  <td>pooja.iyer@example.com</td>
+                  <td>$58,000</td>
+                  <td>$20,000</td>
+                  <td>$38,000</td>
+                </tr>
+                <tr>
+                  <td>EMP009</td>
+                  <td>Ravi Verma</td>
+                  <td>ravi.verma@example.com</td>
+                  <td>$65,000</td>
+                  <td>$28,000</td>
+                  <td>$37,000</td>
+                </tr>
+                <tr>
+                  <td>EMP010</td>
+                  <td>Anjali Das</td>
+                  <td>anjali.das@example.com</td>
+                  <td>$40,000</td>
+                  <td>$12,000</td>
+                  <td>$28,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

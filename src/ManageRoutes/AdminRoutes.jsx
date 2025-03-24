@@ -33,7 +33,7 @@ export default function AdminRoutes() {
   const userDetails = sessionData ? JSON.parse(sessionData) : null;
   return (
     <div>
-      {userDetails.employee.role.name === "Admin" && (
+    
         <ProtectedRoute>
           <Sidebar>
             <Routes>
@@ -88,7 +88,6 @@ export default function AdminRoutes() {
             </Routes>
           </Sidebar>
         </ProtectedRoute>
-      )}
     </div>
   );
 }
