@@ -1120,10 +1120,9 @@ export default function AdminDashboard() {
               <div
                 style={{
                   border: "1px solid #64646430",
-                  width: "85%",
-                  marginTop: "70px",
+                  width: "100%",
+                  marginTop: "30px",
                 }}
-                className="ms-4 "
               ></div>
               <div className="viewAlldiv">
                 <span className="ViewAll" style={{ cursor: "pointer" }}>

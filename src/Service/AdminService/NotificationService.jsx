@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiurl } from "./createAxiosInstance";
+import { apiurl } from "../createAxiosInstance";
 const NotificationService = {
   async GetUserNotifications(id) {
     const response = await apiurl.get(

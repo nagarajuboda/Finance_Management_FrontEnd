@@ -24,7 +24,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { apiurl } from "../../Service/createAxiosInstance";
-import NotificationService from "../../Service/NotificationService";
+import NotificationService from "../../Service/AdminService/NotificationService";
 
 export default function Header({ isOpen }) {
   const [isOpen1, setIsOpen1] = useState(false);
@@ -393,7 +393,7 @@ export default function Header({ isOpen }) {
 
       {isPopupOpen && (
         <div ref={popupRef} className="notifications-popup">
-          <div class="dropdown-arrow"></div>
+          <div className="dropdown-arrow"></div>
           <div
             className="RecentNotificationContent ms-3"
             style={{ paddingTop: "5px" }}

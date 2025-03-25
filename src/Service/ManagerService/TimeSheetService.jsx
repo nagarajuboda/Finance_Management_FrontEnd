@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiurl } from "./createAxiosInstance";
+import { apiurl } from "../createAxiosInstance";
 const TimeSheetService = {
   async AddNewTimeSheet(obj, projectManagerid, isSubmited) {
     const response = await apiurl.post(

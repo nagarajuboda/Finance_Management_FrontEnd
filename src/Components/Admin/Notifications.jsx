@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../../src/assets/Styles/Notification.css";
-import NotificationService from "../../Service/NotificationService";
+import NotificationService from "../../Service/AdminService/NotificationService";
 import checkimgae1 from "../../assets/Images/check.png";
 import elllips1 from "../../assets/Images/Ellipse.png";
 export default function Notifications() {
@@ -68,7 +68,6 @@ export default function Notifications() {
 
     return "Just now";
   };
-
   const AcceptNotificaton = async (
     index,
     notificationId,

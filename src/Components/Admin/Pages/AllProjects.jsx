@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import "../../../assets/Styles/AllProduct.css";
 import { apiurl } from "../../../Service/createAxiosInstance";
+import ProjectService from "../../../Service/AdminService/ProjectService";
 
 export default function AllProjects() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function AllProjects() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await apiurl.get("/Projects/GetAllProjects");
+        const response = await ProjectService.AllProjects();
         const result = response.data;
 
         setAllProjects(result.item);

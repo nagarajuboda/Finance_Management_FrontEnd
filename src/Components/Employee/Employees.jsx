@@ -47,6 +47,7 @@ export default function Employees() {
   const handleOpenPopup = async (e, index, id) => {
     var response = await EmployeeService.DeleteEmployees(id);
     var result = response;
+    debugger;
     if (result.isSuccess === true) {
       FetchData();
       setOpen(true);
@@ -56,6 +57,7 @@ export default function Employees() {
   const closeDeletePopup = () => {
     setOpen(false);
   };
+
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
@@ -107,6 +109,7 @@ export default function Employees() {
   });
 
   const [itemsPerPage, setItemsPerPage] = useState(10);
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -117,12 +120,11 @@ export default function Employees() {
   );
 
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
-
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);
   };
-
+  console.log(currentItems, "currect items");
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };

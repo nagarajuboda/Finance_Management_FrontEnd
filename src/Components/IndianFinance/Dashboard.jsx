@@ -359,8 +359,8 @@ export default function IndainFinanceDashboard() {
   const employees = [
     {
       id: "EMP001",
-      name: "Amit Sharma",
-      email: "amit.sharma@example.com",
+      name: "Kishna Sharma",
+      email: "krishna.sharma@example.com",
       salary: 50000,
       expense: 20000,
       profit: 30000,
