@@ -10,7 +10,7 @@ const NotFound = () => {
     // </div>
     <div style={{ textAlign: "center", padding: "50px" }}>
       <h1 style={{ fontSize: "3rem", marginBottom: "20px", color: "red" }}>
-        404
+        401
       </h1>
       <h2 style={{ marginBottom: "20px", color: "red" }}>
         You don't have access or the page is not found.

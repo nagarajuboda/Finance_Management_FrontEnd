@@ -313,7 +313,7 @@ export default function Roles() {
           <div className="col-6 d-flex justify-content-end">
             <div className="me-2">
               <button
-                className="btn btn-danger deleteSelected"
+                className="btn btn-danger deleteSelected "
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{

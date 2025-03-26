@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Sidebar from "../Components/Admin/Sidebar";
-import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
 import Roles from "../Components/Employee/Roles";
@@ -31,7 +30,6 @@ export default function AdminRoutes() {
     </ProtectedRoute>
   );
 }
-
 function RoleBasedRoutes() {
   const sessionData = localStorage.getItem("sessionData");
   const userDetails = sessionData ? JSON.parse(sessionData) : null;
@@ -41,7 +39,7 @@ function RoleBasedRoutes() {
     "us-finance": "usfinance_team",
     "indian-finance": "indianfinance_team",
   };
-  userRole = roleMap[userRole] || userRole; // Map if necessary
+  userRole = roleMap[userRole] || userRole;
   const roleBasedRoutes = {
     admin: [
       { path: "/AdminDashboard", element: <AdminDashboard /> },
@@ -77,6 +75,7 @@ function RoleBasedRoutes() {
       { path: "/ProjectList", element: <ProjectsList /> },
       { path: "/ViewProject", element: <ViewProject /> },
       { path: "/AddExpense", element: <AddExpense /> },
+      { path: "/Notifications", element: <Notifications /> },
     ],
   };
   const accessibleRoutes = roleBasedRoutes[userRole] || [];

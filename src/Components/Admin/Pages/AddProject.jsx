@@ -667,7 +667,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -697,7 +697,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -739,7 +739,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -769,7 +769,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -808,7 +808,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -838,7 +838,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -878,7 +878,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -908,7 +908,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}

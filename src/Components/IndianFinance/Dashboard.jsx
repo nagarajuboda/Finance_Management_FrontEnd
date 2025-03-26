@@ -645,6 +645,7 @@ export default function IndainFinanceDashboard() {
             }}
           >
             <PieChart
+              className=""
               series={[
                 {
                   data,
@@ -667,15 +668,15 @@ export default function IndainFinanceDashboard() {
           <div className="row m-0 legend" style={{ paddingTop: "20px" }}>
             <div className="col-3 legend-item">
               <div class="color-box direct"></div>
-              <span>Direct</span>
+              <span style={{ fontSize: "12px" }}>Direct</span>
             </div>
             <div className="col-3  legend-item">
               <div class="color-box overhead"></div>
-              <span>Overhead</span>
+              <span style={{ fontSize: "12px" }}>Overhead</span>
             </div>
             <div className="col-6  legend-item">
               <div class="color-box general"></div>
-              <span>General Apportionment</span>
+              <span style={{ fontSize: "12px" }}>General Apportionment</span>
             </div>
           </div>
         </div>
