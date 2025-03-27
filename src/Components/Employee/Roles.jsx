@@ -321,6 +321,9 @@ export default function Roles() {
                   height: "36px",
                   display: "flex",
                   justifyContent: "end",
+                  cursor: disiblebuttons ? "not-allowed" : "pointer",
+                  opacity: disiblebuttons ? 0.65 : 1,
+                  pointerEvents: disiblebuttons ? "auto" : "all",
                 }}
               >
                 Delete Selected
@@ -358,12 +361,12 @@ export default function Roles() {
         <div style={{ padding: "10px" }}>
           <table
             id="example"
-            className="roleTable"
-            style={{ width: "100%", paddingBottom: "40px" }}
+            className="employeeTable"
+            style={{ width: "100%" }}
           >
             <thead>
               <tr
-                className="roleheader"
+                className="tableheader"
                 style={{ backgroundColor: "red important" }}
               >
                 <th style={{ margin: "0", padding: "0px 10px" }}>
@@ -383,7 +386,10 @@ export default function Roles() {
             </thead>
             <tbody>
               {currentItems.map((role, index) => (
-                <tr className="EmployeeListtablelistrow" key={role.id}>
+                <tr
+                  className="EmployeeListtablelistrow tablebody"
+                  key={role.id}
+                >
                   <td style={{ margin: "0", padding: "0px 10px" }}>
                     <input
                       type="checkbox"

@@ -66,7 +66,6 @@ const Home = () => {
         Email: valuess.email,
         Password: valuess.password,
       };
-
       var responses = await userService.FcnLogin(obj);
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));

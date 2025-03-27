@@ -389,6 +389,9 @@ export default function Employees() {
                   height: "36px",
                   display: "flex",
                   justifyContent: "end",
+                  cursor: disiblebuttons ? "not-allowed" : "pointer",
+                  opacity: disiblebuttons ? 0.65 : 1,
+                  pointerEvents: disiblebuttons ? "auto" : "all",
                 }}
               >
                 Delete Selected

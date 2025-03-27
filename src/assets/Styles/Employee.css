@@ -527,6 +527,11 @@ table.dataTable thead th {
   opacity: 1;
   font-size: 12px;
 }
+button .Show-Deleted-employee-button:disabled {
+  cursor: not-allowed;
+  pointer-events: auto;
+}
+
 .deletedEmployeespan {
   text-align: left;
   font-style: normal;

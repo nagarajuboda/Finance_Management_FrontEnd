@@ -255,7 +255,7 @@ label {
   }
 } */
 
-@media (min-width: 769px) and (max-width: 802px) {
+/* @media (min-width: 769px) and (max-width: 802px) {
   .eyeIcon {
     right: 34px;
   }
@@ -314,7 +314,7 @@ label {
   .eyeIcon {
     right: 90px;
   }
-}
+} */
 
 /* @media (min-width: 854px) and (max-width: 900px) {
   .eyeIcon {
@@ -393,4 +393,43 @@ label {
   margin-left: -100px;
   font-size: 18px;
   color: #555;
+}
+@media (max-width: 1024px) {
+  .row {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .imagediv {
+    display: none; /* Hide image section on smaller screens */
+  }
+
+  .formdiv {
+    width: 100%;
+    padding: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .formdiv1 {
+    max-width: 300px;
+  }
+
+  .logincontent {
+    font-size: 22px;
+  }
+
+  .buttonlogin1 {
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formdiv1 {
+    max-width: 250px;
+  }
+
+  .logincontent {
+    font-size: 20px;
+  }
 }
