@@ -20,6 +20,7 @@ import archetslogo from "../../../src/assets/Images/primary-logo.png";
 import LoginImage from "../../../src/assets/Images/loginbg1.png";
 import rememeberme from "../../assets/Images/checkbox.svg";
 import { useEffect } from "react";
+import userService from "../../Service/UserService/userService";
 
 const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -50,9 +51,7 @@ const Home = () => {
   const navigatetoforgotpasswordpage = async () => {
     navigate("/user/forgotpassword");
   };
-  useEffect(() => {
-    console.log(tempToken, "temptoken");
-  }, [tempToken]);
+  useEffect(() => {}, [tempToken]);
   const onLoginButtonClick = async (e) => {
     e.preventDefault();
     const newErrors = {
@@ -67,17 +66,12 @@ const Home = () => {
         Email: valuess.email,
         Password: valuess.password,
       };
-
-      var responses = await axios.post(
-        "https://localhost:44305/api/Login/login",
-        obj
-      );
-
+      var responses = await userService.FcnLogin(obj);
       var result = await responses.data;
       localStorage.setItem("sessionData", JSON.stringify(result.item));
-
       setLoggedIn(true);
       if (result.isSuccess === true) {
+        localStorage.setItem("sessionData", JSON.stringify(result.item));
         setLoggedIn(true);
         setSessionData(result.item.token);
         setTempToken(result.item.token);
@@ -85,7 +79,7 @@ const Home = () => {
           localStorage.setItem("Email", valuess.email);
           navigate("/user/CreateNewPassword");
         } else {
-          localStorage.setItem("token", result.item.token);
+          localStorage.setItem("sessionData", JSON.stringify(result.item));
           if (result.item.employee.role.name === "US-finance") {
             navigate("/Dashboard/FinanceDashboard");
           } else if (result.item.employee.role.name === "Admin") {
@@ -126,93 +120,12 @@ const Home = () => {
     Email: "",
   });
 
-  async function getotpfunction(e) {
-    e.preventDefault();
-    const newErrors = {
-      email: getotpValidation("email", emailvalues.email),
-    };
-    setEmialerror(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (isValid) {
-      var obj = {
-        Email: emailvalues.email,
-      };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/get-otp",
-        obj
-      );
-      var result = await responses.data;
-      if (result.isSuccess) {
-        toast.success("OTP sent successfully to Your Email.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-        setView("verifyOtp");
-      } else {
-        toast.error("Please enter a valid email.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      }
-    }
-  }
-
   const [otpValues, setOtpValues] = useState({
     Otp: "",
   });
   const [otpErrors, setOtpErrors] = useState({
     Otp: "",
   });
-
-  const handleOtpChange = (e) => {
-    const { name, value } = e.target;
-
-    setOtpValues({
-      ...otpValues,
-      [name]: value,
-    });
-    setOtpErrors({
-      ...otpErrors,
-      [name]: validateOtp(name, value),
-    });
-  };
-
-  async function onVerifyOtpClick(e) {
-    e.preventDefault();
-    const newErrors = {
-      Otp: validateOtp("Otp", otpValues.Otp),
-    };
-    setOtpErrors(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (!isValid) {
-      var obj = { Email: values.Email, Otp: otpValues.Otp };
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/verify-otp",
-        obj
-      );
-      var result = await responses.data;
-      if (result.isSuccess) {
-        toast.success("OTP verified successfully.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-        setView("setNewPassword");
-      } else {
-        toast.error("Invalid OTP. Please try again.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-      }
-    }
-  }
-
-  function validateOtp(name, value) {
-    if (name === "Otp") {
-      if (!value) return "OTP is required";
-    }
-  }
 
   const [passwordValues, setPasswordValues] = useState({
     NewPassword: "",
@@ -223,31 +136,6 @@ const Home = () => {
     ConfirmPassword: "",
   });
 
-  const handlePasswordChange = (e) => {
-    const { name, value } = e.target;
-
-    setPasswordValues({
-      ...passwordValues,
-      [name]: value,
-    });
-    setPasswordErrors({
-      ...passwordErrors,
-      [name]: validatePassword(name, value),
-    });
-  };
-  const handleChange22 = async (e) => {
-    const { name, value } = e.target;
-
-    setEmialValuess({
-      ...emailvalues,
-      [name]: value,
-    });
-
-    setEmialerror({
-      ...error,
-      [name]: getotpValidation(name, value),
-    });
-  };
   const handleChange = async (e) => {
     const { name, value } = e.target;
 
@@ -261,79 +149,6 @@ const Home = () => {
       [name]: LoginFormValidation(name, value),
     });
   };
-  async function onSetNewPasswordClick(e) {
-    e.preventDefault();
-
-    const newErrors = {
-      NewPassword: validatePassword("NewPassword", passwordValues.NewPassword),
-      ConfirmPassword: validatePassword(
-        "ConfirmPassword",
-        passwordValues.ConfirmPassword
-      ),
-    };
-    setPasswordErrors(newErrors);
-
-    const isValid = Object.values(newErrors).every((error) => error === "");
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match.", {
-        position: "top-right",
-        autoClose: 4000,
-      });
-      return;
-    }
-
-    if (!isValid) {
-      var obj = {
-        Email: values.Email,
-        Otp: otpValues.Otp,
-        NewPassword: passwordValues.NewPassword,
-      };
-
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/update-password",
-        obj
-      );
-      var result = responses.data;
-      if (result.isSuccess) {
-        toast.success("Password updated successfully.", {
-          position: "top-right",
-          autoClose: 4000,
-        });
-        setView("login");
-      } else {
-        if (result.error.code === "AUTH003") {
-          toast.error(
-            "New password cannot be the same as the existing password.",
-            {
-              position: "top-right",
-              autoClose: 4000,
-            }
-          );
-        } else {
-          toast.error("Failed to update password. Please try again.", {
-            position: "top-right",
-            autoClose: 4000,
-          });
-        }
-      }
-    }
-  }
-
-  function validatePassword(name, value) {
-    if (name === "NewPassword") {
-      if (!value) return "New password is required";
-      if (
-        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
-          value
-        )
-      )
-        return "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character";
-    }
-    if (name === "ConfirmPassword") {
-      if (!value) return "Confirm password is required";
-      if (value !== passwordValues.NewPassword) return "Passwords should match";
-    }
-  }
 
   return (
     <div className="row m-0 p-0">

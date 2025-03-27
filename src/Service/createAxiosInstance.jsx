@@ -1,19 +1,21 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { getSessionData } from "./SharedSessionData";
-import { useState, useEffect } from "react";
 
 const createAxiosInstance = (baseURL) => {
   const api = axios.create({
     baseURL: baseURL,
   });
 
-  const token = localStorage.getItem("token");
-
   api.interceptors.request.use(
     (config) => {
-      if (token) {
-        config.headers["Authorization"] = `Bearer ${token}`;
+      const sessionData = localStorage.getItem("sessionData");
+      const userDetails = sessionData ? JSON.parse(sessionData) : null;
+
+      if (userDetails?.token) {
+        config.headers["Authorization"] = `Bearer ${userDetails.token}`;
+        //  console.log(" Token Attached:", userDetails.token);
+      } else {
+        console.warn("⚠️ No token found in sessionData");
       }
 
       return config;
@@ -30,18 +32,10 @@ const createAxiosInstance = (baseURL) => {
       }
 
       const { data, status } = error.response;
-
       if (status === 401) {
         toast.error("Unauthorized! Please log in again.");
-        localStorage.removeItem("token");
+        localStorage.removeItem("sessionData");
         window.location.href = "/login";
-      } else {
-        const errorMessage =
-          data?.errors && Array.isArray(data.errors)
-            ? data.errors.join(", ")
-            : data?.message || "An unexpected error occurred";
-
-        toast.error(errorMessage);
       }
 
       return Promise.reject(error);

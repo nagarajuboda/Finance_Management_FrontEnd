@@ -15,6 +15,7 @@ import ImportPopup from "../Employee/ImportPopup";
 import Dropdown from "react-bootstrap/Dropdown";
 import { getSessionData } from "../../Service/SharedSessionData";
 import { apiurl } from "../../Service/createAxiosInstance";
+import ManagerService from "../../Service/ManagerService/ManagerService";
 export default function Employees() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -37,11 +38,8 @@ export default function Employees() {
     setIsPopupOpen(!isPopupOpen);
   };
   const FetchData = async () => {
-    const response = await apiurl.get(
-      `https://localhost:44305/api/Employees/GetEmployeesByManager?id=${id}`
-    );
+    const response = await ManagerService.FcnGetEmployeesByManager(id);
     var result = response.data.item;
-
     setEmployees(result);
   };
 
@@ -61,18 +59,25 @@ export default function Employees() {
       employee.employeeId.toLowerCase().includes(searchQuery.toLowerCase())
     );
   });
+  console.log(filteredEmployees, "=========");
+  let activeEmployees = [];
 
+  if (isDivVisible === true) {
+    activeEmployees = filteredEmployees.filter(
+      (emp) => emp.employeeStatus === 0
+    );
+  } else {
+    activeEmployees = filteredEmployees.filter(
+      (emp) => emp.employeeStatus === 1
+    );
+  }
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredEmployees.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const totalPages = Math.ceil(activeEmployees.length / itemsPerPage);
+  const currentItems = activeEmployees.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
@@ -80,25 +85,41 @@ export default function Employees() {
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
+
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, startPage + 1);
+
+  const visiblePages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, index) => startPage + index
+  );
 
   const DownloadExcel = async (listtype, filetype) => {
     let response;
     try {
       if (isDivVisible == false) {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}&ManagerId=${id}`,
-          { responseType: "blob" }
+        response = await ManagerService.FcnExportByManagerEmployees(
+          listtype,
+          filetype,
+          "Active",
+          id
         );
       } else {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadProjectManagerEmployees?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}&ManagerId=${id}`,
-          { responseType: "blob" }
+        response = await ManagerService.FcnExportByManagerEmployees(
+          listtype,
+          filetype,
+          "Inactive",
+          id
         );
       }
 
@@ -312,13 +333,13 @@ export default function Employees() {
                             style={{ fontSize: "14px" }}
                             onClick={(e) => ViewDetails(employee.id)}
                           >
-                            {employee.firstName}
+                            {employee?.firstName || "N/A"}
                           </td>
                           <td
                             style={{ fontSize: "14px" }}
                             onClick={(e) => ViewDetails(employee.id)}
                           >
-                            {employee.lastName}
+                            {employee?.lastName || "N/A"}
                           </td>
                           <td
                             style={{ fontSize: "14px" }}
@@ -356,8 +377,11 @@ export default function Employees() {
                             style={{ fontSize: "14px" }}
                             onClick={(e) => ViewDetails(employee.id)}
                           >
-                            {employee.projectManager !== "N/A"
-                              ? `${employee.projectManager.firstName} ${employee.projectManager.lastName}`
+                            {employee?.projectManager &&
+                            employee.projectManager !== "N/A"
+                              ? `${
+                                  employee.projectManager?.firstName || "N/A"
+                                } ${employee.projectManager?.lastName || ""}`
                               : "N/A"}
                           </td>
                         </tr>
@@ -505,25 +529,23 @@ export default function Employees() {
               disabled={currentPage === 1}
               style={{ fontSize: "14px" }}
             >
-              <span> Prev</span>
+              Prev
             </button>
 
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (page) => (
-                <button
-                  key={page}
-                  style={{
-                    fontSize: "14px",
-                    color: "black",
-                    fontWeight: "600",
-                  }}
-                  onClick={() => setCurrentPage(page)}
-                  className={currentPage === page ? "active-page" : ""}
-                >
-                  {page}
-                </button>
-              )
-            )}
+            {visiblePages.map((page) => (
+              <button
+                key={page}
+                style={{
+                  fontSize: "14px",
+                  color: "black",
+                  fontWeight: "600",
+                }}
+                onClick={() => setCurrentPage(page)}
+                className={currentPage === page ? "active-page" : ""}
+              >
+                {page}
+              </button>
+            ))}
 
             <button
               style={{ fontSize: "14px", color: "black", fontWeight: "600" }}

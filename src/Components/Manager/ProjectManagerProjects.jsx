@@ -1,28 +1,16 @@
-import axios from "axios";
 import "../../../src/assets/Styles/Projects.css";
 import { useEffect } from "react";
 import "../../../src/assets/Styles/Employee.css";
 import { useState } from "react";
-import { isPast } from "date-fns";
-import image from "../../../src/assets/Images/Editicon.png";
-import deleteimage from "../../src/../assets/Images/deleteicon.png";
-import userimage from "../../../src/assets/Images/User.png";
 import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import elipisimage from "../../../src/assets/Images/Ellipse.png";
-import checkimage from "../../../src/assets/Images/check.png";
-import { CoPresentOutlined } from "@mui/icons-material";
+import ManagerService from "../../Service/ManagerService/ManagerService";
 export default function ProjectManagerProjects() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [Projects, setProjects] = useState([]);
-  const [disiblebuttons, setDisiblebuttons] = useState(true);
   const [selectedProjectIds, setSelectedProjectIds] = useState([]);
-
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const [open, setOpen] = useState(false);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -30,15 +18,11 @@ export default function ProjectManagerProjects() {
     FetchData();
   }, [selectedProjectIds]);
   const FetchData = async () => {
-    const response = await axios.get(
-      `https://localhost:44305/api/EmployeeProjects/GetProjectManagerProjects?id=${id}`
-    );
+    const response = await ManagerService.FcnGetprojectByManager(id);
     const result = response.data;
     setProjects(result.item);
   };
-  const AddNewProject = () => {
-    navigate("/Dashboard/AddProject");
-  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -57,9 +41,6 @@ export default function ProjectManagerProjects() {
   );
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
-  const DeleteMessageClose = async () => {
-    setOpen(false);
-  };
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
     setCurrentPage(1);

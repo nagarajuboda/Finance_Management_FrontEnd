@@ -14,6 +14,8 @@ import React from "react";
 import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
 import { addMonths } from "date-fns";
+import { apiurl } from "../../Service/createAxiosInstance";
+import USFinanceTeamService from "../../Service/USFinanceTeamService/USFinanceTeamService";
 export default function UsFinanceTeamDashboard() {
   const chartref = useRef(null);
   const barchartref = useRef(null);
@@ -26,7 +28,9 @@ export default function UsFinanceTeamDashboard() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [submitedTimesheet, setsubmitedTimesheet] = useState("70%");
   const [NotsubmitedTimesheet, setNotsubmitedTimesheet] = useState("30%");
-  const [selectedDate1, setSelectedDate1] = useState(new Date());
+  const [selectedDate1, setSelectedDate1] = useState(
+    new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+  );
   const [monthlyRevenueData, setMonthlyRevenueData] = useState([]);
   const [RevenueValues, setRevneuValues] = useState();
   const [ProjectNames, setProjectNames] = useState([]);
@@ -205,8 +209,9 @@ export default function UsFinanceTeamDashboard() {
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
     const monthNumber = monthMap[month];
-    var response = await axios.get(
-      `https://localhost:44305/api/Revenue/GetRevenueOverview?month=${monthNumber}&year=${year}`
+    var response = await USFinanceTeamService.FcnGetRevenueOverView(
+      monthNumber,
+      year
     );
     var result = response.data;
     if (result.isSuccess) {
@@ -291,6 +296,9 @@ export default function UsFinanceTeamDashboard() {
         plugins: {
           chartArea: {
             backgroundColor: "red",
+          },
+          legend: {
+            display: false,
           },
           tooltip: {
             callbacks: {
@@ -880,7 +888,13 @@ export default function UsFinanceTeamDashboard() {
                   onChange={handleDateChange}
                   dateFormat="MMMM yyyy"
                   showMonthYearPicker
-                  maxDate={new Date()}
+                  maxDate={
+                    new Date(
+                      new Date().getFullYear(),
+                      new Date().getMonth() - 1,
+                      1
+                    )
+                  }
                   className="timesheet-datepicker"
                   customInput={
                     <div

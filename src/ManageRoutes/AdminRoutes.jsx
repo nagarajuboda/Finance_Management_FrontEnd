@@ -1,30 +1,14 @@
-import Dashboard from "../Components/Dashboard";
-import About from "../Components/Admin/Pages/About";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Sidebar from "../Components/Admin/Sidebar";
-import Comment from "../Components/Admin/Pages/Comment";
-import Product from "../Components/Admin/Pages/Product";
-import ProductList from "../Components/Admin/Pages/ProductList";
-import AllProjects from "../Components/Admin/Pages/AllProjects";
 import AddProject from "../Components/Admin/Pages/AddProject";
 import { ViewProject } from "../Components/Admin/ViewProject";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import EmployeeDashboard from "../Components/Employee/EmployeeDashboard";
 import Roles from "../Components/Employee/Roles";
 import EmployeeDetails from "../Components/Employee/EmployeeDetails";
-import Projects from "../Components/Employee/DashboardPages/Projects";
-import ViewMangerProject from "../Components/Employee/DashboardPages/ViewProject";
-import TimeSheet from "../Components/Employee/DashboardPages/TimeSheet";
-import Profile from "../Components/Admin/Pages/Profile";
-import AllEmployees from "../Components/Hr/Employees";
-import GetAllRevenue from "../Components/IndianFinance/Revenue";
-import UnderManagerEmployees from "../Components/Manager/UnderManagerEmployees";
 import AddRevenue from "../Components/USFinance/AddRevenue";
-import USFiNanceAllProjects from "../Components/USFinance/AllProjects";
 import Employees from "../Components/Employee/Employees";
 import AddEmployee from "../Components/Employee/AddEmployee";
 import Projectss from "../Components/Admin/Pages/Projects";
 import EditEmployeePopup from "../Components/Employee/EditEmployeePopup";
-import UpdateProject from "../Components/Admin/Pages/UpdateProject";
 import AdminDashboard from "../Components/Admin/AdminDashboard";
 import Employeess from "../Components/Manager/Employees";
 import ManagerDashboard from "../Components/Manager/ManagerDashboard";
@@ -37,59 +21,71 @@ import IndianFinanceTeamDashboard from "../Components/IndianFinance/Dashboard";
 import ListOfEmployees from "../Components/IndianFinance/ListOfEmployees";
 import ProjectsList from "../Components/IndianFinance/Projects";
 import AddExpense from "../Components/IndianFinance/AddExpense";
+import NotFound from "../Components/NotFound/NotFound";
+import ProtectedRoute from "./ProtectedRoute";
 export default function AdminRoutes() {
+  return (
+    <ProtectedRoute>
+      <RoleBasedRoutes />
+    </ProtectedRoute>
+  );
+}
+function RoleBasedRoutes() {
+  const sessionData = localStorage.getItem("sessionData");
+  const userDetails = sessionData ? JSON.parse(sessionData) : null;
+  let userRole = userDetails?.employee?.role?.name.toLowerCase() || "guest";
+  const roleMap = {
+    "project manager": "project_manager",
+    "us-finance": "usfinance_team",
+    "indian-finance": "indianfinance_team",
+  };
+  userRole = roleMap[userRole] || userRole;
+  const roleBasedRoutes = {
+    admin: [
+      { path: "/AdminDashboard", element: <AdminDashboard /> },
+      { path: "/Employees", element: <Employees /> },
+      { path: "/AddEmployee", element: <AddEmployee /> },
+      { path: "/AddProject", element: <AddProject /> },
+      { path: "/All/Projects", element: <Projectss /> },
+      { path: "/ViewProject", element: <ViewProject /> },
+      { path: "/Roles", element: <Roles /> },
+      { path: "/EmployeeDetails", element: <EmployeeDetails /> },
+      { path: "/EditEmployee", element: <EditEmployeePopup /> },
+    ],
+    project_manager: [
+      { path: "/Employeeslist", element: <Employeess /> },
+      { path: "/EmployeeDetails", element: <EmployeeDetails /> },
+      { path: "/ProjectManagerProjects", element: <ProjectManagerProjects /> },
+      { path: "/ViewProject", element: <ViewProject /> },
+      { path: "/TimeSheet", element: <TimeSheetModule /> },
+      { path: "/Notifications", element: <Notifications /> },
+    ],
+    usfinance_team: [
+      { path: "/FinanceDashboard", element: <UsFinanceTeamDashboard /> },
+      {
+        path: "/USFinanceTeamAllProjects",
+        element: <USFinanceTeamAllProjects />,
+      },
+      { path: "/USFinance/AddRevenue", element: <AddRevenue /> },
+    ],
+    indianfinance_team: [
+      { path: "/Dashboard", element: <IndianFinanceTeamDashboard /> },
+      { path: "/EmployeeList", element: <ListOfEmployees /> },
+      { path: "/EmployeeDetails", element: <EmployeeDetails /> },
+      { path: "/ProjectList", element: <ProjectsList /> },
+      { path: "/ViewProject", element: <ViewProject /> },
+      { path: "/AddExpense", element: <AddExpense /> },
+      { path: "/Notifications", element: <Notifications /> },
+    ],
+  };
+  const accessibleRoutes = roleBasedRoutes[userRole] || [];
   return (
     <Sidebar>
       <Routes>
-        <Route path="/" element={<EmployeeDashboard />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/comment" element={<Comment />} />
-        <Route path="/AdminDashboard" element={<AdminDashboard />} />
-        <Route path="/Dashboard/AllProjects" element={<AllProjects />} />
-        <Route path="/AddProject" element={<AddProject />} />
-        <Route path="/All/Projects" element={<Projectss />} />
-        <Route path="/ViewProject" element={<ViewProject />} />
-        <Route path="/product" element={<Product />} />
-        <Route path="/productList" element={<ProductList />} />
-        <Route path="/EmployeeDashboard" element={<EmployeeDashboard />} />
-        <Route path="/Roles" element={<Roles />} />
-        <Route path="/EmployeeDetails" element={<EmployeeDetails />} />
-        <Route path="/Employeeslist" element={<Employeess />} />
-        <Route path="/FinanceDashboard" element={<UsFinanceTeamDashboard />} />
-        <Route
-          path="/ProjectManagerProjects"
-          element={<ProjectManagerProjects />}
-        />
-        <Route path="/ManagerDasboard" element={<ManagerDashboard />} />
-        <Route path="/Employee/Projects" element={<Projects />} />
-        <Route path="/Employee/ViewProject" element={<ViewMangerProject />} />
-        <Route path="/EditEmployee" element={<EditEmployeePopup />} />
-        <Route path="/UpdateProject" element={<UpdateProject />} />
-        <Route path="/TimeSheet" element={<TimeSheetModule />} />
-        <Route path="/Employee/TimeSheet" element={<TimeSheet />} />
-        <Route path="/Dashboard/Profile" element={<Profile />} />
-        <Route path="/IndianFinance/Revenue" element={<GetAllRevenue />} />
-        <Route path="/AddExpense" element={<AddExpense />} />
-        <Route path="/USFinance/AddRevenue" element={<AddRevenue />} />
-        <Route path="/Employees" element={<Employees />} />
-        <Route path="/AddEmployee" element={<AddEmployee />} />
-        <Route path="/Notifications" element={<Notifications />} />
-        <Route path="/EmployeeList" element={<ListOfEmployees />} />
-        <Route path="/Dashboard" element={<IndianFinanceTeamDashboard />} />
-        <Route path="/ProjectList" element={<ProjectsList />} />
-        <Route
-          path="/USFinanceTeamAllProjects"
-          element={<USFinanceTeamAllProjects />}
-        />
-        <Route
-          path="/UnderManagerEmployees"
-          element={<UnderManagerEmployees />}
-        />
-        <Route
-          path="/USFinance/UsFinaceALlProjects"
-          element={<USFiNanceAllProjects />}
-        />
-        <Route path="/AllEmployees" element={<AllEmployees />} />
+        {accessibleRoutes.map(({ path, element }, index) => (
+          <Route key={index} path={path} element={element} />
+        ))}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Sidebar>
   );

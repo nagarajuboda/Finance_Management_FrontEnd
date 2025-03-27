@@ -12,6 +12,7 @@ import { FaDollarSign } from "react-icons/fa6";
 import "react-toastify/dist/ReactToastify.css";
 import ellips from "../../assets/Images/Ellipse.png";
 import checkimage from "../../assets/Images/check.png";
+import { apiurl } from "../../Service/createAxiosInstance";
 export default function AddRevenue() {
   const navigate = useNavigate();
   var projectID = sessionStorage.getItem("id");
@@ -43,10 +44,10 @@ export default function AddRevenue() {
     FetchData();
     GetTimeSheet(projectID, selectedDate);
   }, [projectID, selectedDate]);
-
+  console.log(selectedDate, "========>");
   async function FetchData() {
-    var ProjectResponse = await axios.get(
-      `https://localhost:44305/api/Projects/GetProject?id=${projectID}`
+    var ProjectResponse = await apiurl.get(
+      `/Projects/GetProject?id=${projectID}`
     );
     var result = ProjectResponse.data;
     setProject(result.item.project);
@@ -63,10 +64,11 @@ export default function AddRevenue() {
     const year = selectedDate.getFullYear();
     const monthNumber = monthMap[month];
     var loader = true;
-    var response = await axios.get(
-      `https://localhost:44305/api/Timesheets/GetTimesheetsByMonthAndYear?projectId=${projectID}&month=${monthNumber}&year=${year}`
+    var response = await USFinanceTeamService.FcnGetTimeSheetDetails(
+      projectID,
+      monthNumber,
+      year
     );
-
     var result = response.data;
     if (result.isSuccess) {
       setTimeSheet(response.data.item);
@@ -100,6 +102,7 @@ export default function AddRevenue() {
   const backtoProjectList = () => {
     navigate("/dashboard/USFinanceTeamAllProjects");
   };
+  console.log(selectedDate, "selected date");
   const SaveForm = async () => {
     const employeeData = TimeSheetdata.map((employee) => ({
       timesheetId: employee.id,
@@ -111,7 +114,7 @@ export default function AddRevenue() {
     );
     if (AddtimeSheetResponse.isSuccess) {
       setisOpen(true);
-      GetTimeSheet();
+      await GetTimeSheet(projectID, selectedDate);
     } else {
       toast.error(AddtimeSheetResponse.error.message, {
         position: "top-right",
@@ -178,7 +181,9 @@ export default function AddRevenue() {
               onChange={handleDateChange}
               dateFormat="MMMM yyyy"
               showMonthYearPicker
-              maxDate={new Date()}
+              maxDate={
+                new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+              }
               className="timesheet-datepicker me-2"
               style={{ fontSize: "14px" }}
               customInput={

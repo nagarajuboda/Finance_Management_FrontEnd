@@ -37,6 +37,7 @@ import {
 } from "@mui/material";
 import ellips from "../../../assets/Images/Ellipse.png";
 import checkimage from "../../../assets/Images/check.png";
+import ProjectService from "../../../Service/AdminService/ProjectService";
 
 export default function AddProject() {
   const navigate = useNavigate();
@@ -121,11 +122,10 @@ export default function AddProject() {
           (dept) => dept.deptName === value
         );
 
-        const response = await axios.get(
-          `https://localhost:44305/api/Projects/DepartmentTeams?deptid=${selectedDepartment.id}`
+        const response = await ProjectService.FcnAddSelectedDept(
+          selectedDepartment.id
         );
-
-        setFilteredTeams(response.data.item);
+        setFilteredTeams(response.item);
       }
     }
 
@@ -327,7 +327,7 @@ export default function AddProject() {
       </div>
       <div className="carddiv">
         <form onSubmit={formSubmit}>
-          <div className="row m-0" style={{ paddingTop: "25px" }}>
+          <div className="row m-0" style={{ paddingTop: "30px" }}>
             <div className="col-3">
               <TextField
                 label="Project ID"
@@ -667,7 +667,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -697,7 +697,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -739,7 +739,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -769,7 +769,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -808,7 +808,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -838,7 +838,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -878,7 +878,7 @@ export default function AddProject() {
                 select
                 sx={{
                   "& .MuiOutlinedInput-root": {
-                    fontSize: "1.1rem",
+                    fontSize: "14px",
                     "& fieldset": {
                       border: "1px solid #DCDCDC",
                     },
@@ -908,7 +908,7 @@ export default function AddProject() {
                     transform: "translate(8px, -9px) scale(0.75)",
                   },
                   "& input::placeholder": {
-                    fontSize: "13px",
+                    fontSize: "14px",
                     color: "#AEAEAE",
                   },
                 }}
@@ -1002,6 +1002,7 @@ export default function AddProject() {
             className="row m-0"
             style={{
               paddingTop: "50px",
+              paddingBottom: "25px",
             }}
           >
             <div className="col-10"></div>

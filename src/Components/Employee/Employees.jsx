@@ -47,6 +47,7 @@ export default function Employees() {
   const handleOpenPopup = async (e, index, id) => {
     var response = await EmployeeService.DeleteEmployees(id);
     var result = response;
+    debugger;
     if (result.isSuccess === true) {
       FetchData();
       setOpen(true);
@@ -56,6 +57,7 @@ export default function Employees() {
   const closeDeletePopup = () => {
     setOpen(false);
   };
+
   const handleSelectAll = (e) => {
     const isChecked = e.target.checked;
     if (isChecked) {
@@ -106,17 +108,24 @@ export default function Employees() {
     );
   });
 
+  let activeEmployees = [];
+
+  if (isDivVisible === true) {
+    activeEmployees = filteredEmployees.filter(
+      (emp) => emp.employeeDetails.employeeStatus === 0
+    );
+  } else {
+    activeEmployees = filteredEmployees.filter(
+      (emp) => emp.employeeDetails.employeeStatus === 1
+    );
+  }
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredEmployees.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const totalPages = Math.ceil(activeEmployees.length / itemsPerPage);
+  const currentItems = activeEmployees.slice(indexOfFirstItem, indexOfLastItem);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
@@ -124,12 +133,24 @@ export default function Employees() {
   };
 
   const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
+
+  const startPage = Math.max(1, currentPage - 1);
+  const endPage = Math.min(totalPages, startPage + 1);
+
+  const visiblePages = Array.from(
+    { length: endPage - startPage + 1 },
+    (_, index) => startPage + index
+  );
 
   const handleCheckboxChange = (employeeId, isChecked) => {
     setSelectedEmployeeIds((prevSelected) => {
@@ -154,14 +175,16 @@ export default function Employees() {
 
     try {
       if (isDivVisible == false) {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Active"}`,
-          { responseType: "blob" }
+        response = await EmployeeService.fcnExportEmployees(
+          listtype,
+          filetype,
+          "Active"
         );
       } else {
-        response = await axios.get(
-          `https://localhost:44305/api/Export/DownloadFile?listType=${listtype}&fileType=${filetype}&TypeOfEmployees=${"Inactive"}`,
-          { responseType: "blob" }
+        response = await EmployeeService.fcnExportEmployees(
+          listtype,
+          filetype,
+          "Inactive"
         );
       }
 
@@ -195,11 +218,20 @@ export default function Employees() {
     setIsDivVisible(e.target.checked);
     setDeleteEmployeebuttonDisibled(false);
   };
+
   return (
     <div className="Employeemaindiv">
       <div className="employeeheader">Employees</div>
       <div className="Employeelist">
-        <div className="row" style={{ paddingTop: "15px" }}>
+        <div
+          className="row"
+          style={{
+            paddingTop: "20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           {isDivVisible ? (
             <div
               className="col-2"
@@ -357,6 +389,9 @@ export default function Employees() {
                   height: "36px",
                   display: "flex",
                   justifyContent: "end",
+                  cursor: disiblebuttons ? "not-allowed" : "pointer",
+                  opacity: disiblebuttons ? 0.65 : 1,
+                  pointerEvents: disiblebuttons ? "auto" : "all",
                 }}
               >
                 Delete Selected
@@ -713,7 +748,13 @@ export default function Employees() {
             </div>
           </div>
         )}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingBottom: "35px",
+          }}
+        >
           <select
             style={{ cursor: "pointer", fontSize: "14px" }}
             className="numberpagenation ms-2"
@@ -739,25 +780,23 @@ export default function Employees() {
               disabled={currentPage === 1}
               style={{ fontSize: "14px" }}
             >
-              <span> Prev</span>
+              Prev
             </button>
 
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-              (page) => (
-                <button
-                  key={page}
-                  style={{
-                    fontSize: "14px",
-                    color: "black",
-                    fontWeight: "600",
-                  }}
-                  onClick={() => setCurrentPage(page)}
-                  className={currentPage === page ? "active-page" : ""}
-                >
-                  {page}
-                </button>
-              )
-            )}
+            {visiblePages.map((page) => (
+              <button
+                key={page}
+                style={{
+                  fontSize: "14px",
+                  color: "black",
+                  fontWeight: "600",
+                }}
+                onClick={() => setCurrentPage(page)}
+                className={currentPage === page ? "active-page" : ""}
+              >
+                {page}
+              </button>
+            ))}
 
             <button
               style={{ fontSize: "14px", color: "black", fontWeight: "600" }}

@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import { AddRoleFormValidation } from "./AddRoleformValidatons";
 import { actions } from "react-table";
+import RolesService from "../../Service/AdminService/RolesService";
 const priorityMap = {
   1: "High",
   2: "Medium",
@@ -44,6 +45,7 @@ export default function Roles() {
   const [isopen, setisOpen] = useState(false);
   const [RoleName, setRoleName] = useState("");
   const [Deleterolepopup, setDeleterolepopup] = useState(false);
+  const [AddRolePopup, setAddRolePopup] = useState(false);
   const [selectedRolesIds, setSelectedRolesIds] = useState([]);
   const [SelectedRolesPopup, setSelectedRolesPopup] = useState(false);
   const [roleToggleState, setRoleToggleState] = useState({});
@@ -71,13 +73,8 @@ export default function Roles() {
   };
 
   const fetchRoles = async () => {
-    var activityRoleResponse = await axios.get(
-      "https://localhost:44305/api/ActivityLog"
-    );
     try {
-      const response = await axios.get(
-        "https://localhost:44305/api/Roles/AllRoles"
-      );
+      const response = await RolesService.FcnGetRoles();
       const sortedRoles = response.data.sort((a, b) => {
         if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
         if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
@@ -86,22 +83,6 @@ export default function Roles() {
       setRoles(sortedRoles);
     } catch (error) {
       console.error("Error fetching roles", error);
-    }
-  };
-
-  const EdittogglePopup = (e, index, roleId) => {
-    sessionStorage.setItem("RoleID", roleId);
-    navigate("/dashboard/EditRoles");
-  };
-
-  const handleOpenPopup = async (e, index, id) => {
-    var response = await axios.delete(
-      `https://localhost:44305/api/Roles/${id}`
-    );
-    var result = response.data;
-    if (result.isSuccess === true) {
-      fetchRoles();
-      setOpen(true);
     }
   };
   const closeDeletePopup = () => {
@@ -127,10 +108,7 @@ export default function Roles() {
     }));
   };
   const UpdateRole = async () => {
-    var UpdateRoleResponse = await axios.put(
-      "https://localhost:44305/api/Roles/UpdateRole",
-      role
-    );
+    var UpdateRoleResponse = await RolesService.FcnUpdateRole(role);
     var result = UpdateRoleResponse.data;
     if (result.message != null) {
       setIsUpdateOpen(false);
@@ -150,7 +128,6 @@ export default function Roles() {
       setSelectedRolesIds([]);
       setDisiblebuttons(true);
     }
-
     document.querySelectorAll(".row-checkbox").forEach((checkbox) => {
       if (!checkbox.disabled) {
         checkbox.checked = isChecked;
@@ -158,11 +135,9 @@ export default function Roles() {
     });
   };
   const DeleteSelectedRecords = async () => {
-    const response = await axios.post(
-      "https://localhost:44305/api/Roles/DeleteSelectedRoles",
+    const response = await RolesService.FcnDeleteSelectedRoles(
       selectedRolesIds
     );
-
     const result = response.data;
 
     if (result.isSuccess) {
@@ -229,9 +204,7 @@ export default function Roles() {
     setisOpen(false);
   };
   const UpdatePopup = async (roleId) => {
-    var getRoleResponse = await axios.get(
-      `https://localhost:44305/api/Roles/getRole?id=${roleId} `
-    );
+    var getRoleResponse = await RolesService.FcnGetRole(roleId);
     setIsUpdateOpen(true);
     var result = getRoleResponse.data;
     setRole(result);
@@ -251,14 +224,13 @@ export default function Roles() {
         name: values.RoleName,
         priority: values.Priority,
       };
-      var response = await axios.post(
-        "https://localhost:44305/api/Roles/CreateRole",
-        obj
-      );
+      var response = await RolesService.FcnCreateRole(obj);
       var result = response.data;
+      console.log(result, "=result");
       if (result.isSuccess) {
         setisOpen(false);
         fetchRoles();
+        setAddRolePopup(true);
       } else {
         toast.error(result.error.message, {
           position: "top-right",
@@ -268,13 +240,16 @@ export default function Roles() {
     }
   };
   const DeleteRoleFunction = async (roleId) => {
-    var response = await axios.delete(
-      `https://localhost:44305/api/Roles/${roleId}`
-    );
+    var response = await RolesService.FcnDeleteRole(roleId);
     var result = response.data;
-    if (result.message != null) {
+    if (result.isSuccess) {
       fetchRoles();
       setDeleterolepopup(true);
+    } else {
+      toast.error(result.error.message, {
+        position: "top-right",
+        autoClose: 4000,
+      });
     }
   };
 
@@ -306,14 +281,14 @@ export default function Roles() {
       status: newStatus,
     };
 
-    var response = await axios.put(
-      "https://localhost:44305/api/Roles/TemporaryUpdate",
-      obj
-    );
+    var response = await RolesService.FcnChangeRoleStatus(obj);
     var result = response.data;
     if (result.isSuccess) {
       fetchRoles();
     }
+  };
+  const closePopup = () => {
+    setAddRolePopup(false);
   };
   return (
     <div className="Rolemaindiv">
@@ -322,7 +297,7 @@ export default function Roles() {
         <div
           className="row"
           style={{
-            paddingTop: "5px",
+            paddingTop: "15px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -338,7 +313,7 @@ export default function Roles() {
           <div className="col-6 d-flex justify-content-end">
             <div className="me-2">
               <button
-                className="btn btn-danger deleteSelected"
+                className="btn btn-danger deleteSelected "
                 disabled={disiblebuttons}
                 onClick={DeleteSelectedRecords}
                 style={{
@@ -346,6 +321,9 @@ export default function Roles() {
                   height: "36px",
                   display: "flex",
                   justifyContent: "end",
+                  cursor: disiblebuttons ? "not-allowed" : "pointer",
+                  opacity: disiblebuttons ? 0.65 : 1,
+                  pointerEvents: disiblebuttons ? "auto" : "all",
                 }}
               >
                 Delete Selected
@@ -381,10 +359,14 @@ export default function Roles() {
         </div>
 
         <div style={{ padding: "10px" }}>
-          <table id="example" className="roleTable" style={{ width: "100%" }}>
+          <table
+            id="example"
+            className="employeeTable"
+            style={{ width: "100%" }}
+          >
             <thead>
               <tr
-                className="roleheader"
+                className="tableheader"
                 style={{ backgroundColor: "red important" }}
               >
                 <th style={{ margin: "0", padding: "0px 10px" }}>
@@ -404,7 +386,10 @@ export default function Roles() {
             </thead>
             <tbody>
               {currentItems.map((role, index) => (
-                <tr className="EmployeeListtablelistrow" key={role.id}>
+                <tr
+                  className="EmployeeListtablelistrow tablebody"
+                  key={role.id}
+                >
                   <td style={{ margin: "0", padding: "0px 10px" }}>
                     <input
                       type="checkbox"
@@ -947,12 +932,43 @@ export default function Roles() {
                 />
               </div>
             </div>
-            <h2 className="unique-popup-title">Roles Delete Successfully!</h2>
+            <h2 className="unique-popup-title">
+              Selected Roles Delete Successfully!
+            </h2>
             <p className="unique-popup-message">Click OK to view result</p>
             <button
               className="unique-popup-button"
               onClick={selectedRolesPopup}
             >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {AddRolePopup && (
+        <div className="unique-popup-overlay">
+          <div className="unique-popup-container">
+            <div className="unique-popup-icon">
+              <div className="ellipse-container">
+                <img
+                  src={chechimage}
+                  alt="Check"
+                  className="check-image"
+                  height="40px"
+                  width="40px"
+                />
+                <img
+                  src={elipsimage}
+                  alt="Ellipse"
+                  className="ellipse-image"
+                  height="65px"
+                  width="65px"
+                />
+              </div>
+            </div>
+            <h2 className="unique-popup-title">New Role Successfully Added!</h2>
+            <p className="unique-popup-message">Click OK to view result</p>
+            <button className="unique-popup-button" onClick={closePopup}>
               OK
             </button>
           </div>

@@ -28,6 +28,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import ImportProjectEmployees from "../Employee/ImportProjectEmployees";
+import ProjectService from "../../Service/AdminService/ProjectService";
 export function ViewProject() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isImportPopupOpen, setIsImportPopupOpen] = useState(false);
@@ -93,11 +94,8 @@ export function ViewProject() {
       return Math.min(Math.max(progressPercentage, 0), 100);
     }
   };
-
   async function FetchData() {
-    const Projects = await axios.get(
-      "https://localhost:44305/api/Projects/GetAllProjects"
-    );
+    const Projects = await ProjectService.FcnGetAllProjects();
     const Projectsresult = Projects.data;
     setProjects(Projectsresult.item);
     var projectManagerResponse =
@@ -108,11 +106,8 @@ export function ViewProject() {
     setSessiondata(userDetails.employee.role.name);
     var response1 = await AdminDashboardServices.fcngetEmployees();
     setEmployees(response1.item);
-    var response = await axios.get(
-      `https://localhost:44305/api/Projects/GetProject?id=${ProjectID}`
-    );
+    var response = await ProjectService.FcnProjectInfo(ProjectID);
     var result = response.data;
-
     if (result.isSuccess === true) {
       setClientValues(result.item.client);
       setProjectValues(result.item.project);
@@ -228,7 +223,7 @@ export function ViewProject() {
         id: ProjectValues.id,
       },
     ];
-    var response = await AdminDashboardServices.fcnAssignEmployee(requestBody);
+    var response = await ProjectService.fcnAssignEmployee(requestBody);
 
     if (response.isSuccess) {
       setassignedNewEmployeePopup(true);
@@ -279,14 +274,14 @@ export function ViewProject() {
   const closeAssignedPopup = () => {
     setassignedNewEmployeePopup(false);
   };
-  const DownloadExcel = async (listtype, filetype, proID) => {
+  const DownloadExcel = async (listtype, filetype, projectId) => {
     let response;
     try {
-      response = await axios.get(
-        `https://localhost:44305/DownloadProjectEmployees?listType=${listtype}&fileType=${filetype}&projectID=${proID}`,
-        { responseType: "blob" }
+      response = await ProjectService.FcnExportProjectEmployees(
+        listtype,
+        filetype,
+        projectId
       );
-
       const blob = new Blob([response.data], {
         type: response.headers["content-type"],
       });
@@ -306,7 +301,6 @@ export function ViewProject() {
       console.error("Error downloading file:", error);
     }
   };
-
   return (
     <div className="viewProject-Main-div">
       <div className="view-Project">Project Details</div>
@@ -613,7 +607,7 @@ export function ViewProject() {
             </div>
           )}
         </div>
-        <div style={{ padding: "10px" }}>
+        <div style={{ padding: "10px", paddingBottom: "35px" }}>
           <table
             id="example"
             className="employeeTable m-0 p-0"

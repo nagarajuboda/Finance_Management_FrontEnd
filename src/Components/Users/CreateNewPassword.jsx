@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import userService from "../../Service/UserService/userService";
 export default function CreateNewPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -71,10 +72,7 @@ export default function CreateNewPassword() {
         NewPassword: passwordValues.NewPassword,
       };
 
-      var responses = await axios.post(
-        "https://localhost:44305/api/Auth/update-password",
-        obj
-      );
+      var responses = await userService.FcnCreateNewPassword(obj);
       var result = responses.data;
       if (result.isSuccess) {
         toast.success("Password updated successfully.", {
@@ -100,11 +98,6 @@ export default function CreateNewPassword() {
               autoClose: 4000,
             }
           );
-        } else {
-          toast.error("Failed to update password. Please try again.", {
-            position: "top-right",
-            autoClose: 4000,
-          });
         }
       }
     }

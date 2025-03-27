@@ -1,9 +1,8 @@
-import axios from "axios";
 import { apiurl } from "../createAxiosInstance";
 const IndianFinanceService = {
   async GetRevenue(month, year) {
-    const response = await axios.get(
-      `https://localhost:44305/api/Revenue/GetRevenue?month=${month}&year=${year}`
+    const response = await apiurl.get(
+      `/Revenue/GetRevenue?month=${month}&year=${year}`
     );
     return response.data;
   },
@@ -14,8 +13,8 @@ const IndianFinanceService = {
     return response.data;
   },
   async AddExpenses(obj, isSubmitted) {
-    const response = await axios.post(
-      `https://localhost:44305/api/Expenses/AddExpenses?isSubmmited=${isSubmitted}`,
+    const response = await apiurl.post(
+      `/Expenses/AddExpenses?isSubmmited=${isSubmitted}`,
       obj
     );
     return response.data;

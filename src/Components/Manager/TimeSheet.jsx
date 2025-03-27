@@ -6,7 +6,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import EmployeeService from "../../Service/EmployeeService/EmployeeService";
-import TimeSheetService from "../../Service/TimeSheetService";
+import TimeSheetService from "../../Service/ManagerService/TimeSheetService";
 import ellips from "../../../src/assets/Images/Ellipse.png";
 import checkimage from "../../../src/assets/Images/check.png";
 import calenderImage from "../../assets/Images/calendar_11919171.png";
@@ -14,9 +14,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-tabs/style/react-tabs.css";
 import { format } from "date-fns";
-import NotificationService from "../../Service/NotificationService";
+import NotificationService from "../../Service/AdminService/NotificationService";
 import { useTable } from "react-table";
 import { data } from "jquery";
+import { apiurl } from "../../Service/createAxiosInstance";
 export default function TimeSheet() {
   const userDetails = JSON.parse(localStorage.getItem("sessionData"));
   var id = userDetails.employee.id;
@@ -50,7 +51,13 @@ export default function TimeSheet() {
     const month = selectedDate.toLocaleString("default", { month: "long" });
     const result = `${month} ${year}`;
     setFormattedDate(result);
-  }, [selectedDate, ProjectEmployees, department]);
+  }, [ProjectEmployees, department, selectedDate, selectedProject]);
+  useEffect(() => {
+    if (projectOptions.length > 0 && !selectedProject) {
+      setSelectedProject(projectOptions[0]);
+      handleProjectChange(projectOptions[0]);
+    }
+  }, [projectOptions, formattedDate, selectedProject]);
   const monthMap = {
     January: "1",
     February: "2",
@@ -67,6 +74,7 @@ export default function TimeSheet() {
   };
 
   async function FetchData() {
+    debugger;
     const response = await EmployeeService.GetProjectInfo(id);
     const projects = response.item;
     const options = projects.map((p, index) => ({
@@ -74,11 +82,14 @@ export default function TimeSheet() {
       label: p.project.projectName,
     }));
     setProjects(options);
+    console.log(selectedProject, "selectedProject");
+    console.log(selectedDate, "formated Date");
+    // debugger;
     const Timesheetresponse = await TimeSheetService.GetTimeSheetDeatils(
       formattedDate,
       selectedProject?.value
     );
-
+    console.log(Timesheetresponse, "getTimesheet Reponse");
     var checkIsSubmitted = await Timesheetresponse.item.map(
       (data) => data.isSubmited
     );
@@ -126,8 +137,8 @@ export default function TimeSheet() {
     const formattedDate = `${date.toLocaleString("default", {
       month: "long",
     })} ${date.getFullYear()}`;
-    const ProjectEmployeess = await axios.get(
-      `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${selectedProject.value}&date=${formattedDate}`
+    const ProjectEmployeess = await apiurl.get(
+      `/Timesheets/GetProjectEmployee?projectID=${selectedProject.value}&date=${formattedDate}`
     );
     setHours({});
     var result = ProjectEmployeess.data;
@@ -138,8 +149,8 @@ export default function TimeSheet() {
   };
   const handleProjectChange = async (option) => {
     setSelectedProject(option);
-    const ProjectEmployeess = await axios.get(
-      `https://localhost:44305/api/Timesheets/GetProjectEmployee?projectID=${option.value}&date=${formattedDate}`
+    const ProjectEmployeess = await apiurl.get(
+      `/Timesheets/GetProjectEmployee?projectID=${option.value}&date=${formattedDate}`
     );
     var result = ProjectEmployeess.data;
     setProjectemployess(result.item.item1);
@@ -184,6 +195,7 @@ export default function TimeSheet() {
       setIssubmitOpen(true);
       FetchData();
     } else {
+      debugger;
       toast.error(response.error.message, {
         position: "top-right",
         autoClose: 4000,
@@ -230,10 +242,7 @@ export default function TimeSheet() {
       createdAt: new Date(),
     };
     setLoading(true);
-    var response = await axios.post(
-      "https://localhost:44305/api/Notifications/CreateNotification",
-      obj
-    );
+    var response = await apiurl.post("/Notifications/CreateNotification", obj);
     var result = response.data;
     if (result !== null) {
       setLoading(false);

@@ -1,11 +1,17 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRoute = ({ element: Component, ...rest }) => {
-  debugger;
-  var token = localStorage.getItem("token");
-  const isAuthenticated = !!localStorage.getItem("token");
+const ProtectedRoute = ({ children }) => {
+  const sessionData = localStorage.getItem("sessionData");
+  const userDetails = sessionData ? JSON.parse(sessionData) : null;
 
-  return isAuthenticated ? <Component {...rest} /> : <Navigate to="/login" />;
+  const isAuthenticated = userDetails?.token ? true : false;
+  const location = useLocation();
+  return isAuthenticated ? (
+    children
+  ) : (
+    <Navigate to="/user/Login" state={{ from: location }} replace />
+  );
 };
+
 export default ProtectedRoute;
