@@ -800,17 +800,22 @@ export default function AddEmployee() {
             </div>
           </div>
           <div
-            className="row m-0"
-            style={{ paddingTop: "25px ", paddingBottom: "30px" }}
+            className=""
+            style={{
+              paddingTop: "25px ",
+              paddingBottom: "30px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
           >
-            <div className="col-10"></div>
+            <div className=""></div>
             <div
-              className="col-2"
+              className="p-3"
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               {loading === false ? (
                 <button
-                  className=" addEmployeeSubmitbutton me-2 "
+                  className=" addEmployeeSubmitbutton me-3 "
                   onSubmit={AddEmployeeForm}
                 >
                   <span className="addemployeespan ">submit</span>
@@ -819,7 +824,7 @@ export default function AddEmployee() {
                 loading &&
                 loading && (
                   <button
-                    class="addEmployeeSubmitbutton me-2"
+                    class="addEmployeeSubmitbutton  me-3"
                     type="button"
                     disabled
                     style={{ color: "white" }}
