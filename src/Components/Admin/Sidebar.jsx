@@ -14,7 +14,7 @@ import { FaChevronRight } from "react-icons/fa";
 import { RiDashboard3Line } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import "../../assets/Styles/Sidebar.css";
-import archetslogo from "../../../src/assets/Images/primary-logo.png";
+// import archetslogo from "../../../src/assets/Images/primary-logo.png";
 import dashboardsidebarimage from "../../assets/Images/DBicon.png";
 import billing from "../../assets/Images/billing.png";
 import Logout from "../../assets/Images/Logout.png";
